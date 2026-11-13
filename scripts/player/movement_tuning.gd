@@ -18,3 +18,5 @@ extends Resource
 ## While locked on, the player keeps facing the target only when moving within this angle
 ## of it; beyond it (sideways, backwards) it turns to run where it goes.
 @export_range(0.0, 180.0, 1.0, "suffix:°") var lock_face_max_angle_deg: float = 50.0
+## Stamina spent per second while sprinting (DECISIONS/0007).
+@export_range(0.0, 50.0, 0.5, "suffix:/s") var sprint_stamina_per_second: float = 8.0

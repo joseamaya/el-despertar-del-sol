@@ -1,0 +1,48 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/provisional_hud.gd" id="1_06h6j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k23up"]
+bg_color = Color(0, 0, 0, 0.45)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cgbuk"]
+bg_color = Color(0.78, 0.18, 0.14, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_arkbx"]
+bg_color = Color(0, 0, 0, 0.45)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lnkjw"]
+bg_color = Color(0.92, 0.75, 0.22, 1)
+
+[node name="ProvisionalHud" type="CanvasLayer" unique_id=1330596458 node_paths=PackedStringArray("health_bar", "stamina_bar")]
+script = ExtResource("1_06h6j")
+health_bar = NodePath("Margin/Bars/HealthBar")
+stamina_bar = NodePath("Margin/Bars/StaminaBar")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1729188536]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Bars" type="VBoxContainer" parent="Margin" unique_id=206832126]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HealthBar" type="ProgressBar" parent="Margin/Bars" unique_id=860489812]
+custom_minimum_size = Vector2(320, 16)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_k23up")
+theme_override_styles/fill = SubResource("StyleBoxFlat_cgbuk")
+value = 100.0
+show_percentage = false
+
+[node name="StaminaBar" type="ProgressBar" parent="Margin/Bars" unique_id=1544006854]
+custom_minimum_size = Vector2(320, 16)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_arkbx")
+theme_override_styles/fill = SubResource("StyleBoxFlat_lnkjw")
+value = 100.0
+show_percentage = false

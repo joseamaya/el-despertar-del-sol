@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" path="res://scenes/player/camera_rig.tscn" id="2_upy5j"]
 [ext_resource type="PackedScene" path="res://scenes/tests/lock_on_dummy.tscn" id="3_gys8y"]
 [ext_resource type="Script" path="res://scripts/player/lock_on_marker.gd" id="4_xldku"]
+[ext_resource type="PackedScene" path="res://scenes/ui/provisional_hud.tscn" id="5_2m5ce"]
+[ext_resource type="Script" path="res://scripts/core/debug_health_keys.gd" id="6_wwhnr"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_upy5j"]
 
@@ -170,6 +172,14 @@ script = ExtResource("4_xldku")
 [node name="Gem" type="MeshInstance3D" parent="LockOnMarker" unique_id=1688494561]
 transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("PrismMesh_fy422")
+
+[node name="ProvisionalHud" parent="." unique_id=1330596458 node_paths=PackedStringArray("health", "stamina") instance=ExtResource("5_2m5ce")]
+health = NodePath("../Player/Health")
+stamina = NodePath("../Player/Stamina")
+
+[node name="DebugHealthKeys" type="Node" parent="." unique_id=1768526113 node_paths=PackedStringArray("health")]
+script = ExtResource("6_wwhnr")
+health = NodePath("../Player/Health")
 
 [connection signal="target_locked" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
 [connection signal="target_locked" from="Player/LockOn" to="LockOnMarker" method="set_target"]
