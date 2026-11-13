@@ -30,6 +30,7 @@ El desarrollador prefiere que el criterio de 60 FPS se pueda medir siempre en su
 
 ## Revisión F1 (2026-11-13)
 
-Medida en el proxy de Carmenca (`docs/rendimiento/2026-11-carmenca-proxy.md`): Mobile da
-87,9 FPS de media y 76,6 en el 1 % bajo a 1080p; Forward+ 57,5 / 35,2. **La decisión se
-mantiene.** Próxima revisión: F3, con el escenario real.
+Medida en el proxy de Carmenca con relieve (`docs/rendimiento/2026-11-carmenca-proxy.md`):
+a 1080p nativos Mobile da 60,1 FPS de media con el 19,5 % de frames lentos; Forward+ 44,1.
+**Se mantiene el renderer Mobile.** El objetivo de 60 FPS exige además renderizar el 3D
+por debajo de 1080p: ver `0005`.

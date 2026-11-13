@@ -7,7 +7,8 @@ extends Node
 ##   godot --path . res://scenes/tests/perf_carmenca_proxy.tscn \
 ##       --rendering-method mobile --resolution 1920x1080 -- --benchmark --out=/tmp/r.json
 ##
-## Extra user args: `--effects` enables Forward+-only effects (volumetric fog, SSAO).
+## Extra user args: `--effects` enables Forward+-only effects (volumetric fog, SSAO);
+## `--scale3d=0.75` renders the 3D at that fraction of `render_size` (UI stays sharp).
 ## The 3D is always rendered at `render_size` (scaled to the window), so results do not
 ## depend on the monitor: the reference screen is 1600x900 but the GDD target is 1080p.
 
@@ -24,6 +25,7 @@ signal finished(report: Dictionary)
 
 var _active: bool = false
 var _effects: bool = false
+var _scale_3d: float = 1.0
 var _out_path: String = "user://benchmark.json"
 var _elapsed: float = 0.0
 var _frame_times: PackedFloat64Array = PackedFloat64Array()
@@ -36,6 +38,8 @@ func _ready() -> void:
 	for arg: String in args:
 		if arg.begins_with("--out="):
 			_out_path = arg.trim_prefix("--out=")
+		elif arg.begins_with("--scale3d="):
+			_scale_3d = clampf(arg.trim_prefix("--scale3d=").to_float(), 0.25, 2.0)
 	if not _active:
 		return
 	assert(camera != null, "PerfBenchmark needs a camera.")
@@ -45,6 +49,7 @@ func _ready() -> void:
 	window.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
 	window.content_scale_size = render_size
+	window.scaling_3d_scale = _scale_3d
 	camera.current = true
 	if _effects and environment != null:
 		environment.environment.volumetric_fog_enabled = true
@@ -76,6 +81,7 @@ func build_report() -> Dictionary:
 		"render_size": "%dx%d" % [_render_size().x, _render_size().y],
 		"window_size": "%dx%d" % [get_tree().root.size.x, get_tree().root.size.y],
 		"effects": _effects,
+		"scale_3d": _scale_3d,
 		"frames": _frame_times.size(),
 		"avg_fps": PerfStats.average_fps(_frame_times),
 		"low_1_fps": PerfStats.low_1_percent_fps(_frame_times),
