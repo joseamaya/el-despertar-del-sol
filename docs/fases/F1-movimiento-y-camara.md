@@ -1,6 +1,8 @@
 # F1 · Movimiento y cámara — nota de cierre
 
-**Fechas:** 2026-11-13 – 2026-11-13 · **Estado:** pendiente de confirmación del desarrollador
+**Fechas:** 2026-11-13 – 2026-11-13 · **Estado:** cerrada
+
+Criterio de salida confirmado por el desarrollador el 2026-11-13.
 
 ## Criterio de salida (GDD §15)
 

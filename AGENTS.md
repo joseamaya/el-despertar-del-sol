@@ -6,10 +6,11 @@ manda el GDD y se avisa al desarrollador.
 
 ## Fase actual
 
-**F1 · Movimiento y cámara** (3 semanas). Criterio de salida: moverse y fijar objetivo
-se siente bien (GDD §15).
+**F2 · Combate** (6 semanas). Criterio de salida: pelear contra 3 guerreros es divertido
+(GDD §15). Si el combate no convence, se itera aquí: nunca se pasa a F3 con un combate dudoso.
 Solo se trabaja en el alcance de la fase actual. Nada de la fase siguiente se adelanta.
-Fases cerradas: F0 (`docs/fases/F0-preproduccion.md`).
+Deudas heredadas de F1: sección «Pasa a F2» de `docs/fases/F1-movimiento-y-camara.md`.
+Fases cerradas: F0 (`docs/fases/F0-preproduccion.md`), F1 (`docs/fases/F1-movimiento-y-camara.md`).
 Al cambiar de fase, el desarrollador actualiza esta sección.
 
 ## Stack fijado
