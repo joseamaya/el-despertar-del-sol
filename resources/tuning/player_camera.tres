@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="CameraTuning" format=3]
+
+[ext_resource type="Script" path="res://scripts/player/camera_tuning.gd" id="1_lj7rg"]
+
+[resource]
+script = ExtResource("1_lj7rg")

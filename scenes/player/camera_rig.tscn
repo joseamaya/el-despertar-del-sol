@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/player/camera_controller.gd" id="1_lih4b"]
+[ext_resource type="Resource" path="res://resources/tuning/player_camera.tres" id="2_3e48g"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_86eua"]
+radius = 0.2
+
+[node name="CameraRig" type="Node3D" unique_id=1742004877 node_paths=PackedStringArray("spring_arm", "camera")]
+script = ExtResource("1_lih4b")
+tuning = ExtResource("2_3e48g")
+spring_arm = NodePath("SpringArm3D")
+camera = NodePath("SpringArm3D/Camera3D")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=441648249]
+shape = SubResource("SphereShape3D_86eua")
+spring_length = 4.5
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D" unique_id=1117508915]
+current = true
