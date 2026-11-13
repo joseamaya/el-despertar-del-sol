@@ -19,6 +19,10 @@ const _FACING_MIN_SQ: float = 0.0001
 var move_input: Vector2 = Vector2.ZERO
 var is_sprinting: bool = false
 
+## When set (lock-on), the player keeps facing it and circles it instead of turning
+## toward the move direction.
+var _face_target: Node3D
+
 
 func _ready() -> void:
 	assert(tuning != null, "PlayerController needs a MovementTuning resource.")
@@ -37,9 +41,25 @@ func _physics_process(delta: float) -> void:
 		velocity.y -= tuning.gravity * delta
 	move_and_slide()
 
-	if direction.length_squared() > _FACING_MIN_SQ:
-		var target_yaw: float = LocomotionMath.yaw_from_direction(direction)
+	if _face_target != null and not is_instance_valid(_face_target):
+		_face_target = null
+	var facing: Vector3 = direction
+	if _face_target != null:
+		facing = _face_target.global_position - global_position
+		facing.y = 0.0
+	if facing.length_squared() > _FACING_MIN_SQ:
+		var target_yaw: float = LocomotionMath.yaw_from_direction(facing)
 		rotation.y = LocomotionMath.smooth_yaw(rotation.y, target_yaw, tuning.turn_sharpness, delta)
+
+
+## Keeps facing `target` (connect LockOnController.target_locked / target_switched).
+func set_face_target(target: Node3D) -> void:
+	_face_target = target
+
+
+## Back to facing the move direction (connect LockOnController.target_released).
+func release_face_target(_reason: int = 0) -> void:
+	_face_target = null
 
 
 ## Horizontal speed in m/s, ignoring falling.

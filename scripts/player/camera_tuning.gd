@@ -25,6 +25,12 @@ extends Resource
 ## Gap kept between the camera and a wall when it is pulled in.
 @export_range(0.0, 1.0, 0.05, "suffix:m") var collision_margin: float = 0.2
 
+@export_group("Lock-on")
+## How fast the camera turns to frame the locked target. Higher = snappier.
+@export_range(1.0, 40.0, 0.5) var lock_turn_sharpness: float = 10.0
+## Pitch while locked. Negative looks down at the player and target.
+@export_range(-60.0, 20.0, 1.0, "suffix:°") var lock_pitch_deg: float = -15.0
+
 @export_group("Ajustes del jugador")
 @export_range(0.01, 1.0, 0.01, "suffix:°/px") var mouse_sensitivity: float = 0.15
 @export_range(30.0, 600.0, 5.0, "suffix:°/s") var stick_sensitivity: float = 180.0
