@@ -1,6 +1,8 @@
 # F0 · Preproducción — nota de cierre
 
-**Fechas:** 2026-11-13 – · **Estado:** pendiente de validación por el desarrollador
+**Fechas:** 2026-11-13 – 2026-11-13 · **Estado:** cerrada
+
+Validada por el desarrollador: etiquetas de canon revisadas y proyecto abierto en el editor.
 
 ## Criterio de salida (GDD §15)
 

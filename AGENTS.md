@@ -6,8 +6,10 @@ manda el GDD y se avisa al desarrollador.
 
 ## Fase actual
 
-**F0 · Preproducción.** Criterio de salida: GDD, AGENTS.md, repo, CI y Godot fijados.
+**F1 · Movimiento y cámara** (3 semanas). Criterio de salida: moverse y fijar objetivo
+se siente bien (GDD §15).
 Solo se trabaja en el alcance de la fase actual. Nada de la fase siguiente se adelanta.
+Fases cerradas: F0 (`docs/fases/F0-preproduccion.md`).
 Al cambiar de fase, el desarrollador actualiza esta sección.
 
 ## Stack fijado

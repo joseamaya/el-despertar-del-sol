@@ -3,7 +3,7 @@
 Action-RPG histórico en tercera persona ambientado en el Cusco de c. 1438.
 Diseño completo en [`docs/GDD.md`](docs/GDD.md). Reglas de trabajo en [`AGENTS.md`](AGENTS.md).
 
-**Estado:** preproducción (Fase 0).
+**Estado:** Fase 1 · Movimiento y cámara.
 
 ## Requisitos
 
