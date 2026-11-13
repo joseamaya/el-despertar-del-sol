@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AttackData" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/attack_data.gd" id="1_ckj51"]
+
+[resource]
+script = ExtResource("1_ckj51")
+id = &"light_3"
+damage = 22.0
+posture_damage = 12.0
+clip_speed = 1.15
+active_end = 0.52
+chain_from = 1.0
+lunge_distance = 0.6
