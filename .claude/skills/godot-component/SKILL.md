@@ -108,6 +108,9 @@ Notas:
   el inspector los muestra igual. Dilo en el resumen para que nadie se sorprenda.
 - Las acciones de InputMap se añaden con `ProjectSettings.set_setting("input/<accion>", ...)`
   y `ProjectSettings.save()`, con `device = -1` en cada evento (todos los dispositivos).
+- Los `MultiMesh` pierden sus transformaciones si el script corre con `--headless`
+  (el servidor de render falso no guarda el buffer). Para escenas con MultiMesh,
+  ejecuta el generador sin `--headless` y comprueba que el `.tscn` tiene `buffer = ...`.
 - Las escaleras se resuelven con una pendiente de colisión invisible: una cápsula no
   sube escalones de más de ~0,1 m por sí sola.
 

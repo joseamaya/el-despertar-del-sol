@@ -27,3 +27,9 @@ El desarrollador prefiere que el criterio de 60 FPS se pueda medir siempre en su
 - En F1: escena de prueba con cápsulas, terreno y niebla. Si Mobile no llega a 60 FPS o
   Forward+ sí con margen, se reabre.
 - En F3: con el escenario de Carmenca real. Si se consigue una GPU dedicada, se reabre.
+
+## Revisión F1 (2026-11-13)
+
+Medida en el proxy de Carmenca (`docs/rendimiento/2026-11-carmenca-proxy.md`): Mobile da
+87,9 FPS de media y 76,6 en el 1 % bajo a 1080p; Forward+ 57,5 / 35,2. **La decisión se
+mantiene.** Próxima revisión: F3, con el escenario real.
