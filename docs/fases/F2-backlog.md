@@ -8,7 +8,7 @@ combate dudoso.
 | --- | --- | --- |
 | 1 | Decisiones previas (`DECISIONS/0007`) | Hecha |
 | 2 | HealthComponent y StaminaComponent + barras provisionales | Hecha |
-| 3 | Hitbox/Hurtbox con barrido entre frames, capas y hitstop | Pendiente |
+| 3 | Hitbox/Hurtbox con barrido entre frames, capas y hitstop | Hecha |
 | 4 | CombatComponent: cadena de 3 ligeros y pesado, ataques como datos; skill `combat-tuning` | Pendiente |
 | 5 | Bloqueo, parry (0,15 s) y esquiva (0,25 s de invulnerabilidad) | Pendiente |
 | 6 | PostureComponent, aturdimiento y ejecución | Pendiente |
