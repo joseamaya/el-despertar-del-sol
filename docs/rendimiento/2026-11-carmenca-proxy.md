@@ -74,7 +74,7 @@ direcciones. Se descartó a favor de la actual.
 
 1. Se mantiene el **renderer Mobile**; Forward+ va peor en todos los casos.
 2. Para cumplir 60 FPS en el equipo de referencia hace falta **renderizar el 3D por debajo
-   de 1080p**. Propuesta en `DECISIONS/0005` (pendiente de decisión del desarrollador).
+   de 1080p**. Decidido en `DECISIONS/0005`: 3D al 75–83 % con salida a 1080p.
 3. **Sombras del sol hasta ~100 m** como valor de partida.
 
 ## Presupuesto propuesto para F3

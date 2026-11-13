@@ -676,7 +676,7 @@ Pocas herramientas, bien elegidas: cada MCP activo consume contexto del agente, 
 
 ## 17. Rendimiento
 
-60 FPS a 1080p en el equipo de referencia, medido en hardware real desde la Fase 1.
+60 FPS con salida a 1080p en el equipo de referencia (3D renderizado al 75–83 %, `docs/DECISIONS/0005`), medido en hardware real desde la Fase 1.
 
 - Equipo de referencia (Fase 0): Intel Core i7-13700, gráfica integrada Intel UHD 770, 32 GB de RAM, Linux. Renderer Mobile y sin efectos exclusivos de Forward+ (`docs/DECISIONS/0004`).
 - Geometría optimizada, sombras dinámicas solo del sol y de unos pocos focos, colisiones simplificadas.

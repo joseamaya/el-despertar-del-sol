@@ -10,4 +10,4 @@ que la cite.
 | 0002 | gdUnit4 como framework de pruebas | Aceptada |
 | 0003 | Convenciones de código y flujo de trabajo | Aceptada |
 | 0004 | Equipo de referencia con GPU integrada y renderer Mobile | Aceptada · revisada en F1 |
-| 0005 | Resolución del 3D en el equipo de referencia | Propuesta |
+| 0005 | Resolución del 3D en el equipo de referencia | Aceptada |
