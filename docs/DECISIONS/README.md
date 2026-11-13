@@ -1,0 +1,12 @@
+# Registro de decisiones
+
+Una decisión por archivo: `NNNN-titulo-corto.md`. Formato: contexto, decisión,
+consecuencias y cuándo revisarla. Una decisión no se edita: se sustituye por otra nueva
+que la cite.
+
+| # | Decisión | Estado |
+| --- | --- | --- |
+| 0001 | Godot 4.7.2.stable | Aceptada |
+| 0002 | gdUnit4 como framework de pruebas | Aceptada |
+| 0003 | Convenciones de código y flujo de trabajo | Aceptada |
+| 0004 | Equipo de referencia con GPU integrada y renderer Mobile | Aceptada |

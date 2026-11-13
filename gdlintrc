@@ -1,0 +1,8 @@
+# gdtoolkit 4.5.0 — defaults plus project limits
+max-line-length: 110
+max-file-lines: 400
+function-arguments-number: 8
+excluded_directories: !!set
+  .git: null
+  .godot: null
+  addons: null

@@ -1,0 +1,19 @@
+# Godot
+.godot/
+*.translation
+export_credentials.cfg
+
+# Builds
+build/
+
+# Python (gdtoolkit)
+.venv/
+__pycache__/
+
+# gdUnit4 reports
+reports/
+
+# OS / editors
+.DS_Store
+*.swp
+.vscode/
