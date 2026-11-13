@@ -14,10 +14,14 @@ const _FACING_MIN_SQ: float = 0.0001
 @export var tuning: MovementTuning
 ## Camera whose yaw defines "forward". Without one, world -Z is forward.
 @export var camera: Camera3D
+## Optional: sprinting spends it, and an empty bar stops the sprint (DECISIONS/0007).
+@export var stamina: StaminaComponent
 
 ## Last move input read, x = right, y = back. Exposed for debugging and animation later.
 var move_input: Vector2 = Vector2.ZERO
 var is_sprinting: bool = false
+## After stamina runs out, sprint needs a fresh press (avoids flickering at zero).
+var _sprint_locked: bool = false
 
 ## When set (lock-on), the player faces it while idle or moving toward it, and turns to
 ## its move direction when going sideways or away (see LocomotionMath.locked_facing).
@@ -33,6 +37,11 @@ func _physics_process(delta: float) -> void:
 	var reference_basis: Basis = camera.global_basis if camera != null else Basis.IDENTITY
 	var direction: Vector3 = LocomotionMath.camera_relative_direction(move_input, reference_basis)
 	var target: Vector3 = LocomotionMath.target_velocity(direction, is_sprinting, tuning)
+
+	if is_sprinting and stamina != null:
+		stamina.drain_over_time(tuning.sprint_stamina_per_second, delta)
+		if stamina.is_empty():
+			_sprint_locked = true
 
 	velocity = LocomotionMath.approach_horizontal(
 		velocity, target, tuning.acceleration, tuning.deceleration, delta
@@ -74,4 +83,10 @@ func _read_input() -> void:
 	move_input = Input.get_vector(
 		ACTION_MOVE_LEFT, ACTION_MOVE_RIGHT, ACTION_MOVE_FORWARD, ACTION_MOVE_BACK
 	)
-	is_sprinting = Input.is_action_pressed(ACTION_SPRINT) and not move_input.is_zero_approx()
+	var held: bool = Input.is_action_pressed(ACTION_SPRINT)
+	if not held:
+		_sprint_locked = false
+	var has_stamina: bool = stamina == null or not stamina.is_empty()
+	if held and not has_stamina:
+		_sprint_locked = true
+	is_sprinting = held and has_stamina and not _sprint_locked and not move_input.is_zero_approx()
