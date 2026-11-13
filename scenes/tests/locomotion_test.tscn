@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_8psyo"]
+[ext_resource type="PackedScene" path="res://scenes/player/camera_rig.tscn" id="2_upy5j"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_upy5j"]
 
@@ -36,9 +37,6 @@ environment = SubResource("Environment_xldku")
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=202254494]
 transform = Transform3D(0.81915206, 0.43938506, -0.36868784, 0, 0.64278764, 0.76604444, 0.57357645, -0.62750685, 0.5265408, 0, 0, 0)
 shadow_enabled = true
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1671531351]
-transform = Transform3D(1, 0, 0, 0, 0.72819996, 0.6853647, 0, -0.6853647, 0.72819996, 0, 16, 14)
 
 [node name="Greybox" type="Node3D" parent="." unique_id=1363416982]
 
@@ -134,4 +132,7 @@ material = SubResource("StandardMaterial3D_wpdjs")
 
 [node name="Player" parent="." unique_id=85383103 node_paths=PackedStringArray("camera") instance=ExtResource("1_8psyo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 4)
-camera = NodePath("../Camera3D")
+camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
+
+[node name="CameraRig" parent="." unique_id=1742004877 node_paths=PackedStringArray("target") instance=ExtResource("2_upy5j")]
+target = NodePath("../Player")
