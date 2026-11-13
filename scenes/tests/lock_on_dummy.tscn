@@ -1,6 +1,10 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://scripts/combat/training_dummy.gd" id="1_0nbwr"]
 [ext_resource type="Script" path="res://scripts/player/lock_on_target.gd" id="1_qjwks"]
+[ext_resource type="Script" path="res://scripts/combat/health_component.gd" id="3_nienh"]
+[ext_resource type="Resource" path="res://resources/tuning/dummy_health.tres" id="4_wb7y0"]
+[ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="5_t5pir"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vrfo2"]
 radius = 0.35
@@ -17,7 +21,15 @@ height = 1.8
 [sub_resource type="SphereShape3D" id="SphereShape3D_0nbwr"]
 radius = 0.4
 
-[node name="LockOnDummy" type="StaticBody3D" unique_id=1177222868]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mi13w"]
+radius = 0.4
+height = 1.8
+
+[node name="LockOnDummy" type="StaticBody3D" unique_id=1177222868 node_paths=PackedStringArray("health", "hurtbox", "mesh")]
+script = ExtResource("1_0nbwr")
+health = NodePath("Health")
+hurtbox = NodePath("Hurtbox")
+mesh = NodePath("Body")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=787282098]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -33,3 +45,16 @@ script = ExtResource("1_qjwks")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LockOnTarget" unique_id=754331682]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 shape = SubResource("SphereShape3D_0nbwr")
+
+[node name="Health" type="Node" parent="." unique_id=738184141]
+script = ExtResource("3_nienh")
+tuning = ExtResource("4_wb7y0")
+
+[node name="Hurtbox" type="Area3D" parent="." unique_id=2018358209 node_paths=PackedStringArray("health")]
+script = ExtResource("5_t5pir")
+faction = 1
+health = NodePath("../Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=446133026]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_mi13w")
