@@ -1,0 +1,137 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_8psyo"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_upy5j"]
+
+[sub_resource type="Sky" id="Sky_gys8y"]
+sky_material = SubResource("ProceduralSkyMaterial_upy5j")
+
+[sub_resource type="Environment" id="Environment_xldku"]
+background_mode = 2
+sky = SubResource("Sky_gys8y")
+ambient_light_source = 3
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wpdjs"]
+albedo_color = Color(0.55, 0.53, 0.5, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2m5ce"]
+albedo_color = Color(0.7, 0.55, 0.3, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wwhnr"]
+albedo_color = Color(0.45, 0.33, 0.22, 1)
+roughness = 0.9
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cypgi"]
+size = Vector3(4, 0.1, 3.231099)
+
+[node name="LocomotionTest" type="Node3D" unique_id=1002510060]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1657305388]
+environment = SubResource("Environment_xldku")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=202254494]
+transform = Transform3D(0.81915206, 0.43938506, -0.36868784, 0, 0.64278764, 0.76604444, 0.57357645, -0.62750685, 0.5265408, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1671531351]
+transform = Transform3D(1, 0, 0, 0, 0.72819996, 0.6853647, 0, -0.6853647, 0.72819996, 0, 16, 14)
+
+[node name="Greybox" type="Node3D" parent="." unique_id=1363416982]
+
+[node name="Floor" type="CSGBox3D" parent="Greybox" unique_id=182748951]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(40, 1, 40)
+material = SubResource("StandardMaterial3D_wpdjs")
+
+[node name="Ramp" type="CSGBox3D" parent="Greybox" unique_id=1587819043]
+transform = Transform3D(1, 0, 0, 0, 0.9396926, -0.34202012, 0, 0.34202012, 0.9396926, -6, 1, -7)
+use_collision = true
+size = Vector3(4, 0.5, 7)
+material = SubResource("StandardMaterial3D_2m5ce")
+
+[node name="RampPlatform" type="CSGBox3D" parent="Greybox" unique_id=2135504216]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.23, -11.79)
+use_collision = true
+size = Vector3(4, 2.46, 3)
+material = SubResource("StandardMaterial3D_2m5ce")
+
+[node name="Stairs" type="Node3D" parent="Greybox" unique_id=1480725441]
+
+[node name="Step1" type="CSGBox3D" parent="Greybox/Stairs" unique_id=815299478]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.1, -4.25)
+size = Vector3(4, 0.2, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Step2" type="CSGBox3D" parent="Greybox/Stairs" unique_id=1216212094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.2, -4.75)
+size = Vector3(4, 0.4, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Step3" type="CSGBox3D" parent="Greybox/Stairs" unique_id=1127554747]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.3, -5.25)
+size = Vector3(4, 0.6, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Step4" type="CSGBox3D" parent="Greybox/Stairs" unique_id=2062422567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.4, -5.75)
+size = Vector3(4, 0.8, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Step5" type="CSGBox3D" parent="Greybox/Stairs" unique_id=718365241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, -6.25)
+size = Vector3(4, 1, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Step6" type="CSGBox3D" parent="Greybox/Stairs" unique_id=1951168354]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.6, -6.75)
+size = Vector3(4, 1.2, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="StairsCollider" type="StaticBody3D" parent="Greybox/Stairs" unique_id=1404348466]
+
+[node name="Slope" type="CollisionShape3D" parent="Greybox/Stairs/StairsCollider" unique_id=1666616013]
+transform = Transform3D(1, 0, 0, 0, 0.9284767, -0.37139067, 0, 0.37139067, 0.9284767, 6, 0.55, -5.5)
+shape = SubResource("BoxShape3D_cypgi")
+
+[node name="StairsPlatform" type="CSGBox3D" parent="Greybox/Stairs" unique_id=610202643]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.6, -9)
+use_collision = true
+size = Vector3(4, 1.2, 4)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="TerraceWall" type="CSGBox3D" parent="Greybox" unique_id=1447103629]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -14)
+use_collision = true
+size = Vector3(8, 1.2, 1)
+material = SubResource("StandardMaterial3D_wpdjs")
+
+[node name="CrateA" type="CSGBox3D" parent="Greybox" unique_id=929119230]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.5, 2)
+use_collision = true
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="CrateB" type="CSGBox3D" parent="Greybox" unique_id=279316437]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.5, 3)
+use_collision = true
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Pillar" type="CSGBox3D" parent="Greybox" unique_id=285960011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.5, -1)
+use_collision = true
+size = Vector3(0.6, 3, 0.6)
+material = SubResource("StandardMaterial3D_wpdjs")
+
+[node name="LongWall" type="CSGBox3D" parent="Greybox" unique_id=869963102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, 2)
+use_collision = true
+size = Vector3(0.5, 2, 6)
+material = SubResource("StandardMaterial3D_wpdjs")
+
+[node name="Player" parent="." unique_id=85383103 node_paths=PackedStringArray("camera") instance=ExtResource("1_8psyo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 4)
+camera = NodePath("../Camera3D")

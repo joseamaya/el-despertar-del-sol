@@ -17,3 +17,6 @@ reports/
 .DS_Store
 *.swp
 .vscode/
+
+# Claude Code agent worktrees
+.claude/worktrees/
