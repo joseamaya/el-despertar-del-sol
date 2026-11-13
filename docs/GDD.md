@@ -475,7 +475,7 @@ Godot 4 con composición por nodos-componente, comunicación por señales y dato
 | Motor | Godot 4.7.2.stable (fijado en Fase 0); no se actualiza de versión menor a mitad de una fase |
 | Renderer | Mobile, por el equipo de referencia con GPU integrada (`docs/DECISIONS/0004`) |
 | Lenguaje | GDScript con tipado estático; advertencias de tipado como errores |
-| Física | Evaluar Jolt (integrado en Godot desde 4.4) frente a Godot Physics en Fase 1 |
+| Física | GodotPhysics3D, evaluado frente a Jolt en Fase 1 (`docs/DECISIONS/0006`) |
 | Navegación | NavigationServer3D + NavigationRegion3D |
 | Animación | AnimationTree con máquina de estados; animación en el sitio (sin root motion) en el prototipo |
 | Hitboxes | Area3D en el arma, activadas por pistas de método en la animación; hurtboxes en el cuerpo |

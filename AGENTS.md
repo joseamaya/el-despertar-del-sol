@@ -17,6 +17,7 @@ Al cambiar de fase, el desarrollador actualiza esta sección.
 - **Godot 4.7.2.stable** (estándar, sin .NET). No se cambia de versión a mitad de fase.
 - **Renderer Mobile** (equipo de referencia con GPU integrada; ver `docs/DECISIONS/0004`).
   Nada de efectos exclusivos de Forward+ (SDFGI, niebla volumétrica, SSAO/SSIL, SSR).
+- **Física: GodotPhysics3D**, fijada explícitamente (`docs/DECISIONS/0006`).
 - **GDScript con tipado estático**; `untyped_declaration` es error en `project.godot`.
 - **Pruebas:** gdUnit4 6.2.3, vendorizado en `addons/gdUnit4/`.
 - **Lint/formato:** gdtoolkit 4.5.0 (`requirements-dev.txt`, entorno en `.venv/`).

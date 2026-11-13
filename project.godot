@@ -88,6 +88,10 @@ look_down={
 
 locale/fallback="es"
 
+[physics]
+
+3d/physics_engine="GodotPhysics3D"
+
 [rendering]
 
 renderer/rendering_method="mobile"

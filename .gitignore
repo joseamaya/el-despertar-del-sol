@@ -20,3 +20,6 @@ reports/
 
 # Claude Code agent worktrees
 .claude/worktrees/
+
+# Local engine/setting overrides (used by comparisons, never committed)
+override.cfg
