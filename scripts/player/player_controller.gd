@@ -19,8 +19,8 @@ const _FACING_MIN_SQ: float = 0.0001
 var move_input: Vector2 = Vector2.ZERO
 var is_sprinting: bool = false
 
-## When set (lock-on), the player keeps facing it and circles it instead of turning
-## toward the move direction.
+## When set (lock-on), the player faces it while idle or moving toward it, and turns to
+## its move direction when going sideways or away (see LocomotionMath.locked_facing).
 var _face_target: Node3D
 
 
@@ -45,8 +45,11 @@ func _physics_process(delta: float) -> void:
 		_face_target = null
 	var facing: Vector3 = direction
 	if _face_target != null:
-		facing = _face_target.global_position - global_position
-		facing.y = 0.0
+		facing = LocomotionMath.locked_facing(
+			direction,
+			_face_target.global_position - global_position,
+			deg_to_rad(tuning.lock_face_max_angle_deg)
+		)
 	if facing.length_squared() > _FACING_MIN_SQ:
 		var target_yaw: float = LocomotionMath.yaw_from_direction(facing)
 		rotation.y = LocomotionMath.smooth_yaw(rotation.y, target_yaw, tuning.turn_sharpness, delta)

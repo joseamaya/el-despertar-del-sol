@@ -15,3 +15,6 @@ extends Resource
 @export_range(1.0, 40.0, 0.5) var turn_sharpness: float = 12.0
 ## Downward acceleration while airborne.
 @export_range(1.0, 60.0, 0.5, "suffix:m/s²") var gravity: float = 20.0
+## While locked on, the player keeps facing the target only when moving within this angle
+## of it; beyond it (sideways, backwards) it turns to run where it goes.
+@export_range(0.0, 180.0, 1.0, "suffix:°") var lock_face_max_angle_deg: float = 50.0

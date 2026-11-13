@@ -38,6 +38,19 @@ static func approach_horizontal(
 	return result
 
 
+## Direction to face while locked on (ground plane). Faces the target when idle or moving
+## roughly toward it (within `max_angle`); otherwise faces the move direction, so the
+## forward run cycle never slides sideways (no strafe clips yet).
+static func locked_facing(move_dir: Vector3, to_target: Vector3, max_angle: float) -> Vector3:
+	var move_flat: Vector3 = _flatten(move_dir)
+	var target_flat: Vector3 = _flatten(to_target)
+	if target_flat.length_squared() < _MIN_DIRECTION_SQ:
+		return move_flat
+	if move_flat.length_squared() < _MIN_DIRECTION_SQ:
+		return target_flat
+	return target_flat if move_flat.angle_to(target_flat) <= max_angle else move_flat
+
+
 ## Yaw (rotation.y) that makes a node's -Z axis face `direction`.
 static func yaw_from_direction(direction: Vector3) -> float:
 	return atan2(-direction.x, -direction.z)
