@@ -1,6 +1,6 @@
 # 0006 · Motor de física 3D: GodotPhysics3D
 
-**Fecha:** 2026-11-13 · **Estado:** propuesta (pendiente de decisión del desarrollador)
+**Fecha:** 2026-11-13 · **Estado:** aceptada
 
 ## Contexto
 El GDD (§13.1) pide evaluar Jolt frente a Godot Physics en F1. El proyecto tenía el motor
@@ -40,7 +40,9 @@ un muro en diagonal (3,54 m/s, el valor ideal, sin vibración).
 | GodotPhysics3D | 1,05 ms | 1,44 ms |
 | Jolt | 1,14 ms | 1,48 ms |
 
-## Decisión (propuesta)
+## Decisión
+Aceptada por el desarrollador el 2026-11-13.
+
 Fijar **GodotPhysics3D** explícitamente en `project.godot`. Detecta todos los golpes
 medidos, mueve a los personajes igual que Jolt y es algo más barato con esta carga.
 

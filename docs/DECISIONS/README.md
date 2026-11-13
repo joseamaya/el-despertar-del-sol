@@ -11,4 +11,4 @@ que la cite.
 | 0003 | Convenciones de código y flujo de trabajo | Aceptada |
 | 0004 | Equipo de referencia con GPU integrada y renderer Mobile | Aceptada · revisada en F1 |
 | 0005 | Resolución del 3D en el equipo de referencia | Aceptada |
-| 0006 | Motor de física 3D: GodotPhysics3D | Propuesta |
+| 0006 | Motor de física 3D: GodotPhysics3D | Aceptada |
