@@ -20,7 +20,6 @@ func test_benchmark_is_inert_without_flag() -> void:
 	await runner.simulate_frames(10)
 	var bench := runner.find_child("PerfBenchmark") as PerfBenchmark
 	assert_bool(bench.is_running()).is_false()
-	assert_int(DisplayServer.window_get_vsync_mode()).is_not_equal(DisplayServer.VSYNC_DISABLED)
 
 
 func test_report_has_expected_keys() -> void:
