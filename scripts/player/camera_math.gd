@@ -29,6 +29,19 @@ static func follow(current: Vector3, target: Vector3, sharpness: float, delta: f
 	return current.lerp(target, 1.0 - exp(-sharpness * delta))
 
 
+## Yaw that puts the camera behind `from` looking at `to` (ground plane).
+static func yaw_towards(from: Vector3, to: Vector3) -> float:
+	return atan2(-(to.x - from.x), -(to.z - from.z))
+
+
+## Frame-rate independent exponential turn of (yaw, pitch) toward a goal.
+static func turn_towards(
+	yaw_pitch: Vector2, goal: Vector2, sharpness: float, delta: float
+) -> Vector2:
+	var weight: float = 1.0 - exp(-sharpness * delta)
+	return Vector2(lerp_angle(yaw_pitch.x, goal.x, weight), lerpf(yaw_pitch.y, goal.y, weight))
+
+
 ## Screen-space motion (right/down) -> look delta, honoring axis inversion.
 static func _to_look(screen: Vector2, tuning: CameraTuning) -> Vector2:
 	var yaw: float = -screen.x * (-1.0 if tuning.invert_x else 1.0)

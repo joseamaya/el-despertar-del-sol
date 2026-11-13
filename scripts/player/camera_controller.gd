@@ -1,7 +1,8 @@
 class_name CameraController
 extends Node3D
 ## Third-person camera rig: follows `target`, orbits with mouse and right stick,
-## and is pulled in by walls through its SpringArm3D. Lock-on comes later (F1, task 5).
+## and is pulled in by walls through its SpringArm3D. While a lock target is set it frames
+## player and target automatically and ignores look input (look flicks switch target instead).
 
 const ACTION_LOOK_LEFT: StringName = &"look_left"
 const ACTION_LOOK_RIGHT: StringName = &"look_right"
@@ -20,6 +21,8 @@ const ACTION_RELEASE_MOUSE: StringName = &"ui_cancel"
 ## Current orbit, radians. Public so tests and cutscenes can set it.
 var yaw: float = 0.0
 var pitch: float = 0.0
+
+var _lock_target: LockOnTarget
 
 
 func _ready() -> void:
@@ -52,7 +55,23 @@ func _unhandled_input(event: InputEvent) -> void:
 
 ## Mouse motion in pixels. Public so tests can drive it without input events.
 func add_look_input(relative: Vector2) -> void:
+	if _lock_target != null:
+		return
 	_apply(CameraMath.look_from_mouse(relative, tuning))
+
+
+## Starts framing `target` (connect LockOnController.target_locked / target_switched).
+func set_lock_target(target: LockOnTarget) -> void:
+	_lock_target = target
+
+
+## Returns to free look (connect LockOnController.target_released).
+func release_lock_target(_reason: int = 0) -> void:
+	_lock_target = null
+
+
+func get_lock_target() -> LockOnTarget:
+	return _lock_target
 
 
 ## Advances the rig: stick look, follow and framing. Called every physics frame.
@@ -60,7 +79,11 @@ func tick(delta: float) -> void:
 	var stick: Vector2 = Input.get_vector(
 		ACTION_LOOK_LEFT, ACTION_LOOK_RIGHT, ACTION_LOOK_UP, ACTION_LOOK_DOWN
 	)
-	if not stick.is_zero_approx():
+	if _lock_target != null and not is_instance_valid(_lock_target):
+		_lock_target = null
+	if _lock_target != null:
+		_frame_lock_target(delta)
+	elif not stick.is_zero_approx():
 		_apply(CameraMath.look_from_stick(stick, delta, tuning))
 	global_position = CameraMath.follow(
 		global_position, _pivot_position(), tuning.follow_sharpness, delta
@@ -72,6 +95,18 @@ func tick(delta: float) -> void:
 func snap_to_target() -> void:
 	global_position = _pivot_position()
 	_apply_framing()
+
+
+func _frame_lock_target(delta: float) -> void:
+	var goal := Vector2(
+		CameraMath.yaw_towards(target.global_position, _lock_target.global_position),
+		deg_to_rad(tuning.lock_pitch_deg)
+	)
+	var orbit: Vector2 = CameraMath.turn_towards(
+		Vector2(yaw, pitch), goal, tuning.lock_turn_sharpness, delta
+	)
+	yaw = orbit.x
+	pitch = orbit.y
 
 
 func _apply(look: Vector2) -> void:
