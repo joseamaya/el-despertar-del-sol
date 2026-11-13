@@ -103,3 +103,28 @@ func test_smooth_yaw_takes_shortest_path_and_converges() -> void:
 	for i: int in 120:
 		yaw = LocomotionMath.smooth_yaw(yaw, target, 12.0, 1.0 / 60.0)
 	assert_float(absf(angle_difference(yaw, target))).is_less(0.001)
+
+
+func test_locked_facing_faces_target_when_idle_or_advancing() -> void:
+	var to_target := Vector3(0, 0, -5)
+	var max_angle: float = deg_to_rad(50.0)
+	var idle: Vector3 = LocomotionMath.locked_facing(Vector3.ZERO, to_target, max_angle)
+	assert_vector(idle.normalized()).is_equal_approx(Vector3(0, 0, -1), Vector3.ONE * EPS)
+	var diagonal: Vector3 = LocomotionMath.locked_facing(
+		Vector3(0.5, 0, -1).normalized(), to_target, max_angle
+	)
+	assert_vector(diagonal.normalized()).is_equal_approx(Vector3(0, 0, -1), Vector3.ONE * EPS)
+
+
+func test_locked_facing_follows_move_when_sideways_or_away() -> void:
+	var to_target := Vector3(0, 0, -5)
+	var max_angle: float = deg_to_rad(50.0)
+	var side: Vector3 = LocomotionMath.locked_facing(Vector3(1, 0, 0), to_target, max_angle)
+	assert_vector(side).is_equal_approx(Vector3(1, 0, 0), Vector3.ONE * EPS)
+	var away: Vector3 = LocomotionMath.locked_facing(Vector3(0, 0, 1), to_target, max_angle)
+	assert_vector(away).is_equal_approx(Vector3(0, 0, 1), Vector3.ONE * EPS)
+
+
+func test_locked_facing_ignores_height() -> void:
+	var f: Vector3 = LocomotionMath.locked_facing(Vector3.ZERO, Vector3(0, 3, -5), deg_to_rad(50))
+	assert_float(f.y).is_equal(0.0)

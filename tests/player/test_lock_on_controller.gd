@@ -131,3 +131,19 @@ func test_removed_target_releases() -> void:
 	assert_bool(_lock.is_locked()).is_false()
 	assert_array(_released).contains_exactly([LockOnController.ReleaseReason.TARGET_LOST])
 	assert_object(_rig.get_lock_target()).is_null()
+
+
+func test_strafing_while_locked_faces_move_then_target_again() -> void:
+	_lock.toggle_lock()
+	await _frames(30)
+	Input.action_press(&"move_right")
+	await _frames(30)
+	var move_dir: Vector3 = (_player.velocity * Vector3(1, 0, 1)).normalized()
+	var facing: Vector3 = _player.global_basis * Vector3.FORWARD
+	assert_float(facing.angle_to(move_dir)).is_less(0.2)
+	Input.action_release(&"move_right")
+	await _frames(45)
+	var to_target: Vector3 = _lock.get_target().global_position - _player.global_position
+	to_target.y = 0.0
+	facing = _player.global_basis * Vector3.FORWARD
+	assert_float(facing.angle_to(to_target.normalized())).is_less(0.1)
