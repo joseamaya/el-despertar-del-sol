@@ -2,32 +2,55 @@
 
 [ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_dovo2"]
 [ext_resource type="Resource" path="res://resources/tuning/player_movement.tres" id="2_gmlin"]
+[ext_resource type="PackedScene" path="res://assets/characters/stock/ual1_standard.glb" id="3_0owmy"]
 [ext_resource type="Script" path="res://scripts/player/lock_on_controller.gd" id="3_lvxji"]
 [ext_resource type="Resource" path="res://resources/tuning/player_lock_on.tres" id="4_p47bc"]
+[ext_resource type="Script" path="res://scripts/player/player_animator.gd" id="6_qek5x"]
+[ext_resource type="Resource" path="res://resources/tuning/player_animation.tres" id="7_5gtgg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lvxji"]
 radius = 0.35
 height = 1.8
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p47bc"]
-albedo_color = Color(0.75, 0.2, 0.15, 1)
-roughness = 0.9
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_75vfm"]
-material = SubResource("StandardMaterial3D_p47bc")
-radius = 0.35
-height = 1.8
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0owmy"]
-albedo_color = Color(0.95, 0.8, 0.2, 1)
-roughness = 0.9
-
-[sub_resource type="BoxMesh" id="BoxMesh_qek5x"]
-material = SubResource("StandardMaterial3D_0owmy")
-size = Vector3(0.2, 0.15, 0.3)
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_75vfm"]
 radius = 15.0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h17s1"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_je7p5"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fm80t"]
+animation = &"Jog_Fwd"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gx1jg"]
+animation = &"Sprint"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_ugbui"]
+min_space = 0.0
+max_space = 8.25
+blend_point_0/node = SubResource("AnimationNodeAnimation_h17s1")
+blend_point_0/pos = 0.0
+blend_point_0/name = &"0"
+blend_point_1/node = SubResource("AnimationNodeAnimation_je7p5")
+blend_point_1/pos = 0.975
+blend_point_1/name = &"1"
+blend_point_2/node = SubResource("AnimationNodeAnimation_fm80t")
+blend_point_2/pos = 5.357
+blend_point_2/name = &"2"
+blend_point_3/node = SubResource("AnimationNodeAnimation_gx1jg")
+blend_point_3/pos = 8.25
+blend_point_3/name = &"3"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_fcs02"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_myrg7"]
+nodes/locomotion/node = SubResource("AnimationNodeBlendSpace1D_ugbui")
+nodes/locomotion/position = Vector2(0, 0)
+nodes/time_scale/node = SubResource("AnimationNodeTimeScale_fcs02")
+nodes/time_scale/position = Vector2(250, 0)
+node_connections = [&"output", 0, &"time_scale", &"time_scale", 0, &"locomotion"]
 
 [node name="Player" type="CharacterBody3D" unique_id=85383103]
 floor_snap_length = 0.3
@@ -40,13 +63,8 @@ shape = SubResource("CapsuleShape3D_lvxji")
 
 [node name="Visual" type="Node3D" parent="." unique_id=1073629785]
 
-[node name="Body" type="MeshInstance3D" parent="Visual" unique_id=1963697600]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-mesh = SubResource("CapsuleMesh_75vfm")
-
-[node name="FacingMarker" type="MeshInstance3D" parent="Visual" unique_id=496668031]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.4)
-mesh = SubResource("BoxMesh_qek5x")
+[node name="Model" parent="Visual" unique_id=748187978 instance=ExtResource("3_0owmy")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="LockOn" type="Node3D" parent="." unique_id=970075113 node_paths=PackedStringArray("sensor", "body")]
 script = ExtResource("3_lvxji")
@@ -58,6 +76,20 @@ body = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LockOn/Sensor" unique_id=1636313804]
 shape = SubResource("SphereShape3D_75vfm")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=2018484051]
+root_node = NodePath("../Visual/Model")
+callback_mode_process = 0
+tree_root = SubResource("AnimationNodeBlendTree_myrg7")
+anim_player = NodePath("../Visual/Model/AnimationPlayer")
+parameters/locomotion/blend_position = 0.0
+parameters/time_scale/scale = 1.0
+
+[node name="Animator" type="Node" parent="." unique_id=819702641 node_paths=PackedStringArray("player", "animation_tree")]
+script = ExtResource("6_qek5x")
+tuning = ExtResource("7_5gtgg")
+player = NodePath("..")
+animation_tree = NodePath("../AnimationTree")
 
 [connection signal="target_locked" from="LockOn" to="." method="set_face_target"]
 [connection signal="target_released" from="LockOn" to="." method="release_face_target"]
