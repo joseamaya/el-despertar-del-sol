@@ -44,6 +44,10 @@ jobs:
           version: installed
           paths: res://tests
           timeout: 10
+          # The check-run report (dorny/test-reporter) failed with HTTP 404 on push to
+          # main after the F1 close-out merge, although all tests passed. Publish it only
+          # on PRs, where it is read; the report is still uploaded as an artifact.
+          publish-report: ${{ github.event_name == 'pull_request' }}
 
   export:
     name: Export ${{ matrix.preset }}
