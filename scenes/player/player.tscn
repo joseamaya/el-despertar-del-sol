@@ -19,6 +19,8 @@
 [ext_resource type="Resource" path="res://resources/combat/attacks/light_2.tres" id="17_ioxgp"]
 [ext_resource type="Resource" path="res://resources/combat/attacks/light_3.tres" id="18_cnsyf"]
 [ext_resource type="Resource" path="res://resources/combat/attacks/heavy.tres" id="19_007i1"]
+[ext_resource type="Script" path="res://scripts/combat/defense_component.gd" id="20_3j4b4"]
+[ext_resource type="Resource" path="res://resources/tuning/player_defense.tres" id="21_yj68g"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lvxji"]
 radius = 0.35
@@ -59,6 +61,11 @@ fadeout_time = 0.15
 animation = &"Sword_Attack"
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_4hvnv"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_ioxgp"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cnsyf"]
+animation = &"Sword_Idle"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h17s1"]
 animation = &"Idle"
@@ -101,7 +108,11 @@ nodes/attack_speed/node = SubResource("AnimationNodeTimeScale_4hvnv")
 nodes/attack_speed/position = Vector2(250, 200)
 nodes/attack/node = SubResource("AnimationNodeOneShot_pk8ii")
 nodes/attack/position = Vector2(500, 0)
-node_connections = [&"output", 0, &"attack", &"time_scale", 0, &"locomotion", &"attack_speed", 0, &"attack_clip", &"attack", 0, &"time_scale", &"attack", 1, &"attack_speed"]
+nodes/guard_clip/node = SubResource("AnimationNodeAnimation_cnsyf")
+nodes/guard_clip/position = Vector2(250, 120)
+nodes/guard/node = SubResource("AnimationNodeBlend2_ioxgp")
+nodes/guard/position = Vector2(400, 0)
+node_connections = [&"output", 0, &"attack", &"time_scale", 0, &"locomotion", &"attack_speed", 0, &"attack_clip", &"attack", 0, &"guard", &"attack", 1, &"attack_speed", &"guard", 0, &"time_scale", &"guard", 1, &"guard_clip"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gx1jg"]
 radius = 0.4
@@ -188,6 +199,7 @@ parameters/attack_speed/scale = 1.0
 parameters/attack/active = false
 parameters/attack/internal_active = false
 parameters/attack/request = 0
+parameters/guard/blend_amount = 0.0
 
 [node name="Animator" type="Node" parent="." unique_id=819702641 node_paths=PackedStringArray("player", "animation_tree")]
 script = ExtResource("6_qek5x")
@@ -203,10 +215,11 @@ tuning = ExtResource("9_fm80t")
 script = ExtResource("10_gx1jg")
 tuning = ExtResource("11_ugbui")
 
-[node name="Hurtbox" type="Area3D" parent="." unique_id=464263447 node_paths=PackedStringArray("health")]
+[node name="Hurtbox" type="Area3D" parent="." unique_id=464263447 node_paths=PackedStringArray("health", "defense")]
 script = ExtResource("12_fm80t")
 faction = 0
 health = NodePath("../Health")
+defense = NodePath("../Defense")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=157544652]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -219,6 +232,14 @@ heavy = ExtResource("19_007i1")
 player = NodePath("..")
 stamina = NodePath("../Stamina")
 hitbox = NodePath("../Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox")
+animator = NodePath("../Animator")
+
+[node name="Defense" type="Node" parent="." unique_id=2144964536 node_paths=PackedStringArray("player", "stamina", "combat", "animator")]
+script = ExtResource("20_3j4b4")
+tuning = ExtResource("21_yj68g")
+player = NodePath("..")
+stamina = NodePath("../Stamina")
+combat = NodePath("../Combat")
 animator = NodePath("../Animator")
 
 [connection signal="target_locked" from="LockOn" to="." method="set_face_target"]

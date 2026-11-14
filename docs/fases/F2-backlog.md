@@ -10,7 +10,7 @@ combate dudoso.
 | 2 | HealthComponent y StaminaComponent + barras provisionales | Hecha |
 | 3 | Hitbox/Hurtbox con barrido entre frames, capas y hitstop | Hecha |
 | 4 | CombatComponent: cadena de 3 ligeros y pesado, ataques como datos; skill `combat-tuning` | Hecha |
-| 5 | Bloqueo, parry (0,15 s) y esquiva (0,25 s de invulnerabilidad) | Pendiente |
+| 5 | Bloqueo, parry (0,15 s) y esquiva (0,25 s de invulnerabilidad) | Hecha |
 | 6 | PostureComponent, aturdimiento y ejecución | Pendiente |
 | 7 | Guerrero chanca: percepción y persecución; skill `enemy-from-resource` | Pendiente |
 | 8 | Guerrero chanca: ataques telegrafiados, bloqueo, retroceso, muerte | Pendiente |

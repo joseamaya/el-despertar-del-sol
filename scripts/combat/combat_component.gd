@@ -45,6 +45,8 @@ func request(kind: Kind) -> void:
 	if kind == Kind.NONE:
 		return
 	if _current == null:
+		if player.is_in_action():
+			return  # dodging or stunned
 		_start(kind)
 	elif AttackRules.accepts_buffer(_elapsed, _current):
 		_buffered = kind
@@ -67,6 +69,12 @@ func tick(delta: float) -> void:
 		hitbox.deactivate()
 		_start(kind)
 	elif _phase == AttackRules.Phase.DONE:
+		_finish()
+
+
+## Stops the current attack at once (e.g. a dodge cancelling the recovery).
+func cancel() -> void:
+	if _current != null:
 		_finish()
 
 

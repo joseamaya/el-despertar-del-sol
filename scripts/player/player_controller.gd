@@ -30,6 +30,9 @@ var _face_target: Node3D
 ## During an action (attack) input movement is ignored and the action drives velocity.
 var _in_action: bool = false
 var _action_velocity: Vector3 = Vector3.ZERO
+var _action_tracks_target: bool = true
+## Max horizontal speed (e.g. while blocking); negative = no limit.
+var _speed_limit: float = -1.0
 
 
 func _ready() -> void:
@@ -41,6 +44,9 @@ func _physics_process(delta: float) -> void:
 	var reference_basis: Basis = camera.global_basis if camera != null else Basis.IDENTITY
 	var direction: Vector3 = LocomotionMath.camera_relative_direction(move_input, reference_basis)
 	var target: Vector3 = LocomotionMath.target_velocity(direction, is_sprinting, tuning)
+	if _speed_limit >= 0.0:
+		is_sprinting = false
+		target = target.limit_length(_speed_limit)
 
 	if _in_action:
 		_physics_in_action(delta)
@@ -72,19 +78,22 @@ func _physics_process(delta: float) -> void:
 		rotation.y = LocomotionMath.smooth_yaw(rotation.y, target_yaw, tuning.turn_sharpness, delta)
 
 
-## Starts an action (attack): faces the lock target, else the move input direction, else
-## keeps the current facing. Movement input is ignored until end_action().
-func begin_action() -> void:
+## Starts an action (attack, dodge, stun). Faces `direction` if given; otherwise, when
+## `track_target`, the lock target, else the move input, else keeps the current facing.
+## With `track_target` false the body does not turn toward the lock target meanwhile.
+## Movement input is ignored until end_action().
+func begin_action(direction: Vector3 = Vector3.ZERO, track_target: bool = true) -> void:
 	_in_action = true
+	_action_tracks_target = track_target
 	is_sprinting = false
 	_action_velocity = Vector3.ZERO
-	var facing: Vector3 = Vector3.ZERO
-	if _face_target != null and is_instance_valid(_face_target):
-		facing = _face_target.global_position - global_position
-		facing.y = 0.0
-	else:
-		var reference: Basis = camera.global_basis if camera != null else Basis.IDENTITY
-		facing = LocomotionMath.camera_relative_direction(_current_move_input(), reference)
+	var facing: Vector3 = Vector3(direction.x, 0.0, direction.z)
+	if facing.is_zero_approx() and track_target:
+		if _face_target != null and is_instance_valid(_face_target):
+			facing = _face_target.global_position - global_position
+			facing.y = 0.0
+		else:
+			facing = get_move_direction()
 	if facing.length_squared() > _FACING_MIN_SQ:
 		rotation.y = LocomotionMath.yaw_from_direction(facing)
 
@@ -97,6 +106,17 @@ func set_action_velocity(value: Vector3) -> void:
 func end_action() -> void:
 	_in_action = false
 	_action_velocity = Vector3.ZERO
+
+
+## Caps horizontal speed (e.g. 2 m/s while blocking). Negative removes the cap.
+func set_speed_limit(value: float) -> void:
+	_speed_limit = value
+
+
+## Camera-relative direction of the current move input (zero without input).
+func get_move_direction() -> Vector3:
+	var reference: Basis = camera.global_basis if camera != null else Basis.IDENTITY
+	return LocomotionMath.camera_relative_direction(_current_move_input(), reference)
 
 
 func is_in_action() -> bool:
@@ -131,7 +151,7 @@ func _physics_in_action(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= tuning.gravity * delta
 	move_and_slide()
-	if _face_target != null and is_instance_valid(_face_target):
+	if _action_tracks_target and _face_target != null and is_instance_valid(_face_target):
 		var to_target: Vector3 = _face_target.global_position - global_position
 		to_target.y = 0.0
 		if to_target.length_squared() > _FACING_MIN_SQ:

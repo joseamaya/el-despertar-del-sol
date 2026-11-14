@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/provisional_hud.tscn" id="5_2m5ce"]
 [ext_resource type="Script" path="res://scripts/core/debug_health_keys.gd" id="6_wwhnr"]
 [ext_resource type="Script" path="res://scripts/combat/hit_stop.gd" id="9_0x73o"]
+[ext_resource type="Script" path="res://scripts/core/debug_enemy_attack.gd" id="9_x74t4"]
+[ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="10_k41dt"]
 [ext_resource type="Resource" path="res://resources/tuning/combat_feel.tres" id="10_lra5x"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_upy5j"]
@@ -42,6 +44,25 @@ albedo_color = Color(1, 0.82, 0.2, 1)
 [sub_resource type="PrismMesh" id="PrismMesh_fy422"]
 material = SubResource("StandardMaterial3D_cypgi")
 size = Vector3(0.3, 0.35, 0.3)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0x73o"]
+radius = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lra5x"]
+albedo_color = Color(0.25, 0.2, 0.18, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ynbfj"]
+material = SubResource("StandardMaterial3D_lra5x")
+radius = 0.15
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xdoba"]
+shading_mode = 0
+albedo_color = Color(0.95, 0.15, 0.1, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_4ilvt"]
+material = SubResource("StandardMaterial3D_xdoba")
+size = Vector3(0.35, 0.4, 0.35)
 
 [node name="LocomotionTest" type="Node3D" unique_id=1002510060]
 
@@ -187,6 +208,24 @@ health = NodePath("../Player/Health")
 script = ExtResource("9_0x73o")
 tuning = ExtResource("10_lra5x")
 
+[node name="DebugEnemyAttack" type="Node3D" parent="." unique_id=1441563950 node_paths=PackedStringArray("target", "hitbox", "telegraph")]
+script = ExtResource("9_x74t4")
+target = NodePath("../Player")
+hitbox = NodePath("Hitbox")
+telegraph = NodePath("Telegraph")
+
+[node name="Hitbox" type="Node3D" parent="DebugEnemyAttack" unique_id=1766944778]
+script = ExtResource("10_k41dt")
+shape = SubResource("SphereShape3D_0x73o")
+faction = 1
+
+[node name="Club" type="MeshInstance3D" parent="DebugEnemyAttack/Hitbox" unique_id=577556185]
+mesh = SubResource("SphereMesh_ynbfj")
+
+[node name="Telegraph" type="MeshInstance3D" parent="DebugEnemyAttack" unique_id=810336396]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("PrismMesh_4ilvt")
+
 [connection signal="hit_landed" from="Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox" to="HitStop" method="on_hit_landed"]
 [connection signal="target_locked" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
 [connection signal="target_locked" from="Player/LockOn" to="LockOnMarker" method="set_target"]
@@ -194,6 +233,7 @@ tuning = ExtResource("10_lra5x")
 [connection signal="target_released" from="Player/LockOn" to="LockOnMarker" method="release_target"]
 [connection signal="target_switched" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
 [connection signal="target_switched" from="Player/LockOn" to="LockOnMarker" method="set_target"]
+[connection signal="hit_landed" from="DebugEnemyAttack/Hitbox" to="HitStop" method="on_hit_landed"]
 
 [editable path="Player"]
 [editable path="Player/Visual/Model"]
