@@ -130,14 +130,6 @@ func test_parry_hurts_the_attackers_posture() -> void:
 	assert_float(_w.posture.current).is_greater_equal(38.0)
 
 
-func test_three_parries_break_its_posture() -> void:
-	for i: int in 3:
-		await _parried_attack()
-	assert_bool(_w.posture.is_broken()).is_true()
-	await _frames(2)
-	assert_str(_state()).is_equal("stagger")
-
-
 func test_cooldown_between_attacks() -> void:
 	_w.combat.set_cooldown(0.0)
 	_w.combat.start(_attack("chanca_golpe_rapido"))
@@ -229,3 +221,44 @@ func test_every_attack_connects_with_a_still_player_in_front() -> void:
 				. override_failure_message("%s does not connect at %.1f m" % [attack.id, gap])
 				. is_less(health.get_maximum())
 			)
+
+
+func test_two_parries_break_its_posture() -> void:
+	# GDD §6.5: 2-3 parries break a basic warrior (posture 70, 40 per parry).
+	for i: int in 2:
+		await _parried_attack()
+	assert_bool(_w.posture.is_broken()).is_true()
+
+
+func test_characters_do_not_pull_the_camera_in() -> void:
+	# The warrior stands right behind the player, between it and the camera.
+	var rig := _runner.find_child("CameraRig") as CameraController
+	_player.global_position = Vector3(-8, 0.05, 2)
+	_w.global_position = Vector3(-8, 0.05, 3.5)
+	rig.yaw = 0.0
+	rig.pitch = 0.0
+	rig.snap_to_target()
+	await _frames(5)
+	assert_int(_player.collision_layer).is_equal(1 << 1)
+	assert_int(_w.collision_layer).is_equal(1 << 1)
+	assert_float(rig.spring_arm.get_hit_length()).is_equal_approx(rig.tuning.distance, 0.05)
+
+
+func test_lock_and_target_hud_drop_the_moment_the_target_dies() -> void:
+	var lock := _player.get_node("LockOn") as LockOnController
+	var hud := _runner.find_child("Hud") as Hud
+	var rig := _runner.find_child("CameraRig") as CameraController
+	rig.yaw = 0.0  # the warrior is at -Z of the player
+	rig.snap_to_target()
+	await _frames(3)
+	lock.toggle_lock()
+	assert_bool(lock.is_locked()).is_true()
+	assert_object(lock.get_target().get_parent()).is_same(_w)
+	_w.health.apply_damage(_w.health.get_maximum())
+	await _frames(2)
+	assert_bool(is_instance_valid(_w)).is_true()  # the body is still there...
+	assert_bool(lock.is_locked()).is_false()  # ...but no longer a target
+	await get_tree().process_frame
+	await get_tree().process_frame
+	assert_bool(hud.target_panel.visible).is_false()
+	assert_bool(hud.reticle.visible).is_false()

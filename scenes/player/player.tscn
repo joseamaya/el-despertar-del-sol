@@ -122,6 +122,8 @@ radius = 0.4
 height = 1.8
 
 [node name="Player" type="CharacterBody3D" unique_id=85383103 node_paths=PackedStringArray("stamina")]
+collision_layer = 2
+collision_mask = 3
 floor_snap_length = 0.3
 script = ExtResource("1_dovo2")
 tuning = ExtResource("2_gmlin")
