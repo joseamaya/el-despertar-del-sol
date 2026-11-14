@@ -47,9 +47,11 @@ func test_sprinting_spends_stamina_at_tuned_rate() -> void:
 	await _frames(60)
 	var spent: float = _stamina.get_maximum() - _stamina.current
 	assert_float(spent).is_equal_approx(_player.tuning.sprint_stamina_per_second, 0.6)
+	Input.action_release(&"sprint")  # stamina holds still (regen waits 0.6 s)
+	await get_tree().physics_frame
 	await get_tree().process_frame
 	await get_tree().process_frame  # the HUD refreshes in its own _process
-	assert_float(_hud.stamina_bar.value).is_equal_approx(_stamina.current, 0.2)
+	assert_float(_hud.stamina_bar.value).is_equal_approx(_stamina.current, 0.001)
 
 
 func test_running_without_sprint_does_not_spend() -> void:
