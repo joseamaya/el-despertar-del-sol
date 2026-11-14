@@ -140,7 +140,7 @@ func test_three_parries_break_its_posture() -> void:
 
 func test_cooldown_between_attacks() -> void:
 	_w.combat.set_cooldown(0.0)
-	_w.combat.start(_attack("chanca_estocada"))
+	_w.combat.start(_attack("chanca_golpe_rapido"))
 	await _until_attack_done()
 	assert_bool(_w.combat.is_ready()).is_false()
 	await _frames(int(_data.attack_cooldown_min * 60.0) - 10)
@@ -208,3 +208,24 @@ func test_lunge_stops_at_contact_distance() -> void:
 	assert_float(_w.distance_to(_player.global_position)).is_greater(
 		_data.attack_contact_distance - 0.25
 	)
+
+
+func test_every_attack_connects_with_a_still_player_in_front() -> void:
+	# Regression: the old "estocada" (Punch_Cross) kept the mace pointing up and back, so it
+	# never reached the player. Every attack must land at its usual distances.
+	var health := _player_health()
+	for attack: AttackData in _w.data.attacks:
+		for gap: float in [1.3, 1.6, 2.0]:
+			_w.global_position = Vector3(-8, 0.05, -4)
+			_w.rotation.y = PI
+			_player.global_position = Vector3(-8, 0.05, -4 + gap)
+			_player.velocity = Vector3.ZERO
+			health.reset()
+			await _frames(2)
+			_w.combat.start(attack)
+			await _until_attack_done()
+			(
+				assert_float(health.current)
+				. override_failure_message("%s does not connect at %.1f m" % [attack.id, gap])
+				. is_less(health.get_maximum())
+			)

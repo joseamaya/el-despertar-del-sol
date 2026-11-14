@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/combat/attack_data.gd" id="1_nwxbq"]
 [ext_resource type="Resource" path="res://resources/combat/attacks/enemy/chanca_golpe.tres" id="2_ga45r"]
 [ext_resource type="Resource" path="res://resources/tuning/chanca_warrior_posture.tres" id="2_irlh8"]
-[ext_resource type="Resource" path="res://resources/combat/attacks/enemy/chanca_estocada.tres" id="3_62q7x"]
+[ext_resource type="Resource" path="res://resources/combat/attacks/enemy/chanca_golpe_rapido.tres" id="3_nwxbq"]
 [ext_resource type="Script" path="res://scripts/enemies/enemy_data.gd" id="3_v4ctc"]
 
 [resource]
@@ -12,4 +12,4 @@ script = ExtResource("3_v4ctc")
 display_name = "Guerrero chanca"
 health = ExtResource("1_lr4np")
 posture = ExtResource("2_irlh8")
-attacks = Array[ExtResource("1_nwxbq")]([ExtResource("2_ga45r"), ExtResource("3_62q7x")])
+attacks = Array[ExtResource("1_nwxbq")]([ExtResource("2_ga45r"), ExtResource("3_nwxbq")])
