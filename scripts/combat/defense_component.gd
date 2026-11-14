@@ -17,7 +17,7 @@ const ACTION_DODGE: StringName = &"dodge"
 @export var stamina: StaminaComponent
 ## Optional: attacks suspend the block; dodge cancels an attack's recovery.
 @export var combat: CombatComponent
-@export var animator: PlayerAnimator
+@export var animator: CharacterAnimator
 
 var _block_held: bool = false
 var _since_block_press: float = INF

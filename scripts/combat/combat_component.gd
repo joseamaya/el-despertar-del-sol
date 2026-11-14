@@ -18,7 +18,7 @@ const ACTION_HEAVY: StringName = &"attack_heavy"
 @export var stamina: StaminaComponent
 @export var hitbox: Hitbox
 ## Optional: plays the attack clips. Without it attacks still work (tests).
-@export var animator: PlayerAnimator
+@export var animator: CharacterAnimator
 ## Optional: a light attack next to an enemy with broken posture executes it (GDD §6.4).
 @export var execution: AttackData
 

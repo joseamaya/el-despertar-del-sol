@@ -1,0 +1,363 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_dv08o"]
+[ext_resource type="PackedScene" path="res://scenes/player/camera_rig.tscn" id="2_rat8t"]
+[ext_resource type="Script" path="res://scripts/player/lock_on_marker.gd" id="3_8xq4b"]
+[ext_resource type="PackedScene" path="res://scenes/ui/provisional_hud.tscn" id="4_lvdfp"]
+[ext_resource type="Script" path="res://scripts/core/debug_health_keys.gd" id="5_ciele"]
+[ext_resource type="Script" path="res://scripts/combat/hit_stop.gd" id="6_b8pn4"]
+[ext_resource type="Resource" path="res://resources/tuning/combat_feel.tres" id="7_bl2f2"]
+[ext_resource type="Script" path="res://scripts/core/debug_enemy_attack.gd" id="8_gtoen"]
+[ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="9_s4rm5"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/chanca_warrior.tscn" id="10_2yk22"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_upy5j"]
+
+[sub_resource type="Sky" id="Sky_gys8y"]
+sky_material = SubResource("ProceduralSkyMaterial_upy5j")
+
+[sub_resource type="Environment" id="Environment_xldku"]
+background_mode = 2
+sky = SubResource("Sky_gys8y")
+ambient_light_source = 3
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wpdjs"]
+albedo_color = Color(0.55, 0.53, 0.5, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2m5ce"]
+albedo_color = Color(0.7, 0.55, 0.3, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wwhnr"]
+albedo_color = Color(0.45, 0.33, 0.22, 1)
+roughness = 0.9
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cypgi"]
+size = Vector3(4, 0.1, 3.231099)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cypgi"]
+shading_mode = 0
+albedo_color = Color(1, 0.82, 0.2, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_fy422"]
+material = SubResource("StandardMaterial3D_cypgi")
+size = Vector3(0.3, 0.35, 0.3)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0x73o"]
+radius = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lra5x"]
+albedo_color = Color(0.25, 0.2, 0.18, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ynbfj"]
+material = SubResource("StandardMaterial3D_lra5x")
+radius = 0.15
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xdoba"]
+shading_mode = 0
+albedo_color = Color(0.95, 0.15, 0.1, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_4ilvt"]
+material = SubResource("StandardMaterial3D_xdoba")
+size = Vector3(0.35, 0.4, 0.35)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_dta0s"]
+vertices = PackedVector3Array(-8.5, 0.5, -13.75, -6, 0.5, -14, -6.25, 0.5, -19.5, -19.5, 0.5, -19.5, -19.5, 0.5, -4.75, -8.5, 0.5, -4.75, -4.5, 0.5, -14, -4.25, 0.5, -15, 2.5, 0.5, -15, 2.5, 0.5, -19.5, 4.75, 0.5, -13.25, 4, 0.5, -12.75, 4.25, 0.5, -11.5, 8.5, 0.5, -11.5, 8.75, 0.5, -9.75, 19.5, 0.5, -10, 4.75, 0.5, -14.75, 19.5, 0.5, -19.5, -3, 0.5, 2.25, -2.5, 0.5, 2, -2.75, 0.5, 0, -4, 0.5, -0.25, -3, 0.5, 4, -19.5, 0.5, 19.5, -2, 0.5, 19.5, -4, 0.5, -1.75, -3.25, 0.5, -2, -3.5, 0.5, -4.5, -4.5, 1, -4.75, -7.5, 0.75, -4.5, -4.5, 2.75, -13, -7.5, 2.75, -13, -4.5, 2.75, -10.25, -7.5, 2.75, -10.166666, -2, 0.5, 4.25, -7.25, 0.5, -12.75, -7.25, 0.5, -11, -4.5, 0.5, -11, -4.5, 0.5, -12.75, 3.5, 0.5, -11.25, -3.25, 0.5, -12.75, -1, 0.5, 2, -0.75, 0.5, 2.75, 1, 0.5, 2.5, 1.25, 0.5, 1, -2, 0.5, -0.25, -2, 0.5, -1.75, 3, 0.5, 1, 3.75, 0.5, -4.75, 9.25, 0.5, -1.25, 9.75, 0.5, -1.5, 8.75, 0.5, -4.75, 7.5, 0.75, -4.75, 7.5, 1.5, -10.5, 4.5, 1.5, -10.5, 4.5, 0.75, -4.75, 7.5, 1.5, -7.625, 4.5, 1.5, -7.625, 5.4950237, 1.5, -6.503025, 3.25, 0.5, 2, 9.25, 0.5, 2, 11, 0.5, -1.25, 19.5, 0.5, 3.25, 11, 0.5, 3.25, 1.25, 0.5, 3.25, -0.75, 0.5, 3.75, 9.25, 0.5, 5.5, 2.75, 0.5, 3.25, 10, 0.5, 5.75, 10, 0.5, 19.5, 11, 0.5, 5.25, 19.5, 0.5, 19.5)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(5, 4, 0), PackedInt32Array(0, 4, 3), PackedInt32Array(6, 1, 7), PackedInt32Array(7, 1, 2), PackedInt32Array(8, 7, 9), PackedInt32Array(9, 7, 2), PackedInt32Array(11, 10, 12), PackedInt32Array(12, 10, 13), PackedInt32Array(13, 15, 14), PackedInt32Array(13, 10, 16), PackedInt32Array(16, 8, 9), PackedInt32Array(16, 9, 13), PackedInt32Array(13, 9, 15), PackedInt32Array(15, 9, 17), PackedInt32Array(19, 18, 20), PackedInt32Array(20, 18, 21), PackedInt32Array(21, 22, 5), PackedInt32Array(5, 22, 4), PackedInt32Array(4, 22, 24), PackedInt32Array(4, 24, 23), PackedInt32Array(26, 25, 27), PackedInt32Array(27, 25, 28), PackedInt32Array(5, 29, 21), PackedInt32Array(21, 18, 22), PackedInt32Array(25, 21, 28), PackedInt32Array(28, 21, 29), PackedInt32Array(30, 32, 31), PackedInt32Array(31, 32, 33), PackedInt32Array(33, 32, 28), PackedInt32Array(33, 28, 29), PackedInt32Array(22, 34, 24), PackedInt32Array(38, 37, 35), PackedInt32Array(35, 37, 36), PackedInt32Array(12, 39, 11), PackedInt32Array(11, 39, 40), PackedInt32Array(42, 41, 43), PackedInt32Array(43, 41, 44), PackedInt32Array(20, 45, 19), PackedInt32Array(19, 45, 41), PackedInt32Array(41, 45, 44), PackedInt32Array(46, 27, 47), PackedInt32Array(47, 27, 48), PackedInt32Array(48, 27, 39), PackedInt32Array(39, 27, 40), PackedInt32Array(45, 46, 44), PackedInt32Array(44, 46, 47), PackedInt32Array(46, 26, 27), PackedInt32Array(50, 49, 51), PackedInt32Array(51, 49, 52), PackedInt32Array(57, 58, 55), PackedInt32Array(55, 58, 52), PackedInt32Array(52, 58, 56), PackedInt32Array(56, 57, 53), PackedInt32Array(53, 57, 54), PackedInt32Array(57, 56, 58), PackedInt32Array(48, 55, 47), PackedInt32Array(47, 55, 59), PackedInt32Array(59, 55, 49), PackedInt32Array(59, 49, 60), PackedInt32Array(55, 52, 49), PackedInt32Array(61, 50, 51), PackedInt32Array(51, 14, 61), PackedInt32Array(61, 14, 15), PackedInt32Array(61, 15, 62), PackedInt32Array(62, 63, 61), PackedInt32Array(43, 64, 42), PackedInt32Array(42, 64, 65), PackedInt32Array(60, 66, 67), PackedInt32Array(67, 66, 34), PackedInt32Array(65, 64, 34), PackedInt32Array(34, 64, 67), PackedInt32Array(66, 68, 34), PackedInt32Array(34, 68, 69), PackedInt32Array(34, 69, 24), PackedInt32Array(67, 59, 60), PackedInt32Array(70, 63, 62), PackedInt32Array(70, 62, 68), PackedInt32Array(68, 62, 69), PackedInt32Array(69, 62, 71)]
+geometry_parsed_geometry_type = 1
+geometry_source_geometry_mode = 1
+geometry_source_group_name = &"nav_source"
+agent_height = 1.8
+agent_radius = 0.4
+agent_max_slope = 40.0
+
+[node name="EnemyTest" type="Node3D" unique_id=1002510060]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1657305388]
+environment = SubResource("Environment_xldku")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=202254494]
+transform = Transform3D(0.81915206, 0.43938506, -0.36868784, 0, 0.64278764, 0.76604444, 0.57357645, -0.62750685, 0.5265408, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Greybox" type="Node3D" parent="." unique_id=1363416982 groups=["nav_source"]]
+
+[node name="Floor" type="CSGBox3D" parent="Greybox" unique_id=182748951]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(40, 1, 40)
+material = SubResource("StandardMaterial3D_wpdjs")
+
+[node name="Ramp" type="CSGBox3D" parent="Greybox" unique_id=1587819043]
+transform = Transform3D(1, 0, 0, 0, 0.9396926, -0.34202012, 0, 0.34202012, 0.9396926, -6, 1, -7)
+use_collision = true
+size = Vector3(4, 0.5, 7)
+material = SubResource("StandardMaterial3D_2m5ce")
+
+[node name="RampPlatform" type="CSGBox3D" parent="Greybox" unique_id=2135504216]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.23, -11.79)
+use_collision = true
+size = Vector3(4, 2.46, 3)
+material = SubResource("StandardMaterial3D_2m5ce")
+
+[node name="Stairs" type="Node3D" parent="Greybox" unique_id=1480725441]
+
+[node name="Step1" type="CSGBox3D" parent="Greybox/Stairs" unique_id=815299478]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.1, -4.25)
+size = Vector3(4, 0.2, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Step2" type="CSGBox3D" parent="Greybox/Stairs" unique_id=1216212094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.2, -4.75)
+size = Vector3(4, 0.4, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Step3" type="CSGBox3D" parent="Greybox/Stairs" unique_id=1127554747]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.3, -5.25)
+size = Vector3(4, 0.6, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Step4" type="CSGBox3D" parent="Greybox/Stairs" unique_id=2062422567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.4, -5.75)
+size = Vector3(4, 0.8, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Step5" type="CSGBox3D" parent="Greybox/Stairs" unique_id=718365241]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, -6.25)
+size = Vector3(4, 1, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Step6" type="CSGBox3D" parent="Greybox/Stairs" unique_id=1951168354]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.6, -6.75)
+size = Vector3(4, 1.2, 0.5)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="StairsCollider" type="StaticBody3D" parent="Greybox/Stairs" unique_id=1404348466]
+
+[node name="Slope" type="CollisionShape3D" parent="Greybox/Stairs/StairsCollider" unique_id=1666616013]
+transform = Transform3D(1, 0, 0, 0, 0.9284767, -0.37139067, 0, 0.37139067, 0.9284767, 6, 0.55, -5.5)
+shape = SubResource("BoxShape3D_cypgi")
+
+[node name="StairsPlatform" type="CSGBox3D" parent="Greybox/Stairs" unique_id=610202643]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.6, -9)
+use_collision = true
+size = Vector3(4, 1.2, 4)
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="TerraceWall" type="CSGBox3D" parent="Greybox" unique_id=1447103629]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -14)
+use_collision = true
+size = Vector3(8, 1.2, 1)
+material = SubResource("StandardMaterial3D_wpdjs")
+
+[node name="CrateA" type="CSGBox3D" parent="Greybox" unique_id=929119230]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.5, 2)
+use_collision = true
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="CrateB" type="CSGBox3D" parent="Greybox" unique_id=279316437]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.5, 3)
+use_collision = true
+material = SubResource("StandardMaterial3D_wwhnr")
+
+[node name="Pillar" type="CSGBox3D" parent="Greybox" unique_id=285960011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.5, -1)
+use_collision = true
+size = Vector3(0.6, 3, 0.6)
+material = SubResource("StandardMaterial3D_wpdjs")
+
+[node name="LongWall" type="CSGBox3D" parent="Greybox" unique_id=869963102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, 2)
+use_collision = true
+size = Vector3(0.5, 2, 6)
+material = SubResource("StandardMaterial3D_wpdjs")
+
+[node name="Player" parent="." unique_id=85383103 node_paths=PackedStringArray("camera") instance=ExtResource("1_dv08o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.680113e-05, 4)
+camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
+
+[node name="GeneralSkeleton" parent="Player/Visual/Model/Armature" parent_id_path=PackedInt32Array(85383103, 748187978, 807862889) index="0" unique_id=2140898141]
+bones/1/position = Vector3(0.005017341, 0.87612486, -0.08624409)
+bones/1/rotation = Quaternion(-0.04703471, -0.11588432, -0.0054938137, 0.9921333)
+bones/3/rotation = Quaternion(0.087135494, 0.00011117786, 0.00025669296, 0.99619645)
+bones/4/rotation = Quaternion(0.08713534, 0.0003162683, 0.0002501164, 0.9961964)
+bones/5/rotation = Quaternion(-0.087135464, -0.00021403961, -0.00026240596, 0.9961964)
+bones/6/rotation = Quaternion(0.07161874, 0.095576026, 0.0095565105, 0.99279636)
+bones/7/rotation = Quaternion(0.4893241, 0.5259919, 0.52695656, -0.4541049)
+bones/8/rotation = Quaternion(-0.056431454, 0.818575, -0.5715372, 0.00978942)
+bones/9/rotation = Quaternion(0.18116534, -0.656816, 0.17695916, 0.7102517)
+bones/10/rotation = Quaternion(0.09913024, 0.70686626, 0.0629003, 0.69753635)
+bones/11/rotation = Quaternion(0.6295969, -4.0978193e-08, -4.61936e-06, 0.77692205)
+bones/12/rotation = Quaternion(0.62334186, 2.9802322e-08, -4.261732e-06, 0.78194946)
+bones/13/rotation = Quaternion(0.62334144, -2.2351742e-07, -4.4703484e-06, 0.78194976)
+bones/15/rotation = Quaternion(0.6288943, -0.0297349, -4.470348e-06, 0.7769219)
+bones/16/rotation = Quaternion(0.6227327, -0.02755458, -4.410744e-06, 0.7819494)
+bones/17/rotation = Quaternion(0.6226684, -0.028961532, -4.4703493e-06, 0.78194976)
+bones/19/rotation = Quaternion(0.6630008, -0.044529784, 0.07369417, 0.7436506)
+bones/20/rotation = Quaternion(0.6203661, -0.06229401, 0.015573084, 0.7816796)
+bones/21/rotation = Quaternion(0.62192154, -0.04205184, -4.4703484e-06, 0.78194964)
+bones/23/rotation = Quaternion(0.6291978, -0.022414071, -4.202128e-06, 0.77692205)
+bones/24/rotation = Quaternion(0.6229472, -0.022176376, -4.321337e-06, 0.78194946)
+bones/25/rotation = Quaternion(0.6228982, -0.023505477, -4.5001498e-06, 0.7819497)
+bones/27/rotation = Quaternion(-0.123819165, 0.7195233, 0.2018354, 0.65285325)
+bones/28/rotation = Quaternion(0.18180694, 0.11012423, 0.060063303, 0.9753006)
+bones/29/rotation = Quaternion(0.5994299, 0.27396563, 0.19463211, 0.7264606)
+bones/30/scale = Vector3(1.0001454, 1.0004877, 1.0005833)
+bones/31/rotation = Quaternion(0.5415296, -0.4740842, -0.47506016, -0.5062685)
+bones/32/rotation = Quaternion(0.09336504, 0.8253831, -0.5567179, -0.009535477)
+bones/33/rotation = Quaternion(0.29259795, 0.5412685, -0.20429438, 0.7613664)
+bones/34/rotation = Quaternion(0.12024976, -0.69903094, -0.056890074, 0.702609)
+bones/35/rotation = Quaternion(0.6295971, 3.7252903e-08, 4.172325e-06, 0.7769218)
+bones/36/rotation = Quaternion(0.62334144, 1.825392e-07, 4.470348e-06, 0.7819497)
+bones/37/rotation = Quaternion(0.62334156, 1.00582824e-07, 4.2319293e-06, 0.78194964)
+bones/38/rotation = Quaternion(4.6566133e-09, 1, 4.295285e-08, -5.7654454e-08)
+bones/39/rotation = Quaternion(0.6288947, 0.029734796, 4.351139e-06, 0.77692175)
+bones/40/rotation = Quaternion(0.62273216, 0.027554482, 4.5001507e-06, 0.78194976)
+bones/41/rotation = Quaternion(0.62266874, 0.028961398, 4.3213377e-06, 0.78194946)
+bones/43/rotation = Quaternion(0.6630007, 0.044529956, -0.07369393, 0.7436508)
+bones/44/rotation = Quaternion(0.62036633, 0.06229363, -0.015572906, 0.7816794)
+bones/45/rotation = Quaternion(0.62192184, 0.04205143, 4.4703484e-06, 0.7819494)
+bones/46/rotation = Quaternion(-0.03375008, 0.99943036, 4.924054e-08, -5.6300305e-08)
+bones/47/rotation = Quaternion(0.6291981, 0.022413792, 4.11272e-06, 0.7769218)
+bones/48/rotation = Quaternion(0.62294656, 0.022176204, 4.470349e-06, 0.7819501)
+bones/49/rotation = Quaternion(0.6228987, 0.02350526, 4.1723247e-06, 0.7819493)
+bones/50/rotation = Quaternion(-0.018857837, 0.9998222, -1.5216909e-08, -2.369153e-07)
+bones/51/rotation = Quaternion(-0.12381923, -0.7195234, -0.2018356, 0.6528533)
+bones/52/rotation = Quaternion(0.18180703, -0.11012423, -0.060063303, 0.97530067)
+bones/53/rotation = Quaternion(0.5994302, -0.2739653, -0.19463223, 0.7264605)
+bones/54/scale = Vector3(1.0001454, 1.0004876, 1.0005835)
+bones/55/rotation = Quaternion(-0.00078369107, 0.1228818, 0.986076, -0.112042725)
+bones/56/rotation = Quaternion(0.01689692, 0.9814785, -0.15420008, 0.11241371)
+bones/57/rotation = Quaternion(-0.094855115, 0.7274827, -0.67951095, 0.006039694)
+bones/58/rotation = Quaternion(4.664862e-08, 1, 5.9604645e-08, 2.7766912e-08)
+bones/60/rotation = Quaternion(0.0008252746, -0.109214775, 0.9869903, 0.11798986)
+bones/61/rotation = Quaternion(-0.031423766, 0.9285817, -0.08784877, -0.3592089)
+bones/62/rotation = Quaternion(0.1717436, 0.64400685, -0.7454896, -0.002142556)
+bones/63/rotation = Quaternion(-6.703263e-08, 1, 8.940697e-08, 2.1454163e-09)
+
+[node name="RightHandSocket" parent="Player/Visual/Model/Armature/GeneralSkeleton" index="1" unique_id=2034673395]
+transform = Transform3D(0.07729576, -0.15850821, 0.98432744, 0.4994799, -0.8482957, -0.17582484, 0.8628705, 0.50524205, 0.013602182, -0.293015, 0.9189082, -0.18484199)
+bone_idx = 34
+
+[node name="LockOn" parent="Player" index="2" unique_id=970075113 node_paths=PackedStringArray("camera")]
+camera = NodePath("../../CameraRig/SpringArm3D/Camera3D")
+
+[node name="Sensor" parent="Player/LockOn" index="0" unique_id=1313557912]
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="Hurtbox" parent="Player" index="7" unique_id=464263447]
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+
+[node name="CameraRig" parent="." unique_id=1742004877 node_paths=PackedStringArray("target") instance=ExtResource("2_rat8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6123521, 4)
+top_level = true
+target = NodePath("../Player")
+
+[node name="LockOnMarker" type="Node3D" parent="." unique_id=114967871]
+top_level = true
+visible = false
+script = ExtResource("3_8xq4b")
+
+[node name="Gem" type="MeshInstance3D" parent="LockOnMarker" unique_id=1688494561]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PrismMesh_fy422")
+
+[node name="ProvisionalHud" parent="." unique_id=1330596458 node_paths=PackedStringArray("health", "stamina") instance=ExtResource("4_lvdfp")]
+health = NodePath("../Player/Health")
+stamina = NodePath("../Player/Stamina")
+
+[node name="DebugHealthKeys" type="Node" parent="." unique_id=1768526113 node_paths=PackedStringArray("health")]
+script = ExtResource("5_ciele")
+health = NodePath("../Player/Health")
+
+[node name="HitStop" type="Node" parent="." unique_id=1109380683]
+script = ExtResource("6_b8pn4")
+tuning = ExtResource("7_bl2f2")
+
+[node name="DebugEnemyAttack" type="Node3D" parent="." unique_id=1441563950 node_paths=PackedStringArray("target", "hitbox", "telegraph")]
+top_level = true
+visible = false
+script = ExtResource("8_gtoen")
+target = NodePath("../Player")
+hitbox = NodePath("Hitbox")
+telegraph = NodePath("Telegraph")
+
+[node name="Hitbox" type="Node3D" parent="DebugEnemyAttack" unique_id=1766944778]
+script = ExtResource("9_s4rm5")
+shape = SubResource("SphereShape3D_0x73o")
+faction = 1
+
+[node name="Club" type="MeshInstance3D" parent="DebugEnemyAttack/Hitbox" unique_id=577556185]
+mesh = SubResource("SphereMesh_ynbfj")
+
+[node name="Telegraph" type="MeshInstance3D" parent="DebugEnemyAttack" unique_id=810336396]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 2.4, 0)
+visible = false
+mesh = SubResource("PrismMesh_4ilvt")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=305641229]
+navigation_mesh = SubResource("NavigationMesh_dta0s")
+
+[node name="Enemies" type="Node3D" parent="." unique_id=1421293873]
+
+[node name="Warrior1" parent="Enemies" unique_id=1917456875 instance=ExtResource("10_2yk22")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -8, 0.05, -4)
+
+[node name="Perception" parent="Enemies/Warrior1" index="5" unique_id=956555186 node_paths=PackedStringArray("target")]
+target = NodePath("../../../Player")
+
+[node name="Hurtbox" parent="Enemies/Warrior1" index="8" unique_id=604880376]
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+
+[node name="LockOnTarget" parent="Enemies/Warrior1" index="9" unique_id=1368472587]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+
+[node name="AlertMarker" parent="Enemies/Warrior1" index="10" unique_id=1268073386]
+visible = false
+
+[node name="Warrior2" parent="Enemies" unique_id=537818763 instance=ExtResource("10_2yk22")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 6, 0.05, -17)
+patrol_points = Array[Vector3]([Vector3(6, 0, -17), Vector3(-6, 0, -17)])
+
+[node name="Perception" parent="Enemies/Warrior2" index="5" unique_id=956555186 node_paths=PackedStringArray("target")]
+target = NodePath("../../../Player")
+
+[node name="Hurtbox" parent="Enemies/Warrior2" index="8" unique_id=604880376]
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+
+[node name="LockOnTarget" parent="Enemies/Warrior2" index="9" unique_id=1368472587]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+
+[node name="AlertMarker" parent="Enemies/Warrior2" index="10" unique_id=1268073386]
+visible = false
+
+[connection signal="hit_landed" from="Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox" to="HitStop" method="on_hit_landed"]
+[connection signal="target_locked" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
+[connection signal="target_locked" from="Player/LockOn" to="LockOnMarker" method="set_target"]
+[connection signal="target_released" from="Player/LockOn" to="CameraRig" method="release_lock_target"]
+[connection signal="target_released" from="Player/LockOn" to="LockOnMarker" method="release_target"]
+[connection signal="target_switched" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
+[connection signal="target_switched" from="Player/LockOn" to="LockOnMarker" method="set_target"]
+[connection signal="hit_landed" from="DebugEnemyAttack/Hitbox" to="HitStop" method="on_hit_landed"]
+
+[editable path="Player"]
+[editable path="Player/Visual/Model"]
+[editable path="Enemies/Warrior1"]
+[editable path="Enemies/Warrior1/Visual/Model"]
+[editable path="Enemies/Warrior2"]
+[editable path="Enemies/Warrior2/Visual/Model"]

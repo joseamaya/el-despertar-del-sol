@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://scripts/player/lock_on_controller.gd" id="3_lvxji"]
 [ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="4_lgqa7"]
 [ext_resource type="Resource" path="res://resources/tuning/player_lock_on.tres" id="4_p47bc"]
-[ext_resource type="Script" path="res://scripts/player/player_animator.gd" id="6_qek5x"]
+[ext_resource type="Script" path="res://scripts/core/character_animator.gd" id="6_qek5x"]
 [ext_resource type="Resource" path="res://resources/tuning/player_animation.tres" id="7_5gtgg"]
 [ext_resource type="Script" path="res://scripts/combat/health_component.gd" id="8_je7p5"]
 [ext_resource type="Resource" path="res://resources/tuning/player_health.tres" id="9_fm80t"]
@@ -202,10 +202,10 @@ parameters/attack/internal_active = false
 parameters/attack/request = 0
 parameters/guard/blend_amount = 0.0
 
-[node name="Animator" type="Node" parent="." unique_id=819702641 node_paths=PackedStringArray("player", "animation_tree")]
+[node name="Animator" type="Node" parent="." unique_id=819702641 node_paths=PackedStringArray("body", "animation_tree")]
 script = ExtResource("6_qek5x")
 tuning = ExtResource("7_5gtgg")
-player = NodePath("..")
+body = NodePath("..")
 animation_tree = NodePath("../AnimationTree")
 
 [node name="Health" type="Node" parent="." unique_id=1341233259]

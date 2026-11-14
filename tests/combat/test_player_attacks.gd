@@ -123,7 +123,7 @@ func test_attack_turns_to_stick_and_only_lunges() -> void:
 
 
 func test_attack_clip_plays() -> void:
-	var animator := _player.get_node("Animator") as PlayerAnimator
+	var animator := _player.get_node("Animator") as CharacterAnimator
 	_combat.request(CombatComponent.Kind.HEAVY)
 	await _frames(5)
 	assert_bool(animator.is_attack_playing()).is_true()
