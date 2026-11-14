@@ -15,8 +15,12 @@ const ARRIVE_DISTANCE: float = 0.4
 @export var state_machine: StateMachine
 ## Shown while alerted ("!"), like a telegraph (GDD §12.4).
 @export var alert_marker: Node3D
-## Optional: plays the death clip.
+## Optional: plays the death and hit-react clips.
 @export var animator: CharacterAnimator
+## Optional parts for fighting (F2 task 8).
+@export var combat: EnemyCombat
+@export var guard: EnemyGuard
+@export var hurtbox: Hurtbox
 ## Patrol route in world space. Empty: stands guard at home.
 @export var patrol_points: Array[Vector3] = []
 
@@ -24,6 +28,7 @@ var home_position: Vector3 = Vector3.ZERO
 var _desired: Vector3 = Vector3.ZERO
 var _face_point: Vector3 = Vector3.ZERO
 var _has_face_point: bool = false
+var _rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
@@ -35,6 +40,8 @@ func _ready() -> void:
 		health.died.connect(_on_died)
 	if posture != null:
 		posture.posture_broken.connect(_on_posture_broken)
+	if hurtbox != null:
+		hurtbox.hit_received.connect(_on_hit_received)
 
 
 func _physics_process(delta: float) -> void:
@@ -83,6 +90,19 @@ func stop() -> void:
 	_desired = Vector3.ZERO
 
 
+## Moves straight ahead (attack lunge, which keeps the facing).
+func push_forward(speed: float) -> void:
+	var forward: Vector3 = global_basis * Vector3.FORWARD
+	forward.y = 0.0
+	_desired = forward.normalized() * speed
+
+
+## Moves in a fixed world direction (e.g. backing off).
+func move_direction(direction: Vector3, speed: float) -> void:
+	var flat := Vector3(direction.x, 0.0, direction.z)
+	_desired = flat.normalized() * speed if flat.length_squared() > 0.0001 else Vector3.ZERO
+
+
 ## Keeps facing `point` regardless of movement (e.g. the target while circling).
 func face(point: Vector3) -> void:
 	_face_point = point
@@ -116,6 +136,23 @@ func _flat_distance(point: Vector3) -> float:
 
 func _on_died() -> void:
 	state_machine.transition_to(&"dead")
+
+
+## Reacts to a landed hit: heavy hits make it back off; otherwise it may raise its guard.
+## While attacking it does not flinch (the attack goes on).
+func _on_hit_received(info: HitInfo) -> void:
+	if is_dead() or (posture != null and posture.is_broken()):
+		return
+	if combat != null and combat.is_attacking():
+		return
+	if animator != null:
+		animator.play_attack(data.hit_react_clip, 1.0)
+	if not perception.has_target():
+		return
+	if info.posture_damage >= data.retreat_posture_threshold:
+		state_machine.transition_to(&"retreat")
+	elif guard != null and _rng.randf() < data.block_chance:
+		state_machine.transition_to(&"block")
 
 
 func _on_posture_broken() -> void:

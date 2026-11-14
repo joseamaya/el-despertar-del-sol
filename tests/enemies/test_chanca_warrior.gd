@@ -87,6 +87,7 @@ func test_sees_in_front_then_alerts_then_chases() -> void:
 
 
 func test_chases_and_circles_at_engage_distance() -> void:
+	_w1.combat.set_cooldown(99.0)  # circling only: no attacks in this test
 	_place_player(Vector3(-8, 0.05, 6))
 	await _until_state(_w1, "strafe", 360)
 	assert_str(_state(_w1)).is_equal("strafe")

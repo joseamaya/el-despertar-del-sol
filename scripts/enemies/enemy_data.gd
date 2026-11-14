@@ -34,3 +34,28 @@ extends Resource
 @export_range(0.2, 10.0, 0.1, "suffix:s") var strafe_switch_max: float = 3.0
 ## How long the body stays before disappearing after death.
 @export_range(0.0, 10.0, 0.1, "suffix:s") var corpse_time: float = 1.5
+
+@export_group("Ataque")
+## Picked at random. Telegraph = windup (GDD §6.5: 0.6–0.8 s for a basic enemy).
+@export var attacks: Array[AttackData] = []
+## Gets this close before swinging.
+@export_range(0.5, 6.0, 0.1, "suffix:m") var attack_range: float = 2.0
+## The attack's lunge stops this close to the target, so the swing does not pass behind it.
+@export_range(0.3, 4.0, 0.05, "suffix:m") var attack_contact_distance: float = 1.3
+## Seconds between attacks (random in [min, max]).
+@export_range(0.0, 20.0, 0.1, "suffix:s") var attack_cooldown_min: float = 2.0
+@export_range(0.0, 20.0, 0.1, "suffix:s") var attack_cooldown_max: float = 3.5
+
+@export_group("Defensa y reacciones")
+## Chance of raising the guard after taking a hit (GDD §7.2: occasional block).
+@export_range(0.0, 1.0, 0.01) var block_chance: float = 0.35
+@export_range(0.1, 5.0, 0.05, "suffix:s") var block_time: float = 1.0
+@export_range(10.0, 360.0, 1.0, "suffix:°") var block_arc_deg: float = 120.0
+## Fraction of a blocked hit's posture damage the enemy still takes.
+@export_range(0.0, 2.0, 0.05) var block_posture_factor: float = 0.5
+## Hits with at least this posture damage count as heavy: the enemy backs off.
+@export_range(0.0, 200.0, 1.0) var retreat_posture_threshold: float = 20.0
+@export_range(0.0, 10.0, 0.1, "suffix:m") var retreat_distance: float = 2.0
+@export_range(0.1, 12.0, 0.1, "suffix:m/s") var retreat_speed: float = 4.0
+## Played when hit outside an attack.
+@export var hit_react_clip: StringName = &"Hit_Chest"

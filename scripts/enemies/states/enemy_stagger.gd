@@ -4,6 +4,8 @@ extends State
 
 
 func enter(_previous: StringName) -> void:
+	if _enemy().combat != null:
+		_enemy().combat.cancel()
 	_enemy().stop()
 	_enemy().clear_face()
 

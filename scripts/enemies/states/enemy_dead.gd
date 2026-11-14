@@ -10,6 +10,8 @@ var _time_left: float = 0.0
 
 
 func enter(_previous: StringName) -> void:
+	if _enemy().combat != null:
+		_enemy().combat.cancel()
 	var enemy: EnemyController = _enemy()
 	enemy.stop()
 	enemy.clear_face()
