@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="AttackData" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/attack_data.gd" id="1_y6f1y"]
+
+[resource]
+script = ExtResource("1_y6f1y")
+id = &"chanca_golpe_rapido"
+damage = 12.0
+posture_damage = 12.0
+stamina_cost = 0.0
+clip_speed = 0.55
+windup_end = 0.33
+active_end = 0.47
+recovery_end = 0.85
+chain_from = 0.85
+lunge_distance = 1.0
