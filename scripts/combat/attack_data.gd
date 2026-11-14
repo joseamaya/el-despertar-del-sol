@@ -29,3 +29,9 @@ extends Resource
 @export_group("Movimiento")
 ## Forward step during windup and active phases.
 @export_range(0.0, 5.0, 0.05, "suffix:m") var lunge_distance: float = 0.5
+
+@export_group("Ejecución")
+## Only for the execution attack: max distance to a target with broken posture.
+@export_range(0.0, 5.0, 0.05, "suffix:m") var execution_range: float = 0.0
+## Only for the execution attack: the target must be inside this frontal arc.
+@export_range(10.0, 360.0, 1.0, "suffix:°") var execution_arc_deg: float = 120.0

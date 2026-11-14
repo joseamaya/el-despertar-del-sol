@@ -128,6 +128,10 @@ Notas:
     (`n.depleted.connect(_on_depleted)` que hace `_count += 1`) y `assert_int(_count).is_equal(1)`.
     No uses APIs internas de gdUnit4.
 - Input simulado con `Input.action_press/release`; libéralo todo en `after_test()`.
+  Sirve para acciones **mantenidas** (`is_action_pressed`). Para pulsaciones
+  (`is_action_just_pressed`) no es fiable: si la prueba pulsa después de que el
+  componente procesó ese frame de física, la pulsación se pierde. Expón un método
+  público (`press_block()`, `request()`) y llámalo en la prueba.
 - Para esperar física: `await get_tree().physics_frame` en bucle. Calcula la distancia
   recorrida antes de fijar duraciones: pasarse de una plataforma hace caer al jugador
   y la prueba falla por motivos ajenos a lo que se prueba.

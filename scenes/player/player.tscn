@@ -20,6 +20,7 @@
 [ext_resource type="Resource" path="res://resources/combat/attacks/light_3.tres" id="18_cnsyf"]
 [ext_resource type="Resource" path="res://resources/combat/attacks/heavy.tres" id="19_007i1"]
 [ext_resource type="Script" path="res://scripts/combat/defense_component.gd" id="20_3j4b4"]
+[ext_resource type="Resource" path="res://resources/combat/attacks/execution.tres" id="20_yj68g"]
 [ext_resource type="Resource" path="res://resources/tuning/player_defense.tres" id="21_yj68g"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lvxji"]
@@ -233,6 +234,7 @@ player = NodePath("..")
 stamina = NodePath("../Stamina")
 hitbox = NodePath("../Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox")
 animator = NodePath("../Animator")
+execution = ExtResource("20_yj68g")
 
 [node name="Defense" type="Node" parent="." unique_id=2144964536 node_paths=PackedStringArray("player", "stamina", "combat", "animator")]
 script = ExtResource("20_3j4b4")

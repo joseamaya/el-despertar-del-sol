@@ -5,6 +5,8 @@
 [ext_resource type="Script" path="res://scripts/combat/health_component.gd" id="3_nienh"]
 [ext_resource type="Resource" path="res://resources/tuning/dummy_health.tres" id="4_wb7y0"]
 [ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="5_t5pir"]
+[ext_resource type="Script" path="res://scripts/combat/posture_component.gd" id="6_wb7y0"]
+[ext_resource type="Resource" path="res://resources/tuning/dummy_posture.tres" id="7_t5pir"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vrfo2"]
 radius = 0.35
@@ -25,10 +27,11 @@ radius = 0.4
 radius = 0.4
 height = 1.8
 
-[node name="LockOnDummy" type="StaticBody3D" unique_id=1177222868 node_paths=PackedStringArray("health", "hurtbox", "mesh")]
+[node name="LockOnDummy" type="StaticBody3D" unique_id=1177222868 node_paths=PackedStringArray("health", "hurtbox", "posture", "mesh")]
 script = ExtResource("1_0nbwr")
 health = NodePath("Health")
 hurtbox = NodePath("Hurtbox")
+posture = NodePath("Posture")
 mesh = NodePath("Body")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=787282098]
@@ -50,11 +53,16 @@ shape = SubResource("SphereShape3D_0nbwr")
 script = ExtResource("3_nienh")
 tuning = ExtResource("4_wb7y0")
 
-[node name="Hurtbox" type="Area3D" parent="." unique_id=2018358209 node_paths=PackedStringArray("health")]
+[node name="Hurtbox" type="Area3D" parent="." unique_id=2018358209 node_paths=PackedStringArray("health", "posture")]
 script = ExtResource("5_t5pir")
 faction = 1
 health = NodePath("../Health")
+posture = NodePath("../Posture")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=446133026]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_mi13w")
+
+[node name="Posture" type="Node" parent="." unique_id=492797003]
+script = ExtResource("6_wb7y0")
+tuning = ExtResource("7_t5pir")

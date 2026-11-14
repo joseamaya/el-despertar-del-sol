@@ -79,6 +79,7 @@ func test_block_pressed_just_in_time_parries_for_free() -> void:
 	_enemy.attack()
 	await _frames(WINDUP_FRAMES - 2)
 	Input.action_press(&"block")
+	_defense.press_block()  # deterministic: a simulated press may miss "just pressed"
 	await _until_enemy_done()
 	assert_float(_health.current).is_equal(_health.get_maximum())
 	assert_array(_events).contains_exactly(["parried"])

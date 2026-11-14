@@ -19,12 +19,15 @@ const ACTION_HEAVY: StringName = &"attack_heavy"
 @export var hitbox: Hitbox
 ## Optional: plays the attack clips. Without it attacks still work (tests).
 @export var animator: PlayerAnimator
+## Optional: a light attack next to an enemy with broken posture executes it (GDD §6.4).
+@export var execution: AttackData
 
 var _current: AttackData
 var _elapsed: float = 0.0
 var _chain_index: int = -1
 var _buffered: Kind = Kind.NONE
 var _phase: AttackRules.Phase = AttackRules.Phase.DONE
+var _execution_target: Hurtbox
 
 
 func _ready() -> void:
@@ -47,6 +50,11 @@ func request(kind: Kind) -> void:
 	if _current == null:
 		if player.is_in_action():
 			return  # dodging or stunned
+		if kind == Kind.LIGHT and execution != null:
+			var target: Hurtbox = find_executable()
+			if target != null:
+				_start_execution(target)
+				return
 		_start(kind)
 	elif AttackRules.accepts_buffer(_elapsed, _current):
 		_buffered = kind
@@ -67,7 +75,11 @@ func tick(delta: float) -> void:
 		var kind: Kind = _buffered
 		_buffered = Kind.NONE
 		hitbox.deactivate()
-		_start(kind)
+		var target: Hurtbox = find_executable() if kind == Kind.LIGHT else null
+		if target != null:
+			_start_execution(target)
+		else:
+			_start(kind)
 	elif _phase == AttackRules.Phase.DONE:
 		_finish()
 
@@ -92,6 +104,60 @@ func get_phase() -> AttackRules.Phase:
 
 func get_chain_index() -> int:
 	return _chain_index
+
+
+## Closest enemy Hurtbox in front, within execution range, whose posture is broken.
+func find_executable() -> Hurtbox:
+	if execution == null:
+		return null
+	var shape := SphereShape3D.new()
+	shape.radius = execution.execution_range
+	var query := PhysicsShapeQueryParameters3D.new()
+	query.shape = shape
+	query.transform = Transform3D(Basis.IDENTITY, player.global_position + Vector3.UP * 0.9)
+	query.collision_mask = HitRules.HURTBOX_LAYER
+	query.collide_with_areas = true
+	query.collide_with_bodies = false
+	var best: Hurtbox = null
+	var best_distance: float = INF
+	for result: Dictionary in player.get_world_3d().direct_space_state.intersect_shape(query):
+		var hurtbox: Hurtbox = result["collider"] as Hurtbox
+		if hurtbox == null or not hurtbox.is_executable():
+			continue
+		if not HitRules.can_hit(hitbox.faction, hurtbox.faction):
+			continue
+		var to_target: Vector3 = hurtbox.global_position - player.global_position
+		if not DefenseRules.is_frontal(
+			player.get_action_forward(), to_target, execution.execution_arc_deg
+		):
+			continue
+		var distance: float = Vector2(to_target.x, to_target.z).length()
+		if distance < best_distance:
+			best_distance = distance
+			best = hurtbox
+	return best
+
+
+func _start_execution(target: Hurtbox) -> void:
+	_current = execution
+	_execution_target = target
+	_elapsed = 0.0
+	_chain_index = -1
+	_phase = AttackRules.Phase.WINDUP
+	player.begin_action(target.global_position - player.global_position, false)
+	if animator != null:
+		animator.play_attack(execution.clip, execution.clip_speed)
+	attack_started.emit(execution)
+
+
+func _deliver_execution() -> void:
+	if _execution_target == null or not is_instance_valid(_execution_target):
+		return
+	var info := HitInfo.create(execution.damage, 0.0, player)
+	info.unblockable = true
+	info.point = _execution_target.global_position
+	_execution_target.receive_hit(info)
+	_execution_target = null
 
 
 func _start(kind: Kind) -> void:
@@ -123,7 +189,9 @@ func _update_phase() -> void:
 	if next == _phase:
 		return
 	_phase = next
-	if _phase == AttackRules.Phase.ACTIVE:
+	if _phase == AttackRules.Phase.ACTIVE and _current == execution:
+		_deliver_execution()
+	elif _phase == AttackRules.Phase.ACTIVE:
 		var owner_3d: Node3D = player
 		hitbox.activate(HitInfo.create(_current.damage, _current.posture_damage, owner_3d))
 	elif _phase == AttackRules.Phase.RECOVERY or _phase == AttackRules.Phase.DONE:
@@ -134,6 +202,7 @@ func _finish() -> void:
 	hitbox.deactivate()
 	var was_attacking: bool = _current != null
 	_current = null
+	_execution_target = null
 	_buffered = Kind.NONE
 	_chain_index = -1
 	_phase = AttackRules.Phase.DONE
