@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" path="res://scenes/enemies/chanca_warrior.tscn" id="10_2yk22"]
 [ext_resource type="Script" path="res://scripts/enemies/encounter_director.gd" id="11_8xq4b"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="11_rat8t"]
+[ext_resource type="Script" path="res://scripts/combat/combat_feedback.gd" id="12_8xq4b"]
 [ext_resource type="Resource" path="res://resources/tuning/encounter.tres" id="12_lvdfp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_upy5j"]
@@ -344,6 +345,16 @@ health = NodePath("../Player/Health")
 stamina = NodePath("../Player/Stamina")
 lock_on = NodePath("../Player/LockOn")
 camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
+
+[node name="CombatFeedback" type="Node3D" parent="." unique_id=509218168 node_paths=PackedStringArray("hit_stop", "camera_rig", "player_hurtbox", "player_hitbox", "player_defense", "player_combat")]
+script = ExtResource("12_8xq4b")
+feel = ExtResource("7_bl2f2")
+hit_stop = NodePath("../HitStop")
+camera_rig = NodePath("../CameraRig")
+player_hurtbox = NodePath("../Player/Hurtbox")
+player_hitbox = NodePath("../Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox")
+player_defense = NodePath("../Player/Defense")
+player_combat = NodePath("../Player/Combat")
 
 [connection signal="hit_landed" from="Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox" to="HitStop" method="on_hit_landed"]
 [connection signal="target_locked" from="Player/LockOn" to="CameraRig" method="set_lock_target"]

@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/core/debug_enemy_attack.gd" id="9_x74t4"]
 [ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="10_k41dt"]
 [ext_resource type="Resource" path="res://resources/tuning/combat_feel.tres" id="10_lra5x"]
+[ext_resource type="Script" path="res://scripts/combat/combat_feedback.gd" id="10_x74t4"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_upy5j"]
 
@@ -211,6 +212,16 @@ health = NodePath("../Player/Health")
 stamina = NodePath("../Player/Stamina")
 lock_on = NodePath("../Player/LockOn")
 camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
+
+[node name="CombatFeedback" type="Node3D" parent="." unique_id=379216099 node_paths=PackedStringArray("hit_stop", "camera_rig", "player_hurtbox", "player_hitbox", "player_defense", "player_combat")]
+script = ExtResource("10_x74t4")
+feel = ExtResource("10_lra5x")
+hit_stop = NodePath("../HitStop")
+camera_rig = NodePath("../CameraRig")
+player_hurtbox = NodePath("../Player/Hurtbox")
+player_hitbox = NodePath("../Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox")
+player_defense = NodePath("../Player/Defense")
+player_combat = NodePath("../Player/Combat")
 
 [connection signal="hit_landed" from="Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox" to="HitStop" method="on_hit_landed"]
 [connection signal="target_locked" from="Player/LockOn" to="CameraRig" method="set_lock_target"]

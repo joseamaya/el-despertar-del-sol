@@ -22,6 +22,8 @@
 [ext_resource type="Script" path="res://scripts/combat/defense_component.gd" id="20_3j4b4"]
 [ext_resource type="Resource" path="res://resources/combat/attacks/execution.tres" id="20_yj68g"]
 [ext_resource type="Resource" path="res://resources/tuning/player_defense.tres" id="21_yj68g"]
+[ext_resource type="Script" path="res://scripts/audio/combat_audio.gd" id="23_cnsyf"]
+[ext_resource type="Resource" path="res://resources/audio/player_combat_sounds.tres" id="24_007i1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lvxji"]
 radius = 0.35
@@ -243,6 +245,14 @@ player = NodePath("..")
 stamina = NodePath("../Stamina")
 combat = NodePath("../Combat")
 animator = NodePath("../Animator")
+
+[node name="CombatAudio" type="Node3D" parent="." unique_id=869809535 node_paths=PackedStringArray("hurtbox", "health", "player_defense")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+script = ExtResource("23_cnsyf")
+sounds = ExtResource("24_007i1")
+hurtbox = NodePath("../Hurtbox")
+health = NodePath("../Health")
+player_defense = NodePath("../Defense")
 
 [connection signal="target_locked" from="LockOn" to="." method="set_face_target"]
 [connection signal="target_released" from="LockOn" to="." method="release_face_target"]

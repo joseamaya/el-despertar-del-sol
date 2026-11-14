@@ -20,12 +20,14 @@ func on_hit_landed(_hurtbox: Hurtbox, _info: HitInfo) -> void:
 	trigger()
 
 
-func trigger() -> void:
-	if tuning.hitstop_duration <= 0.0:
+## Freezes for `duration` seconds (real time), or the tuned default if negative.
+func trigger(duration: float = -1.0) -> void:
+	var seconds: float = tuning.hitstop_duration if duration < 0.0 else duration
+	if seconds <= 0.0:
 		return
 	_stop_id += 1
 	Engine.time_scale = tuning.hitstop_time_scale
-	var timer: SceneTreeTimer = get_tree().create_timer(tuning.hitstop_duration, true, false, true)
+	var timer: SceneTreeTimer = get_tree().create_timer(seconds, true, false, true)
 	timer.timeout.connect(_on_timeout.bind(_stop_id))
 
 

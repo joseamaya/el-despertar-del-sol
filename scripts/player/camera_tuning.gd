@@ -36,3 +36,12 @@ extends Resource
 @export_range(30.0, 600.0, 5.0, "suffix:°/s") var stick_sensitivity: float = 180.0
 @export var invert_x: bool = false
 @export var invert_y: bool = false
+## Camera shake on impacts. Off for players sensitive to it (GDD §12.4).
+@export var shake_enabled: bool = true
+
+@export_group("Sacudida")
+## Max sideways/vertical camera offset at full shake.
+@export_range(0.0, 1.0, 0.01, "suffix:m") var shake_max_offset: float = 0.12
+@export_range(0.0, 10.0, 0.1, "suffix:°") var shake_max_roll_deg: float = 1.5
+## How fast shake fades (trauma per second).
+@export_range(0.1, 20.0, 0.1, "suffix:/s") var shake_decay: float = 3.0

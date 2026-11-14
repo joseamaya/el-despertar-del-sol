@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="CombatAudioSet" format=3]
+
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactWood_heavy_000.ogg" id="1_xsh6u"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactWood_heavy_001.ogg" id="2_x2dch"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactWood_heavy_002.ogg" id="3_gf5pp"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactSoft_heavy_000.ogg" id="4_5dqn7"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactSoft_heavy_001.ogg" id="5_eimgw"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactSoft_heavy_002.ogg" id="6_epman"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_medium_000.ogg" id="7_unocn"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_medium_001.ogg" id="8_vuwi3"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_medium_002.ogg" id="9_bf7hl"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_heavy_000.ogg" id="10_gr5eh"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_heavy_001.ogg" id="11_1qctf"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_heavy_002.ogg" id="12_yvjfe"]
+[ext_resource type="Script" path="res://scripts/audio/combat_audio_set.gd" id="13_yqq2o"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPlate_light_000.ogg" id="14_1h3ao"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPlate_light_001.ogg" id="15_sghnv"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPlate_light_002.ogg" id="16_emiyf"]
+
+[resource]
+script = ExtResource("13_yqq2o")
+hit = Array[AudioStream]([ExtResource("7_unocn"), ExtResource("8_vuwi3"), ExtResource("9_bf7hl")])
+hit_heavy = Array[AudioStream]([ExtResource("10_gr5eh"), ExtResource("11_1qctf"), ExtResource("12_yvjfe")])
+blocked = Array[AudioStream]([ExtResource("1_xsh6u"), ExtResource("2_x2dch"), ExtResource("3_gf5pp")])
+telegraph = Array[AudioStream]([ExtResource("14_1h3ao"), ExtResource("15_sghnv"), ExtResource("16_emiyf")])
+death = Array[AudioStream]([ExtResource("4_5dqn7"), ExtResource("5_eimgw"), ExtResource("6_epman")])
