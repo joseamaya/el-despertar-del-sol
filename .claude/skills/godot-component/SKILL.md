@@ -136,7 +136,10 @@ Notas:
   `process_frame` corren sin límite y apenas avanzan tiempo real. Y `process_frame` se
   emite **antes** de los `_process` de los nodos: para ver lo que un nodo actualiza en su
   `_process` (p. ej. el HUD), espera dos.
-- Para esperar física: `await get_tree().physics_frame` en bucle. Calcula la distancia
+- Para esperar física: `await get_tree().physics_frame` en bucle.
+- Durante un hitstop (`Engine.time_scale` casi 0) **no hay frames de física**: para
+  observar algo que ocurre durante la congelación, muestrea con `process_frame` y un
+  límite de tiempo real (`Time.get_ticks_msec()`). Calcula la distancia
   recorrida antes de fijar duraciones: pasarse de una plataforma hace caer al jugador
   y la prueba falla por motivos ajenos a lo que se prueba.
 - Las pruebas corren en headless sin eventos reales; no dependas de `_input()` /

@@ -126,14 +126,14 @@ func test_parry_freezes_longer_and_flashes() -> void:
 	var defense := _player.get_node("Defense") as DefenseComponent
 	Input.action_press(&"block")
 	_w.combat.start(_golpe())
-	for i: int in 240:
+	# Process frames keep running during hitstop (physics frames do not).
+	var deadline: int = Time.get_ticks_msec() + 6000
+	while _w.combat.is_attacking() and Time.get_ticks_msec() < deadline:
 		defense.press_block()
-		await get_tree().physics_frame
+		await get_tree().process_frame
 		if Engine.time_scale < 1.0:
 			stops.append(Engine.time_scale)
 		max_shake[0] = maxf(max_shake[0], _rig.get_shake())
-		if not _w.combat.is_attacking():
-			break
 	assert_int(flashes[0]).is_equal(1)
 	assert_array(stops).is_not_empty()
 	assert_float(max_shake[0]).is_greater(0.0)
@@ -150,10 +150,11 @@ func test_execution_freezes_and_shakes() -> void:
 	assert_object(combat.find_executable()).is_not_null()
 	var frozen: bool = false
 	combat.request(CombatComponent.Kind.LIGHT)
-	for i: int in 120:
-		await get_tree().physics_frame
+	# Sample on process frames: during hitstop game time barely moves, so no physics
+	# frame happens while it lasts.
+	var deadline: int = Time.get_ticks_msec() + 5000
+	while combat.is_attacking() and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
 		frozen = frozen or Engine.time_scale < 1.0
-		if not combat.is_attacking():
-			break
 	assert_bool(frozen).is_true()
 	assert_bool(_w.is_dead()).is_true()
