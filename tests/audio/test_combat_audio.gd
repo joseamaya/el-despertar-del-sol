@@ -143,8 +143,11 @@ func test_execution_freezes_and_shakes() -> void:
 	var combat := _player.get_node("Combat") as CombatComponent
 	_w.posture.apply(_w.posture.get_maximum())
 	await _frames(2)
-	_player.global_position = Vector3(-8, 0.05, -2.6)
+	_player.global_position = _w.global_position + Vector3(0, 0, 1.4)
+	_player.rotation.y = 0.0
 	await _frames(2)
+	assert_bool(_w.posture.is_broken()).is_true()
+	assert_object(combat.find_executable()).is_not_null()
 	var frozen: bool = false
 	combat.request(CombatComponent.Kind.LIGHT)
 	for i: int in 120:
