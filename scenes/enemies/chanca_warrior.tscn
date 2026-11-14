@@ -1,0 +1,214 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="1_ouqmh"]
+[ext_resource type="Resource" path="res://resources/enemies/guerrero_chanca.tres" id="2_kqn3b"]
+[ext_resource type="PackedScene" path="res://assets/characters/stock/ual1_standard.glb" id="3_beolg"]
+[ext_resource type="Script" path="res://scripts/core/character_animator.gd" id="4_pu4yp"]
+[ext_resource type="Resource" path="res://resources/tuning/player_animation.tres" id="5_proj7"]
+[ext_resource type="Script" path="res://scripts/enemies/perception_component.gd" id="6_b1el8"]
+[ext_resource type="Script" path="res://scripts/combat/health_component.gd" id="7_w414e"]
+[ext_resource type="Resource" path="res://resources/tuning/chanca_warrior_health.tres" id="8_1go4i"]
+[ext_resource type="Script" path="res://scripts/combat/posture_component.gd" id="9_w38px"]
+[ext_resource type="Resource" path="res://resources/tuning/chanca_warrior_posture.tres" id="10_bpjby"]
+[ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="11_senw4"]
+[ext_resource type="Script" path="res://scripts/player/lock_on_target.gd" id="12_6y8sg"]
+[ext_resource type="Script" path="res://scripts/core/state_machine.gd" id="13_puxay"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_idle.gd" id="14_1ip3k"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_patrol.gd" id="15_qkna6"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_alert.gd" id="16_48e6k"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_chase.gd" id="17_5y7kw"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_strafe.gd" id="18_5nk0x"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_stagger.gd" id="19_bmodo"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_dead.gd" id="20_ruypq"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vqm3c"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y565x"]
+albedo_color = Color(0.16, 0.42, 0.52, 1)
+roughness = 0.8
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_mmeia"]
+fadein_time = 0.08
+fadeout_time = 0.15
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nxapp"]
+animation = &"Sword_Attack"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_8dl48"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_wlcac"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ye1ef"]
+animation = &"Sword_Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_beaf8"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_14kj5"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4uoc3"]
+animation = &"Jog_Fwd"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_s5cb5"]
+animation = &"Sprint"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_75bna"]
+min_space = 0.0
+max_space = 8.25
+blend_point_0/node = SubResource("AnimationNodeAnimation_beaf8")
+blend_point_0/pos = 0.0
+blend_point_0/name = &"0"
+blend_point_1/node = SubResource("AnimationNodeAnimation_14kj5")
+blend_point_1/pos = 0.975
+blend_point_1/name = &"1"
+blend_point_2/node = SubResource("AnimationNodeAnimation_4uoc3")
+blend_point_2/pos = 5.357
+blend_point_2/name = &"2"
+blend_point_3/node = SubResource("AnimationNodeAnimation_s5cb5")
+blend_point_3/pos = 8.25
+blend_point_3/name = &"3"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_4lt5o"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ks1xm"]
+nodes/locomotion/node = SubResource("AnimationNodeBlendSpace1D_75bna")
+nodes/locomotion/position = Vector2(0, 0)
+nodes/time_scale/node = SubResource("AnimationNodeTimeScale_4lt5o")
+nodes/time_scale/position = Vector2(250, 0)
+nodes/attack_clip/node = SubResource("AnimationNodeAnimation_nxapp")
+nodes/attack_clip/position = Vector2(0, 200)
+nodes/attack_speed/node = SubResource("AnimationNodeTimeScale_8dl48")
+nodes/attack_speed/position = Vector2(250, 200)
+nodes/attack/node = SubResource("AnimationNodeOneShot_mmeia")
+nodes/attack/position = Vector2(500, 0)
+nodes/guard_clip/node = SubResource("AnimationNodeAnimation_ye1ef")
+nodes/guard_clip/position = Vector2(250, 120)
+nodes/guard/node = SubResource("AnimationNodeBlend2_wlcac")
+nodes/guard/position = Vector2(400, 0)
+node_connections = [&"output", 0, &"attack", &"time_scale", 0, &"locomotion", &"attack_speed", 0, &"attack_clip", &"attack", 0, &"guard", &"attack", 1, &"attack_speed", &"guard", 0, &"time_scale", &"guard", 1, &"guard_clip"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ha7m0"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_23xef"]
+radius = 0.4
+
+[node name="ChancaWarrior" type="CharacterBody3D" unique_id=1917456875 node_paths=PackedStringArray("nav_agent", "perception", "health", "posture", "state_machine", "alert_marker", "animator")]
+script = ExtResource("1_ouqmh")
+data = ExtResource("2_kqn3b")
+nav_agent = NodePath("NavAgent")
+perception = NodePath("Perception")
+health = NodePath("Health")
+posture = NodePath("Posture")
+state_machine = NodePath("States")
+alert_marker = NodePath("AlertMarker")
+animator = NodePath("Animator")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1934380738]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_vqm3c")
+
+[node name="Visual" type="Node3D" parent="." unique_id=272802937]
+
+[node name="Model" parent="Visual" unique_id=748187978 instance=ExtResource("3_beolg")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="Mannequin" parent="Visual/Model/Armature/GeneralSkeleton" parent_id_path=PackedInt32Array(748187978, 2140898141) index="0" unique_id=728927965]
+material_override = SubResource("StandardMaterial3D_y565x")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=624980808]
+root_node = NodePath("../Visual/Model")
+callback_mode_process = 0
+tree_root = SubResource("AnimationNodeBlendTree_ks1xm")
+anim_player = NodePath("../Visual/Model/AnimationPlayer")
+parameters/locomotion/blend_position = 0.0
+parameters/time_scale/scale = 1.0
+parameters/attack_speed/scale = 1.0
+parameters/attack/active = false
+parameters/attack/internal_active = false
+parameters/attack/request = 0
+parameters/guard/blend_amount = 0.0
+
+[node name="Animator" type="Node" parent="." unique_id=1449320972 node_paths=PackedStringArray("body", "animation_tree")]
+script = ExtResource("4_pu4yp")
+tuning = ExtResource("5_proj7")
+body = NodePath("..")
+animation_tree = NodePath("../AnimationTree")
+
+[node name="NavAgent" type="NavigationAgent3D" parent="." unique_id=1732170438]
+path_desired_distance = 0.5
+target_desired_distance = 0.4
+height = 1.8
+radius = 0.4
+
+[node name="Perception" type="Node" parent="." unique_id=956555186 node_paths=PackedStringArray("body")]
+script = ExtResource("6_b1el8")
+data = ExtResource("2_kqn3b")
+body = NodePath("..")
+
+[node name="Health" type="Node" parent="." unique_id=148698232]
+script = ExtResource("7_w414e")
+tuning = ExtResource("8_1go4i")
+
+[node name="Posture" type="Node" parent="." unique_id=304583021]
+script = ExtResource("9_w38px")
+tuning = ExtResource("10_bpjby")
+
+[node name="Hurtbox" type="Area3D" parent="." unique_id=604880376 node_paths=PackedStringArray("health", "posture")]
+script = ExtResource("11_senw4")
+faction = 1
+health = NodePath("../Health")
+posture = NodePath("../Posture")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=822822861]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_ha7m0")
+
+[node name="LockOnTarget" type="Area3D" parent="." unique_id=1368472587]
+script = ExtResource("12_6y8sg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LockOnTarget" unique_id=369626546]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("SphereShape3D_23xef")
+
+[node name="AlertMarker" type="Label3D" parent="." unique_id=1268073386]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35, 0)
+pixel_size = 0.006
+billboard = 1
+modulate = Color(0.95, 0.15, 0.1, 1)
+text = "!"
+font_size = 120
+outline_size = 16
+
+[node name="States" type="Node" parent="." unique_id=1580083404 node_paths=PackedStringArray("initial_state", "context")]
+script = ExtResource("13_puxay")
+initial_state = NodePath("idle")
+context = NodePath("..")
+
+[node name="idle" type="Node" parent="States" unique_id=1506710706]
+script = ExtResource("14_1ip3k")
+
+[node name="patrol" type="Node" parent="States" unique_id=2041038973]
+script = ExtResource("15_qkna6")
+
+[node name="alert" type="Node" parent="States" unique_id=596005185]
+script = ExtResource("16_48e6k")
+
+[node name="chase" type="Node" parent="States" unique_id=1773856680]
+script = ExtResource("17_5y7kw")
+
+[node name="strafe" type="Node" parent="States" unique_id=1816768248]
+script = ExtResource("18_5nk0x")
+
+[node name="stagger" type="Node" parent="States" unique_id=2069522435]
+script = ExtResource("19_bmodo")
+
+[node name="dead" type="Node" parent="States" unique_id=2048394630 node_paths=PackedStringArray("disable_on_death")]
+script = ExtResource("20_ruypq")
+disable_on_death = [NodePath("../.."), NodePath("../../Hurtbox"), NodePath("../../LockOnTarget")]
+
+[editable path="Visual/Model"]

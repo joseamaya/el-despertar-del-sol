@@ -1,7 +1,8 @@
-class_name PlayerAnimator
+class_name CharacterAnimator
 extends Node
-## Drives the player's AnimationTree from its ground speed (idle, walk, jog, sprint).
-## Reads the injected PlayerController; knows nothing about input or the camera.
+## Drives a character's AnimationTree from its ground speed (idle, walk, jog, sprint),
+## plus one-shot actions (attacks, roll) and the guard pose. Works for the player and for
+## enemies: it only reads the injected body's velocity.
 
 const PARAM_BLEND: StringName = &"parameters/locomotion/blend_position"
 const PARAM_TIME_SCALE: StringName = &"parameters/time_scale/scale"
@@ -12,7 +13,7 @@ const PARAM_GUARD_BLEND: StringName = &"parameters/guard/blend_amount"
 const GUARD_SHARPNESS: float = 18.0
 
 @export var tuning: PlayerAnimationTuning
-@export var player: PlayerController
+@export var body: CharacterBody3D
 @export var animation_tree: AnimationTree
 
 var _blend: float = 0.0
@@ -21,8 +22,8 @@ var _guard: float = 0.0
 
 
 func _ready() -> void:
-	assert(tuning != null, "PlayerAnimator needs a PlayerAnimationTuning resource.")
-	assert(player != null and animation_tree != null, "PlayerAnimator needs player and tree.")
+	assert(tuning != null, "CharacterAnimator needs a PlayerAnimationTuning resource.")
+	assert(body != null and animation_tree != null, "CharacterAnimator needs body and tree.")
 	animation_tree.active = true
 
 
@@ -32,7 +33,7 @@ func _physics_process(delta: float) -> void:
 
 ## Updates blend and playback rate from the player's current speed.
 func tick(delta: float) -> void:
-	var speed: float = player.get_horizontal_speed()
+	var speed: float = Vector2(body.velocity.x, body.velocity.z).length()
 	var target: float = LocomotionAnimMath.blend_position(speed, tuning)
 	_blend = LocomotionAnimMath.smooth(_blend, target, tuning.blend_sharpness, delta)
 	animation_tree.set(PARAM_BLEND, _blend)
