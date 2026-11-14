@@ -23,6 +23,8 @@ var yaw: float = 0.0
 var pitch: float = 0.0
 
 var _lock_target: LockOnTarget
+var _trauma: float = 0.0
+var _rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
@@ -60,6 +62,16 @@ func add_look_input(relative: Vector2) -> void:
 	_apply(CameraMath.look_from_mouse(relative, tuning))
 
 
+## Adds camera shake (0..1, accumulates up to 1). Ignored when shake is disabled.
+func add_shake(amount: float) -> void:
+	if tuning.shake_enabled and amount > 0.0:
+		_trauma = minf(1.0, _trauma + amount)
+
+
+func get_shake() -> float:
+	return _trauma
+
+
 ## Starts framing `target` (connect LockOnController.target_locked / target_switched).
 func set_lock_target(target: LockOnTarget) -> void:
 	_lock_target = target
@@ -88,6 +100,7 @@ func tick(delta: float) -> void:
 	global_position = CameraMath.follow(
 		global_position, _pivot_position(), tuning.follow_sharpness, delta
 	)
+	_trauma = maxf(0.0, _trauma - tuning.shake_decay * delta)
 	_apply_framing()
 
 
@@ -121,7 +134,12 @@ func _apply_framing() -> void:
 	spring_arm.rotation = Vector3(pitch, 0.0, 0.0)
 	spring_arm.spring_length = tuning.distance
 	spring_arm.margin = tuning.collision_margin
-	camera.h_offset = tuning.shoulder_offset
+	var shake: float = _trauma * _trauma
+	camera.h_offset = (
+		tuning.shoulder_offset + _rng.randf_range(-1.0, 1.0) * tuning.shake_max_offset * shake
+	)
+	camera.v_offset = _rng.randf_range(-1.0, 1.0) * tuning.shake_max_offset * shake
+	camera.rotation.z = deg_to_rad(_rng.randf_range(-1.0, 1.0) * tuning.shake_max_roll_deg * shake)
 	camera.fov = tuning.fov
 
 

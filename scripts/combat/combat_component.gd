@@ -6,6 +6,7 @@ extends Node
 
 signal attack_started(data: AttackData)
 signal attack_finished
+signal executed(target: Hurtbox)
 
 enum Kind { NONE, LIGHT, HEAVY }
 
@@ -157,6 +158,7 @@ func _deliver_execution() -> void:
 	info.unblockable = true
 	info.point = _execution_target.global_position
 	_execution_target.receive_hit(info)
+	executed.emit(_execution_target)
 	_execution_target = null
 
 

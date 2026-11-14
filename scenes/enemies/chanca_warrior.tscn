@@ -28,6 +28,8 @@
 [ext_resource type="Script" path="res://scripts/enemies/states/enemy_feint.gd" id="25_w38px"]
 [ext_resource type="Script" path="res://scripts/enemies/enemy_guard.gd" id="26_puxay"]
 [ext_resource type="Script" path="res://scripts/combat/hit_flash.gd" id="27_1ip3k"]
+[ext_resource type="Script" path="res://scripts/audio/combat_audio.gd" id="29_senw4"]
+[ext_resource type="Resource" path="res://resources/audio/chanca_combat_sounds.tres" id="30_6y8sg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vqm3c"]
 radius = 0.35
@@ -323,5 +325,14 @@ posture = NodePath("../Posture")
 script = ExtResource("27_1ip3k")
 hurtbox = NodePath("../Hurtbox")
 mesh = NodePath("../Visual/Model/Armature/GeneralSkeleton/Mannequin")
+
+[node name="CombatAudio" type="Node3D" parent="." unique_id=1616425303 node_paths=PackedStringArray("hurtbox", "health", "guard", "enemy_combat")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+script = ExtResource("29_senw4")
+sounds = ExtResource("30_6y8sg")
+hurtbox = NodePath("../Hurtbox")
+health = NodePath("../Health")
+guard = NodePath("../Guard")
+enemy_combat = NodePath("../Combat")
 
 [editable path="Visual/Model"]

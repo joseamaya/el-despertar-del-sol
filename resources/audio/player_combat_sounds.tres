@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="CombatAudioSet" format=3]
+
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactWood_heavy_000.ogg" id="1_cyolh"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactWood_heavy_001.ogg" id="2_qx8oh"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactWood_heavy_002.ogg" id="3_ulwu8"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactSoft_heavy_000.ogg" id="4_tr0f7"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactSoft_heavy_001.ogg" id="5_bprd6"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactSoft_heavy_002.ogg" id="6_aajyv"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactSoft_medium_000.ogg" id="7_155nt"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactSoft_medium_001.ogg" id="8_ag33a"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactSoft_medium_002.ogg" id="9_rvpb7"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_medium_000.ogg" id="10_gbupf"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_medium_001.ogg" id="11_kvbyb"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_medium_002.ogg" id="12_vnmsr"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_heavy_000.ogg" id="13_dg8la"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_heavy_001.ogg" id="14_qxv2j"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactPunch_heavy_002.ogg" id="15_04e5w"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactMetal_medium_000.ogg" id="16_xg44c"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactMetal_medium_001.ogg" id="17_768j1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/kenney_impact/impactMetal_medium_002.ogg" id="18_rq8ue"]
+[ext_resource type="Script" path="res://scripts/audio/combat_audio_set.gd" id="19_gl5h2"]
+
+[resource]
+script = ExtResource("19_gl5h2")
+hit = Array[AudioStream]([ExtResource("10_gbupf"), ExtResource("11_kvbyb"), ExtResource("12_vnmsr")])
+hit_heavy = Array[AudioStream]([ExtResource("13_dg8la"), ExtResource("14_qxv2j"), ExtResource("15_04e5w")])
+blocked = Array[AudioStream]([ExtResource("1_cyolh"), ExtResource("2_qx8oh"), ExtResource("3_ulwu8")])
+parried = Array[AudioStream]([ExtResource("16_xg44c"), ExtResource("17_768j1"), ExtResource("18_rq8ue")])
+evaded = Array[AudioStream]([ExtResource("7_155nt"), ExtResource("8_ag33a"), ExtResource("9_rvpb7")])
+death = Array[AudioStream]([ExtResource("4_tr0f7"), ExtResource("5_bprd6"), ExtResource("6_aajyv")])
