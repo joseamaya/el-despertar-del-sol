@@ -8,6 +8,6 @@ extends Resource
 ## Minimum time between two grants, so tokens do not start attacks on the same frame.
 @export_range(0.0, 3.0, 0.05, "suffix:s") var grant_spacing: float = 0.5
 ## Enemies closer than this push each other apart while circling.
-@export_range(0.0, 6.0, 0.1, "suffix:m") var separation_distance: float = 1.6
+@export_range(0.0, 6.0, 0.1, "suffix:m") var separation_distance: float = 2.2
 ## Strength of that push relative to circling speed.
-@export_range(0.0, 3.0, 0.05) var separation_strength: float = 1.0
+@export_range(0.0, 3.0, 0.05) var separation_strength: float = 2.0

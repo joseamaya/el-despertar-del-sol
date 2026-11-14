@@ -74,7 +74,10 @@ func move_to(point: Vector3, speed: float) -> bool:
 	var direction := Vector3(next.x - global_position.x, 0.0, next.z - global_position.z)
 	if direction.length_squared() < 0.0001:
 		direction = Vector3(point.x - global_position.x, 0.0, point.z - global_position.z)
-	_desired = direction.normalized() * speed
+	var steer: Vector3 = direction.normalized()
+	if director != null:
+		steer += director.separation(self)
+	_desired = steer.limit_length(1.2) * speed
 	return false
 
 
