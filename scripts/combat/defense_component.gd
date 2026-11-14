@@ -1,5 +1,5 @@
 class_name DefenseComponent
-extends Node
+extends HitDefense
 ## Block (hold), parry (block pressed just in time) and dodge with invulnerability
 ## (GDD §6.1–6.5). The Hurtbox asks resolve_hit() before applying damage.
 

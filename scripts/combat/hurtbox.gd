@@ -9,7 +9,7 @@ signal hit_received(info: HitInfo)
 ## Optional: receives the damage. Without it the hurtbox only reports hits.
 @export var health: HealthComponent
 ## Optional: block, parry and dodge decide first whether the hit lands.
-@export var defense: DefenseComponent
+@export var defense: HitDefense
 ## Optional: takes each landed hit's posture damage (enemies, GDD §6.4).
 @export var posture: PostureComponent
 
@@ -27,7 +27,7 @@ func is_executable() -> bool:
 
 
 ## Called by a Hitbox. Ignored once the owner is dead; blocked, parried or evaded hits
-## do no damage and are reported by the DefenseComponent instead.
+## do no damage and are reported by the defense (HitDefense) instead.
 func receive_hit(info: HitInfo) -> void:
 	if health != null and health.is_dead():
 		return

@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="1_ouqmh"]
 [ext_resource type="Resource" path="res://resources/enemies/guerrero_chanca.tres" id="2_kqn3b"]
 [ext_resource type="PackedScene" path="res://assets/characters/stock/ual1_standard.glb" id="3_beolg"]
+[ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="4_1go4i"]
 [ext_resource type="Script" path="res://scripts/core/character_animator.gd" id="4_pu4yp"]
 [ext_resource type="Resource" path="res://resources/tuning/player_animation.tres" id="5_proj7"]
 [ext_resource type="Script" path="res://scripts/enemies/perception_component.gd" id="6_b1el8"]
@@ -20,6 +21,12 @@
 [ext_resource type="Script" path="res://scripts/enemies/states/enemy_strafe.gd" id="18_5nk0x"]
 [ext_resource type="Script" path="res://scripts/enemies/states/enemy_stagger.gd" id="19_bmodo"]
 [ext_resource type="Script" path="res://scripts/enemies/states/enemy_dead.gd" id="20_ruypq"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_attack.gd" id="22_w38px"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_block.gd" id="23_bpjby"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_retreat.gd" id="24_senw4"]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_combat.gd" id="25_6y8sg"]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_guard.gd" id="26_puxay"]
+[ext_resource type="Script" path="res://scripts/combat/hit_flash.gd" id="27_1ip3k"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vqm3c"]
 radius = 0.35
@@ -28,6 +35,35 @@ height = 1.8
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y565x"]
 albedo_color = Color(0.16, 0.42, 0.52, 1)
 roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qkna6"]
+albedo_color = Color(0.25, 0.17, 0.1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_48e6k"]
+material = SubResource("StandardMaterial3D_qkna6")
+top_radius = 0.028
+bottom_radius = 0.032
+height = 0.72
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5y7kw"]
+albedo_color = Color(0.3, 0.3, 0.33, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_5nk0x"]
+material = SubResource("StandardMaterial3D_5y7kw")
+radius = 0.13
+height = 0.26
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bmodo"]
+radius = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ruypq"]
+shading_mode = 0
+albedo_color = Color(0.95, 0.12, 0.08, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_vqm3c"]
+material = SubResource("StandardMaterial3D_ruypq")
+radius = 0.17
+height = 0.34
 
 [sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_mmeia"]
 fadein_time = 0.08
@@ -97,7 +133,11 @@ height = 1.8
 [sub_resource type="SphereShape3D" id="SphereShape3D_23xef"]
 radius = 0.4
 
-[node name="ChancaWarrior" type="CharacterBody3D" unique_id=1917456875 node_paths=PackedStringArray("nav_agent", "perception", "health", "posture", "state_machine", "alert_marker", "animator")]
+[sub_resource type="PrismMesh" id="PrismMesh_y565x"]
+material = SubResource("StandardMaterial3D_ruypq")
+size = Vector3(0.28, 0.32, 0.28)
+
+[node name="ChancaWarrior" type="CharacterBody3D" unique_id=1917456875 node_paths=PackedStringArray("nav_agent", "perception", "health", "posture", "state_machine", "alert_marker", "animator", "combat", "guard", "hurtbox")]
 script = ExtResource("1_ouqmh")
 data = ExtResource("2_kqn3b")
 nav_agent = NodePath("NavAgent")
@@ -107,6 +147,9 @@ posture = NodePath("Posture")
 state_machine = NodePath("States")
 alert_marker = NodePath("AlertMarker")
 animator = NodePath("Animator")
+combat = NodePath("Combat")
+guard = NodePath("Guard")
+hurtbox = NodePath("Hurtbox")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1934380738]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -119,6 +162,34 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 
 [node name="Mannequin" parent="Visual/Model/Armature/GeneralSkeleton" parent_id_path=PackedInt32Array(748187978, 2140898141) index="0" unique_id=728927965]
 material_override = SubResource("StandardMaterial3D_y565x")
+
+[node name="RightHandSocket" type="BoneAttachment3D" parent="Visual/Model/Armature/GeneralSkeleton" parent_id_path=PackedInt32Array(748187978, 2140898141) index="1" unique_id=774172538]
+bone_name = "RightHand"
+
+[node name="Mace" type="Node3D" parent="Visual/Model/Armature/GeneralSkeleton/RightHandSocket" unique_id=1485334105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
+
+[node name="Handle" type="MeshInstance3D" parent="Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Mace" unique_id=685016263]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0.22, 0, 0)
+mesh = SubResource("CylinderMesh_48e6k")
+
+[node name="Head" type="MeshInstance3D" parent="Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Mace" unique_id=2037940199]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.58, 0, 0)
+mesh = SubResource("SphereMesh_5nk0x")
+
+[node name="Hitbox" type="Node3D" parent="Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Mace" unique_id=1065800401]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.58, 0, 0)
+script = ExtResource("4_1go4i")
+shape = SubResource("SphereShape3D_bmodo")
+faction = 1
+
+[node name="GlowSocket" type="BoneAttachment3D" parent="Visual/Model/Armature/GeneralSkeleton" parent_id_path=PackedInt32Array(748187978, 2140898141) index="2" unique_id=724698119]
+bone_name = "RightHand"
+
+[node name="MaceGlow" type="MeshInstance3D" parent="Visual/Model/Armature/GeneralSkeleton/GlowSocket" unique_id=2055289636]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.58, 0.08, 0)
+visible = false
+mesh = SubResource("SphereMesh_vqm3c")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=624980808]
 root_node = NodePath("../Visual/Model")
@@ -158,10 +229,11 @@ tuning = ExtResource("8_1go4i")
 script = ExtResource("9_w38px")
 tuning = ExtResource("10_bpjby")
 
-[node name="Hurtbox" type="Area3D" parent="." unique_id=604880376 node_paths=PackedStringArray("health", "posture")]
+[node name="Hurtbox" type="Area3D" parent="." unique_id=604880376 node_paths=PackedStringArray("health", "defense", "posture")]
 script = ExtResource("11_senw4")
 faction = 1
 health = NodePath("../Health")
+defense = NodePath("../Guard")
 posture = NodePath("../Posture")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=822822861]
@@ -210,5 +282,40 @@ script = ExtResource("19_bmodo")
 [node name="dead" type="Node" parent="States" unique_id=2048394630 node_paths=PackedStringArray("disable_on_death")]
 script = ExtResource("20_ruypq")
 disable_on_death = [NodePath("../.."), NodePath("../../Hurtbox"), NodePath("../../LockOnTarget")]
+
+[node name="attack" type="Node" parent="States" unique_id=312011807]
+script = ExtResource("22_w38px")
+
+[node name="block" type="Node" parent="States" unique_id=1589105330]
+script = ExtResource("23_bpjby")
+
+[node name="retreat" type="Node" parent="States" unique_id=504334402]
+script = ExtResource("24_senw4")
+
+[node name="AttackTelegraph" type="Node3D" parent="." unique_id=590161061]
+
+[node name="Diamond" type="MeshInstance3D" parent="AttackTelegraph" unique_id=2145435240]
+transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 2.25, 0)
+mesh = SubResource("PrismMesh_y565x")
+
+[node name="Combat" type="Node" parent="." unique_id=939317489 node_paths=PackedStringArray("enemy", "hitbox", "posture", "telegraphs", "animator")]
+script = ExtResource("25_6y8sg")
+data = ExtResource("2_kqn3b")
+enemy = NodePath("..")
+hitbox = NodePath("../Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Mace/Hitbox")
+posture = NodePath("../Posture")
+telegraphs = [NodePath("../AttackTelegraph"), NodePath("../Visual/Model/Armature/GeneralSkeleton/GlowSocket/MaceGlow")]
+animator = NodePath("../Animator")
+
+[node name="Guard" type="Node" parent="." unique_id=369330964 node_paths=PackedStringArray("body", "posture")]
+script = ExtResource("26_puxay")
+data = ExtResource("2_kqn3b")
+body = NodePath("..")
+posture = NodePath("../Posture")
+
+[node name="HitFlash" type="Node" parent="." unique_id=1592924557 node_paths=PackedStringArray("hurtbox", "mesh")]
+script = ExtResource("27_1ip3k")
+hurtbox = NodePath("../Hurtbox")
+mesh = NodePath("../Visual/Model/Armature/GeneralSkeleton/Mannequin")
 
 [editable path="Visual/Model"]

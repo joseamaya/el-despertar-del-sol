@@ -1,7 +1,7 @@
 class_name EnemyStrafe
 extends State
 ## Circles the target at engage distance, facing it and switching direction now and then.
-## In F2 task 8 attacks start from here.
+## Attacks from here whenever its attack cooldown is over.
 
 var _side: int = 1
 var _switch_left: float = 0.0
@@ -26,6 +26,8 @@ func physics_update(delta: float) -> StringName:
 	var target: Vector3 = enemy.perception.last_known_position
 	if enemy.distance_to(target) > enemy.data.engage_distance * 1.6:
 		return &"chase"
+	if enemy.combat != null and enemy.combat.is_ready():
+		return &"attack"
 	_switch_left -= delta
 	if _switch_left <= 0.0:
 		_side = -_side
