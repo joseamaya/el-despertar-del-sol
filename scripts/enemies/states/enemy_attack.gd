@@ -13,6 +13,8 @@ func exit() -> void:
 	var enemy: EnemyController = _enemy()
 	if enemy.combat.is_attacking():
 		enemy.combat.cancel()
+	if enemy.director != null:
+		enemy.director.release_token(enemy)
 	enemy.clear_face()
 
 

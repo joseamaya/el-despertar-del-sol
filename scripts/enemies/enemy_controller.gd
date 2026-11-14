@@ -21,6 +21,9 @@ const ARRIVE_DISTANCE: float = 0.4
 @export var combat: EnemyCombat
 @export var guard: EnemyGuard
 @export var hurtbox: Hurtbox
+## Optional, injected by the level: attack tokens and spacing (GDD §6.6). Without it the
+## enemy attacks on its own cooldown.
+@export var director: EncounterDirector
 ## Patrol route in world space. Empty: stands guard at home.
 @export var patrol_points: Array[Vector3] = []
 
@@ -42,6 +45,8 @@ func _ready() -> void:
 		posture.posture_broken.connect(_on_posture_broken)
 	if hurtbox != null:
 		hurtbox.hit_received.connect(_on_hit_received)
+	if director != null:
+		director.register(self)
 
 
 func _physics_process(delta: float) -> void:
@@ -69,7 +74,10 @@ func move_to(point: Vector3, speed: float) -> bool:
 	var direction := Vector3(next.x - global_position.x, 0.0, next.z - global_position.z)
 	if direction.length_squared() < 0.0001:
 		direction = Vector3(point.x - global_position.x, 0.0, point.z - global_position.z)
-	_desired = direction.normalized() * speed
+	var steer: Vector3 = direction.normalized()
+	if director != null:
+		steer += director.separation(self)
+	_desired = steer.limit_length(1.2) * speed
 	return false
 
 
@@ -83,7 +91,10 @@ func strafe_around(center: Vector3, radius: float, side: int, speed: float) -> v
 	var radial: Vector3 = to_center / distance
 	var tangent: Vector3 = radial.cross(Vector3.UP) * float(side)
 	var correction: Vector3 = radial * clampf(distance - radius, -1.0, 1.0)
-	_desired = (tangent + correction).normalized() * speed
+	var steer: Vector3 = (tangent + correction).normalized()
+	if director != null:
+		steer += director.separation(self)
+	_desired = steer.limit_length(1.2) * speed
 
 
 func stop() -> void:
