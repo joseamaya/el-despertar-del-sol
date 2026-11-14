@@ -111,6 +111,8 @@ func resolve_hit(info: HitInfo) -> DefenseRules.Outcome:
 		DefenseRules.Outcome.EVADED:
 			evaded.emit(info)
 		DefenseRules.Outcome.PARRIED:
+			if info.source_posture != null and is_instance_valid(info.source_posture):
+				info.source_posture.apply(tuning.parry_posture_damage)
 			parried.emit(info)
 		DefenseRules.Outcome.BLOCKED:
 			if stamina != null:

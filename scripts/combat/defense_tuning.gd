@@ -15,6 +15,9 @@ extends Resource
 @export_group("Parry")
 ## A block pressed this recently turns a frontal hit into a parry (GDD §6.5: 0.15 s).
 @export_range(0.0, 1.0, 0.01, "suffix:s") var parry_window: float = 0.15
+## Posture damage a parry sends back to the attacker (GDD §6.5: 2–3 parries break a
+## basic warrior).
+@export_range(0.0, 500.0, 1.0) var parry_posture_damage: float = 40.0
 
 @export_group("Esquiva")
 ## Needs the whole cost (0007; GDD §6.5: 20).
