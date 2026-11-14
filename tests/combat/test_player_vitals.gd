@@ -7,7 +7,7 @@ var _runner: GdUnitSceneRunner
 var _player: PlayerController
 var _health: HealthComponent
 var _stamina: StaminaComponent
-var _hud: ProvisionalHud
+var _hud: Hud
 var _keys: DebugHealthKeys
 
 
@@ -16,7 +16,7 @@ func before_test() -> void:
 	_player = _runner.find_child("Player") as PlayerController
 	_health = _player.get_node("Health") as HealthComponent
 	_stamina = _player.get_node("Stamina") as StaminaComponent
-	_hud = _runner.find_child("ProvisionalHud") as ProvisionalHud
+	_hud = _runner.find_child("Hud") as Hud
 	_keys = _runner.find_child("DebugHealthKeys") as DebugHealthKeys
 	_player.global_position = Vector3(0, 0.05, 8)
 	_player.velocity = Vector3.ZERO
@@ -47,7 +47,9 @@ func test_sprinting_spends_stamina_at_tuned_rate() -> void:
 	await _frames(60)
 	var spent: float = _stamina.get_maximum() - _stamina.current
 	assert_float(spent).is_equal_approx(_player.tuning.sprint_stamina_per_second, 0.6)
-	assert_float(_hud.stamina_bar.value).is_equal_approx(_stamina.current, 0.001)
+	await get_tree().process_frame
+	await get_tree().process_frame  # the HUD refreshes in its own _process
+	assert_float(_hud.stamina_bar.value).is_equal_approx(_stamina.current, 0.2)
 
 
 func test_running_without_sprint_does_not_spend() -> void:
@@ -76,6 +78,8 @@ func test_sprint_stops_when_empty_and_needs_a_new_press() -> void:
 func test_debug_keys_damage_and_restore_and_hud_follows() -> void:
 	assert_bool(_keys.handle_key(KEY_K)).is_true()
 	assert_float(_health.current).is_equal(90.0)
+	await get_tree().process_frame
+	await get_tree().process_frame  # the HUD refreshes in its own _process
 	assert_float(_hud.health_bar.value).is_equal(90.0)
 	_keys.handle_key(KEY_L)
 	assert_float(_health.current).is_equal(100.0)

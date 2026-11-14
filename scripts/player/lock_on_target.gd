@@ -7,6 +7,9 @@ const LAYER: int = 1 << 4
 
 ## Height above this node's origin the camera and player aim at.
 @export_range(0.0, 3.0, 0.05, "suffix:m") var aim_height: float = 1.2
+## Optional: shown by the HUD for the locked target (GDD §12.1).
+@export var health: HealthComponent
+@export var posture: PostureComponent
 
 
 func _ready() -> void:

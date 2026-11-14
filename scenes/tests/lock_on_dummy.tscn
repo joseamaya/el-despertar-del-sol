@@ -42,8 +42,10 @@ shape = SubResource("CapsuleShape3D_vrfo2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 mesh = SubResource("CapsuleMesh_q4xb5")
 
-[node name="LockOnTarget" type="Area3D" parent="." unique_id=201837877]
+[node name="LockOnTarget" type="Area3D" parent="." unique_id=201837877 node_paths=PackedStringArray("health", "posture")]
 script = ExtResource("1_qjwks")
+health = NodePath("../Health")
+posture = NodePath("../Posture")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LockOnTarget" unique_id=754331682]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)

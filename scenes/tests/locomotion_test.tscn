@@ -3,10 +3,9 @@
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_8psyo"]
 [ext_resource type="PackedScene" path="res://scenes/player/camera_rig.tscn" id="2_upy5j"]
 [ext_resource type="PackedScene" path="res://scenes/tests/lock_on_dummy.tscn" id="3_gys8y"]
-[ext_resource type="Script" path="res://scripts/player/lock_on_marker.gd" id="4_xldku"]
-[ext_resource type="PackedScene" path="res://scenes/ui/provisional_hud.tscn" id="5_2m5ce"]
 [ext_resource type="Script" path="res://scripts/core/debug_health_keys.gd" id="6_wwhnr"]
 [ext_resource type="Script" path="res://scripts/combat/hit_stop.gd" id="9_0x73o"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="9_fy422"]
 [ext_resource type="Script" path="res://scripts/core/debug_enemy_attack.gd" id="9_x74t4"]
 [ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="10_k41dt"]
 [ext_resource type="Resource" path="res://resources/tuning/combat_feel.tres" id="10_lra5x"]
@@ -36,14 +35,6 @@ roughness = 0.9
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cypgi"]
 size = Vector3(4, 0.1, 3.231099)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cypgi"]
-shading_mode = 0
-albedo_color = Color(1, 0.82, 0.2, 1)
-
-[sub_resource type="PrismMesh" id="PrismMesh_fy422"]
-material = SubResource("StandardMaterial3D_cypgi")
-size = Vector3(0.3, 0.35, 0.3)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_0x73o"]
 radius = 0.2
@@ -189,17 +180,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17)
 [node name="Dummy4" parent="Dummies" unique_id=1615056312 instance=ExtResource("3_gys8y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 9)
 
-[node name="LockOnMarker" type="Node3D" parent="." unique_id=114967871]
-script = ExtResource("4_xldku")
-
-[node name="Gem" type="MeshInstance3D" parent="LockOnMarker" unique_id=1688494561]
-transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("PrismMesh_fy422")
-
-[node name="ProvisionalHud" parent="." unique_id=1330596458 node_paths=PackedStringArray("health", "stamina") instance=ExtResource("5_2m5ce")]
-health = NodePath("../Player/Health")
-stamina = NodePath("../Player/Stamina")
-
 [node name="DebugHealthKeys" type="Node" parent="." unique_id=1768526113 node_paths=PackedStringArray("health")]
 script = ExtResource("6_wwhnr")
 health = NodePath("../Player/Health")
@@ -226,13 +206,16 @@ mesh = SubResource("SphereMesh_ynbfj")
 transform = Transform3D(-1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0, 0, 1, 0, 2.4, 0)
 mesh = SubResource("PrismMesh_4ilvt")
 
+[node name="Hud" parent="." unique_id=1068922280 node_paths=PackedStringArray("health", "stamina", "lock_on", "camera") instance=ExtResource("9_fy422")]
+health = NodePath("../Player/Health")
+stamina = NodePath("../Player/Stamina")
+lock_on = NodePath("../Player/LockOn")
+camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
+
 [connection signal="hit_landed" from="Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox" to="HitStop" method="on_hit_landed"]
 [connection signal="target_locked" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
-[connection signal="target_locked" from="Player/LockOn" to="LockOnMarker" method="set_target"]
 [connection signal="target_released" from="Player/LockOn" to="CameraRig" method="release_lock_target"]
-[connection signal="target_released" from="Player/LockOn" to="LockOnMarker" method="release_target"]
 [connection signal="target_switched" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
-[connection signal="target_switched" from="Player/LockOn" to="LockOnMarker" method="set_target"]
 [connection signal="hit_landed" from="DebugEnemyAttack/Hitbox" to="HitStop" method="on_hit_landed"]
 
 [editable path="Player"]

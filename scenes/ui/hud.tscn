@@ -1,0 +1,135 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hqnrr"]
+[ext_resource type="Script" path="res://scripts/ui/target_reticle.gd" id="2_bo48s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8qguk"]
+bg_color = Color(0, 0, 0, 0.45)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_136eg"]
+bg_color = Color(0.78, 0.18, 0.14, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oj5la"]
+bg_color = Color(0, 0, 0, 0.45)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gss2c"]
+bg_color = Color(0.92, 0.75, 0.22, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h022r"]
+bg_color = Color(0, 0, 0, 0.45)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4jqwt"]
+bg_color = Color(0.95, 0.62, 0.18, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kicr4"]
+bg_color = Color(0, 0, 0, 0.45)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mj13f"]
+bg_color = Color(0.7, 0.15, 0.12, 1)
+
+[node name="Hud" type="CanvasLayer" unique_id=1068922280 node_paths=PackedStringArray("root", "health_bar", "stamina_bar", "target_panel", "target_posture_bar", "target_health_bar", "reticle", "message_panel", "message_label", "hint_label")]
+script = ExtResource("1_hqnrr")
+root = NodePath("Root")
+health_bar = NodePath("Root/PlayerBars/Bars/HealthBar")
+stamina_bar = NodePath("Root/PlayerBars/Bars/StaminaBar")
+target_panel = NodePath("Root/TargetPanel")
+target_posture_bar = NodePath("Root/TargetPanel/PostureBar")
+target_health_bar = NodePath("Root/TargetPanel/TargetHealthBar")
+reticle = NodePath("Root/Reticle")
+message_panel = NodePath("Root/MessagePanel")
+message_label = NodePath("Root/MessagePanel/Texts/MessageLabel")
+hint_label = NodePath("Root/MessagePanel/Texts/HintLabel")
+
+[node name="Root" type="Control" parent="." unique_id=931437088]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="PlayerBars" type="MarginContainer" parent="Root" unique_id=1118016446]
+layout_mode = 0
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Bars" type="VBoxContainer" parent="Root/PlayerBars" unique_id=1735225137]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HealthBar" type="ProgressBar" parent="Root/PlayerBars/Bars" unique_id=1610763943]
+custom_minimum_size = Vector2(320, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_8qguk")
+theme_override_styles/fill = SubResource("StyleBoxFlat_136eg")
+value = 100.0
+show_percentage = false
+
+[node name="StaminaBar" type="ProgressBar" parent="Root/PlayerBars/Bars" unique_id=413603689]
+custom_minimum_size = Vector2(320, 16)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_oj5la")
+theme_override_styles/fill = SubResource("StyleBoxFlat_gss2c")
+value = 100.0
+show_percentage = false
+
+[node name="TargetPanel" type="VBoxContainer" parent="Root" unique_id=284022606]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = 28.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="PostureBar" type="ProgressBar" parent="Root/TargetPanel" unique_id=2065373188]
+custom_minimum_size = Vector2(380, 12)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_h022r")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4jqwt")
+value = 100.0
+show_percentage = false
+
+[node name="TargetHealthBar" type="ProgressBar" parent="Root/TargetPanel" unique_id=1850872434]
+custom_minimum_size = Vector2(380, 5)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_kicr4")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mj13f")
+value = 100.0
+show_percentage = false
+
+[node name="Reticle" type="Control" parent="Root" unique_id=2011579283]
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("2_bo48s")
+
+[node name="MessagePanel" type="CenterContainer" parent="Root" unique_id=1517758298]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Texts" type="VBoxContainer" parent="Root/MessagePanel" unique_id=268231145]
+layout_mode = 2
+alignment = 1
+
+[node name="MessageLabel" type="Label" parent="Root/MessagePanel/Texts" unique_id=1611842691]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 10
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="Root/MessagePanel/Texts" unique_id=857450841]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 6
+horizontal_alignment = 1
