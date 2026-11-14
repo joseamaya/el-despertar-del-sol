@@ -140,6 +140,17 @@ func release_face_target(_reason: int = 0) -> void:
 	_face_target = null
 
 
+## Puts the player back at `at` (facing `yaw`), with control and no leftover motion.
+## Health and stamina are reset by whoever owns the encounter.
+func respawn(at: Vector3, yaw: float) -> void:
+	end_action()
+	set_speed_limit(-1.0)
+	_face_target = null
+	velocity = Vector3.ZERO
+	global_position = at
+	rotation.y = yaw
+
+
 ## Horizontal speed in m/s, ignoring falling.
 func get_horizontal_speed() -> float:
 	return Vector2(velocity.x, velocity.z).length()
