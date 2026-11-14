@@ -16,6 +16,7 @@ func before_test() -> void:
 	_w1 = _runner.find_child("Warrior1") as EnemyController
 	_w2 = _runner.find_child("Warrior2") as EnemyController
 	_w2.process_mode = Node.PROCESS_MODE_DISABLED
+	(_runner.find_child("Warrior3") as Node).process_mode = Node.PROCESS_MODE_DISABLED
 	_place_player(Vector3(18, 0.05, 18))
 	await _frames(3)
 

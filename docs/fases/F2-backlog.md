@@ -14,7 +14,7 @@ combate dudoso.
 | 6 | PostureComponent, aturdimiento y ejecución | Hecha |
 | 7 | Guerrero chanca: percepción y persecución (skill `enemy-from-resource` pasa a la tarea 8) | Hecha |
 | 8 | Guerrero chanca: ataques telegrafiados, bloqueo, retroceso, muerte; skill `enemy-from-resource` | Hecha |
-| 9 | EncounterDirector: 2 fichas de ataque | Pendiente |
+| 9 | EncounterDirector: 2 fichas de ataque | Hecha |
 | 10 | Arena de prueba, muerte y reinicio, HUD | Pendiente |
 | 11 | Sensación de combate; decidir animaciones Pro | Pendiente |
 | 12 | Rendimiento con 3–4 enemigos | Pendiente |

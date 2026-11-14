@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://scripts/enemies/states/enemy_block.gd" id="23_bpjby"]
 [ext_resource type="Script" path="res://scripts/enemies/states/enemy_retreat.gd" id="24_senw4"]
 [ext_resource type="Script" path="res://scripts/enemies/enemy_combat.gd" id="25_6y8sg"]
+[ext_resource type="Script" path="res://scripts/enemies/states/enemy_feint.gd" id="25_w38px"]
 [ext_resource type="Script" path="res://scripts/enemies/enemy_guard.gd" id="26_puxay"]
 [ext_resource type="Script" path="res://scripts/combat/hit_flash.gd" id="27_1ip3k"]
 
@@ -291,6 +292,9 @@ script = ExtResource("23_bpjby")
 
 [node name="retreat" type="Node" parent="States" unique_id=504334402]
 script = ExtResource("24_senw4")
+
+[node name="feint" type="Node" parent="States" unique_id=7172617]
+script = ExtResource("25_w38px")
 
 [node name="AttackTelegraph" type="Node3D" parent="." unique_id=590161061]
 

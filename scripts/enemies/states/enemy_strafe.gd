@@ -1,7 +1,8 @@
 class_name EnemyStrafe
 extends State
 ## Circles the target at engage distance, facing it and switching direction now and then.
-## Attacks from here whenever its attack cooldown is over.
+## Attacks from here when its cooldown is over and the director grants a token; without a
+## token it may feint and keeps circling (GDD §6.6).
 
 var _side: int = 1
 var _switch_left: float = 0.0
@@ -27,7 +28,11 @@ func physics_update(delta: float) -> StringName:
 	if enemy.distance_to(target) > enemy.data.engage_distance * 1.6:
 		return &"chase"
 	if enemy.combat != null and enemy.combat.is_ready():
-		return &"attack"
+		if enemy.director == null or enemy.director.request_token(enemy):
+			return &"attack"
+		enemy.combat.set_cooldown(enemy.data.token_retry)
+		if _rng.randf() < enemy.data.feint_chance:
+			return &"feint"
 	_switch_left -= delta
 	if _switch_left <= 0.0:
 		_side = -_side

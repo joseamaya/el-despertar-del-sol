@@ -15,6 +15,7 @@ func before_test() -> void:
 	_player = _runner.find_child("Player") as PlayerController
 	_w = _runner.find_child("Warrior1") as EnemyController
 	(_runner.find_child("Warrior2") as Node).process_mode = Node.PROCESS_MODE_DISABLED
+	(_runner.find_child("Warrior3") as Node).process_mode = Node.PROCESS_MODE_DISABLED
 	_use_own_data()
 	_player.global_position = Vector3(-8, 0.05, -2.4)
 	_player.rotation.y = 0.0

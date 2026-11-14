@@ -45,6 +45,12 @@ extends Resource
 ## Seconds between attacks (random in [min, max]).
 @export_range(0.0, 20.0, 0.1, "suffix:s") var attack_cooldown_min: float = 2.0
 @export_range(0.0, 20.0, 0.1, "suffix:s") var attack_cooldown_max: float = 3.5
+## Without an attack token, retry after this long (GDD §6.6: the rest feint and circle).
+@export_range(0.1, 10.0, 0.1, "suffix:s") var token_retry: float = 1.0
+## Chance of a feint (quick step in, no swing) when a token is refused.
+@export_range(0.0, 1.0, 0.01) var feint_chance: float = 0.4
+@export_range(0.0, 4.0, 0.1, "suffix:m") var feint_distance: float = 1.0
+@export_range(0.1, 12.0, 0.1, "suffix:m/s") var feint_speed: float = 4.5
 
 @export_group("Defensa y reacciones")
 ## Chance of raising the guard after taking a hit (GDD §7.2: occasional block).
