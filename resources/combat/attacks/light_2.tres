@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AttackData" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/attack_data.gd" id="1_e814x"]
+
+[resource]
+script = ExtResource("1_e814x")
+id = &"light_2"
+clip = &"Punch_Cross"
+windup_end = 0.13
+active_end = 0.29
+recovery_end = 0.62
+chain_from = 0.32
+lunge_distance = 0.4

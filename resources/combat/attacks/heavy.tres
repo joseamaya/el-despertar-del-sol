@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AttackData" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/attack_data.gd" id="1_npktr"]
+
+[resource]
+script = ExtResource("1_npktr")
+id = &"heavy"
+damage = 32.0
+posture_damage = 25.0
+stamina_cost = 25.0
+clip_speed = 0.8
+active_end = 0.54
+recovery_end = 1.1
+chain_from = 1.1
+lunge_distance = 1.2

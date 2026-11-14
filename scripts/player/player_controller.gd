@@ -27,6 +27,10 @@ var _sprint_locked: bool = false
 ## its move direction when going sideways or away (see LocomotionMath.locked_facing).
 var _face_target: Node3D
 
+## During an action (attack) input movement is ignored and the action drives velocity.
+var _in_action: bool = false
+var _action_velocity: Vector3 = Vector3.ZERO
+
 
 func _ready() -> void:
 	assert(tuning != null, "PlayerController needs a MovementTuning resource.")
@@ -37,6 +41,10 @@ func _physics_process(delta: float) -> void:
 	var reference_basis: Basis = camera.global_basis if camera != null else Basis.IDENTITY
 	var direction: Vector3 = LocomotionMath.camera_relative_direction(move_input, reference_basis)
 	var target: Vector3 = LocomotionMath.target_velocity(direction, is_sprinting, tuning)
+
+	if _in_action:
+		_physics_in_action(delta)
+		return
 
 	if is_sprinting and stamina != null:
 		stamina.drain_over_time(tuning.sprint_stamina_per_second, delta)
@@ -64,6 +72,44 @@ func _physics_process(delta: float) -> void:
 		rotation.y = LocomotionMath.smooth_yaw(rotation.y, target_yaw, tuning.turn_sharpness, delta)
 
 
+## Starts an action (attack): faces the lock target, else the move input direction, else
+## keeps the current facing. Movement input is ignored until end_action().
+func begin_action() -> void:
+	_in_action = true
+	is_sprinting = false
+	_action_velocity = Vector3.ZERO
+	var facing: Vector3 = Vector3.ZERO
+	if _face_target != null and is_instance_valid(_face_target):
+		facing = _face_target.global_position - global_position
+		facing.y = 0.0
+	else:
+		var reference: Basis = camera.global_basis if camera != null else Basis.IDENTITY
+		facing = LocomotionMath.camera_relative_direction(_current_move_input(), reference)
+	if facing.length_squared() > _FACING_MIN_SQ:
+		rotation.y = LocomotionMath.yaw_from_direction(facing)
+
+
+## Horizontal velocity imposed by the action (e.g. an attack's lunge).
+func set_action_velocity(value: Vector3) -> void:
+	_action_velocity = Vector3(value.x, 0.0, value.z)
+
+
+func end_action() -> void:
+	_in_action = false
+	_action_velocity = Vector3.ZERO
+
+
+func is_in_action() -> bool:
+	return _in_action
+
+
+## Flat forward direction the body faces.
+func get_action_forward() -> Vector3:
+	var forward: Vector3 = global_basis * Vector3.FORWARD
+	forward.y = 0.0
+	return forward.normalized()
+
+
 ## Keeps facing `target` (connect LockOnController.target_locked / target_switched).
 func set_face_target(target: Node3D) -> void:
 	_face_target = target
@@ -79,10 +125,28 @@ func get_horizontal_speed() -> float:
 	return Vector2(velocity.x, velocity.z).length()
 
 
-func _read_input() -> void:
-	move_input = Input.get_vector(
+func _physics_in_action(delta: float) -> void:
+	velocity.x = _action_velocity.x
+	velocity.z = _action_velocity.z
+	if not is_on_floor():
+		velocity.y -= tuning.gravity * delta
+	move_and_slide()
+	if _face_target != null and is_instance_valid(_face_target):
+		var to_target: Vector3 = _face_target.global_position - global_position
+		to_target.y = 0.0
+		if to_target.length_squared() > _FACING_MIN_SQ:
+			var yaw: float = LocomotionMath.yaw_from_direction(to_target)
+			rotation.y = LocomotionMath.smooth_yaw(rotation.y, yaw, tuning.turn_sharpness, delta)
+
+
+func _current_move_input() -> Vector2:
+	return Input.get_vector(
 		ACTION_MOVE_LEFT, ACTION_MOVE_RIGHT, ACTION_MOVE_FORWARD, ACTION_MOVE_BACK
 	)
+
+
+func _read_input() -> void:
+	move_input = _current_move_input()
 	var held: bool = Input.is_action_pressed(ACTION_SPRINT)
 	if not held:
 		_sprint_locked = false
