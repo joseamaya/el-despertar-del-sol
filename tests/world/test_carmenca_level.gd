@@ -96,3 +96,32 @@ func test_the_whole_path_can_be_walked() -> void:
 			return
 		# Never below the ground: falling through or off the sector.
 		assert_float(_player.global_position.y).is_greater(points[i].y - 2.0)
+
+
+func test_kit_dressing_is_in_place_and_cheap_to_draw() -> void:
+	var sector: Node3D = _level.sector
+	var meshes: int = sector.find_children("*", "MeshInstance3D", true, false).size()
+	var multis: Array[Node] = sector.find_children("*", "MultiMeshInstance3D", true, false)
+	# One draw call per mesh node (shadows double it): far below the 350 budget.
+	assert_int(meshes + multis.size()).is_less(60)
+	var rocks: int = 0
+	var edge: int = 0
+	for node: Node in multis:
+		var mm: MultiMesh = (node as MultiMeshInstance3D).multimesh
+		if node.name == "PathEdge":
+			edge = mm.instance_count
+		else:
+			rocks += mm.instance_count
+	assert_int(rocks).is_greater_equal(int(_level.layout.rock_count * 0.9))
+	assert_int(edge).is_greater(200)
+	assert_object(sector.get_node_or_null("Corral0")).is_not_null()
+	assert_object(sector.get_node_or_null("Channel")).is_not_null()
+
+
+func test_no_big_rock_inside_the_encounter_zones() -> void:
+	for size: int in [1, 2]:
+		var node := _level.sector.get_node("Rocks%d" % size) as MultiMeshInstance3D
+		for i: int in node.multimesh.instance_count:
+			var at: Vector3 = node.multimesh.get_instance_transform(i).origin
+			for e: Vector3 in _level.layout.encounters:
+				assert_float(Vector2(at.x, at.z).distance_to(Vector2(e.x, e.y))).is_greater(e.z)

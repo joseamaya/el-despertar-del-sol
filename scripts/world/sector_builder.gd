@@ -31,6 +31,7 @@ static func build(layout: SectorLayout, palette: PaletteTuning) -> Node3D:
 		_build_house(root, layout, palette, h, i)
 		i += 1
 	_build_huaca(root, layout, palette)
+	SectorDressing.dress(root, layout, palette)
 	_build_markers(root, layout)
 	return root
 
@@ -75,12 +76,12 @@ static func _build_ground(
 	var mesh: ArrayMesh = LowPolyMesh.ground_grid(
 		layout.size, cells, sample, palette.earth, palette.dry_grass, 7
 	)
-	_add_mesh(root, "Ground", mesh, palette, Vector3.ZERO)
+	add_mesh(root, "Ground", mesh, palette, Vector3.ZERO)
 	var shape := HeightMapShape3D.new()
 	shape.map_width = heights.width
 	shape.map_depth = heights.depth
 	shape.map_data = heights.data
-	var body := _static_body(root, "GroundBody")
+	var body := static_body(root, "GroundBody")
 	var col := CollisionShape3D.new()
 	col.shape = shape
 	body.add_child(col)
@@ -93,42 +94,25 @@ static func _build_terrace_wall(
 	var drop: float = step.z - step.y
 	var length: float = (layout.corridor_half_width(z_low) + drop / layout.side_grade + 1.0) * 2.0
 	var t: float = layout.wall_thickness
-	var mesh: ArrayMesh = LowPolyMesh.pirca_wall(
-		length, drop, t, int(z_low * 10.0), palette.stone_light, palette.stone_dark
-	)
+	var mesh: ArrayMesh = KitWalls.terrace_wall(length, drop, t, int(z_low * 10.0), palette)
 	var centre := Vector3(0.0, step.y, z_low - t * 0.5)
-	_add_mesh(root, "Terrace_%d" % int(z_low), mesh, palette, centre - Vector3(length * 0.5, 0, 0))
-	_add_box_collider(root, centre + Vector3(0, drop * 0.5, 0), Vector3(length, drop, t))
+	add_mesh(root, "Terrace_%d" % int(z_low), mesh, palette, centre - Vector3(length * 0.5, 0, 0))
+	add_box_collider(root, centre + Vector3(0, drop * 0.5, 0), Vector3(length, drop, t))
 
 
 ## Stone stairs wherever the path crosses a terrace step, on its downhill side, with a
 ## ramp collider: the player glides up and down instead of dropping step by step.
 static func _build_stairs(root: Node3D, layout: SectorLayout, palette: PaletteTuning) -> void:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 77
 	for step: Vector3 in layout.terrace_steps():
 		var x: float = layout.path_x_at(step.x)
 		if is_nan(x):
 			continue
 		var drop: float = step.z - step.y
-		var count: int = ceili(drop / STEP_RISE)
-		var rise: float = drop / count
-		var run: float = count * STEP_RUN
-		var st := SurfaceTool.new()
-		st.begin(Mesh.PRIMITIVE_TRIANGLES)
-		for k: int in count:
-			var top: float = step.y + rise * (k + 1)
-			var z_far: float = step.x + run - k * STEP_RUN
-			var tint: Color = palette.stone_light.lerp(palette.stone_dark, rng.randf())
-			LowPolyMesh.add_box(
-				st,
-				Vector3(x, step.y + (top - step.y) * 0.5, z_far - STEP_RUN * 0.5),
-				Vector3(STAIR_WIDTH, top - step.y, STEP_RUN),
-				tint,
-				rng,
-				0.02
-			)
-		_add_mesh(root, "Stairs_%d" % int(step.x), st.commit(), palette, Vector3.ZERO)
+		var run: float = ceili(drop / STEP_RISE) * STEP_RUN
+		var stairs: ArrayMesh = KitWalls.stairs(
+			drop, STAIR_WIDTH, STEP_RISE, STEP_RUN, int(step.x) + 77, palette
+		)
+		add_mesh(root, "Stairs_%d" % int(step.x), stairs, palette, Vector3(x, step.y, step.x))
 		var bottom := Vector3(x, step.y, step.x + run)
 		var top_edge := Vector3(x, step.z, step.x)
 		var along: Vector3 = top_edge - bottom
@@ -136,7 +120,7 @@ static func _build_stairs(root: Node3D, layout: SectorLayout, palette: PaletteTu
 		var box := BoxShape3D.new()
 		box.size = Vector3(STAIR_WIDTH, RAMP_THICKNESS, along.length())
 		ramp.shape = box
-		var body := _static_body(root, "Ramp_%d" % int(step.x))
+		var body := static_body(root, "Ramp_%d" % int(step.x))
 		body.add_child(ramp)
 		var forward: Vector3 = along.normalized()
 		var up: Vector3 = forward.cross(Vector3.RIGHT).normalized()
@@ -171,7 +155,7 @@ static func _build_path(
 			if absf(q[0].y - q[1].y) > 0.5 or absf(q[3].y - q[2].y) > 0.5:
 				continue
 			LowPolyMesh.add_quad(st, q[0], q[1], q[2], q[3], colour, Vector3.UP)
-	_add_mesh(root, "Path", st.commit(), palette, Vector3.ZERO)
+	add_mesh(root, "Path", st.commit(), palette, Vector3.ZERO)
 
 
 static func _build_boundary(
@@ -183,14 +167,12 @@ static func _build_boundary(
 	var base: float = minf(layout.height_at(a.x, a.y), layout.height_at(b.x, b.y)) - 0.3
 	var top: float = maxf(layout.height_at(a.x, a.y), layout.height_at(b.x, b.y))
 	var h: float = top - base + layout.boundary_height
-	var mesh: ArrayMesh = LowPolyMesh.pirca_wall(
-		length, h, 0.6, int(w.x * 7.0 + w.y), palette.stone_light, palette.stone_dark
-	)
-	var node := _add_mesh(root, "Boundary", mesh, palette, Vector3(a.x, base, a.y))
+	var mesh: ArrayMesh = KitWalls.boundary_wall(length, h, int(w.x * 7.0 + w.y), palette)
+	var node := add_mesh(root, "Boundary", mesh, palette, Vector3(a.x, base, a.y))
 	var angle: float = atan2(-(b.y - a.y), b.x - a.x)
 	node.rotation.y = angle
 	var mid := Vector3((a.x + b.x) * 0.5, base + h * 0.5, (a.y + b.y) * 0.5)
-	var col := _add_box_collider(root, mid, Vector3(length, h, 0.6))
+	var col := add_box_collider(root, mid, Vector3(length, h, 0.6))
 	col.rotation.y = angle
 
 
@@ -203,29 +185,23 @@ static func _build_house(
 	house.position = Vector3(h.x, layout.height_at(h.x, h.y), h.y)
 	house.rotation.y = deg_to_rad(h.z)
 	root.add_child(house)
-	var walls: ArrayMesh = LowPolyMesh.adobe_house_walls(
-		size, 0.4, Vector2(0.9, 1.7), palette.adobe, 30 + index
-	)
-	_add_mesh(house, "Walls", walls, palette, Vector3.ZERO)
-	var roof := _add_mesh(
-		house,
-		"Roof",
-		LowPolyMesh.gable_roof(size.z, size.x, 1.7, 0.45, palette.ichu),
-		palette,
-		Vector3(0, size.y, 0)
-	)
-	roof.rotation.y = PI * 0.5
-	_add_box_collider(house, Vector3(0, size.y * 0.5, 0), size)
+	add_mesh(house, "Mesh", KitBuildings.house(size, 30 + index, palette), palette, Vector3.ZERO)
+	add_box_collider(house, Vector3(0, size.y * 0.5, 0), size)
 
 
 static func _build_huaca(root: Node3D, layout: SectorLayout, palette: PaletteTuning) -> void:
 	var at := Vector3(
 		layout.huaca.x, layout.height_at(layout.huaca.x, layout.huaca.y), layout.huaca.y
 	)
-	_add_mesh(
-		root, "HuacaRock", LowPolyMesh.rock(1.1, 1.35, 40, palette.huaca_stone, 0.3), palette, at
-	)
-	var body := _static_body(root, "HuacaBody")
+	add_mesh(root, "HuacaMesh", KitBuildings.huaca(40, palette), palette, at)
+	# Low ring of pirca around it: colliders per segment, the opening stays walkable.
+	for seg: Array in KitWalls.corral_segments(2.6, 50.0):
+		var xf: Transform3D = seg[0]
+		var length: float = seg[1]
+		var mid: Vector3 = at + xf.origin + xf.basis.x * length * 0.5 + Vector3.UP * 0.3
+		var ring := add_box_collider(root, mid, Vector3(length, 0.6, 0.5))
+		ring.basis = xf.basis
+	var body := static_body(root, "HuacaBody")
 	body.position = at + Vector3(0, 1.4, 0)
 	var col := CollisionShape3D.new()
 	var cyl := CylinderShape3D.new()
@@ -254,7 +230,7 @@ static func _marker(
 	root.add_child(m)
 
 
-static func _add_mesh(
+static func add_mesh(
 	parent: Node3D, node_name: String, mesh: ArrayMesh, palette: PaletteTuning, at: Vector3
 ) -> MeshInstance3D:
 	var node := MeshInstance3D.new()
@@ -266,7 +242,7 @@ static func _add_mesh(
 	return node
 
 
-static func _static_body(parent: Node3D, body_name: String) -> StaticBody3D:
+static func static_body(parent: Node3D, body_name: String) -> StaticBody3D:
 	var body := StaticBody3D.new()
 	body.name = body_name
 	body.collision_layer = WORLD_LAYER
@@ -275,8 +251,8 @@ static func _static_body(parent: Node3D, body_name: String) -> StaticBody3D:
 	return body
 
 
-static func _add_box_collider(parent: Node3D, centre: Vector3, size: Vector3) -> StaticBody3D:
-	var body := _static_body(parent, "Collider")
+static func add_box_collider(parent: Node3D, centre: Vector3, size: Vector3) -> StaticBody3D:
+	var body := static_body(parent, "Collider")
 	body.position = centre
 	var col := CollisionShape3D.new()
 	var box := BoxShape3D.new()

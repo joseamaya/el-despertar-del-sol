@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/kit_catalog.gd" id="1_kedw7"]
+[ext_resource type="Resource" path="res://resources/style/palette_amanecer_calido.tres" id="2_jy12m"]
+
+[node name="KitCatalog" type="Node3D" unique_id=1957168931]
+script = ExtResource("1_kedw7")
+palette = ExtResource("2_jy12m")
