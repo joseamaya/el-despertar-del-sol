@@ -13,7 +13,7 @@ interacción con la huaca, NPC, narrativa, Apoyo, música y ambiente, checkpoint
 | 1 | Decisiones previas (`DECISIONS/0010`, licencias del escenario) | Hecha |
 | 2 | Medición de Carmenca con el equipo en reposo (deuda de F2) | Hecha: 73 FPS al 83 %, 79 al 75 %; sin regresión (A/B con F1) |
 | 3 | Guía visual de una página (paleta, escala, pirca/adobe/ichu, referencias) | Hecha: variante A · amanecer cálido |
-| 4 | Blockout del sector: relieve, terrazas, camino, huaca, 3 zonas de encuentro, límites; escalón de 0,25 m | En revisión: falta tu recorrido |
+| 4 | Blockout del sector: relieve, terrazas, camino, huaca, 3 zonas de encuentro, límites; escalón de 0,25 m | Hecha: recorrido del desarrollador (2026-11-16): «es largo, pero me gusta»; terrazas cansan pero bien; zonas de buen tamaño; el paso se siente como paso |
 | 5 | Kit modular v1 por script (10–15 piezas); proponer skill `godot-scene-audit` | Pendiente |
 | 6 | Paisaje lejano: apus, valle del Cusco, columnas de humo | Pendiente |
 | 7 | Luz de amanecer: cielo, niebla compatible con Mobile, sol rasante, sombras ~100 m | Pendiente |
