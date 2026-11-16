@@ -233,20 +233,35 @@ static func mountain(seed: int, colour: Color) -> ArrayMesh:
 static func ground(
 	size: Vector2, cells: int, height_at: Callable, low: Color, high: Color, seed: int
 ) -> ArrayMesh:
+	return ground_grid(size, Vector2i(cells, cells), height_at, low, high, seed)
+
+
+## Same as ground() with a different number of cells across X and Z (cells need not be
+## square). Heights are sampled once per vertex.
+static func ground_grid(
+	size: Vector2, cells: Vector2i, height_at: Callable, low: Color, high: Color, seed: int
+) -> ArrayMesh:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed
-	var st := _begin()
-	var step := Vector2(size.x / cells, size.y / cells)
+	var step := Vector2(size.x / cells.x, size.y / cells.y)
 	var origin := -size * 0.5
-	for ix: int in cells:
-		for iz: int in cells:
-			var p := PackedVector3Array()
-			for corner: Vector2 in [Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)]:
-				var xz: Vector2 = origin + Vector2(ix + corner.x, iz + corner.y) * step
-				p.append(Vector3(xz.x, float(height_at.call(xz)), xz.y))
+	var row: int = cells.x + 1
+	var grid := PackedVector3Array()
+	grid.resize(row * (cells.y + 1))
+	for iz: int in cells.y + 1:
+		for ix: int in row:
+			var xz: Vector2 = origin + Vector2(ix, iz) * step
+			grid[iz * row + ix] = Vector3(xz.x, float(height_at.call(xz)), xz.y)
+	var st := _begin()
+	for iz: int in cells.y:
+		for ix: int in cells.x:
+			var p0: Vector3 = grid[iz * row + ix]
+			var p1: Vector3 = grid[iz * row + ix + 1]
+			var p2: Vector3 = grid[(iz + 1) * row + ix + 1]
+			var p3: Vector3 = grid[(iz + 1) * row + ix]
 			var tint: Color = low.lerp(high, rng.randf())
-			add_tri(st, p[0], p[1], p[2], tint, Vector3.UP)
-			add_tri(st, p[0], p[2], p[3], tint.lightened(0.03), Vector3.UP)
+			add_tri(st, p0, p1, p2, tint, Vector3.UP)
+			add_tri(st, p0, p2, p3, tint.lightened(0.03), Vector3.UP)
 	return _end(st)
 
 

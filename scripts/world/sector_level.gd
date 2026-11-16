@@ -1,0 +1,67 @@
+class_name SectorLevel
+extends Node3D
+## A playable hillside sector (F3 task 4): builds the sector from its layout and palette
+## when it enters the tree, adds sky, fog and sun, and puts the player at the start
+## looking out over the valley.
+
+@export var layout: SectorLayout
+@export var palette: PaletteTuning
+@export var player: PlayerController
+@export var camera_rig: CameraController
+
+var sector: Node3D
+
+
+func _ready() -> void:
+	assert(layout != null and palette != null, "SectorLevel needs a layout and a palette.")
+	rebuild()
+
+
+## Builds (or rebuilds) the sector and places the player at the start.
+func rebuild() -> void:
+	if sector != null:
+		sector.free()
+	sector = SectorBuilder.build(layout, palette)
+	sector.rotation.y = deg_to_rad(layout.facing_deg)
+	add_child(sector)
+	_build_light()
+	if player != null:
+		# Deferred: the player and the camera rig are siblings that may not be ready yet.
+		place_player_at.call_deferred(&"Start", Vector3(0, 0, 1))
+
+
+## Global position of a marker built from the layout (Start, Huaca, Encounter1…).
+func marker_position(marker: StringName) -> Vector3:
+	return (sector.get_node(NodePath(marker)) as Marker3D).global_position
+
+
+## Converts a point of the layout (x, z) to a global position on the ground.
+func to_global_point(xz: Vector2) -> Vector3:
+	return sector.to_global(Vector3(xz.x, layout.height_at(xz.x, xz.y), xz.y))
+
+
+## Puts the player on a marker, facing `local_direction` (layout frame; +Z is downhill).
+func place_player_at(marker: StringName, local_direction: Vector3) -> void:
+	var facing: Vector3 = sector.global_basis * local_direction
+	var yaw: float = atan2(-facing.x, -facing.z)
+	player.respawn(marker_position(marker) + Vector3.UP * 0.1, yaw)
+	if camera_rig != null:
+		camera_rig.yaw = yaw
+		camera_rig.snap_to_target()
+
+
+func _build_light() -> void:
+	for old: Node in find_children("*", "WorldEnvironment", false, false):
+		old.free()
+	for old: Node in find_children("Sun", "DirectionalLight3D", false, false):
+		old.free()
+	var env := WorldEnvironment.new()
+	env.name = "WorldEnvironment"
+	env.environment = PaletteMaterials.environment_for(palette)
+	add_child(env)
+	var sun := DirectionalLight3D.new()
+	sun.name = "Sun"
+	PaletteMaterials.apply_sun(palette, sun)
+	# In world space, not in the rotated sector: the palette azimuth is a real compass
+	# direction (60° = from the east-south-east, a dawn sun).
+	add_child(sun)
