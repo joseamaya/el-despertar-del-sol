@@ -100,3 +100,36 @@ Orientativo, para no perder el margen; se vuelve a medir con el escenario real.
 - **Ruido:** una sola máquina con carga de fondo; el 1 % bajo varía mucho entre pasadas
   (p. ej. 27,8 frente a 60,0 en la misma variante). Las medias y el porcentaje de frames
   lentos son más estables.
+
+## Repetición al empezar F3 (2026-11-16)
+
+Pedida en el cierre de F2: aquella medición se hizo con el equipo muy cargado. Esta se
+hizo tras cerrar el navegador y otros programas pesados; quedó un proceso de fondo
+(`pytest`, ~1 núcleo) y la carga media osciló entre 5 y 10 en un i7-13700 de 24 hilos.
+Tres pasadas por configuración, renderer Mobile, salida a 1080p.
+
+| 3D al | FPS medio (3 pasadas) | Mediana | 1 % bajo (mediana) | Frames > 16,7 ms |
+| --- | --- | --- | --- | --- |
+| 83 % | 75,9 · 73,2 · 72,4 | **73,2** | 55,5 | 0,26–0,50 % |
+| 75 % | 76,0 · 84,1 · 79,0 | **79,0** | 60,2 | 0,16–0,55 % |
+| 100 % (una pasada) | 57,3 | — | 49,9 | 66,9 % |
+
+**¿Regresión respecto a F1 (83,6 al 83 %)?** No. Prueba A/B en las mismas condiciones,
+alternando el commit del cierre de F1 (`d50db34`) y `main`:
+
+| Pasada | Commit F1 | `main` |
+| --- | --- | --- |
+| 1 | 77,7 FPS · 0,56 % lentos | 75,3 FPS · 0,31 % lentos |
+| 2 | 78,8 FPS · 0,08 % lentos | 76,9 FPS · 0,13 % lentos |
+
+El código de F2 no cambió el render ni esta escena (solo acciones de input, traducciones y
+el nombre de una capa de física); la diferencia de 1–3 FPS cabe en el ruido. Las cifras más
+altas de F1 se deben al estado del equipo aquel día.
+
+**Línea base para F3:**
+- **73 FPS al 83 % y 79 al 75 %**, con menos del 1 % de frames por encima de 16,7 ms en las
+  dos configuraciones. Cumple, pero el margen sobre 60 FPS es menor del que se creía en F1
+  (unos 13 FPS al 83 %).
+- A 1080p nativos sigue sin llegar (57 FPS): confirma `DECISIONS/0005`.
+- Para comparar escenas de F3, medir siempre por pares A/B en la misma sesión: el ruido
+  entre días (±10 FPS) es mayor que muchos de los cambios que se quieren evaluar.

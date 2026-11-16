@@ -44,10 +44,12 @@ jobs:
           version: installed
           paths: res://tests
           timeout: 10
-          # The check-run report (dorny/test-reporter) failed with HTTP 404 on push to
-          # main after the F1 close-out merge, although all tests passed. Publish it only
-          # on PRs, where it is read; the report is still uploaded as an artifact.
-          publish-report: ${{ github.event_name == 'pull_request' }}
+          # The check-run report (dorny/test-reporter) fails with HTTP 404 when it updates
+          # its own check run, although all tests pass: first on push to main (F1
+          # close-out), then on PR #27 (F3). It is a convenience view, so it stays off.
+          # Failing tests still fail this job (non-zero exit code), and the JUnit report
+          # is still uploaded as an artifact (artifact_test-report.xml).
+          publish-report: false
 
   export:
     name: Export ${{ matrix.preset }}
