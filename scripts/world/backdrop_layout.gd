@@ -35,6 +35,10 @@ extends Resource
 @export_range(0.0, 0.01, 0.00005) var haze: float = 0.00045
 ## Camera far plane needed to see the whole backdrop.
 @export_range(1000.0, 20000.0, 100.0, "suffix:m") var view_distance: float = 7000.0
+## Darkening of far faces turned away from the sun (baked; the backdrop is unshaded).
+@export_range(0.0, 1.0, 0.01) var sun_shading: float = 0.35
+## Overall brightness of the unshaded backdrop, to sit with the lit foreground.
+@export_range(0.3, 1.5, 0.01) var far_brightness: float = 0.85
 @export var seed: int = 11
 
 

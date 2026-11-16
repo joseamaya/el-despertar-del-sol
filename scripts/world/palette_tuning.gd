@@ -53,5 +53,25 @@ extends Resource
 @export_range(-180.0, 180.0, 1.0, "suffix:°") var sun_azimuth_deg: float = 60.0
 @export var ambient_color: Color = Color(0.55, 0.6, 0.7)
 @export_range(0.0, 2.0, 0.05) var ambient_energy: float = 0.5
+## Share of the ambient light taken from the sky instead of `ambient_color` (0..1). The
+## sky warms the shadows at dawn; a flat blue alone turns dry grass green.
+@export_range(0.0, 1.0, 0.05) var ambient_sky_contribution: float = 0.0
 ## Sun shadow distance; ~100 m keeps the proxy budget (docs/rendimiento).
 @export_range(10.0, 500.0, 5.0, "suffix:m") var shadow_distance: float = 100.0
+## Shadow biases: a low sun grazes the ground and needs more normal bias against acne.
+@export_range(0.0, 2.0, 0.01) var shadow_bias: float = 0.1
+@export_range(0.0, 10.0, 0.1) var shadow_normal_bias: float = 2.0
+
+@export_group("Fill light")
+## Bounce from the sky on the side opposite the sun, without shadows (cheap). Energy 0
+## turns it off.
+@export var fill_color: Color = Color(0.7, 0.72, 0.8)
+@export_range(0.0, 2.0, 0.05) var fill_energy: float = 0.0
+@export_range(1.0, 89.0, 0.5, "suffix:°") var fill_elevation_deg: float = 35.0
+
+@export_group("Glow")
+## Soft bloom around the sun and the bright sky (supported by the Mobile renderer).
+@export var glow_enabled: bool = false
+@export_range(0.0, 2.0, 0.05) var glow_intensity: float = 0.4
+@export_range(0.0, 1.0, 0.01) var glow_bloom: float = 0.05
+@export_range(0.0, 4.0, 0.05) var glow_threshold: float = 1.0

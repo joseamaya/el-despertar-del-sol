@@ -76,3 +76,17 @@ func test_backdrop_adds_few_draw_calls() -> void:
 	# Valley + one mesh per neighbourhood + apus + smoke columns.
 	assert_int(nodes).is_equal(1 + b.neighbourhoods + b.apus.size() + b.smoke.size())
 	assert_int(nodes).is_less(25)
+
+
+func test_baked_sun_darkens_faces_turned_away() -> void:
+	var st := LowPolyMesh.begin()
+	var up := Vector3.UP
+	LowPolyMesh.add_tri(st, Vector3(0, 0, 0), Vector3(1, 0, 0), Vector3(0, 0, 1), Color.WHITE, up)
+	LowPolyMesh.add_tri(
+		st, Vector3(0, -1, 0), Vector3(1, -1, 0), Vector3(0, -1, 1), Color.WHITE, -up
+	)
+	var mesh: ArrayMesh = LowPolyMesh.end(st)
+	BackdropBuilder.bake_sun(mesh, Vector3.UP, 0.4, 1.0)
+	var colours: PackedColorArray = mesh.surface_get_arrays(0)[Mesh.ARRAY_COLOR]
+	assert_float(colours[0].r).is_greater(0.95)
+	assert_float(colours[3].r).is_less(0.65)

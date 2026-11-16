@@ -13,8 +13,14 @@ static func material_for(palette: PaletteTuning, role: Role) -> StandardMaterial
 	mat.metallic_specular = 0.2
 	mat.albedo_color = color_for(palette, role)
 	mat.vertex_color_use_as_albedo = role == Role.VERTEX or role == Role.FAR
-	# FAR: distant scenery (apus) whose vertex colour already includes the atmosphere.
+	# FAR: distant scenery whose vertex colour already carries the haze and a baked
+	# sun shading: no fog and no lighting, so the dawn ambient cannot turn the blue apus
+	# brown (docs/guia-visual.md, «azules atmosféricos»).
 	mat.disable_fog = role == Role.FAR
+	if role == Role.FAR:
+		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		# Palette colours are sRGB; without this an unshaded vertex colour shows paler.
+		mat.vertex_color_is_srgb = true
 	return mat
 
 
@@ -49,8 +55,9 @@ static func environment_for(palette: PaletteTuning) -> Environment:
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
 	env.sky = sky
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	env.ambient_light_color = palette.ambient_color
+	env.ambient_light_sky_contribution = palette.ambient_sky_contribution
 	env.ambient_light_energy = palette.ambient_energy
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	env.fog_enabled = true
@@ -59,6 +66,10 @@ static func environment_for(palette: PaletteTuning) -> Environment:
 	env.fog_height = palette.fog_height
 	env.fog_height_density = palette.fog_height_density
 	env.fog_sky_affect = 0.3
+	env.glow_enabled = palette.glow_enabled
+	env.glow_intensity = palette.glow_intensity
+	env.glow_bloom = palette.glow_bloom
+	env.glow_hdr_threshold = palette.glow_threshold
 	return env
 
 
@@ -69,3 +80,30 @@ static func apply_sun(palette: PaletteTuning, sun: DirectionalLight3D) -> void:
 	sun.rotation_degrees = Vector3(-palette.sun_elevation_deg, palette.sun_azimuth_deg, 0.0)
 	sun.shadow_enabled = true
 	sun.directional_shadow_max_distance = palette.shadow_distance
+	sun.shadow_bias = palette.shadow_bias
+	sun.shadow_normal_bias = palette.shadow_normal_bias
+
+
+## Direction towards the sun (unit vector, world space) for the palette.
+static func sun_direction(palette: PaletteTuning) -> Vector3:
+	var basis := Basis.from_euler(
+		Vector3(deg_to_rad(-palette.sun_elevation_deg), deg_to_rad(palette.sun_azimuth_deg), 0.0)
+	)
+	return basis * Vector3.BACK
+
+
+## Fill light: opposite the sun in azimuth, higher, no shadows. Returns null when the
+## palette has none.
+static func fill_light(palette: PaletteTuning) -> DirectionalLight3D:
+	if palette.fill_energy <= 0.0:
+		return null
+	var fill := DirectionalLight3D.new()
+	fill.name = "Fill"
+	fill.light_color = palette.fill_color
+	fill.light_energy = palette.fill_energy
+	fill.rotation_degrees = Vector3(
+		-palette.fill_elevation_deg, palette.sun_azimuth_deg + 180.0, 0.0
+	)
+	fill.shadow_enabled = false
+	fill.light_specular = 0.0
+	return fill
