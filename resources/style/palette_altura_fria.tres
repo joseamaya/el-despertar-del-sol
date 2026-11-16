@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="PaletteTuning" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/palette_tuning.gd" id="1_3lrse"]
+
+[resource]
+script = ExtResource("1_3lrse")
+stone_light = Color(0.6, 0.6, 0.58, 1)
+stone_dark = Color(0.36, 0.37, 0.37, 1)
+huaca_stone = Color(0.44, 0.42, 0.4, 1)
+adobe = Color(0.6, 0.5, 0.4, 1)
+earth = Color(0.45, 0.38, 0.31, 1)
+dry_grass = Color(0.52, 0.53, 0.36, 1)
+ichu = Color(0.66, 0.6, 0.42, 1)
+mountain = Color(0.5, 0.56, 0.66, 1)
+sky_top = Color(0.35, 0.52, 0.78, 1)
+sky_horizon = Color(0.75, 0.8, 0.86, 1)
+ground_horizon = Color(0.5, 0.52, 0.55, 1)
+fog_color = Color(0.74, 0.8, 0.86, 1)
+fog_density = 0.0025
+fog_height = -45.0
+fog_height_density = 0.08
+sun_color = Color(1, 0.93, 0.82, 1)
+sun_energy = 1.1
+sun_elevation_deg = 22.0
+ambient_color = Color(0.6, 0.66, 0.76, 1)
+ambient_energy = 0.6
