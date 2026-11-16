@@ -16,8 +16,8 @@ combate dudoso.
 | 8 | Guerrero chanca: ataques telegrafiados, bloqueo, retroceso, muerte; skill `enemy-from-resource` | Hecha |
 | 9 | EncounterDirector: 2 fichas de ataque | Hecha |
 | 10 | Arena de prueba, muerte y reinicio, HUD | Hecha |
-| 11 | Sensación de combate; decidir animaciones Pro | En curso: A (impacto y sonido) hecha; B (sesiones de prueba) y C (animaciones) pendientes |
-| 12 | Rendimiento con 3–4 enemigos | Pendiente |
+| 11 | Sensación de combate; decidir animaciones Pro | Hecha: A (impacto y sonido), B (partida del desarrollador: «está genial», 2026-11-16), C (sin Pro por ahora, `DECISIONS/0008`) |
+| 12 | Rendimiento con 3–4 enemigos | Hecha (`docs/rendimiento/2026-11-arena-combate.md`) |
 | 13 | Cierre de F2 con `phase-gate` y recálculo del plan | Pendiente |
 
 Deudas heredadas de F1: `docs/fases/F1-movimiento-y-camara.md`, sección «Pasa a F2».
