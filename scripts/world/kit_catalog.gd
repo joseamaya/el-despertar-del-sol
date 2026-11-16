@@ -1,18 +1,48 @@
 class_name KitCatalog
 extends Node3D
 ## Shows every piece of the modular kit in a row with its name, lit with a palette, for
-## review (F3 task 5). Open scenes/tests/kit_catalog.tscn in the editor or run it.
+## review (F3 task 5). Run scenes/tests/kit_catalog.tscn: A/D (or the left stick) move
+## along the row, W/S move closer or away, arrows (or the right stick) turn the view.
 
 const SPACING: float = 7.0
+const MOVE_SPEED: float = 8.0
+const TURN_SPEED: float = 1.6
+const START_VIEW := Vector3(0.0, 3.2, 9.0)
 
 @export var palette: PaletteTuning
 
+var camera: Camera3D
 var _pieces: Node3D
+var _yaw: float = 0.0
+var _pitch: float = -0.22
 
 
 func _ready() -> void:
 	assert(palette != null, "KitCatalog needs a palette.")
 	rebuild()
+	camera = Camera3D.new()
+	camera.name = "ReviewCamera"
+	camera.position = START_VIEW
+	add_child(camera)
+	camera.make_current()
+	_apply_view()
+
+
+func _process(delta: float) -> void:
+	var move: Vector2 = Input.get_vector(&"move_left", &"move_right", &"move_forward", &"move_back")
+	var look: Vector2 = Input.get_vector(&"look_left", &"look_right", &"look_up", &"look_down")
+	if move.is_zero_approx() and look.is_zero_approx():
+		return
+	_yaw -= look.x * TURN_SPEED * delta
+	_pitch = clampf(_pitch - look.y * TURN_SPEED * delta, -1.2, 0.6)
+	var flat := Basis(Vector3.UP, _yaw)
+	camera.position += flat * Vector3(move.x, 0.0, move.y) * MOVE_SPEED * delta
+	camera.position.y = maxf(camera.position.y, 0.5)
+	_apply_view()
+
+
+func _apply_view() -> void:
+	camera.rotation = Vector3(_pitch, _yaw, 0.0)
 
 
 func rebuild() -> void:

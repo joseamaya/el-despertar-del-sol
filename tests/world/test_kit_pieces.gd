@@ -98,3 +98,15 @@ func test_catalog_scene_builds() -> void:
 	await runner.simulate_frames(2)
 	var meshes: Array[Node] = runner.scene().find_children("*", "MeshInstance3D", true, false)
 	assert_int(meshes.size()).is_equal(KitCatalog.pieces(_p).size() + 1)
+
+
+func test_catalog_has_a_review_camera_that_moves() -> void:
+	var runner := scene_runner("res://scenes/tests/kit_catalog.tscn")
+	var catalog := runner.scene() as KitCatalog
+	await runner.simulate_frames(2)
+	assert_bool(catalog.camera.current).is_true()
+	var before: Vector3 = catalog.camera.position
+	Input.action_press(&"move_right")
+	await runner.simulate_frames(20)
+	Input.action_release(&"move_right")
+	assert_float(catalog.camera.position.x).is_greater(before.x)
