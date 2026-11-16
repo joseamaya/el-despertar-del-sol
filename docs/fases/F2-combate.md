@@ -1,6 +1,8 @@
 # F2 · Combate — nota de cierre
 
-**Fechas:** 2026-11-13 – 2026-11-16 · **Estado:** pendiente de confirmación del desarrollador
+**Fechas:** 2026-11-13 – 2026-11-16 · **Estado:** cerrada
+
+Criterio de salida confirmado por el desarrollador el 2026-11-16.
 
 ## Criterio de salida (GDD §15)
 
@@ -109,7 +111,7 @@ de Carmenca con el equipo en reposo al empezar F3**, que es la fase que depende 
 - **Equilibrio a largo plazo:** el criterio se juzgó en una sesión de juego; la frecuencia de
   ejecuciones y la dificultad con 2 fichas solo tienen esa partida y la del bot.
 
-## Recálculo del plan (GDD §15) — propuesta para decidir
+## Recálculo del plan (GDD §15)
 
 El GDD pide recalcular al cerrar F2. Ritmo real: F0, F1 y F2 (11 semanas estimadas) se
 hicieron entre el 2026-11-13 y el 2026-11-16. Ese ritmo **no se traslada tal cual** a lo que
@@ -127,9 +129,9 @@ queda:
 | F5 · Prueba externa | 2 sem | 2 sem | Depende de los probadores |
 | **Total restante** | **12 sem** | **8 sem** | |
 
-La regla del 50 % se aplicaría sobre la nueva estimación: si F3 pasa de 4,5 semanas, se
-recorta alcance. **La decide el desarrollador**; si la acepta, se actualiza la tabla del
-GDD §15 en este PR.
+**Adoptada por el desarrollador el 2026-11-16** (`DECISIONS/0009`; GDD 1.3, §15). La regla
+del 50 % se aplica sobre la nueva estimación: si F3 pasa de 4,5 semanas, se recorta
+alcance.
 
 ## Pasa a F3 · Escenario de Carmenca
 
