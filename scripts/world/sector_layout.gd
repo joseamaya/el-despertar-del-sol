@@ -36,6 +36,15 @@ const STEP_MAX_RUN: float = 1.5
 @export var encounters: PackedVector3Array = PackedVector3Array()
 ## Houses: (x, z, yaw in degrees).
 @export var houses: PackedVector3Array = PackedVector3Array()
+## Corrals: (x, z, radius); opening downhill (+Z).
+@export var corrals: PackedVector3Array = PackedVector3Array()
+## Crags framing the pass: (x, z, height).
+@export var crags: PackedVector3Array = PackedVector3Array()
+## Irrigation channel: points (x, z) along a terrace.
+@export var channel: PackedVector2Array = PackedVector2Array()
+## Loose rocks scattered over the sector (deterministic).
+@export_range(0, 2000, 1) var rock_count: int = 160
+@export var rock_seed: int = 3
 ## Rotation of the whole sector around Y (degrees) so that local -Z faces the real uphill.
 @export_range(-180.0, 180.0, 1.0, "suffix:°") var facing_deg: float = 45.0
 
@@ -105,6 +114,17 @@ func path_x_at(z: float) -> float:
 		if (a.y - z) * (b.y - z) <= 0.0 and not is_equal_approx(a.y, b.y):
 			return lerpf(a.x, b.x, (z - a.y) / (b.y - a.y))
 	return NAN
+
+
+## Horizontal distance from a point (x, z) to the path.
+func distance_to_path(xz: Vector2) -> float:
+	var best: float = INF
+	for i: int in range(path.size() - 1):
+		var a: Vector2 = path[i]
+		var ab: Vector2 = path[i + 1] - a
+		var t: float = clampf((xz - a).dot(ab) / maxf(ab.length_squared(), 1e-6), 0.0, 1.0)
+		best = minf(best, xz.distance_to(a + ab * t))
+	return best
 
 
 ## Total length of the path in metres (horizontal).

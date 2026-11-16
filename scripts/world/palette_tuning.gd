@@ -16,6 +16,8 @@ extends Resource
 @export var dry_grass: Color = Color(0.6, 0.55, 0.34)
 ## Ichu thatch on roofs.
 @export var ichu: Color = Color(0.72, 0.6, 0.36)
+## Water in irrigation channels (acequias).
+@export var water: Color = Color(0.36, 0.48, 0.55)
 ## Far mountains (apus), atmosphere included: they are drawn without fog.
 @export var mountain: Color = Color(0.42, 0.45, 0.55)
 
