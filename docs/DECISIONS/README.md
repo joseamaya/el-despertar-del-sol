@@ -15,3 +15,4 @@ que la cite.
 | 0007 | Reglas de resistencia y animaciones para F2 | Aceptada |
 | 0008 | Animaciones gratuitas en F2 (sin UAL1 Pro por ahora) | Aceptada |
 | 0009 | Recálculo del plan al cerrar F2 | Aceptada |
+| 0010 | Producción del escenario de Carmenca en F3 | Aceptada |
