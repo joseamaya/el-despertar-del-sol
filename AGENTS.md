@@ -6,11 +6,13 @@ manda el GDD y se avisa al desarrollador.
 
 ## Fase actual
 
-**F2 · Combate** (6 semanas). Criterio de salida: pelear contra 3 guerreros es divertido
-(GDD §15). Si el combate no convence, se itera aquí: nunca se pasa a F3 con un combate dudoso.
+**F3 · Escenario de Carmenca** (3 semanas, recalculado en `docs/DECISIONS/0009`). Criterio
+de salida: recorrible a 60 FPS y reconocible andino (GDD §15). Si se pasa un 50 % de la
+estimación, se recorta alcance.
 Solo se trabaja en el alcance de la fase actual. Nada de la fase siguiente se adelanta.
-Deudas heredadas de F1: sección «Pasa a F2» de `docs/fases/F1-movimiento-y-camara.md`.
-Fases cerradas: F0 (`docs/fases/F0-preproduccion.md`), F1 (`docs/fases/F1-movimiento-y-camara.md`).
+Deudas heredadas de F2: sección «Pasa a F3» de `docs/fases/F2-combate.md`.
+Fases cerradas: F0 (`docs/fases/F0-preproduccion.md`), F1 (`docs/fases/F1-movimiento-y-camara.md`),
+F2 (`docs/fases/F2-combate.md`).
 Al cambiar de fase, el desarrollador actualiza esta sección.
 
 ## Stack fijado

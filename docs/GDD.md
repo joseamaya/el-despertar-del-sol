@@ -1,4 +1,4 @@
-# GDD 1.2 — Pachacútec: El Despertar del Sol
+# GDD 1.3 — Pachacútec: El Despertar del Sol
 
 13 de noviembre de 2026 · Miguel Amaya
 
@@ -26,6 +26,7 @@ El GDD 1.1 ajusta el proyecto a un desarrollador solo con agentes de IA y fija u
 
 | Versión | Cambios principales |
 | --- | --- |
+| 1.3 | Plan recalculado al cerrar la Fase 2 (§15): F3 y F4 pasan de 5 a 3 semanas (`DECISIONS/0009`). |
 | 1.2 | Decisiones de Fase 0: Godot 4.7.2, gdUnit4, renderer Mobile, equipo de referencia con GPU integrada, 20 h/semana, carpeta raíz `el-despertar-del-sol/`. |
 | 1.1 | Canon histórico fijado (sección 3). Core loop. Sistema de Apoyo para la progresión política. Lock-on, mando y tabla de tuning. Guardado, accesibilidad y localización. Vertical slice con gancho cultural. Plan y alcance para desarrollador solo. Riesgos ampliados. Glosario. |
 | 1.0 | Propuesta inicial de preproducción. |
@@ -571,15 +572,15 @@ Mundo abierto, inventario, árbol de habilidades, honderos, jefes, Pururaucas co
 
 ## 15. Plan de desarrollo
 
-Con unas 20 horas por semana, el vertical slice está listo en unas 23 semanas (5–6 meses). Es una estimación de partida: se recalcula al cerrar la Fase 2.
+Con unas 20 horas por semana, el vertical slice estaba estimado en unas 23 semanas (5–6 meses). Al cerrar la Fase 2 (2026-11-16) se recalculó: F0–F2 se completaron en 4 días con agentes, y las fases que quedan suman 8 semanas (`DECISIONS/0009`).
 
 | Fase | Duración | Criterio de salida |
 | --- | --- | --- |
 | F0 · Preproducción | 2 sem | GDD, AGENTS.md, repo, CI y Godot fijados |
 | F1 · Movimiento y cámara | 3 sem | Moverse y fijar objetivo se siente bien |
 | F2 · Combate | 6 sem | Pelear contra 3 guerreros es divertido |
-| F3 · Escenario de Carmenca | 5 sem | Recorrible a 60 FPS y reconocible andino |
-| F4 · Integración del slice | 5 sem | 8–12 min completos en build exportada |
+| F3 · Escenario de Carmenca | 3 sem | Recorrible a 60 FPS y reconocible andino |
+| F4 · Integración del slice | 3 sem | 8–12 min completos en build exportada |
 | F5 · Prueba externa | 2 sem | Decidir: continuar, ajustar o recortar |
 
 Si el combate no convence al cerrar la Fase 2, se itera ahí antes de producir escenario; nunca se avanza a la Fase 3 con un combate dudoso.
@@ -591,7 +592,7 @@ Si el combate no convence al cerrar la Fase 2, se itera ahí antes de producir e
 - Si una fase se pasa un 50 % de su estimación, se recorta alcance, no se añade tiempo.
 - Publicar avances (vídeos cortos, devlog) desde la Fase 2 para medir interés y mantener la motivación.
 
-**Dedicación fijada en Fase 0:** unas 20 horas por semana; las estimaciones de la tabla se mantienen.
+**Dedicación fijada en Fase 0:** unas 20 horas por semana. F0–F2 conservan su estimación original en la tabla; F3 y F4 son las recalculadas al cerrar la Fase 2.
 
 ## 16. Producción con agentes de IA
 
