@@ -38,6 +38,10 @@ Columna vertebral: Juan de Betanzos, *Suma y narración de los incas* (1551).
 | Quipucamayoc narrador (nombre por definir) | Personaje inventado | GDD §5.2 |
 | Pintura facial chanca | Inventada pero coherente | GDD §5.3 |
 | Arquitectura de 1438 modesta (pirca, adobe, ichu) frente a la cantería posterior | Interpretación de diseño; revisar con especialista | GDD §10.2 |
+| Disposición del sector de Carmenca (terrazas, camino, casas) | Licencia del juego: no reproduce un trazado real; revisar con especialista | F3, `DECISIONS/0010` |
+| Forma de la huaca del slice: roca natural destacada con pirca baja y ofrendas | Licencia del juego hasta consultarlo; revisar con especialista | F3, `DECISIONS/0010` |
+| Carmenca en la ladera noroeste sobre el Cusco (actual Santa Ana), con el valle hacia el sureste | Documentado, **a verificar con mapa** antes de fijar el blockout; revisar con especialista | F3, `DECISIONS/0010` |
+| Sin la fortaleza de Sacsayhuamán en 1438 (obra posterior) | Interpretación de diseño; revisar con especialista | F3, GDD §10.2 |
 
 ## Lo que no se cambia (GDD §3.5)
 
