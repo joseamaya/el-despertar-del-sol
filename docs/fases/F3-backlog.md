@@ -15,7 +15,7 @@ interacción con la huaca, NPC, narrativa, Apoyo, música y ambiente, checkpoint
 | 3 | Guía visual de una página (paleta, escala, pirca/adobe/ichu, referencias) | Hecha: variante A · amanecer cálido |
 | 4 | Blockout del sector: relieve, terrazas, camino, huaca, 3 zonas de encuentro, límites; escalón de 0,25 m | Hecha: recorrido del desarrollador (2026-11-16): «es largo, pero me gusta»; terrazas cansan pero bien; zonas de buen tamaño; el paso se siente como paso |
 | 5 | Kit modular v1 por script (10–15 piezas); proponer skill `godot-scene-audit` | Hecha: 12 piezas en el catálogo, Carmenca vestida; skill `godot-scene-audit` creada |
-| 6 | Paisaje lejano: apus, valle del Cusco, columnas de humo | Hecha: valle con parcelas, Cusco en 7 barrios, 10 apus genéricos, 4 columnas de humo |
+| 6 | Paisaje lejano: apus, valle del Cusco, columnas de humo | Hecha: valle con parcelas, Cusco en 7 barrios, 10 apus genéricos, 4 columnas de humo; vista de apertura aprobada por el desarrollador (2026-11-16) |
 | 7 | Luz de amanecer: cielo, niebla compatible con Mobile, sol rasante, sombras ~100 m | Pendiente |
 | 8 | Vegetación y detalle: ichu y rocas con MultiMesh y rangos de visibilidad | Pendiente |
 | 9 | Combate en el escenario: navmesh, guerreros en las zonas, pendientes | Pendiente |
