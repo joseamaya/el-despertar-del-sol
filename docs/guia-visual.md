@@ -1,6 +1,7 @@
 # Guía visual — Carmenca, c. 1438
 
-**Estado:** borrador, pendiente de que el desarrollador elija la variante · F3, tarea 3.
+**Estado:** aceptada · **variante A · Amanecer cálido**, elegida por el desarrollador el
+2026-11-16 · F3, tarea 3.
 Fuente: GDD §10 (dirección artística) y §14 (vertical slice). Decisiones:
 `DECISIONS/0010` (arte por script) y `HISTORICAL_REFERENCES.md` (licencias del escenario).
 
@@ -30,7 +31,9 @@ godot --path . -s res://tools/capture_style.gd -- --out=docs/img/guia-visual \
 ## Paleta
 
 Cada color vive en un `PaletteTuning` (`resources/style/palette_*.tres`); los generadores no
-llevan colores en el código. La variante elegida pasará a ser la paleta del escenario.
+llevan colores en el código. **La paleta del escenario es
+`resources/style/palette_amanecer_calido.tres`** (columna A). B y C se conservan como
+referencia de lo que se descartó.
 
 | Campo | A · Amanecer cálido | B · Altura fría | C · Contraste |
 | --- | --- | --- | --- |
@@ -95,8 +98,7 @@ paisaje se queda en ocres, grises y verdes secos para que los personajes se lean
 
 ## Preguntas abiertas (decide el desarrollador)
 
-1. **Variante:** A, B, C o una mezcla (p. ej. la luz de C con la piedra de A).
-2. **Puertas trapezoidales:** muy reconocibles como andinas, pero pueden ser más propias de
+1. **Puertas trapezoidales:** muy reconocibles como andinas, pero pueden ser más propias de
    la arquitectura imperial posterior que de 1438. Por defecto se usan puertas
    rectangulares; si se adoptan las trapezoidales, se registra como licencia en
    `HISTORICAL_REFERENCES.md`.
