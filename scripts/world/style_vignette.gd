@@ -73,11 +73,11 @@ func _build_ground() -> void:
 	var high: Color = palette.dry_grass
 	# Uphill, behind the upper terrace: rises gently.
 	var upper := func(xz: Vector2) -> float: return maxf(0.0, (xz.y + 15.0 - 4.0) * 0.18)
-	_add_mesh(LowPolyMesh.ground(Vector2(60, 30), 20, upper, low, high, 1), Vector3(0, 0, 15))
+	_add_mesh(LowPolyTerrain.ground(Vector2(60, 30), 20, upper, low, high, 1), Vector3(0, 0, 15))
 	# Lower terrace top: flat, mostly earth.
 	var flat := func(_xz: Vector2) -> float: return 0.0
 	_add_mesh(
-		LowPolyMesh.ground(Vector2(WALL_LENGTH, 6), 12, flat, low, low.lerp(high, 0.4), 2),
+		LowPolyTerrain.ground(Vector2(WALL_LENGTH, 6), 12, flat, low, low.lerp(high, 0.4), 2),
 		Vector3(0, -TERRACE_DROP, -3)
 	)
 	# Below the lower terrace the hillside falls towards the valley.
@@ -85,12 +85,12 @@ func _build_ground() -> void:
 		var below: float = -(xz.y - 40.0)
 		return -below * 0.45 + sin(xz.x * 0.3) * 0.6
 	_add_mesh(
-		LowPolyMesh.ground(Vector2(90, 80), 24, slope, low, high, 3),
+		LowPolyTerrain.ground(Vector2(90, 80), 24, slope, low, high, 3),
 		Vector3(0, -TERRACE_DROP * 2.0, -46)
 	)
 	var floor_fn := func(_xz: Vector2) -> float: return 0.0
 	_add_mesh(
-		LowPolyMesh.ground(Vector2(6000, 3000), 16, floor_fn, high, high.lerp(low, 0.5), 4),
+		LowPolyTerrain.ground(Vector2(6000, 3000), 16, floor_fn, high, high.lerp(low, 0.5), 4),
 		Vector3(0, VALLEY_Y, -1580)
 	)
 
@@ -174,7 +174,7 @@ func _build_mountains() -> void:
 	var i: int = 0
 	for p: Vector4 in peaks:
 		var node: MeshInstance3D = _add_mesh(
-			LowPolyMesh.mountain(50 + i, palette.mountain), Vector3(p.x, VALLEY_Y, p.y)
+			LowPolyTerrain.mountain(50 + i, palette.mountain), Vector3(p.x, VALLEY_Y, p.y)
 		)
 		node.scale = Vector3(p.z, p.w, p.z)
 		node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF

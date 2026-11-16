@@ -73,7 +73,7 @@ static func _build_ground(
 ) -> void:
 	var cells := Vector2i(int(layout.size.x / MESH_CELL.x), int(layout.size.y / MESH_CELL.y))
 	var sample := func(xz: Vector2) -> float: return heights.at(xz.x, xz.y)
-	var mesh: ArrayMesh = LowPolyMesh.ground_grid(
+	var mesh: ArrayMesh = LowPolyTerrain.ground_grid(
 		layout.size, cells, sample, palette.earth, palette.dry_grass, 7
 	)
 	add_mesh(root, "Ground", mesh, palette, Vector3.ZERO)

@@ -18,6 +18,11 @@ extends Resource
 @export var ichu: Color = Color(0.72, 0.6, 0.36)
 ## Water in irrigation channels (acequias).
 @export var water: Color = Color(0.36, 0.48, 0.55)
+## Smoke columns on the horizon (GDD §14.1).
+@export var smoke: Color = Color(0.36, 0.33, 0.32)
+## Cultivated fields in the valley: two tones mixed per plot.
+@export var field_green: Color = Color(0.45, 0.5, 0.3)
+@export var field_ochre: Color = Color(0.68, 0.56, 0.34)
 ## Far mountains (apus), atmosphere included: they are drawn without fog.
 @export var mountain: Color = Color(0.42, 0.45, 0.55)
 

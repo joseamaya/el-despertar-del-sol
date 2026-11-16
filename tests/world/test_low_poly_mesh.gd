@@ -81,7 +81,7 @@ func test_rock_sits_on_the_ground() -> void:
 
 
 func test_mountain_is_a_unit_cone_to_scale() -> void:
-	var aabb: AABB = LowPolyMesh.mountain(9, Color.GRAY).get_aabb()
+	var aabb: AABB = LowPolyTerrain.mountain(9, Color.GRAY).get_aabb()
 	assert_float(aabb.position.y).is_equal_approx(0.0, 0.01)
 	assert_float(aabb.end.y).is_between(0.9, 1.1)
 	assert_float(aabb.size.x).is_between(1.6, 2.4)
@@ -89,7 +89,7 @@ func test_mountain_is_a_unit_cone_to_scale() -> void:
 
 func test_ground_follows_the_height_function() -> void:
 	var slope := func(xz: Vector2) -> float: return xz.y * 0.5
-	var mesh: ArrayMesh = LowPolyMesh.ground(Vector2(10, 10), 5, slope, DARK, LIGHT, 1)
+	var mesh: ArrayMesh = LowPolyTerrain.ground(Vector2(10, 10), 5, slope, DARK, LIGHT, 1)
 	assert_int(_verts(mesh).size()).is_equal(5 * 5 * 6)
 	assert_float(mesh.get_aabb().size.y).is_equal_approx(5.0, 0.01)
 	for n: Vector3 in _normals(mesh):
