@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/style_vignette.gd" id="1_3b54a"]
+[ext_resource type="Resource" path="res://resources/style/palette_amanecer_calido.tres" id="2_3celt"]
+
+[node name="StyleVignette" type="Node3D" unique_id=1371198146]
+script = ExtResource("1_3b54a")
+palette = ExtResource("2_3celt")
