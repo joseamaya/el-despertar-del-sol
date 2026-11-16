@@ -55,7 +55,11 @@ func is_shown() -> bool:
 
 func _update_target() -> void:
 	var target: LockOnTarget = lock_on.get_target() if lock_on != null else null
-	var has_target: bool = target != null and is_instance_valid(target)
+	var has_target: bool = (
+		target != null
+		and is_instance_valid(target)
+		and (target.health == null or not target.health.is_dead())
+	)
 	target_panel.visible = has_target and target.posture != null
 	if target_panel.visible:
 		target_posture_bar.max_value = target.posture.get_maximum()

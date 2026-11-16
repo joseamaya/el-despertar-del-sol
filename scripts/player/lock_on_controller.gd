@@ -131,6 +131,9 @@ func tick(delta: float) -> void:
 	_read_stick()
 	if not is_locked():
 		return
+	if _target.health != null and _target.health.is_dead():
+		release(ReleaseReason.TARGET_LOST)  # the body may linger, but it is no target
+		return
 	if LockOnMath.is_out_of_range(_origin(), _target.global_position, tuning):
 		release(ReleaseReason.OUT_OF_RANGE)
 		return

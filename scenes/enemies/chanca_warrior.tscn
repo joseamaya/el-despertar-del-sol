@@ -141,6 +141,8 @@ material = SubResource("StandardMaterial3D_ruypq")
 size = Vector3(0.28, 0.32, 0.28)
 
 [node name="ChancaWarrior" type="CharacterBody3D" unique_id=1917456875 node_paths=PackedStringArray("nav_agent", "perception", "health", "posture", "state_machine", "alert_marker", "animator", "combat", "guard", "hurtbox")]
+collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_ouqmh")
 data = ExtResource("2_kqn3b")
 nav_agent = NodePath("NavAgent")
