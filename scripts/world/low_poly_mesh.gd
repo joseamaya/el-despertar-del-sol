@@ -1,8 +1,9 @@
 class_name LowPolyMesh
 extends RefCounted
 ## Faceted low-poly meshes for the scenery, built by code (DECISIONS/0010): dry-stone
-## pirca walls, adobe walls, ichu roofs, rocks and slopes. Flat normals, vertex colours,
-## deterministic for a given seed so a scene regenerates identically.
+## pirca walls, adobe walls, ichu roofs and rocks, plus the triangle helpers every
+## generator uses. Flat normals, vertex colours, deterministic for a given seed.
+## Ground and mountains live in LowPolyTerrain.
 
 ## Pirca stones: width, height and depth ranges (m) and corner jitter.
 const STONE_WIDTH: Vector2 = Vector2(0.35, 0.7)
@@ -18,7 +19,7 @@ static func pirca_wall(
 ) -> ArrayMesh:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed
-	var st := _begin()
+	var st := begin()
 	var y: float = 0.0
 	var course: int = 0
 	while y < height - 0.05:
@@ -36,16 +37,16 @@ static func pirca_wall(
 			x += w
 		y += h
 		course += 1
-	return _end(st)
+	return end(st)
 
 
 ## A plain box (adobe wall, terrace fill) with optional corner jitter for a hand-made look.
 static func box(size: Vector3, colour: Color, seed: int = 0, jitter: float = 0.0) -> ArrayMesh:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed
-	var st := _begin()
+	var st := begin()
 	add_box(st, Vector3(0.0, size.y * 0.5, 0.0), size, colour, rng, jitter)
-	return _end(st)
+	return end(st)
 
 
 ## Adobe walls of a one-room house: `size` outside (x width, y wall height, z depth),
@@ -55,7 +56,7 @@ static func adobe_house_walls(
 ) -> ArrayMesh:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed
-	var st := _begin()
+	var st := begin()
 	var hx: float = size.x * 0.5
 	var hz: float = size.z * 0.5
 	var j: float = 0.03
@@ -110,7 +111,7 @@ static func adobe_house_walls(
 		rng,
 		j
 	)
-	return _end(st)
+	return end(st)
 
 
 ## A thick gable (two-slope) thatch roof over a `width` × `depth` footprint, ridge along
@@ -118,7 +119,7 @@ static func adobe_house_walls(
 static func gable_roof(
 	width: float, depth: float, rise: float, overhang: float, colour: Color
 ) -> ArrayMesh:
-	var st := _begin()
+	var st := begin()
 	var hx: float = width * 0.5 + overhang
 	var hz: float = depth * 0.5 + overhang
 	var thick: float = 0.25
@@ -167,7 +168,7 @@ static func gable_roof(
 			colour.darkened(0.2),
 			Vector3(xs, -0.3, 0).normalized()
 		)
-	return _end(st)
+	return end(st)
 
 
 ## A faceted rock: a low-poly sphere of `radius` with its surface pushed in and out.
@@ -183,86 +184,13 @@ static func rock(
 	var arrays: Array = sphere.get_mesh_arrays()
 	var verts: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 	var index: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
-	var st := _begin()
+	var st := begin()
 	for i: int in range(0, index.size(), 3):
 		var a: Vector3 = _rock_point(verts[index[i]], radius, squash, seed, roughness)
 		var b: Vector3 = _rock_point(verts[index[i + 1]], radius, squash, seed, roughness)
 		var c: Vector3 = _rock_point(verts[index[i + 2]], radius, squash, seed, roughness)
 		add_tri(st, a, b, c, colour, (a + b + c) / 3.0 - Vector3(0, radius * squash * 0.85, 0))
-	return _end(st)
-
-
-## A mountain (apu): an irregular cone 1 m wide at the base (radius 1) and 1 m high,
-## to be scaled. Wide base, broken shoulders and a peak off-centre.
-static func mountain(seed: int, colour: Color) -> ArrayMesh:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = seed
-	var sides: int = 11
-	var rings: Array[PackedVector3Array] = []
-	var heights: Array[float] = [0.0, 0.35, 0.7]
-	var radii: Array[float] = [1.0, 0.62, 0.28]
-	var lean := Vector3(rng.randf_range(-0.15, 0.15), 0.0, rng.randf_range(-0.1, 0.1))
-	for r: int in heights.size():
-		var ring := PackedVector3Array()
-		for i: int in sides:
-			var angle: float = TAU * i / sides
-			var radius: float = radii[r] * rng.randf_range(0.8, 1.15)
-			var y: float = heights[r] + (rng.randf_range(-0.06, 0.06) if r > 0 else 0.0)
-			ring.append(Vector3(cos(angle) * radius, y, sin(angle) * radius) + lean * heights[r])
-		rings.append(ring)
-	var peak := Vector3(0.0, 1.0, 0.0) + lean
-	var st := _begin()
-	var shade: Color = colour
-	for r: int in rings.size():
-		for i: int in sides:
-			var a: Vector3 = rings[r][i]
-			var b: Vector3 = rings[r][(i + 1) % sides]
-			var tint: Color = shade.lightened(rng.randf_range(0.0, 0.08))
-			if r + 1 < rings.size():
-				var c: Vector3 = rings[r + 1][(i + 1) % sides]
-				var d: Vector3 = rings[r + 1][i]
-				var out := Vector3(a.x + b.x, 0.0, a.z + b.z)
-				add_quad(st, a, b, c, d, tint, out)
-			else:
-				add_tri(st, a, b, peak, tint, Vector3(a.x + b.x, 0.3, a.z + b.z))
-	return _end(st)
-
-
-## A ground patch `size` (x, z) in `cells` per side, heights from `height_at`
-## (Callable(Vector2) -> float), coloured between `low` and `high` with some noise.
-static func ground(
-	size: Vector2, cells: int, height_at: Callable, low: Color, high: Color, seed: int
-) -> ArrayMesh:
-	return ground_grid(size, Vector2i(cells, cells), height_at, low, high, seed)
-
-
-## Same as ground() with a different number of cells across X and Z (cells need not be
-## square). Heights are sampled once per vertex.
-static func ground_grid(
-	size: Vector2, cells: Vector2i, height_at: Callable, low: Color, high: Color, seed: int
-) -> ArrayMesh:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = seed
-	var step := Vector2(size.x / cells.x, size.y / cells.y)
-	var origin := -size * 0.5
-	var row: int = cells.x + 1
-	var grid := PackedVector3Array()
-	grid.resize(row * (cells.y + 1))
-	for iz: int in cells.y + 1:
-		for ix: int in row:
-			var xz: Vector2 = origin + Vector2(ix, iz) * step
-			grid[iz * row + ix] = Vector3(xz.x, float(height_at.call(xz)), xz.y)
-	var st := _begin()
-	for iz: int in cells.y:
-		for ix: int in cells.x:
-			var p0: Vector3 = grid[iz * row + ix]
-			var p1: Vector3 = grid[iz * row + ix + 1]
-			var p2: Vector3 = grid[(iz + 1) * row + ix + 1]
-			var p3: Vector3 = grid[(iz + 1) * row + ix]
-			var tint: Color = low.lerp(high, rng.randf())
-			add_tri(st, p0, p1, p2, tint, Vector3.UP)
-			add_tri(st, p0, p2, p3, tint.lightened(0.03), Vector3.UP)
-	return _end(st)
+	return end(st)
 
 
 ## Adds a box with each of its 8 corners nudged by up to `jitter` (m).
@@ -340,11 +268,11 @@ static func _rock_point(
 	return Vector3(p.x, (p.y + radius) * squash, p.z)
 
 
-static func _begin() -> SurfaceTool:
+static func begin() -> SurfaceTool:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	return st
 
 
-static func _end(st: SurfaceTool) -> ArrayMesh:
+static func end(st: SurfaceTool) -> ArrayMesh:
 	return st.commit()

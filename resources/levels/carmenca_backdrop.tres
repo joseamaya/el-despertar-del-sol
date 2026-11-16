@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BackdropLayout" format=4]
+
+[ext_resource type="Script" path="res://scripts/world/backdrop_layout.gd" id="1_pvg52"]
+
+[resource]
+script = ExtResource("1_pvg52")
+hills_start = 1100.0
+town_centre = Vector2(30, 620)
+town_radius = 360.0
+houses = 420
+apus = PackedVector4Array(150, 4200, 1500, 900, 175, 5200, 1900, 1150, 200, 4600, 1400, 800, 120, 3600, 1100, 650, 230, 3900, 1200, 700, 95, 4600, 1300, 750, 265, 3400, 1000, 600, 70, 3800, 1000, 560, -20, 3000, 900, 520, 300, 3000, 900, 500)
+smoke = PackedVector3Array(-260, 1000, 260, 380, 1350, 300, -700, 1900, 340, 900, 900, 220)
+haze = 0.0003

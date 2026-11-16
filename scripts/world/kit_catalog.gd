@@ -60,7 +60,7 @@ func rebuild() -> void:
 	var flat := func(_xz: Vector2) -> float: return 0.0
 	_add(
 		"Suelo",
-		LowPolyMesh.ground(Vector2(120, 40), 30, flat, palette.earth, palette.dry_grass, 1),
+		LowPolyTerrain.ground(Vector2(120, 40), 30, flat, palette.earth, palette.dry_grass, 1),
 		Vector3(40, 0, 6)
 	)
 	var entries: Array[Array] = pieces(palette)

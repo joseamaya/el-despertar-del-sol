@@ -4,8 +4,13 @@ extends Node3D
 ## when it enters the tree, adds sky, fog and sun, and puts the player at the start
 ## looking out over the valley.
 
+## Camera pitch at the start, looking down into the valley (radians).
+const START_PITCH: float = -0.22
+
 @export var layout: SectorLayout
 @export var palette: PaletteTuning
+## What lies beyond the sector: valley, town, apus, smoke. Optional.
+@export var backdrop: BackdropLayout
 @export var player: PlayerController
 @export var camera_rig: CameraController
 
@@ -24,10 +29,18 @@ func rebuild() -> void:
 	sector = SectorBuilder.build(layout, palette)
 	sector.rotation.y = deg_to_rad(layout.facing_deg)
 	add_child(sector)
+	if backdrop != null:
+		var eye := Vector3(
+			layout.start.x, layout.height_at(layout.start.x, layout.start.y) + 1.6, layout.start.y
+		)
+		sector.add_child(BackdropBuilder.build(backdrop, layout, palette, eye))
+		if player != null and player.camera != null:
+			player.camera.far = backdrop.view_distance
 	_build_light()
 	if player != null:
 		# Deferred: the player and the camera rig are siblings that may not be ready yet.
-		place_player_at.call_deferred(&"Start", Vector3(0, 0, 1))
+		# The opening shot: the valley of Cusco below (GDD §14.1).
+		place_player_at.call_deferred(&"Start", Vector3(0, 0, 1), START_PITCH)
 
 
 ## Global position of a marker built from the layout (Start, Huaca, Encounter1…).
@@ -40,13 +53,16 @@ func to_global_point(xz: Vector2) -> Vector3:
 	return sector.to_global(Vector3(xz.x, layout.height_at(xz.x, xz.y), xz.y))
 
 
-## Puts the player on a marker, facing `local_direction` (layout frame; +Z is downhill).
-func place_player_at(marker: StringName, local_direction: Vector3) -> void:
+## Puts the player on a marker, facing `local_direction` (layout frame; +Z is downhill),
+## with the camera pitched by `pitch` radians (negative looks down).
+func place_player_at(marker: StringName, local_direction: Vector3, pitch: float = 0.0) -> void:
 	var facing: Vector3 = sector.global_basis * local_direction
 	var yaw: float = atan2(-facing.x, -facing.z)
 	player.respawn(marker_position(marker) + Vector3.UP * 0.1, yaw)
 	if camera_rig != null:
 		camera_rig.yaw = yaw
+		if not is_zero_approx(pitch):
+			camera_rig.pitch = pitch
 		camera_rig.snap_to_target()
 
 
