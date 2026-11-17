@@ -85,6 +85,13 @@ static func apply_sun(palette: PaletteTuning, sun: DirectionalLight3D) -> void:
 	sun.directional_shadow_max_distance = palette.shadow_distance
 	sun.shadow_bias = palette.shadow_bias
 	sun.shadow_normal_bias = palette.shadow_normal_bias
+	match palette.shadow_splits:
+		1:
+			sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
+		2:
+			sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
+		_:
+			sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS
 
 
 ## Direction towards the sun (unit vector, world space) for the palette.

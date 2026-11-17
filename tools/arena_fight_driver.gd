@@ -16,6 +16,10 @@ const EXTRA_SPAWNS: Array[Vector3] = [
 ]
 
 @export var arena: ArenaController
+## In a sector level, fight at encounter zone `zone` (1-based) instead of FIGHT_SPOT; the
+## warriors of the other zones are removed.
+@export var level: SectorLevel
+@export var zone: int = 0
 @export_range(0.5, 10.0, 0.1, "suffix:s") var attack_interval: float = 2.5
 
 var _player_health: HealthComponent
@@ -76,7 +80,18 @@ func tick(delta: float) -> void:
 ## The player starts at FIGHT_SPOT and every enemy starts looking at it, so all of them
 ## join the fight at once instead of depending on where each one happens to face.
 func _on_encounter_started() -> void:
-	arena.player.respawn(FIGHT_SPOT, 0.0)
+	var spot: Vector3 = FIGHT_SPOT
+	if level != null and zone > 0:
+		var e: Vector3 = level.layout.encounters[zone - 1]
+		# A few metres downhill of the zone centre, where the player arrives.
+		spot = level.to_global_point(Vector2(e.x, e.y + 3.0)) + Vector3.UP * 0.05
+		for enemy: EnemyController in arena.alive_enemies():
+			var flat := Vector2(enemy.global_position.x - spot.x, enemy.global_position.z - spot.z)
+			if flat.length() > e.z + 6.0:
+				enemy.queue_free()
+	arena.player.respawn(spot, 0.0)
 	for enemy: EnemyController in arena.alive_enemies():
-		var to_player: Vector3 = FIGHT_SPOT - enemy.global_position
+		if enemy.is_queued_for_deletion():
+			continue
+		var to_player: Vector3 = spot - enemy.global_position
 		enemy.rotation.y = atan2(-to_player.x, -to_player.z)

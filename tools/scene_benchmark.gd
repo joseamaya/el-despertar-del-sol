@@ -14,6 +14,12 @@ extends SceneTree
 ##
 ##   godot --path . -s res://tools/scene_benchmark.gd -- \
 ##       --scene=res://scenes/tests/combat_arena.tscn --fight --enemies=4 --scale3d=0.833
+##
+## Sector levels (F3 task 10): --walk walks the whole path (SectorWalkDriver) and reports
+## per stretch until the end; --fight-zone=N fights at encounter zone N of the sector.
+##
+##   godot --path . -s res://tools/scene_benchmark.gd -- \
+##       --scene=res://scenes/levels/carmenca.tscn --walk --scale3d=0.833
 
 const RENDER_SIZE: Vector2i = Vector2i(1920, 1080)
 
@@ -33,6 +39,11 @@ var _physics_ms: PackedFloat64Array = PackedFloat64Array()
 var _draw_calls: PackedFloat64Array = PackedFloat64Array()
 var _primitives: PackedFloat64Array = PackedFloat64Array()
 var _spawned: int = 0
+var _walk: bool = false
+var _fight_zone: int = 0
+var _walker: SectorWalkDriver
+## Per stretch while walking: name -> {"frames": PackedFloat64Array, "primitives": ...}.
+var _stretches: Dictionary = {}
 
 
 func _initialize() -> void:
@@ -53,6 +64,10 @@ func _initialize() -> void:
 			_fight = true
 		elif arg.begins_with("--enemies="):
 			_enemies = arg.trim_prefix("--enemies=").to_int()
+		elif arg == "--walk":
+			_walk = true
+		elif arg.begins_with("--fight-zone="):
+			_fight_zone = arg.trim_prefix("--fight-zone=").to_int()
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	Engine.max_fps = 0
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
@@ -81,7 +96,11 @@ func _process(_delta: float) -> bool:
 	_physics_ms.append(Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0)
 	_draw_calls.append(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
 	_primitives.append(Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME))
-	if elapsed < _warmup + _seconds:
+	if _walker != null:
+		_record_stretch(frame)
+		if not _walker.is_done():
+			return false
+	elif elapsed < _warmup + _seconds:
 		return false
 	_finish()
 	return true
@@ -107,6 +126,7 @@ func _finish() -> void:
 		"draw_calls_avg": _average(_draw_calls),
 		"draw_calls_max": _maximum(_draw_calls),
 		"primitives_max": _maximum(_primitives),
+		"stretches": _stretch_report(),
 	}
 	var file: FileAccess = FileAccess.open(_out, FileAccess.WRITE)
 	if file != null:
@@ -124,11 +144,20 @@ func _prepare_arena(scene: Node) -> void:
 	_spawned = arena.spawn_points.size()
 	if _enemies > 0:
 		_spawned = ArenaFightDriver.set_enemy_count(arena, _enemies)
-	if _fight:
+	var level: SectorLevel = scene.find_child("SectorLevel", true, false) as SectorLevel
+	if _fight or _fight_zone > 0:
 		var driver := ArenaFightDriver.new()
 		driver.name = "ArenaFightDriver"
 		driver.arena = arena
+		driver.level = level
+		driver.zone = _fight_zone
 		scene.add_child(driver)
+	if _walk and level != null:
+		_walker = SectorWalkDriver.new()
+		_walker.name = "SectorWalkDriver"
+		_walker.level = level
+		_walker.arena = arena
+		scene.add_child(_walker)
 
 
 func _find_arena(node: Node) -> ArenaController:
@@ -139,6 +168,34 @@ func _find_arena(node: Node) -> ArenaController:
 		if found != null:
 			return found
 	return null
+
+
+func _record_stretch(frame: float) -> void:
+	var name: String = _walker.stretch()
+	if not _stretches.has(name):
+		_stretches[name] = {"frames": PackedFloat64Array(), "primitives": PackedFloat64Array()}
+	# Packed arrays are values: append to a copy and store it back.
+	var s: Dictionary = _stretches[name]
+	var frames: PackedFloat64Array = s["frames"]
+	var prims: PackedFloat64Array = s["primitives"]
+	frames.append(frame)
+	prims.append(_primitives[_primitives.size() - 1])
+	s["frames"] = frames
+	s["primitives"] = prims
+
+
+func _stretch_report() -> Dictionary:
+	var out: Dictionary = {}
+	for name: String in _stretches.keys():
+		var frames: PackedFloat64Array = _stretches[name]["frames"]
+		out[name] = {
+			"frames": frames.size(),
+			"avg_fps": PerfStats.average_fps(frames),
+			"low_1_fps": PerfStats.low_1_percent_fps(frames),
+			"over_16_7ms": PerfStats.fraction_over_budget(frames, 1.0 / 60.0),
+			"primitives_max": _maximum(_stretches[name]["primitives"]),
+		}
+	return out
 
 
 static func _average(values: PackedFloat64Array) -> float:
