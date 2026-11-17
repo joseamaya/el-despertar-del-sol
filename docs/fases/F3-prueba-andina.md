@@ -45,13 +45,31 @@ propuestas para discutir, no veredictos.
   un muro de 30 m a un repecho de 8 m. Recorrido: 117 FPS, 0,07 % de frames lentos y
   0,89 M primitivas, igual que antes del cambio.
 
-## Decisiones pendientes que entran en esta prueba
-1. **Color de los vértices en sRGB** para los materiales cercanos: **adoptado**
-   (`docs/DECISIONS/0011`). La tierra pasa de arena clara a ocre y rojiza; el damero del
-   terreno se suaviza con `ground_mix = 0,5` en la paleta A.
-2. **Puertas trapezoidales o rectangulares** (canon; `docs/guia-visual.md`, pregunta 1).
-3. **Techos de ichu** que se leen poco desde lejos.
-4. **Entrada de orientación** en `HISTORICAL_REFERENCES.md` (la edita el desarrollador).
+## Después de los ajustes
+Mismas tomas, con color de vértices en sRGB, `ground_mix = 0,5` y laderas con tope:
+
+| Toma | |
+| --- | --- |
+| ![](../img/prueba-andina/despues/1_mirador.jpg) **1 · Mirador** | ![](../img/prueba-andina/despues/2_terrazas.jpg) **2 · Terrazas** |
+| ![](../img/prueba-andina/despues/3_huaca.jpg) **3 · Huaca** | ![](../img/prueba-andina/despues/4_casas.jpg) **4 · Casas** |
+| ![](../img/prueba-andina/despues/5_paso.jpg) **5 · Paso** | ![](../img/prueba-andina/despues/6_paso_al_valle.jpg) **6 · Del paso al valle** |
+| ![](../img/prueba-andina/despues/7_combate.jpg) **7 · Combate** | |
+
+## Decisiones del desarrollador
+1. **Color de los vértices en sRGB** para los materiales cercanos: adoptado
+   (`docs/DECISIONS/0011`). El damero del terreno se suaviza con `ground_mix = 0,5` en la
+   paleta A.
+2. **Laderas con tope de 8 m:** adoptadas tras recorrerlas.
+3. **Puertas rectangulares.** Las trapezoidales podrían ser anacrónicas para 1438.
+4. **Techos de ichu:** se quedan como están; engrosarlos pasa al arte final (deuda).
+5. **Sin apus cuesta arriba:** las lomas y el cielo bastan.
+6. **Entrada de orientación** en `HISTORICAL_REFERENCES.md`: la edita el desarrollador.
 
 ## Veredicto
-Pendiente.
+**Superada** (2026-11-17). El desarrollador recorrió Carmenca después de los ajustes:
+«está genial». Carmenca se lee andina; cumple la segunda mitad del criterio de salida de
+F3.
+
+## Pasa al arte final
+- Techos de ichu con espesor de paja visible desde lejos.
+- Apus regulares (pirámides) en el fondo del valle.
