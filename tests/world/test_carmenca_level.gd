@@ -19,6 +19,13 @@ func before_test() -> void:
 	_rig = _runner.find_child("CameraRig") as CameraController
 	_rig.capture_mouse = false
 	await _frames(3)
+	# Walkability is tested without enemies: the warriors have their own suite.
+	for enemy: EnemyController in (
+		(_runner.find_child("ArenaController") as ArenaController).alive_enemies()
+	):
+		enemy.process_mode = Node.PROCESS_MODE_DISABLED
+		enemy.visible = false
+		enemy.collision_layer = 0
 
 
 func after_test() -> void:

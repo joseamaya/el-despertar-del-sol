@@ -6,25 +6,149 @@
 [ext_resource type="Resource" path="res://resources/levels/carmenca_backdrop.tres" id="4_kauwi"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="4_pfx8d"]
 [ext_resource type="PackedScene" path="res://scenes/player/camera_rig.tscn" id="5_5c2pn"]
+[ext_resource type="Script" path="res://scripts/combat/hit_stop.gd" id="7_sg3sp"]
+[ext_resource type="Resource" path="res://resources/tuning/combat_feel.tres" id="8_4ir6f"]
+[ext_resource type="Script" path="res://scripts/enemies/encounter_director.gd" id="9_l745d"]
+[ext_resource type="Resource" path="res://resources/tuning/encounter.tres" id="10_v40gi"]
+[ext_resource type="Script" path="res://scripts/systems/arena_controller.gd" id="11_3pimx"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/chanca_warrior.tscn" id="12_27mym"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="13_i2j4s"]
+[ext_resource type="Script" path="res://scripts/combat/combat_feedback.gd" id="14_2bif6"]
 
-[node name="Carmenca" type="Node3D" unique_id=1182788383]
+[node name="Carmenca" type="Node3D" unique_id=1002510060]
 
-[node name="SectorLevel" type="Node3D" parent="." unique_id=951125002 node_paths=PackedStringArray("player", "camera_rig")]
+[node name="SectorLevel" type="Node3D" parent="." unique_id=2036706248 node_paths=PackedStringArray("player", "camera_rig", "arena")]
 script = ExtResource("1_qfxwa")
 layout = ExtResource("2_kauwi")
 palette = ExtResource("3_coolg")
 backdrop = ExtResource("4_kauwi")
 player = NodePath("../Player")
 camera_rig = NodePath("../CameraRig")
+arena = NodePath("../ArenaController")
 
 [node name="Player" parent="." unique_id=85383103 node_paths=PackedStringArray("camera") instance=ExtResource("4_pfx8d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 11)
 camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
+
+[node name="GeneralSkeleton" parent="Player/Visual/Model/Armature" parent_id_path=PackedInt32Array(85383103, 748187978, 807862889) index="0" unique_id=2140898141]
+bones/1/position = Vector3(0.0051296926, 0.87651765, -0.08633796)
+bones/1/rotation = Quaternion(-0.047371782, -0.115882434, -0.0055331853, 0.9921172)
+bones/3/rotation = Quaternion(0.08905036, 0.00011169117, 0.00025572145, 0.9960271)
+bones/4/rotation = Quaternion(0.08905036, 0.000317844, 0.0002491415, 0.99602705)
+bones/5/rotation = Quaternion(-0.089050315, -0.00021505324, -0.0002616496, 0.9960271)
+bones/6/rotation = Quaternion(0.07429193, 0.095635794, 0.008931785, 0.9926001)
+bones/7/rotation = Quaternion(0.48838073, 0.5263118, 0.5266626, -0.45508993)
+bones/8/rotation = Quaternion(-0.059743077, 0.81806225, -0.5719345, 0.009796205)
+bones/9/rotation = Quaternion(0.1849684, -0.6538362, 0.17932819, 0.71142554)
+bones/10/rotation = Quaternion(0.09913024, 0.70686626, 0.0629003, 0.69753635)
+bones/11/rotation = Quaternion(0.6295969, -4.0978193e-08, -4.61936e-06, 0.77692205)
+bones/12/rotation = Quaternion(0.62334186, 2.9802322e-08, -4.261732e-06, 0.78194946)
+bones/13/rotation = Quaternion(0.62334144, -2.2351742e-07, -4.4703484e-06, 0.78194976)
+bones/15/rotation = Quaternion(0.6288943, -0.0297349, -4.470348e-06, 0.7769219)
+bones/16/rotation = Quaternion(0.6227327, -0.02755458, -4.410744e-06, 0.7819494)
+bones/17/rotation = Quaternion(0.6226684, -0.028961532, -4.4703493e-06, 0.78194976)
+bones/19/rotation = Quaternion(0.6630008, -0.044529784, 0.07369417, 0.7436506)
+bones/20/rotation = Quaternion(0.6203661, -0.06229401, 0.015573084, 0.7816796)
+bones/21/rotation = Quaternion(0.62192154, -0.04205184, -4.4703484e-06, 0.78194964)
+bones/23/rotation = Quaternion(0.6291978, -0.022414071, -4.202128e-06, 0.77692205)
+bones/24/rotation = Quaternion(0.6229472, -0.022176376, -4.321337e-06, 0.78194946)
+bones/25/rotation = Quaternion(0.6228982, -0.023505477, -4.5001498e-06, 0.7819497)
+bones/27/rotation = Quaternion(-0.123819165, 0.7195233, 0.2018354, 0.65285325)
+bones/28/rotation = Quaternion(0.18180694, 0.11012423, 0.060063303, 0.9753006)
+bones/29/rotation = Quaternion(0.5994299, 0.27396563, 0.19463211, 0.7264606)
+bones/30/scale = Vector3(1.0001454, 1.0004877, 1.0005833)
+bones/31/rotation = Quaternion(0.5406039, -0.4742922, -0.47487694, -0.507234)
+bones/32/rotation = Quaternion(0.09249242, 0.8252361, -0.5570814, -0.009541702)
+bones/33/rotation = Quaternion(0.29265442, 0.54107124, -0.20421581, 0.76150596)
+bones/34/rotation = Quaternion(0.12024976, -0.69903094, -0.056890074, 0.702609)
+bones/35/rotation = Quaternion(0.6295971, 3.7252903e-08, 4.172325e-06, 0.7769218)
+bones/36/rotation = Quaternion(0.62334144, 1.825392e-07, 4.470348e-06, 0.7819497)
+bones/37/rotation = Quaternion(0.62334156, 1.00582824e-07, 4.2319293e-06, 0.78194964)
+bones/38/rotation = Quaternion(4.6566133e-09, 1, 4.295285e-08, -5.7654454e-08)
+bones/39/rotation = Quaternion(0.6288947, 0.029734796, 4.351139e-06, 0.77692175)
+bones/40/rotation = Quaternion(0.62273216, 0.027554482, 4.5001507e-06, 0.78194976)
+bones/41/rotation = Quaternion(0.62266874, 0.028961398, 4.3213377e-06, 0.78194946)
+bones/43/rotation = Quaternion(0.6630007, 0.044529956, -0.07369393, 0.7436508)
+bones/44/rotation = Quaternion(0.62036633, 0.06229363, -0.015572906, 0.7816794)
+bones/45/rotation = Quaternion(0.62192184, 0.04205143, 4.4703484e-06, 0.7819494)
+bones/46/rotation = Quaternion(-0.03375008, 0.99943036, 4.924054e-08, -5.6300305e-08)
+bones/47/rotation = Quaternion(0.6291981, 0.022413792, 4.11272e-06, 0.7769218)
+bones/48/rotation = Quaternion(0.62294656, 0.022176204, 4.470349e-06, 0.7819501)
+bones/49/rotation = Quaternion(0.6228987, 0.02350526, 4.1723247e-06, 0.7819493)
+bones/50/rotation = Quaternion(-0.018857837, 0.9998222, -1.5216909e-08, -2.369153e-07)
+bones/51/rotation = Quaternion(-0.12381923, -0.7195234, -0.2018356, 0.6528533)
+bones/52/rotation = Quaternion(0.18180703, -0.11012423, -0.060063303, 0.97530067)
+bones/53/rotation = Quaternion(0.5994302, -0.2739653, -0.19463223, 0.7264605)
+bones/54/scale = Vector3(1.0001454, 1.0004876, 1.0005835)
+bones/55/rotation = Quaternion(-0.00078061305, 0.12197093, 0.9862391, -0.11160242)
+bones/56/rotation = Quaternion(0.016555093, 0.98195505, -0.15101244, 0.11263048)
+bones/57/rotation = Quaternion(-0.09472364, 0.7284129, -0.6785311, 0.00612655)
+bones/58/rotation = Quaternion(4.664862e-08, 1, 5.9604645e-08, 2.7766912e-08)
+bones/60/rotation = Quaternion(0.000813401, -0.11053434, 0.98704517, 0.116290405)
+bones/61/rotation = Quaternion(-0.029701194, 0.92884314, -0.08329276, -0.35976472)
+bones/62/rotation = Quaternion(0.17168447, 0.6458568, -0.7439, -0.0025382943)
+bones/63/rotation = Quaternion(-6.703263e-08, 1, 8.940697e-08, 2.1454163e-09)
+
+[node name="RightHandSocket" parent="Player/Visual/Model/Armature/GeneralSkeleton" index="1" unique_id=2034673395]
+transform = Transform3D(0.07881603, -0.15675123, 0.9844882, 0.4929321, -0.85225403, -0.17515971, 0.8664906, 0.4990911, 0.010096628, -0.2929848, 0.9204549, -0.18714526)
+bone_idx = 34
 
 [node name="LockOn" parent="Player" index="2" unique_id=970075113 node_paths=PackedStringArray("camera")]
 camera = NodePath("../../CameraRig/SpringArm3D/Camera3D")
 
+[node name="Sensor" parent="Player/LockOn" index="0" unique_id=1313557912]
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="Hurtbox" parent="Player" index="7" unique_id=464263447]
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+
 [node name="CameraRig" parent="." unique_id=1742004877 node_paths=PackedStringArray("target") instance=ExtResource("5_5c2pn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6224748, 4)
+top_level = true
 target = NodePath("../Player")
+
+[node name="HitStop" type="Node" parent="." unique_id=1109380683]
+script = ExtResource("7_sg3sp")
+tuning = ExtResource("8_4ir6f")
+
+[node name="Enemies" type="Node3D" parent="." unique_id=727907290]
+
+[node name="EncounterDirector" type="Node" parent="." unique_id=2134907097]
+script = ExtResource("9_l745d")
+tuning = ExtResource("10_v40gi")
+
+[node name="ArenaController" type="Node" parent="." unique_id=1388091959 node_paths=PackedStringArray("player", "enemies_root", "director")]
+script = ExtResource("11_3pimx")
+player = NodePath("../Player")
+enemy_scene = ExtResource("12_27mym")
+enemies_root = NodePath("../Enemies")
+director = NodePath("../EncounterDirector")
+
+[node name="Hud" parent="." unique_id=1068922280 node_paths=PackedStringArray("health", "stamina", "lock_on", "camera", "arena") instance=ExtResource("13_i2j4s")]
+health = NodePath("../Player/Health")
+stamina = NodePath("../Player/Stamina")
+lock_on = NodePath("../Player/LockOn")
+camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
+arena = NodePath("../ArenaController")
+
+[node name="CombatFeedback" type="Node3D" parent="." unique_id=1494172289 node_paths=PackedStringArray("hit_stop", "camera_rig", "player_hurtbox", "player_hitbox", "player_defense", "player_combat")]
+script = ExtResource("14_2bif6")
+feel = ExtResource("8_4ir6f")
+hit_stop = NodePath("../HitStop")
+camera_rig = NodePath("../CameraRig")
+player_hurtbox = NodePath("../Player/Hurtbox")
+player_hitbox = NodePath("../Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox")
+player_defense = NodePath("../Player/Defense")
+player_combat = NodePath("../Player/Combat")
+
+[connection signal="hit_landed" from="Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox" to="HitStop" method="on_hit_landed"]
+[connection signal="target_locked" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
+[connection signal="target_released" from="Player/LockOn" to="CameraRig" method="release_lock_target"]
+[connection signal="target_switched" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
 
 [editable path="Player"]
 [editable path="Player/Visual/Model"]

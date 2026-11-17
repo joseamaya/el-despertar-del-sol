@@ -34,6 +34,8 @@ const STEP_MAX_RUN: float = 1.5
 @export var huaca: Vector2 = Vector2.ZERO
 ## Encounter zones: (x, z, radius). Order: skirmish 1, skirmish 2, the pass.
 @export var encounters: PackedVector3Array = PackedVector3Array()
+## Enemies waiting in each encounter zone (same order as `encounters`).
+@export var encounter_enemies: PackedInt32Array = PackedInt32Array()
 ## Houses: (x, z, yaw in degrees).
 @export var houses: PackedVector3Array = PackedVector3Array()
 ## Corrals: (x, z, radius); opening downhill (+Z).
