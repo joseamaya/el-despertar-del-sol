@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/tests/combat_arena.tscn" id="1_o5qli"]
+[ext_resource type="PackedScene" path="res://scenes/levels/carmenca.tscn" id="1_o5qli"]
 
-[node name="Main" type="Node3D" unique_id=1968886613]
+[node name="Main" type="Node3D" unique_id=644681283]
 
-[node name="CombatArena" parent="." unique_id=1002510060 instance=ExtResource("1_o5qli")]
+[node name="Carmenca" parent="." unique_id=1002510060 instance=ExtResource("1_o5qli")]

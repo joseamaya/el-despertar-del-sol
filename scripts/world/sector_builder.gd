@@ -213,12 +213,31 @@ static func _build_huaca(root: Node3D, layout: SectorLayout, palette: PaletteTun
 
 
 static func _build_markers(root: Node3D, layout: SectorLayout) -> void:
+	# Markers face downhill (+Z): that is where the player and the view come from.
 	_marker(root, "Start", layout, layout.start, 0.0)
 	_marker(root, "Huaca", layout, layout.huaca, 0.0)
 	var i: int = 1
 	for e: Vector3 in layout.encounters:
 		_marker(root, "Encounter%d" % i, layout, Vector2(e.x, e.y), e.z)
+		var count: int = (
+			layout.encounter_enemies[i - 1] if i - 1 < layout.encounter_enemies.size() else 0
+		)
+		var k: int = 0
+		for xz: Vector2 in spawn_points(e, count):
+			_marker(root, "Spawn%d_%d" % [i, k], layout, xz, 0.0)
+			k += 1
 		i += 1
+
+
+## Where the enemies of a zone wait: a shallow arc across the uphill half of the zone,
+## so the player meets them face on.
+static func spawn_points(zone: Vector3, count: int) -> PackedVector2Array:
+	var out := PackedVector2Array()
+	for k: int in count:
+		var t: float = 0.0 if count == 1 else float(k) / (count - 1) * 2.0 - 1.0
+		var angle: float = t * deg_to_rad(50.0)
+		out.append(Vector2(zone.x, zone.y) + Vector2(sin(angle), -cos(angle)) * zone.z * 0.55)
+	return out
 
 
 static func _marker(
@@ -227,6 +246,7 @@ static func _marker(
 	var m := Marker3D.new()
 	m.name = marker_name
 	m.position = Vector3(at.x, layout.height_at(at.x, at.y), at.y)
+	m.rotation.y = PI
 	m.set_meta(&"radius", radius)
 	root.add_child(m)
 

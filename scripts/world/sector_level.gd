@@ -13,8 +13,12 @@ const START_PITCH: float = -0.22
 @export var backdrop: BackdropLayout
 @export var player: PlayerController
 @export var camera_rig: CameraController
+## Optional combat loop (F3 task 9): it gets the start and the spawn markers of the
+## encounter zones, so the same ArenaController of F2 runs the fights here.
+@export var arena: ArenaController
 
 var sector: Node3D
+var navigation: NavigationRegion3D
 
 
 func _ready() -> void:
@@ -29,6 +33,10 @@ func rebuild() -> void:
 	sector = SectorBuilder.build(layout, palette)
 	sector.rotation.y = deg_to_rad(layout.facing_deg)
 	add_child(sector)
+	navigation = SectorNavigation.bake(sector, layout)
+	if arena != null:
+		arena.player_spawn = sector.get_node(^"Start") as Node3D
+		arena.spawn_points = spawn_markers()
 	if backdrop != null:
 		var eye := Vector3(
 			layout.start.x, layout.height_at(layout.start.x, layout.start.y) + 1.6, layout.start.y
@@ -41,6 +49,15 @@ func rebuild() -> void:
 		# Deferred: the player and the camera rig are siblings that may not be ready yet.
 		# The opening shot: the valley of Cusco below (GDD §14.1).
 		place_player_at.call_deferred(&"Start", Vector3(0, 0, 1), START_PITCH)
+
+
+## The spawn markers of every encounter zone, in order.
+func spawn_markers() -> Array[Node3D]:
+	var out: Array[Node3D] = []
+	for node: Node in sector.get_children():
+		if String(node.name).begins_with("Spawn"):
+			out.append(node as Node3D)
+	return out
 
 
 ## Global position of a marker built from the layout (Start, Huaca, Encounter1…).
