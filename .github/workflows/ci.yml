@@ -43,7 +43,9 @@ jobs:
           godot-version: ${{ env.GODOT_VERSION }}
           version: installed
           paths: res://tests
-          timeout: 10
+          # Minutes for the whole suite. It took 8m44s on PR #32 and passed 10 on PR #34,
+          # when F3 added integration tests that play real fights in Carmenca.
+          timeout: 20
           # The check-run report (dorny/test-reporter) fails with HTTP 404 when it updates
           # its own check run, although all tests pass: first on push to main (F1
           # close-out), then on PR #27 (F3). It is a convenience view, so it stays off.
