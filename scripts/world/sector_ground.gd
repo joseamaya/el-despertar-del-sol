@@ -9,6 +9,7 @@ static func build(
 	root: Node3D, layout: SectorLayout, palette: PaletteTuning, heights: SectorBuilder.HeightGrid
 ) -> void:
 	var sample := func(xz: Vector2) -> float: return heights.at(xz.x, xz.y)
+	var grass: Color = palette.earth.lerp(palette.dry_grass, palette.ground_mix)
 	var shadow: GeometryInstance3D.ShadowCastingSetting = (
 		GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 		if layout.ground_shadow
@@ -20,7 +21,7 @@ static func build(
 			int(layout.size.y / SectorBuilder.MESH_CELL.y)
 		)
 		var mesh: ArrayMesh = LowPolyTerrain.ground_grid(
-			layout.size, cells, sample, palette.earth, palette.dry_grass, 7
+			layout.size, cells, sample, palette.earth, grass, 7
 		)
 		SectorBuilder.add_mesh(root, "Ground", mesh, palette, Vector3.ZERO).cast_shadow = shadow
 	else:
@@ -35,7 +36,7 @@ static func build(
 			Vector2i(int(centre_size.x / SectorBuilder.MESH_CELL.x), rows),
 			sample,
 			palette.earth,
-			palette.dry_grass,
+			grass,
 			7
 		)
 		SectorBuilder.add_mesh(root, "Ground", centre, palette, Vector3.ZERO).cast_shadow = shadow
@@ -49,7 +50,7 @@ static func build(
 				Vector2i(side_cells, rows),
 				shifted,
 				palette.earth,
-				palette.dry_grass,
+				grass,
 				8
 			)
 			var node := SectorBuilder.add_mesh(

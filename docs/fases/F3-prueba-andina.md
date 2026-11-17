@@ -38,9 +38,9 @@ propuestas para discutir, no veredictos.
 | Fondo del sector | Al fondo del paso se ve un muro plano que cierra el sector (tomas 5 y 7) | |
 
 ## Decisiones pendientes que entran en esta prueba
-1. **Color de los vértices en sRGB** para los materiales cercanos. Hoy se tratan como
-   lineales, y eso aclara y desatura los colores oscuros. Es la causa probable del tono
-   arena; cambiarlo altera el aspecto aprobado en la tarea 3.
+1. **Color de los vértices en sRGB** para los materiales cercanos: **adoptado**
+   (`docs/DECISIONS/0011`). La tierra pasa de arena clara a ocre y rojiza; el damero del
+   terreno se suaviza con `ground_mix = 0,5` en la paleta A.
 2. **Puertas trapezoidales o rectangulares** (canon; `docs/guia-visual.md`, pregunta 1).
 3. **Techos de ichu** que se leen poco desde lejos.
 4. **Entrada de orientación** en `HISTORICAL_REFERENCES.md` (la edita el desarrollador).
