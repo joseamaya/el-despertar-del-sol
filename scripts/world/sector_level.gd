@@ -69,7 +69,7 @@ func place_player_at(marker: StringName, local_direction: Vector3, pitch: float 
 func _build_light() -> void:
 	for old: Node in find_children("*", "WorldEnvironment", false, false):
 		old.free()
-	for old: Node in find_children("Sun", "DirectionalLight3D", false, false):
+	for old: Node in find_children("*", "DirectionalLight3D", false, false):
 		old.free()
 	var env := WorldEnvironment.new()
 	env.name = "WorldEnvironment"
@@ -81,3 +81,6 @@ func _build_light() -> void:
 	# In world space, not in the rotated sector: the palette azimuth is a real compass
 	# direction (60° = from the east-south-east, a dawn sun).
 	add_child(sun)
+	var fill: DirectionalLight3D = PaletteMaterials.fill_light(palette)
+	if fill != null:
+		add_child(fill)

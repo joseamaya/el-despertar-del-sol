@@ -20,9 +20,36 @@ static func build(
 	root.name = "Backdrop"
 	_build_valley(root, b, layout, p, eye)
 	_build_town(root, b, layout, p, eye)
-	_build_apus(root, b, p, eye)
+	_build_apus(root, b, p)
 	_build_smoke(root, b, layout, p)
+	# The sun in the sector's local frame, for the shading baked into far colours.
+	var facing := Basis(Vector3.UP, deg_to_rad(layout.facing_deg))
+	var to_sun: Vector3 = facing.inverse() * PaletteMaterials.sun_direction(p)
+	for node: Node in root.get_children():
+		var mi := node as MeshInstance3D
+		if mi != null and mi.mesh is ArrayMesh and not String(node.name).begins_with("Smoke"):
+			bake_sun(
+				mi.mesh as ArrayMesh, mi.basis.inverse() * to_sun, b.sun_shading, b.far_brightness
+			)
 	return root
+
+
+## Bakes a simple sun shading into the vertex colours of a far mesh (drawn unshaded):
+## faces towards the sun keep their colour, faces away darken by up to `strength`.
+static func bake_sun(
+	mesh: ArrayMesh, to_sun: Vector3, strength: float, brightness: float = 1.0
+) -> void:
+	var arrays: Array = mesh.surface_get_arrays(0)
+	var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+	var colours: PackedColorArray = arrays[Mesh.ARRAY_COLOR]
+	var light: Vector3 = to_sun.normalized()
+	for i: int in colours.size():
+		var lit: float = clampf(normals[i].normalized().dot(light) * 0.5 + 0.5, 0.0, 1.0)
+		var c: Color = colours[i].darkened(strength * (1.0 - lit))
+		colours[i] = Color(c.r * brightness, c.g * brightness, c.b * brightness, c.a)
+	arrays[Mesh.ARRAY_COLOR] = colours
+	mesh.clear_surfaces()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
 
 ## Ground height of the backdrop: under the sector it hides below the sector's ground;
@@ -162,12 +189,13 @@ static func _tint_by_distance(
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 
 
-static func _build_apus(root: Node3D, b: BackdropLayout, p: PaletteTuning, eye: Vector3) -> void:
+static func _build_apus(root: Node3D, b: BackdropLayout, p: PaletteTuning) -> void:
 	var i: int = 0
 	for a: Vector4 in b.apus:
 		var dir := Vector3(sin(deg_to_rad(a.x)), 0, -cos(deg_to_rad(a.x)))
 		var at: Vector3 = dir * a.y + Vector3(0, b.floor_height + b.hills_max * 0.5, 0)
-		var colour: Color = hazed(b, p, p.mountain, eye, at)
+		# The palette's mountain colour already carries the atmosphere: no extra haze.
+		var colour: Color = p.mountain
 		var node := _far_mesh(root, "Apu%d" % i, LowPolyTerrain.mountain(b.seed + i, colour), p)
 		node.position = at
 		node.scale = Vector3(a.z, a.w, a.z)

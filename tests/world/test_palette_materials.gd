@@ -11,6 +11,9 @@ func test_vertex_and_far_roles_use_vertex_colour() -> void:
 	assert_bool(vertex.disable_fog).is_false()
 	assert_bool(far.vertex_color_use_as_albedo).is_true()
 	assert_bool(far.disable_fog).is_true()
+	assert_int(far.shading_mode).is_equal(BaseMaterial3D.SHADING_MODE_UNSHADED)
+	assert_bool(far.vertex_color_is_srgb).is_true()
+	assert_int(vertex.shading_mode).is_equal(BaseMaterial3D.SHADING_MODE_PER_PIXEL)
 	assert_bool(adobe.vertex_color_use_as_albedo).is_false()
 	assert_object(adobe.albedo_color).is_equal(p.adobe)
 
@@ -51,3 +54,38 @@ func test_every_palette_resource_loads() -> void:
 	for name: String in ["amanecer_calido", "altura_fria", "contraste"]:
 		var p := load("res://resources/style/palette_%s.tres" % name) as PaletteTuning
 		assert_object(p).is_not_null()
+
+
+func test_fill_light_is_off_by_default_and_never_casts_shadows() -> void:
+	var p := PaletteTuning.new()
+	assert_object(PaletteMaterials.fill_light(p)).is_null()
+	p.fill_energy = 0.3
+	var fill := PaletteMaterials.fill_light(p)
+	assert_bool(fill.shadow_enabled).is_false()
+	# Opposite the sun in azimuth.
+	assert_float(fill.rotation_degrees.y).is_equal_approx(p.sun_azimuth_deg + 180.0, 0.01)
+	fill.free()
+
+
+func test_sun_direction_points_up_towards_the_light() -> void:
+	var p := PaletteTuning.new()
+	p.sun_elevation_deg = 30.0
+	var to_sun: Vector3 = PaletteMaterials.sun_direction(p)
+	assert_float(to_sun.y).is_equal_approx(0.5, 0.01)
+	assert_float(to_sun.length()).is_equal_approx(1.0, 0.001)
+	var sun := DirectionalLight3D.new()
+	PaletteMaterials.apply_sun(p, sun)
+	# A directional light shines along its -Z: the opposite of "towards the sun".
+	assert_float((sun.basis * Vector3.FORWARD).dot(to_sun)).is_equal_approx(-1.0, 0.001)
+	sun.free()
+
+
+func test_glow_and_sky_ambient_follow_the_palette() -> void:
+	var p := PaletteTuning.new()
+	p.glow_enabled = true
+	p.glow_intensity = 0.2
+	p.ambient_sky_contribution = 0.3
+	var env: Environment = PaletteMaterials.environment_for(p)
+	assert_bool(env.glow_enabled).is_true()
+	assert_float(env.glow_intensity).is_equal_approx(0.2, 0.001)
+	assert_float(env.ambient_light_sky_contribution).is_equal_approx(0.3, 0.001)
