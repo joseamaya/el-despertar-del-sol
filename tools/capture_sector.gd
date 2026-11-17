@@ -56,6 +56,8 @@ func _capture_all() -> void:
 	await _capture(FIGHT_SHOT, FIGHT_FRAMES)
 	_keep_enemies = false
 	_on_encounter_started()
+	# The fight leaves the player hurt: full bars again for the scenery shots.
+	(_arena.player.get_node(^"Health") as HealthComponent).reset()
 	for shot: Array in SHOTS:
 		await _capture(shot, SETTLE_FRAMES)
 	quit()
