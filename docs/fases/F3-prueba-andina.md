@@ -37,6 +37,14 @@ propuestas para discutir, no veredictos.
 | Paleta de tierra y puna | **Lo más flojo:** todo de cerca es arena amarilla y clara; mirando cuesta arriba (tomas 2, 4, 5) las laderas lisas a 45° encierran el camino como un cañón de desierto | |
 | Fondo del sector | Al fondo del paso se ve un muro plano que cierra el sector (tomas 5 y 7) | |
 
+## Ajustes aplicados
+- **Laderas con tope** (pedido del desarrollador: «parece que el jugador estuviera en un
+  acantilado»). Las laderas subían a 54° hasta el borde del sector, con paredes de
+  100–135 m. Ahora suben 8 m empinadas (no se pueden escalar) y siguen en lomas suaves
+  (`side_max_rise = 8`, `side_far_grade = 0,15` en el layout). El fondo del paso pasa de
+  un muro de 30 m a un repecho de 8 m. Recorrido: 117 FPS, 0,07 % de frames lentos y
+  0,89 M primitivas, igual que antes del cambio.
+
 ## Decisiones pendientes que entran en esta prueba
 1. **Color de los vértices en sRGB** para los materiales cercanos: **adoptado**
    (`docs/DECISIONS/0011`). La tierra pasa de arena clara a ocre y rojiza; el damero del
