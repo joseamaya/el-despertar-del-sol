@@ -19,6 +19,10 @@ func before_test() -> void:
 	_rig = _runner.find_child("CameraRig") as CameraController
 	_rig.capture_mouse = false
 	await _frames(3)
+	# The opening dialogue holds the player still: skip it (F4 task 3).
+	var talk := _runner.find_child("DialoguePlayer") as DialoguePlayer
+	while talk.is_playing():
+		talk.advance()
 	# Walkability is tested without enemies: the warriors have their own suite.
 	for enemy: EnemyController in (
 		(_runner.find_child("ArenaController") as ArenaController).alive_enemies()

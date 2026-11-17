@@ -152,8 +152,9 @@ func _prepare_arena(scene: Node) -> void:
 	if _enemies > 0:
 		_spawned = ArenaFightDriver.set_enemy_count(arena, _enemies)
 	var level: SectorLevel = scene.find_child("SectorLevel", true, false) as SectorLevel
-	if _fight_zone > 0:
-		# The slice would start its own zones: the benchmark picks the zone instead.
+	if _fight_zone > 0 or _walk:
+		# The slice would start its own zones and hold the player in its opening
+		# dialogue: the benchmark drives the level instead.
 		var slice := scene.find_child("SliceDirector", true, false) as SliceDirector
 		if slice != null:
 			slice.autostart = false

@@ -16,6 +16,10 @@
 [ext_resource type="Script" path="res://scripts/combat/combat_feedback.gd" id="14_2bif6"]
 [ext_resource type="Script" path="res://scripts/systems/slice_director.gd" id="15_slice"]
 [ext_resource type="Resource" path="res://resources/slice/carmenca_slice.tres" id="16_slice"]
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_box.gd" id="17_dbox"]
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_player.gd" id="18_dplayer"]
+[ext_resource type="Script" path="res://scripts/dialogue/sector_npc.gd" id="19_npc"]
+[ext_resource type="PackedScene" path="res://assets/characters/stock/ual1_standard.glb" id="20_model"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -130,11 +134,28 @@ enemy_scene = ExtResource("12_27mym")
 enemies_root = NodePath("../Enemies")
 director = NodePath("../EncounterDirector")
 
-[node name="SliceDirector" type="Node" parent="." unique_id=1544120731 node_paths=PackedStringArray("level", "arena")]
+[node name="SliceDirector" type="Node" parent="." unique_id=1544120731 node_paths=PackedStringArray("level", "arena", "dialogue")]
 script = ExtResource("15_slice")
 sequence = ExtResource("16_slice")
 level = NodePath("../SectorLevel")
 arena = NodePath("../ArenaController")
+dialogue = NodePath("../DialoguePlayer")
+
+[node name="DialogueBox" type="CanvasLayer" parent="." unique_id=1544120732]
+script = ExtResource("17_dbox")
+
+[node name="DialoguePlayer" type="Node" parent="." unique_id=1544120733 node_paths=PackedStringArray("box", "player", "frozen")]
+script = ExtResource("18_dplayer")
+box = NodePath("../DialogueBox")
+player = NodePath("../Player")
+frozen = [NodePath("../Player/Combat"), NodePath("../Player/Defense")]
+
+[node name="Vicaquirao" type="Node3D" parent="." unique_id=1544120734 node_paths=PackedStringArray("level", "face")]
+script = ExtResource("19_npc")
+level = NodePath("../SectorLevel")
+face = NodePath("../Player")
+
+[node name="Model" parent="Vicaquirao" unique_id=1544120735 instance=ExtResource("20_model")]
 
 [node name="Hud" parent="." unique_id=1068922280 node_paths=PackedStringArray("health", "stamina", "lock_on", "camera", "arena", "slice") instance=ExtResource("13_i2j4s")]
 health = NodePath("../Player/Health")

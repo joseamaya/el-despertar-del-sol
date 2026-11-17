@@ -198,6 +198,7 @@ static func _build_markers(root: Node3D, layout: SectorLayout) -> void:
 	_marker(root, "Start", layout, layout.start, 0.0)
 	_marker(root, "Huaca", layout, layout.huaca, 0.0)
 	_marker(root, "Family", layout, layout.family, 0.0)
+	_marker(root, "Mentor", layout, layout.mentor, 0.0)
 	_marker(root, "Ending", layout, layout.ending, 0.0)
 	for c: int in layout.checkpoints.size():
 		# Facing uphill: the way on after respawning.

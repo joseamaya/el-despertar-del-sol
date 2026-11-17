@@ -41,7 +41,7 @@ func _go_to(marker: StringName) -> void:
 	await _frames(3)
 
 
-## Plays the current step to its end (teleporting, killing or waiting).
+## Plays the current step to its end (teleporting, killing, waiting or talking).
 func _finish_step() -> void:
 	var step: SliceStep = _slice.flow.current()
 	match step.kind:
@@ -51,6 +51,27 @@ func _finish_step() -> void:
 			await _go_to(step.marker)
 		SliceStep.Kind.ENCOUNTER:
 			await _kill_zone()
+		SliceStep.Kind.DIALOGUE:
+			var talk := _runner.find_child("DialoguePlayer") as DialoguePlayer
+			while talk.is_playing():
+				talk.advance()
+			await _frames(2)
+
+
+func test_opening_dialogue_holds_the_first_zone_and_the_player() -> void:
+	var talk := _runner.find_child("DialoguePlayer") as DialoguePlayer
+	var box := _runner.find_child("DialogueBox") as DialogueBox
+	assert_bool(talk.is_playing()).is_true()
+	assert_bool(box.is_showing()).is_true()
+	assert_str(box.shown_text()).is_equal(tr(&"DLG_OPENING_1"))
+	# Nobody comes while Vicaquirao speaks, and Cusi cannot fight.
+	await _frames(300)
+	assert_int(_arena.alive_enemies().size()).is_equal(0)
+	assert_bool(_player.get_node("Combat").is_physics_processing()).is_false()
+	await _finish_step()
+	assert_bool(box.is_showing()).is_false()
+	assert_bool(_player.get_node("Combat").is_physics_processing()).is_true()
+	assert_int(_arena.alive_enemies().size()).is_equal(_level.layout.encounter_enemies[0])
 
 
 func test_opening_leads_to_the_first_zone_only() -> void:
