@@ -61,7 +61,4 @@ func _finish() -> void:
 
 
 func _set_controls(enabled: bool) -> void:
-	player.set_speed_limit(-1.0 if enabled else 0.0)
-	for node: Node in frozen:
-		node.set_physics_process(enabled)
-		node.set_process(enabled)
+	PlayerHold.set_held(player, frozen, not enabled)
