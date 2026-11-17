@@ -102,6 +102,8 @@ func test_kit_dressing_is_in_place_and_cheap_to_draw() -> void:
 	var sector: Node3D = _level.sector
 	var meshes: int = sector.find_children("*", "MeshInstance3D", true, false).size()
 	var multis: Array[Node] = sector.find_children("*", "MultiMeshInstance3D", true, false)
+	# Vegetation is chunked and culled by distance: it has its own budget (test_vegetation).
+	multis = multis.filter(func(n: Node) -> bool: return n.get_parent().name != "Vegetation")
 	# One draw call per mesh node (shadows double it): far below the 350 budget.
 	assert_int(meshes + multis.size()).is_less(60)
 	var rocks: int = 0
@@ -119,9 +121,12 @@ func test_kit_dressing_is_in_place_and_cheap_to_draw() -> void:
 
 
 func test_no_big_rock_inside_the_encounter_zones() -> void:
+	# Placement data, not the MultiMesh: headless runs do not keep instance transforms
+	# (before this, the check read (0, 0, 0) for every rock and passed by chance).
+	var by_size: Array[Array] = SectorDressing.rock_placements(_level.layout)
+	assert_int(by_size[1].size() + by_size[2].size()).is_greater(20)
 	for size: int in [1, 2]:
-		var node := _level.sector.get_node("Rocks%d" % size) as MultiMeshInstance3D
-		for i: int in node.multimesh.instance_count:
-			var at: Vector3 = node.multimesh.get_instance_transform(i).origin
+		for xf: Transform3D in by_size[size]:
 			for e: Vector3 in _level.layout.encounters:
-				assert_float(Vector2(at.x, at.z).distance_to(Vector2(e.x, e.y))).is_greater(e.z)
+				var d: float = Vector2(xf.origin.x, xf.origin.z).distance_to(Vector2(e.x, e.y))
+				assert_float(d).is_greater(e.z)

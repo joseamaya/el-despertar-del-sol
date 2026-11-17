@@ -4,7 +4,7 @@ extends RefCounted
 ## textures, flat colours). Meshes that carry vertex colours (stones, slopes) use them as
 ## albedo; the rest take one palette colour.
 
-enum Role { VERTEX, ADOBE, ICHU, EARTH, HUACA, MOUNTAIN, INCA, CHANCA, FAR }
+enum Role { VERTEX, ADOBE, ICHU, EARTH, HUACA, MOUNTAIN, INCA, CHANCA, FAR, PLANT }
 
 
 static func material_for(palette: PaletteTuning, role: Role) -> StandardMaterial3D:
@@ -12,7 +12,10 @@ static func material_for(palette: PaletteTuning, role: Role) -> StandardMaterial
 	mat.roughness = 1.0
 	mat.metallic_specular = 0.2
 	mat.albedo_color = color_for(palette, role)
-	mat.vertex_color_use_as_albedo = role == Role.VERTEX or role == Role.FAR
+	mat.vertex_color_use_as_albedo = role in [Role.VERTEX, Role.FAR, Role.PLANT]
+	# PLANT: thin blades seen from both sides; their normals point up (soft, no dark backs).
+	if role == Role.PLANT:
+		mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	# FAR: distant scenery whose vertex colour already carries the haze and a baked
 	# sun shading: no fog and no lighting, so the dawn ambient cannot turn the blue apus
 	# brown (docs/guia-visual.md, «azules atmosféricos»).

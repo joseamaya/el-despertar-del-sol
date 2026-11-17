@@ -32,6 +32,7 @@ static func build(layout: SectorLayout, palette: PaletteTuning) -> Node3D:
 		i += 1
 	_build_huaca(root, layout, palette)
 	SectorDressing.dress(root, layout, palette)
+	SectorVegetation.plant(root, layout, palette)
 	_build_markers(root, layout)
 	return root
 

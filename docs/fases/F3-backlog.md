@@ -17,7 +17,7 @@ interacción con la huaca, NPC, narrativa, Apoyo, música y ambiente, checkpoint
 | 5 | Kit modular v1 por script (10–15 piezas); proponer skill `godot-scene-audit` | Hecha: 12 piezas en el catálogo, Carmenca vestida; skill `godot-scene-audit` creada |
 | 6 | Paisaje lejano: apus, valle del Cusco, columnas de humo | Hecha: valle con parcelas, Cusco en 7 barrios, 10 apus genéricos, 4 columnas de humo |
 | 7 | Luz de amanecer: cielo, niebla compatible con Mobile, sol rasante, sombras ~100 m | Hecha: ambiente cálido, fondo sin iluminar con sol cocido; relleno y glow probados y descartados; coste en FPS se mide en la tarea 10 (decisión del desarrollador) |
-| 8 | Vegetación y detalle: ichu y rocas con MultiMesh y rangos de visibilidad | Pendiente |
+| 8 | Vegetación y detalle: ichu y rocas con MultiMesh y rangos de visibilidad | Hecha: 13.445 matas de ichu y arbustos en parcelas de 40 m, 65 m de alcance, ichu sin sombras; +45–57 k primitivas |
 | 9 | Combate en el escenario: navmesh, guerreros en las zonas, pendientes | Pendiente |
 | 10 | Rendimiento del recorrido guionizado: 60 FPS, < 1 % de frames > 16,7 ms; incluye el coste de la luz (tarea 7) y las primitivas del mirador (~1 M, tarea 6) | Pendiente |
 | 11 | Prueba «reconocible andino»: recorrido del desarrollador, capturas, ajustes | Pendiente |

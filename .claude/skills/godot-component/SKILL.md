@@ -142,6 +142,10 @@ Notas:
   límite de tiempo real (`Time.get_ticks_msec()`). Calcula la distancia
   recorrida antes de fijar duraciones: pasarse de una plataforma hace caer al jugador
   y la prueba falla por motivos ajenos a lo que se prueba.
+- En headless, el servidor de render falso **no guarda las transformaciones de un
+  `MultiMesh`**: `get_instance_transform()` devuelve (0, 0, 0). Si una prueba tiene que
+  comprobar dónde se colocó algo, separa la colocación en una función pura que devuelva
+  los datos (p. ej. `SectorVegetation.placements()`) y prueba esos datos.
 - Las pruebas corren en headless sin eventos reales; no dependas de `_input()` /
   `_unhandled_input()` en ellas. Si el componente los necesita, sepáralo en un método
   público que la prueba pueda llamar.
