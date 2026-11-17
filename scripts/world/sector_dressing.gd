@@ -71,6 +71,27 @@ static func _channel(root: Node3D, layout: SectorLayout, p: PaletteTuning) -> vo
 
 
 static func _scatter_rocks(root: Node3D, layout: SectorLayout, p: PaletteTuning) -> void:
+	var by_size: Array[Array] = rock_placements(layout)
+	for xf: Transform3D in by_size[2]:
+		var local := Vector2(xf.origin.x, xf.origin.z)
+		if absf(local.x) > layout.corridor_half_width(local.y):
+			continue
+		var body := SectorBuilder.static_body(root, "RockBody")
+		body.position = xf.origin + Vector3.UP * 0.6
+		var col := CollisionShape3D.new()
+		var sphere := SphereShape3D.new()
+		sphere.radius = 0.9
+		col.shape = sphere
+		body.add_child(col)
+	for size: int in 3:
+		_multimesh(
+			root, "Rocks%d" % size, KitBuildings.loose_rock(size, 90 + size, p), by_size[size], p
+		)
+
+
+## Loose rocks by size (small, medium, large), as transforms. Pure data, deterministic
+## for the layout, so tests can check it without a renderer.
+static func rock_placements(layout: SectorLayout) -> Array[Array]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = layout.rock_seed
 	var steps: PackedVector3Array = layout.terrace_steps()
@@ -96,19 +117,8 @@ static func _scatter_rocks(root: Node3D, layout: SectorLayout, p: PaletteTuning)
 		var sink: float = 0.1 + (side_sink[size] if on_side else 0.0)
 		var at := Vector3(xz.x, layout.height_at(xz.x, xz.y) - sink, xz.y)
 		by_size[size].append(Transform3D(basis, at))
-		if size == 2 and not on_side:
-			var body := SectorBuilder.static_body(root, "RockBody")
-			body.position = at + Vector3.UP * 0.6
-			var col := CollisionShape3D.new()
-			var sphere := SphereShape3D.new()
-			sphere.radius = 0.9
-			col.shape = sphere
-			body.add_child(col)
 		placed += 1
-	for size: int in 3:
-		_multimesh(
-			root, "Rocks%d" % size, KitBuildings.loose_rock(size, 90 + size, p), by_size[size], p
-		)
+	return by_size
 
 
 static func _pick_size(rng: RandomNumberGenerator, on_side: bool) -> int:

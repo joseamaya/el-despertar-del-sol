@@ -45,6 +45,15 @@ const STEP_MAX_RUN: float = 1.5
 ## Loose rocks scattered over the sector (deterministic).
 @export_range(0, 2000, 1) var rock_count: int = 160
 @export var rock_seed: int = 3
+## Vegetation (F3 task 8): plants per square metre on the steep sides and inside the
+## corridor, how far up the sides they grow, and how far away they stop being drawn.
+@export_range(0.0, 2.0, 0.005) var ichu_side_density: float = 0.6
+@export_range(0.0, 2.0, 0.005) var ichu_corridor_density: float = 0.14
+@export_range(0.0, 0.5, 0.001) var shrub_density: float = 0.012
+@export_range(0.0, 80.0, 1.0, "suffix:m") var plant_side_band: float = 25.0
+@export_range(10.0, 300.0, 1.0, "suffix:m") var plant_range: float = 65.0
+@export_range(10.0, 100.0, 1.0, "suffix:m") var plant_chunk: float = 40.0
+@export var plant_seed: int = 21
 ## Rotation of the whole sector around Y (degrees) so that local -Z faces the real uphill.
 @export_range(-180.0, 180.0, 1.0, "suffix:°") var facing_deg: float = 45.0
 

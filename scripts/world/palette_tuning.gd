@@ -18,6 +18,9 @@ extends Resource
 @export var ichu: Color = Color(0.72, 0.6, 0.36)
 ## Water in irrigation channels (acequias).
 @export var water: Color = Color(0.36, 0.48, 0.55)
+## Living ichu tufts on the slopes (golden) and low dry shrubs.
+@export var ichu_grass: Color = Color(0.78, 0.66, 0.4)
+@export var shrub: Color = Color(0.42, 0.43, 0.28)
 ## Smoke columns on the horizon (GDD §14.1).
 @export var smoke: Color = Color(0.36, 0.33, 0.32)
 ## Cultivated fields in the valley: two tones mixed per plot.
