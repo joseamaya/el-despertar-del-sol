@@ -74,3 +74,14 @@ func test_carmenca_slice_visits_every_act_and_zone() -> void:
 	assert_array(acts).is_equal([0, 1, 2, 3, 4])
 	assert_array(zones).is_equal([1, 2, 3])
 	assert_str(seq.steps[0].checkpoint).is_equal("Start")
+
+
+## Places with nothing to see yet (the family, the ending) must trigger from the path
+## itself, or the slice stalls for a player who does not know where they are.
+func test_carmenca_unmarked_places_are_reached_from_the_path() -> void:
+	var seq := load(CARMENCA) as SliceSequence
+	var layout := load("res://resources/levels/carmenca_layout.tres") as SectorLayout
+	var places: Dictionary = {&"Family": layout.family, &"Ending": layout.ending}
+	for s: SliceStep in seq.steps:
+		if places.has(s.marker):
+			assert_float(layout.distance_to_path(places[s.marker])).is_less(s.radius)
