@@ -1,11 +1,22 @@
 class_name Hud
 extends CanvasLayer
 ## Combat HUD (GDD §12.1): player health and stamina, the locked target's posture and
-## health with a reticle on it, and the defeat/victory messages. Hides out of combat.
+## health with a reticle on it, the defeat/victory messages and, in the slice, a banner
+## with each act and the end (F4 task 2). Hides out of combat.
 ## Every visible text goes through tr() (GDD §12.5).
 
 const FADE_SPEED: float = 2.0
 const HIDE_DELAY: float = 3.0
+## How long an act banner stays up.
+const BANNER_TIME: float = 3.0
+## Banner text of each SliceStep.Act, in order.
+const ACT_KEYS: Array[StringName] = [
+	&"SLICE_ACT_OPENING",
+	&"SLICE_ACT_EXPLORATION",
+	&"SLICE_ACT_SUPPORT",
+	&"SLICE_ACT_COMBAT",
+	&"SLICE_ACT_ENDING",
+]
 
 @export var health: HealthComponent
 @export var stamina: StaminaComponent
@@ -13,6 +24,8 @@ const HIDE_DELAY: float = 3.0
 @export var camera: Camera3D
 ## Optional: combat state and end-of-encounter messages.
 @export var arena: ArenaController
+## Optional: the slice's acts and its end.
+@export var slice: SliceDirector
 
 @export_group("Nodos")
 @export var root: Control
@@ -27,6 +40,8 @@ const HIDE_DELAY: float = 3.0
 @export var hint_label: Label
 
 var _calm_time: float = 0.0
+## Seconds left for the act banner; 0 when no banner is up.
+var _banner_left: float = 0.0
 
 
 func _ready() -> void:
@@ -38,6 +53,9 @@ func _ready() -> void:
 		arena.player_defeated.connect(_show_message.bind(&"HUD_DEFEAT"))
 		arena.encounter_won.connect(_show_message.bind(&"HUD_VICTORY"))
 		arena.encounter_started.connect(_hide_message)
+	if slice != null:
+		slice.act_changed.connect(_show_banner)
+		slice.slice_finished.connect(_show_end)
 
 
 func _process(delta: float) -> void:
@@ -47,6 +65,10 @@ func _process(delta: float) -> void:
 	stamina_bar.value = stamina.current
 	_update_target()
 	_update_fade(delta)
+	if _banner_left > 0.0:
+		_banner_left -= delta
+		if _banner_left <= 0.0:
+			_hide_message()
 
 
 func is_shown() -> bool:
@@ -89,10 +111,26 @@ func _update_fade(delta: float) -> void:
 
 
 func _show_message(key: StringName) -> void:
+	_banner_left = 0.0
 	message_label.text = tr(key)
 	hint_label.text = tr(&"HUD_RETRY")
 	message_panel.visible = true
 
 
 func _hide_message() -> void:
+	_banner_left = 0.0
 	message_panel.visible = false
+
+
+func _show_banner(act: SliceStep.Act) -> void:
+	message_label.text = tr(ACT_KEYS[act])
+	hint_label.text = ""
+	message_panel.visible = true
+	_banner_left = BANNER_TIME
+
+
+func _show_end() -> void:
+	_banner_left = 0.0
+	message_label.text = tr(&"SLICE_THE_END")
+	hint_label.text = tr(&"SLICE_PLAY_AGAIN")
+	message_panel.visible = true

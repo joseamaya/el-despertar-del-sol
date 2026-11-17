@@ -197,6 +197,11 @@ static func _build_markers(root: Node3D, layout: SectorLayout) -> void:
 	# Markers face downhill (+Z): that is where the player and the view come from.
 	_marker(root, "Start", layout, layout.start, 0.0)
 	_marker(root, "Huaca", layout, layout.huaca, 0.0)
+	_marker(root, "Family", layout, layout.family, 0.0)
+	_marker(root, "Ending", layout, layout.ending, 0.0)
+	for c: int in layout.checkpoints.size():
+		# Facing uphill: the way on after respawning.
+		_marker(root, "Checkpoint%d" % (c + 1), layout, layout.checkpoints[c], 0.0, 0.0)
 	var i: int = 1
 	for e: Vector3 in layout.encounters:
 		_marker(root, "Encounter%d" % i, layout, Vector2(e.x, e.y), e.z)
@@ -222,12 +227,17 @@ static func spawn_points(zone: Vector3, count: int) -> PackedVector2Array:
 
 
 static func _marker(
-	root: Node3D, marker_name: String, layout: SectorLayout, at: Vector2, radius: float
+	root: Node3D,
+	marker_name: String,
+	layout: SectorLayout,
+	at: Vector2,
+	radius: float,
+	yaw: float = PI
 ) -> void:
 	var m := Marker3D.new()
 	m.name = marker_name
 	m.position = Vector3(at.x, layout.height_at(at.x, at.y), at.y)
-	m.rotation.y = PI
+	m.rotation.y = yaw
 	m.set_meta(&"radius", radius)
 	root.add_child(m)
 

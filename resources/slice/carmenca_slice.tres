@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="SliceSequence" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/slice_sequence.gd" id="1_seq"]
+[ext_resource type="Script" path="res://scripts/systems/slice_step.gd" id="2_step"]
+
+[sub_resource type="Resource" id="Step_0"]
+script = ExtResource("2_step")
+act = 0
+kind = 2
+radius = 4.0
+seconds = 4.0
+checkpoint = &"Start"
+
+[sub_resource type="Resource" id="Step_1"]
+script = ExtResource("2_step")
+act = 1
+kind = 1
+radius = 4.0
+zone = 1
+checkpoint = &"Checkpoint1"
+
+[sub_resource type="Resource" id="Step_2"]
+script = ExtResource("2_step")
+act = 1
+kind = 0
+marker = &"Huaca"
+radius = 4.5
+checkpoint = &"Checkpoint2"
+
+[sub_resource type="Resource" id="Step_3"]
+script = ExtResource("2_step")
+act = 2
+kind = 0
+marker = &"Family"
+radius = 4.0
+
+[sub_resource type="Resource" id="Step_4"]
+script = ExtResource("2_step")
+act = 3
+kind = 1
+radius = 4.0
+zone = 2
+checkpoint = &"Checkpoint3"
+
+[sub_resource type="Resource" id="Step_5"]
+script = ExtResource("2_step")
+act = 3
+kind = 1
+radius = 4.0
+zone = 3
+checkpoint = &"Checkpoint4"
+
+[sub_resource type="Resource" id="Step_6"]
+script = ExtResource("2_step")
+act = 4
+kind = 0
+marker = &"Ending"
+radius = 5.0
+
+[resource]
+script = ExtResource("1_seq")
+steps = Array[ExtResource("2_step")]([SubResource("Step_0"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6")])

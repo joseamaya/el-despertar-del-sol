@@ -37,6 +37,12 @@ const STEP_MAX_RUN: float = 1.5
 ## Points of interest, all (x, z).
 @export var start: Vector2 = Vector2.ZERO
 @export var huaca: Vector2 = Vector2.ZERO
+## Slice story points (F4 task 2): where the family asks for help (Apoyo) and where the
+## slice ends.
+@export var family: Vector2 = Vector2.ZERO
+@export var ending: Vector2 = Vector2.ZERO
+## Respawn points after a defeat, in the order they are reached; they face uphill.
+@export var checkpoints: PackedVector2Array = PackedVector2Array()
 ## Encounter zones: (x, z, radius). Order: skirmish 1, skirmish 2, the pass.
 @export var encounters: PackedVector3Array = PackedVector3Array()
 ## Enemies waiting in each encounter zone (same order as `encounters`).

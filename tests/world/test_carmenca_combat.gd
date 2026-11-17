@@ -1,8 +1,8 @@
 extends GdUnitTestSuite
 ## Integration: the fights of the slice happen in Carmenca (F3 task 9). The navmesh
 ## covers the path and the zones; warriors in each zone engage and land hits, also
-## down a slope; at the pass no more than two attack at once; defeat restarts at the
-## lookout with everyone back.
+## down a slope; at the pass no more than two attack at once; a defeat brings back only
+## the zone being fought (F4 task 2: one zone at a time).
 
 const SCENE: String = "res://scenes/levels/carmenca.tscn"
 const TIME_SCALE: float = 2.0
@@ -21,6 +21,8 @@ func before_test() -> void:
 	_player = _runner.find_child("Player") as PlayerController
 	_health = _player.get_node("Health") as HealthComponent
 	(_runner.find_child("CameraRig") as CameraController).capture_mouse = false
+	# These tests pick the zone themselves: hold the slice at its opening.
+	(_runner.find_child("SliceDirector") as SliceDirector).set_physics_process(false)
 	# Let the navigation map pick up the baked region.
 	await _frames(20)
 
@@ -34,19 +36,10 @@ func _frames(count: int) -> void:
 		await get_tree().physics_frame
 
 
-## Keeps only the warriors of zone `zone` (1-based) active.
+## Starts zone `zone` (1-based): only its warriors are in the sector.
 func _only_zone(zone: int) -> Array[EnemyController]:
-	var centre: Vector3 = _level.marker_position(StringName("Encounter%d" % zone))
-	var radius: float = _level.layout.encounters[zone - 1].z
-	var kept: Array[EnemyController] = []
-	for enemy: EnemyController in _arena.alive_enemies():
-		var flat := Vector2(enemy.global_position.x - centre.x, enemy.global_position.z - centre.z)
-		if flat.length() < radius + 1.0:
-			kept.append(enemy)
-		else:
-			# Freed, not disabled: a disabled warrior keeps its director token forever.
-			enemy.queue_free()
-	return kept
+	_arena.start_zone(zone)
+	return _arena.alive_enemies()
 
 
 func _place(local: Vector2) -> void:
@@ -70,11 +63,15 @@ func test_navmesh_covers_the_path_and_the_zones() -> void:
 
 
 func test_every_zone_has_its_warriors() -> void:
-	var expected: int = 0
-	for n: int in _level.layout.encounter_enemies:
-		expected += n
-	assert_int(_arena.alive_enemies().size()).is_equal(expected)
-	assert_int(_only_zone(3).size()).is_equal(_level.layout.encounter_enemies[2])
+	assert_int(_arena.alive_enemies().size()).is_equal(0)
+	for zone: int in range(1, _level.layout.encounters.size() + 1):
+		var warriors: Array[EnemyController] = _only_zone(zone)
+		assert_int(warriors.size()).is_equal(_level.layout.encounter_enemies[zone - 1])
+		var centre: Vector3 = _level.marker_position(StringName("Encounter%d" % zone))
+		for w: EnemyController in warriors:
+			var flat := Vector2(w.global_position.x - centre.x, w.global_position.z - centre.z)
+			assert_float(flat.length()).is_less(_level.layout.encounters[zone - 1].z)
+		await _frames(2)
 
 
 ## Puts the player in front of a zone's warriors and waits for a hit (fresh scene per
@@ -144,14 +141,17 @@ func test_no_more_than_two_attack_at_the_pass() -> void:
 	assert_int(most).is_between(1, 2)
 
 
-func test_defeat_restarts_at_the_lookout() -> void:
+func test_defeat_brings_back_only_the_active_zone() -> void:
+	_only_zone(2)
+	await _frames(2)
 	_place(Vector2(0.0, 20.0))
 	_health.apply_damage(_health.get_maximum())
 	await _frames(10)
 	assert_int(_arena.state).is_equal(ArenaController.EncounterState.DEFEATED)
 	_arena.reset_encounter()
 	await _frames(3)
+	# The slice is held at its opening, so the respawn is still the start.
 	var start: Vector3 = _level.marker_position(&"Start")
 	assert_float(_player.global_position.distance_to(start)).is_less(1.0)
-	assert_int(_arena.alive_enemies().size()).is_equal(7)
+	assert_int(_arena.alive_enemies().size()).is_equal(_level.layout.encounter_enemies[1])
 	assert_bool(_health.is_dead()).is_false()
