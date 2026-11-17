@@ -17,7 +17,7 @@ const EXTRA_SPAWNS: Array[Vector3] = [
 
 @export var arena: ArenaController
 ## In a sector level, fight at encounter zone `zone` (1-based) instead of FIGHT_SPOT; the
-## warriors of the other zones are removed.
+## warriors of the other zones are removed (or, in zone mode, never spawn).
 @export var level: SectorLevel
 @export var zone: int = 0
 @export_range(0.5, 10.0, 0.1, "suffix:s") var attack_interval: float = 2.5
@@ -36,6 +36,9 @@ func _ready() -> void:
 	_player_combat = player.get_node("Combat") as CombatComponent
 	arena.encounter_started.connect(_on_encounter_started)
 	_until_attack = attack_interval
+	if level != null and zone > 0 and arena.is_zoned():
+		# Zone mode (F4): nothing spawns until a zone starts. After the arena's own reset.
+		arena.start_zone.call_deferred(zone)
 
 
 func _physics_process(delta: float) -> void:

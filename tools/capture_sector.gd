@@ -25,8 +25,7 @@ const FIGHT_SHOT: Array = ["7_combate", &"Encounter3", Vector3(0, 0, -1), -0.1]
 var _out: String = "user://sector"
 var _level: SectorLevel
 var _arena: ArenaController
-## The arena spawns the warriors of every zone at once, when it starts: keep them until
-## the combat shot is taken.
+## Warriors are kept for the combat shot and removed for the scenery shots.
 var _keep_enemies: bool = true
 
 
@@ -37,6 +36,10 @@ func _initialize() -> void:
 	DirAccess.make_dir_recursive_absolute(_out)
 	root.size = SIZE
 	var scene: Node = (load(SCENE) as PackedScene).instantiate()
+	# The slice would start its own zones (F4): the tool picks the pass instead.
+	var slice := scene.get_node_or_null(^"SliceDirector") as SliceDirector
+	if slice != null:
+		slice.autostart = false
 	root.add_child(scene)
 	_level = scene.get_node(^"SectorLevel") as SectorLevel
 	_arena = scene.get_node(^"ArenaController") as ArenaController
@@ -48,10 +51,13 @@ func _capture_all() -> void:
 	# The level puts the player at the start on a deferred call: let that happen first.
 	for i: int in 5:
 		await process_frame
-	# The fight first: the warriors spawn once, at the start.
+	# The fight first, at the pass.
+	_arena.start_zone(3)
 	await _capture(FIGHT_SHOT, FIGHT_FRAMES)
 	_keep_enemies = false
 	_on_encounter_started()
+	# The fight leaves the player hurt: full bars again for the scenery shots.
+	(_arena.player.get_node(^"Health") as HealthComponent).reset()
 	for shot: Array in SHOTS:
 		await _capture(shot, SETTLE_FRAMES)
 	quit()

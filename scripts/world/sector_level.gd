@@ -37,6 +37,8 @@ func rebuild() -> void:
 	if arena != null:
 		arena.player_spawn = sector.get_node(^"Start") as Node3D
 		arena.spawn_points = spawn_markers()
+		# One zone per encounter, started by the slice (F4 task 2).
+		arena.zone_sizes = layout.encounter_enemies
 	if backdrop != null:
 		var eye := Vector3(
 			layout.start.x, layout.height_at(layout.start.x, layout.start.y) + 1.6, layout.start.y
@@ -62,7 +64,12 @@ func spawn_markers() -> Array[Node3D]:
 
 ## Global position of a marker built from the layout (Start, Huaca, Encounter1…).
 func marker_position(marker: StringName) -> Vector3:
-	return (sector.get_node(NodePath(marker)) as Marker3D).global_position
+	return marker_node(marker).global_position
+
+
+## A marker built from the layout: Start, Huaca, Family, Ending, EncounterN, CheckpointN.
+func marker_node(marker: StringName) -> Marker3D:
+	return sector.get_node(NodePath(marker)) as Marker3D
 
 
 ## Converts a point of the layout (x, z) to a global position on the ground.

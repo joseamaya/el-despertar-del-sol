@@ -2,11 +2,15 @@ class_name ArenaController
 extends Node
 ## Runs a combat encounter (F2 task 10): spawns the enemies, detects defeat and victory
 ## (GDD §14.4 criterion 6) and restarts everything on request without reloading the scene.
+## With `zone_sizes` set (F4 task 2) it runs one zone at a time: nothing spawns until
+## start_zone(), a defeat respawns only the active zone, and won zones stay empty.
 
 signal encounter_started
 signal player_defeated
 signal encounter_won
 signal combat_changed(in_combat: bool)
+## Zone mode only, instead of encounter_won: zone `zone` (1-based) has been cleared.
+signal zone_won(zone: int)
 
 enum EncounterState { FIGHTING, DEFEATED, WON }
 
@@ -16,6 +20,9 @@ const ACTION_RESTART: StringName = &"restart"
 @export var player_spawn: Node3D
 @export var enemy_scene: PackedScene
 @export var spawn_points: Array[Node3D] = []
+## Enemies per zone, in `spawn_points` order. Empty: one encounter with every spawn point,
+## started when ready (the F2 arena).
+@export var zone_sizes: PackedInt32Array = PackedInt32Array()
 @export var enemies_root: Node3D
 @export var director: EncounterDirector
 ## Seconds between the player's fall and the defeat message.
@@ -23,6 +30,9 @@ const ACTION_RESTART: StringName = &"restart"
 @export var death_clip: StringName = &"Death01"
 
 var state: EncounterState = EncounterState.FIGHTING
+## Zone being fought (1-based); 0 before the first one.
+var active_zone: int = 0
+var _won_zones: Array[int] = []
 var _enemies: Array[EnemyController] = []
 var _in_combat: bool = false
 var _player_health: HealthComponent
@@ -49,24 +59,47 @@ func _physics_process(_delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if state != EncounterState.FIGHTING and event.is_action_pressed(ACTION_RESTART):
+	# In zone mode a won zone is not the end: only a defeat can be retried.
+	var can_retry: bool = (
+		state == EncounterState.DEFEATED or (state == EncounterState.WON and not is_zoned())
+	)
+	if can_retry and event.is_action_pressed(ACTION_RESTART):
 		reset_encounter()
 
 
-## Back to the start: player at the spawn with full health and stamina, fresh enemies.
+## Back to the spawn with full health and stamina and fresh enemies: all of them, or in
+## zone mode only those of the active zone if it has not been won.
 func reset_encounter() -> void:
-	for enemy: EnemyController in _enemies:
-		if is_instance_valid(enemy):
-			enemy.queue_free()
-	_enemies.clear()
+	_clear_enemies()
 	player.respawn(player_spawn.global_position, player_spawn.global_rotation.y)
 	_player_health.reset()
 	_player_stamina.reset()
 	_set_player_controls(true)
-	for point: Node3D in spawn_points:
-		_spawn_enemy(point)
+	if not is_zoned():
+		for point: Node3D in spawn_points:
+			_spawn_enemy(point)
+	elif active_zone > 0 and not _won_zones.has(active_zone):
+		_spawn_zone(active_zone)
 	state = EncounterState.FIGHTING
 	encounter_started.emit()
+
+
+## Zone mode: spawns the enemies of zone `zone` (1-based), which becomes the active one.
+func start_zone(zone: int) -> void:
+	assert(is_zoned() and zone >= 1 and zone <= zone_sizes.size(), "Arena: no zone %d." % zone)
+	_clear_enemies()
+	active_zone = zone
+	_spawn_zone(zone)
+	state = EncounterState.FIGHTING
+	encounter_started.emit()
+
+
+func is_zoned() -> bool:
+	return not zone_sizes.is_empty()
+
+
+func is_zone_won(zone: int) -> bool:
+	return _won_zones.has(zone)
 
 
 func alive_enemies() -> Array[EnemyController]:
@@ -79,6 +112,21 @@ func alive_enemies() -> Array[EnemyController]:
 
 func is_in_combat() -> bool:
 	return _in_combat
+
+
+func _clear_enemies() -> void:
+	for enemy: EnemyController in _enemies:
+		if is_instance_valid(enemy):
+			enemy.queue_free()
+	_enemies.clear()
+
+
+func _spawn_zone(zone: int) -> void:
+	var first: int = 0
+	for i: int in zone - 1:
+		first += zone_sizes[i]
+	for i: int in range(first, mini(first + zone_sizes[zone - 1], spawn_points.size())):
+		_spawn_enemy(spawn_points[i])
 
 
 func _spawn_enemy(point: Node3D) -> void:
@@ -94,8 +142,13 @@ func _spawn_enemy(point: Node3D) -> void:
 
 
 func _on_enemy_died() -> void:
-	if state == EncounterState.FIGHTING and alive_enemies().is_empty():
-		state = EncounterState.WON
+	if state != EncounterState.FIGHTING or not alive_enemies().is_empty():
+		return
+	state = EncounterState.WON
+	if is_zoned():
+		_won_zones.append(active_zone)
+		zone_won.emit(active_zone)
+	else:
 		encounter_won.emit()
 
 

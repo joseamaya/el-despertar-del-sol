@@ -11,7 +11,7 @@ del §14.3.
 | # | Tarea | Estado |
 | --- | --- | --- |
 | 1 | Decisiones previas (`DECISIONS/0012`): textos del slice, aspecto de los personajes, qué hace el aliado del Apoyo, fuentes CC0 de audio, alcance de la visión | Hecha: borradores del agente, comuneros que distraen, tintes y accesorios, siluetas en la niebla |
-| 2 | Esqueleto del recorrido: director que encadena los 5 actos por zonas y señales, checkpoints con reaparición, victoria y derrota | Pendiente |
+| 2 | Esqueleto del recorrido: director que encadena los 5 actos por zonas y señales, checkpoints con reaparición, victoria y derrota | Hecha: `SliceDirector` con la secuencia en datos, un encuentro por zona, 4 checkpoints, «Fin» y volver a empezar |
 | 3 | Diálogo mínimo: caja de texto con `tr()`, líneas en `.tres`, Vicaquirao en el mirador | Pendiente |
 | 4 | Huaca: interacción, ofrenda y visión breve (siluetas de piedra en la niebla, compatible con Mobile) | Pendiente |
 | 5 | Códice: una entrada con su etiqueta (Documentado / Según los cronistas / Licencia del juego) | Pendiente |
