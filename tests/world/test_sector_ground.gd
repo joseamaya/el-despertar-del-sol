@@ -68,3 +68,26 @@ func test_ground_shadow_option() -> void:
 			assert_int((node as MeshInstance3D).cast_shadow).is_equal(
 				GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 			)
+
+
+func test_ground_mix_zero_keeps_every_cell_on_earth() -> void:
+	var layout := (load(LAYOUT) as SectorLayout).duplicate() as SectorLayout
+	var palette := (load(PALETTE) as PaletteTuning).duplicate() as PaletteTuning
+	palette.ground_mix = 0.0
+	var root := auto_free(Node3D.new()) as Node3D
+	SectorGround.build(root, layout, palette, SectorBuilder.HeightGrid.new(layout))
+	var mi := root.get_node(^"Ground") as MeshInstance3D
+	var colours: PackedColorArray = mi.mesh.surface_get_arrays(0)[Mesh.ARRAY_COLOR]
+	assert_int(colours.size()).is_greater(0)
+	# One assertion per range, not per vertex: there are ~90 k vertices. Vertex colours
+	# are stored with 8 bits per channel, hence the 0.005 margin.
+	var low := Vector2(INF, INF)
+	var high := Vector2(-INF, -INF)
+	for c: Color in colours:
+		low = low.min(Vector2(c.r, c.g))
+		high = high.max(Vector2(c.r, c.g))
+	var top: Color = palette.earth.lightened(0.03)
+	assert_float(low.x).is_greater_equal(palette.earth.r - 0.005)
+	assert_float(low.y).is_greater_equal(palette.earth.g - 0.005)
+	assert_float(high.x).is_less_equal(top.r + 0.005)
+	assert_float(high.y).is_less_equal(top.g + 0.005)

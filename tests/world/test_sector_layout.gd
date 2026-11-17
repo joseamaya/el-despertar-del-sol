@@ -107,3 +107,36 @@ func test_carmenca_encounter_zones_are_flat_and_open() -> void:
 				hi = maxf(hi, h)
 		assert_float(hi - lo).override_failure_message("Zone %s not flat" % e).is_less(0.8)
 		assert_float(l.corridor_half_width(e.y)).is_greater(e.z + absf(e.x))
+
+
+func test_capped_sides_rise_steeply_then_roll_gently() -> void:
+	var l := _simple()
+	l.side_max_rise = 4.0
+	l.side_far_grade = 0.1
+	# Steep band: 2 m of run at grade 2 reach the 4 m cap; then grade 0.1.
+	assert_float(l.side_rise(1.0)).is_equal_approx(2.0, 0.001)
+	assert_float(l.side_rise(2.0)).is_equal_approx(4.0, 0.001)
+	assert_float(l.side_rise(12.0)).is_equal_approx(5.0, 0.001)
+	assert_float(l.height_at(15.0, 5.0)).is_equal_approx(4.8, 0.001)
+	l.side_max_rise = 0.0
+	assert_float(l.side_rise(12.0)).is_equal_approx(24.0, 0.001)
+
+
+## The player has no jump and floor_max_angle 45°: a band steeper than 1.0 and a few
+## metres high keeps them inside, on the sides and past the end of the path.
+func test_carmenca_sides_and_end_cannot_be_climbed() -> void:
+	var l := _carmenca()
+	assert_float(l.side_grade).is_greater(1.0)
+	assert_float(l.side_max_rise).is_greater_equal(6.0)
+	var last_z: float = INF
+	for p: Vector2 in l.path:
+		last_z = minf(last_z, p.y)
+	var steep_rise: float = 0.0
+	var best: float = 0.0
+	var z: float = last_z
+	while z > -l.size.y * 0.5:
+		var dh: float = l.profile_at(z - 0.5) - l.profile_at(z)
+		steep_rise = steep_rise + dh if dh > 0.5 else 0.0
+		best = maxf(best, steep_rise)
+		z -= 0.5
+	assert_float(best).is_greater_equal(6.0)

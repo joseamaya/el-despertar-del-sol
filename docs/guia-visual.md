@@ -96,12 +96,11 @@ paisaje se queda en ocres, grises y verdes secos para que los personajes se lean
 - Cualquier elemento colonial o de otras culturas (`HISTORICAL_REFERENCES.md`, «Lo que no
   se cambia»).
 
-## Preguntas abiertas (decide el desarrollador)
+## Preguntas resueltas
 
 1. **Puertas trapezoidales:** muy reconocibles como andinas, pero pueden ser más propias de
-   la arquitectura imperial posterior que de 1438. Por defecto se usan puertas
-   rectangulares; si se adoptan las trapezoidales, se registra como licencia en
-   `HISTORICAL_REFERENCES.md`.
+   la arquitectura imperial posterior que de 1438. **Decidido en la tarea 11 de F3:
+   puertas rectangulares** (`docs/fases/F3-prueba-andina.md`).
 
 ## No verificado
 

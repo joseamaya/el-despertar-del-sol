@@ -55,7 +55,7 @@ class HeightGrid:
 			var half: float = layout.corridor_half_width(z)
 			for ix: int in width:
 				var outside: float = absf(origin.x + ix) - half
-				data[iz * width + ix] = base + maxf(outside, 0.0) * layout.side_grade
+				data[iz * width + ix] = base + layout.side_rise(outside)
 
 	func at(x: float, z: float) -> float:
 		var fx: float = clampf(x - origin.x, 0.0, width - 1.0)

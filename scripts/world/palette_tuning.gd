@@ -14,6 +14,9 @@ extends Resource
 @export var earth: Color = Color(0.5, 0.38, 0.27)
 ## Dry puna grass on slopes (mixed with earth).
 @export var dry_grass: Color = Color(0.6, 0.55, 0.34)
+## How far each ground cell may drift from earth towards dry grass (0..1). Lower values
+## soften the checkerboard of the faceted ground.
+@export_range(0.0, 1.0, 0.05) var ground_mix: float = 1.0
 ## Ichu thatch on roofs.
 @export var ichu: Color = Color(0.72, 0.6, 0.36)
 ## Water in irrigation channels (acequias).

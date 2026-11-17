@@ -19,11 +19,12 @@ static func material_for(palette: PaletteTuning, role: Role) -> StandardMaterial
 	# FAR: distant scenery whose vertex colour already carries the haze and a baked
 	# sun shading: no fog and no lighting, so the dawn ambient cannot turn the blue apus
 	# brown (docs/guia-visual.md, «azules atmosféricos»).
+	# Palette colours are sRGB: read the baked vertex colours as sRGB too, or they show
+	# paler and washed out (F3 task 11, «reconocible andino»).
+	mat.vertex_color_is_srgb = mat.vertex_color_use_as_albedo
 	mat.disable_fog = role == Role.FAR
 	if role == Role.FAR:
 		mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		# Palette colours are sRGB; without this an unshaded vertex colour shows paler.
-		mat.vertex_color_is_srgb = true
 	return mat
 
 

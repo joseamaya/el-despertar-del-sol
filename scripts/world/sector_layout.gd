@@ -21,6 +21,11 @@ const STEP_MAX_RUN: float = 1.5
 @export var corridor: PackedVector2Array = PackedVector2Array()
 ## Grade of the sides outside the corridor. Above 1.0 (45°) the player cannot climb them.
 @export_range(0.5, 4.0, 0.05) var side_grade: float = 1.4
+## The steep sides rise only this high (enough to block the player) and then roll on as
+## gentle hills at `side_far_grade`, instead of walls up to the sector edge (F3 task 11:
+## the sides read as cliffs). 0 = no cap.
+@export_range(0.0, 100.0, 0.5, "suffix:m") var side_max_rise: float = 0.0
+@export_range(0.0, 1.0, 0.01) var side_far_grade: float = 0.15
 ## Main path: points (x, z) from the start to the end of the sector.
 @export var path: PackedVector2Array = PackedVector2Array()
 @export_range(1.0, 6.0, 0.1, "suffix:m") var path_width: float = 2.6
@@ -75,10 +80,19 @@ var _corridor_sorted: PackedVector2Array
 func height_at(x: float, z: float) -> float:
 	var h: float = profile_at(z)
 	var half: float = corridor_half_width(z)
-	var outside: float = absf(x) - half
-	if outside > 0.0:
-		h += outside * side_grade
-	return h
+	return h + side_rise(absf(x) - half)
+
+
+## Height of the side above the profile, `outside` metres beyond the corridor edge.
+func side_rise(outside: float) -> float:
+	if outside <= 0.0:
+		return 0.0
+	if side_max_rise <= 0.0:
+		return outside * side_grade
+	var steep_run: float = side_max_rise / side_grade
+	if outside <= steep_run:
+		return outside * side_grade
+	return side_max_rise + (outside - steep_run) * side_far_grade
 
 
 ## Height of the profile alone (corridor centre).

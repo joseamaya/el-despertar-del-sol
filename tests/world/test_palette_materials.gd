@@ -13,6 +13,8 @@ func test_vertex_and_far_roles_use_vertex_colour() -> void:
 	assert_bool(far.disable_fog).is_true()
 	assert_int(far.shading_mode).is_equal(BaseMaterial3D.SHADING_MODE_UNSHADED)
 	assert_bool(far.vertex_color_is_srgb).is_true()
+	assert_bool(vertex.vertex_color_is_srgb).is_true()
+	assert_bool(adobe.vertex_color_is_srgb).is_false()
 	assert_int(vertex.shading_mode).is_equal(BaseMaterial3D.SHADING_MODE_PER_PIXEL)
 	assert_bool(adobe.vertex_color_use_as_albedo).is_false()
 	assert_object(adobe.albedo_color).is_equal(p.adobe)
