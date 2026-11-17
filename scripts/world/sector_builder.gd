@@ -19,7 +19,7 @@ static func build(layout: SectorLayout, palette: PaletteTuning) -> Node3D:
 	var root := Node3D.new()
 	root.name = "Sector"
 	var heights := HeightGrid.new(layout)
-	_build_ground(root, layout, palette, heights)
+	SectorGround.build(root, layout, palette, heights)
 	for step: Vector3 in layout.terrace_steps():
 		_build_terrace_wall(root, layout, palette, step)
 	_build_stairs(root, layout, palette)
@@ -67,25 +67,6 @@ class HeightGrid:
 		var a: float = lerpf(data[iz * width + ix], data[iz * width + ix + 1], tx)
 		var b: float = lerpf(data[(iz + 1) * width + ix], data[(iz + 1) * width + ix + 1], tx)
 		return lerpf(a, b, tz)
-
-
-static func _build_ground(
-	root: Node3D, layout: SectorLayout, palette: PaletteTuning, heights: HeightGrid
-) -> void:
-	var cells := Vector2i(int(layout.size.x / MESH_CELL.x), int(layout.size.y / MESH_CELL.y))
-	var sample := func(xz: Vector2) -> float: return heights.at(xz.x, xz.y)
-	var mesh: ArrayMesh = LowPolyTerrain.ground_grid(
-		layout.size, cells, sample, palette.earth, palette.dry_grass, 7
-	)
-	add_mesh(root, "Ground", mesh, palette, Vector3.ZERO)
-	var shape := HeightMapShape3D.new()
-	shape.map_width = heights.width
-	shape.map_depth = heights.depth
-	shape.map_data = heights.data
-	var body := static_body(root, "GroundBody")
-	var col := CollisionShape3D.new()
-	col.shape = shape
-	body.add_child(col)
 
 
 static func _build_terrace_wall(

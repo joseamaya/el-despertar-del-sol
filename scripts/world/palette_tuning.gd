@@ -64,6 +64,8 @@ extends Resource
 ## Shadow biases: a low sun grazes the ground and needs more normal bias against acne.
 @export_range(0.0, 2.0, 0.01) var shadow_bias: float = 0.1
 @export_range(0.0, 10.0, 0.1) var shadow_normal_bias: float = 2.0
+## Sun shadow cascades: 4 (default), 2 or 1. Fewer cascades, fewer shadow passes.
+@export_enum("1:1", "2:2", "4:4") var shadow_splits: int = 4
 
 @export_group("Fill light")
 ## Bounce from the sky on the side opposite the sun, without shadows (cheap). Energy 0

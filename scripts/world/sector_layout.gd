@@ -47,6 +47,11 @@ const STEP_MAX_RUN: float = 1.5
 ## Loose rocks scattered over the sector (deterministic).
 @export_range(0, 2000, 1) var rock_count: int = 160
 @export var rock_seed: int = 3
+## Performance (F3 task 10): whether the ground casts sun shadows (walls, houses and rocks
+## always do), and the ground cell across X on the inaccessible sides (2 = same as the
+## corridor).
+@export var ground_shadow: bool = true
+@export_range(2.0, 16.0, 1.0, "suffix:m") var side_cell: float = 2.0
 ## Vegetation (F3 task 8): plants per square metre on the steep sides and inside the
 ## corridor, how far up the sides they grow, and how far away they stop being drawn.
 @export_range(0.0, 2.0, 0.005) var ichu_side_density: float = 0.6
