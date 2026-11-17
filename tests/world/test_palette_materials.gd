@@ -50,6 +50,31 @@ func test_sun_is_low_and_limits_shadow_distance() -> void:
 	sun.free()
 
 
+func test_shadow_splits_choose_the_cascade_mode() -> void:
+	var p := PaletteTuning.new()
+	var sun := DirectionalLight3D.new()
+	var modes: Dictionary = {
+		1: DirectionalLight3D.SHADOW_ORTHOGONAL,
+		2: DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS,
+		4: DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS,
+	}
+	for splits: int in modes:
+		p.shadow_splits = splits
+		PaletteMaterials.apply_sun(p, sun)
+		assert_int(sun.directional_shadow_mode).is_equal(modes[splits])
+	sun.free()
+
+
+## Carmenca walk budget (F3 task 10, docs/rendimiento/2026-11-carmenca-recorrido.md):
+## 2 cascades and 8 m side cells keep it under 1.2 M primitives.
+func test_carmenca_keeps_the_walk_budget_options() -> void:
+	var p := load("res://resources/style/palette_amanecer_calido.tres") as PaletteTuning
+	var layout := load("res://resources/levels/carmenca_layout.tres") as SectorLayout
+	assert_int(p.shadow_splits).is_equal(2)
+	assert_float(layout.side_cell).is_equal(8.0)
+	assert_bool(layout.ground_shadow).is_true()
+
+
 func test_every_palette_resource_loads() -> void:
 	for name: String in ["amanecer_calido", "altura_fria", "contraste"]:
 		var p := load("res://resources/style/palette_%s.tres" % name) as PaletteTuning

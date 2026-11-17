@@ -22,6 +22,9 @@ extends SceneTree
 ##       --scene=res://scenes/levels/carmenca.tscn --walk --scale3d=0.833
 
 const RENDER_SIZE: Vector2i = Vector2i(1920, 1080)
+## A walk takes ~80 s. Past this the walker is stuck (e.g. a broken layout): give up
+## with exit code 1 instead of hanging.
+const WALK_TIMEOUT: float = 300.0
 
 var _scene_path: String = "res://scenes/tests/locomotion_test.tscn"
 var _hold: PackedStringArray = PackedStringArray()
@@ -98,6 +101,10 @@ func _process(_delta: float) -> bool:
 	_primitives.append(Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME))
 	if _walker != null:
 		_record_stretch(frame)
+		if elapsed > _warmup + WALK_TIMEOUT:
+			push_error("SCENE_BENCHMARK walk did not finish in %d s" % WALK_TIMEOUT)
+			quit(1)
+			return false
 		if not _walker.is_done():
 			return false
 	elif elapsed < _warmup + _seconds:
