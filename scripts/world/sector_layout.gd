@@ -40,6 +40,8 @@ const STEP_MAX_RUN: float = 1.5
 ## Slice story points (F4 task 2): where the family asks for help (Apoyo) and where the
 ## slice ends.
 @export var family: Vector2 = Vector2.ZERO
+## Where Vicaquirao waits at the opening (F4 task 3); he faces the valley.
+@export var mentor: Vector2 = Vector2.ZERO
 @export var ending: Vector2 = Vector2.ZERO
 ## Respawn points after a defeat, in the order they are reached; they face uphill.
 @export var checkpoints: PackedVector2Array = PackedVector2Array()

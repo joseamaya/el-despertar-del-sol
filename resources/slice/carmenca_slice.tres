@@ -1,14 +1,15 @@
-[gd_resource type="Resource" script_class="SliceSequence" load_steps=10 format=3]
+[gd_resource type="Resource" script_class="SliceSequence" format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/slice_sequence.gd" id="1_seq"]
 [ext_resource type="Script" path="res://scripts/systems/slice_step.gd" id="2_step"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_opening.tres" id="3_opening"]
 
 [sub_resource type="Resource" id="Step_0"]
 script = ExtResource("2_step")
 act = 0
-kind = 2
+kind = 3
 radius = 4.0
-seconds = 4.0
+dialogue = ExtResource("3_opening")
 checkpoint = &"Start"
 
 [sub_resource type="Resource" id="Step_1"]

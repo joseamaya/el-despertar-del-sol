@@ -74,6 +74,9 @@ func test_carmenca_slice_visits_every_act_and_zone() -> void:
 	assert_array(acts).is_equal([0, 1, 2, 3, 4])
 	assert_array(zones).is_equal([1, 2, 3])
 	assert_str(seq.steps[0].checkpoint).is_equal("Start")
+	# Vicaquirao opens the slice (F4 task 3).
+	assert_int(seq.steps[0].kind).is_equal(SliceStep.Kind.DIALOGUE)
+	assert_object(seq.steps[0].dialogue).is_not_null()
 
 
 ## Places with nothing to see yet (the family, the ending) must trigger from the path

@@ -15,6 +15,8 @@ const ACTION_RESTART: StringName = &"restart"
 @export var sequence: SliceSequence
 @export var level: SectorLevel
 @export var arena: ArenaController
+## Plays the DIALOGUE steps (F4 task 3). Needed only if the sequence has any.
+@export var dialogue: DialoguePlayer
 ## Off for tools that drive the zones themselves (benchmark, captures).
 @export var autostart: bool = true
 
@@ -27,6 +29,8 @@ var _checkpoint: StringName = &""
 func _ready() -> void:
 	assert(sequence != null and level != null and arena != null, "SliceDirector: parts.")
 	arena.zone_won.connect(_on_zone_won)
+	if dialogue != null:
+		dialogue.dialogue_finished.connect(_on_dialogue_finished)
 	# After the level and the arena have set up the sector and the first respawn.
 	if autostart:
 		_begin.call_deferred()
@@ -75,15 +79,25 @@ func _start(step: SliceStep) -> void:
 		arena.player_spawn = level.marker_node(marker)
 		checkpoint_reached.emit(marker)
 	step_started.emit(step)
-	if step.kind == SliceStep.Kind.ENCOUNTER:
-		if arena.is_zone_won(step.zone):
-			_complete()
-		else:
-			arena.start_zone(step.zone)
+	match step.kind:
+		SliceStep.Kind.ENCOUNTER:
+			if arena.is_zone_won(step.zone):
+				_complete()
+			else:
+				arena.start_zone(step.zone)
+		SliceStep.Kind.DIALOGUE:
+			assert(dialogue != null, "SliceDirector: a DIALOGUE step needs the player.")
+			dialogue.play(step.dialogue)
 
 
 func _complete() -> void:
 	_start(flow.advance())
+
+
+func _on_dialogue_finished() -> void:
+	var step: SliceStep = flow.current() if flow != null else null
+	if step != null and step.kind == SliceStep.Kind.DIALOGUE:
+		_complete()
 
 
 func _on_zone_won(zone: int) -> void:
