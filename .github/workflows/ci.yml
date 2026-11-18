@@ -10,6 +10,8 @@ on:
 permissions:
   contents: read
   checks: write
+  # The export job deletes the older builds it replaces.
+  actions: write
 
 env:
   GODOT_VERSION: "4.7.2"
@@ -130,8 +132,22 @@ jobs:
         run: timeout 60 ./${{ matrix.output }} --headless --quit-after 10
 
       # Builds are kept only from main and manual runs: a pull request is played from its
-      # branch, and keeping every PR build for 14 days filled the artifact storage quota
-      # (6.3 GB by PR #43).
+      # branch. The private repository's artifact storage is small (~500 MB) and each
+      # build is ~30-40 MB zipped: keeping one per merge filled it twice (PR #43, PR #49).
+      # So the older builds of this platform are removed first (an upload over quota
+      # fails), and only the newest is kept.
+      - name: Remove older ${{ matrix.preset }} builds
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREFIX: el-despertar-del-sol-${{ matrix.preset }}-
+        run: |
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/artifacts?per_page=100" \
+            --jq ".artifacts[] | select(.name | startswith(\"${PREFIX}\")) | .id" |
+          while read -r id; do
+            gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}"
+          done
+
       - uses: actions/upload-artifact@v7
         if: github.event_name != 'pull_request'
         with:
