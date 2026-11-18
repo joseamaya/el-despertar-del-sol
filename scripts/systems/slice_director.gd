@@ -14,6 +14,8 @@ signal slice_finished
 signal notice_shown(key: StringName)
 
 const ACTION_RESTART: StringName = &"restart"
+## Shown dimmed at the next interaction while a skirmish is still on.
+const LOCKED_PROMPT: StringName = &"PROMPT_ENEMIES_NEAR"
 
 @export var sequence: SliceSequence
 @export var level: SectorLevel
@@ -122,6 +124,7 @@ func _start(step: SliceStep) -> void:
 				_complete()
 			else:
 				arena.start_zone(step.zone)
+				_lock_next_interaction()
 		SliceStep.Kind.DIALOGUE:
 			assert(dialogue != null, "SliceDirector: a DIALOGUE step needs the player.")
 			dialogue.play(step.dialogue)
@@ -134,6 +137,13 @@ func _start(step: SliceStep) -> void:
 		SliceStep.Kind.CHOICE:
 			assert(choice != null, "SliceDirector: a CHOICE step needs the box.")
 			choice.ask(step.choice)
+
+
+## What comes after a skirmish (the huaca, the llamas) says it must wait meanwhile.
+func _lock_next_interaction() -> void:
+	var next: SliceStep = flow.peek_next()
+	if interaction != null and next != null and next.kind == SliceStep.Kind.INTERACT:
+		interaction.lock(next.marker, next.radius, LOCKED_PROMPT)
 
 
 func _complete(extra_flag: StringName = &"") -> void:

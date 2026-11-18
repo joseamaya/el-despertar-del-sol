@@ -39,6 +39,14 @@ func advance(extra_flag: StringName = &"") -> SliceStep:
 	return current()
 
 
+## The step that would follow the current one with the flags set so far (null if none).
+func peek_next() -> SliceStep:
+	for i: int in range(_index + 1, _steps.size()):
+		if applies(_steps[i]):
+			return _steps[i]
+	return null
+
+
 ## While the current step is optional: the first required step after it that applies
 ## (null if none, or if the current step is required).
 func next_required() -> SliceStep:

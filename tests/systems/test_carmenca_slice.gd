@@ -227,3 +227,23 @@ func test_passing_the_huaca_by_does_not_stall_the_slice() -> void:
 	assert_array(codex.unlocked_entries()).is_empty()
 	await _play_to_end()
 	assert_bool(_slice.is_finished()).is_true()
+
+
+func test_huaca_waits_dimmed_while_the_skirmish_is_on() -> void:
+	var point := _runner.find_child("InteractionPoint") as InteractionPoint
+	var prompt := _runner.find_child("InteractionPrompt") as InteractionPrompt
+	while _slice.flow.current().kind != SliceStep.Kind.ENCOUNTER:
+		await _finish_step()
+	assert_bool(point.is_locked()).is_true()
+	var at: Vector3 = _level.marker_position(&"Huaca") + Vector3(0.0, 0.1, 3.0)
+	_player.respawn(at, 0.0)
+	await _frames(3)
+	assert_bool(prompt.is_showing()).is_true()
+	assert_bool(prompt.is_dimmed()).is_true()
+	assert_str(prompt.shown_text()).is_equal(tr(&"PROMPT_ENEMIES_NEAR"))
+	assert_bool(point.try_interact()).is_false()
+	await _kill_zone()
+	await _frames(2)
+	assert_bool(point.is_active()).is_true()
+	assert_bool(prompt.is_dimmed()).is_false()
+	assert_str(prompt.shown_text()).is_equal(tr(&"PROMPT_OFFERING"))

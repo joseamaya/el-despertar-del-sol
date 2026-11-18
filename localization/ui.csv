@@ -41,3 +41,5 @@ DLG_FAMILY_YES,"Si lo haces, los hombres del ayllu bajarán contigo al paso.","I
 DLG_FAMILY_NO,"…Que las huacas te acompañen, entonces.","…May the huacas go with you, then."
 PROMPT_LLAMAS,E / A: desatar las llamas,E / A: untie the llamas
 NOTICE_SUPPORT,El ayllu bajará contigo al paso,The ayllu will go down to the pass with you
+HUD_ENEMIES_LEFT,Chancas: {count},Chancas: {count}
+PROMPT_ENEMIES_NEAR,Aún hay chancas cerca,There are still Chancas nearby

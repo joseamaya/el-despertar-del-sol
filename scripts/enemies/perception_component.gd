@@ -44,6 +44,18 @@ func tick(delta: float) -> void:
 			_lose()
 
 
+## Told where the target is without sensing it (the encounter keeps a skirmish going):
+## goes after it as if it had just lost sight of it there.
+func alert_to(position: Vector3) -> void:
+	if target == null or not is_instance_valid(target):
+		return
+	last_known_position = position
+	_unsensed_time = 0.0
+	if not _has_target:
+		_has_target = true
+		target_spotted.emit(target)
+
+
 func has_target() -> bool:
 	return _has_target
 

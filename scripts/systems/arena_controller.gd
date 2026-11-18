@@ -3,7 +3,9 @@ extends Node
 ## Runs a combat encounter (F2 task 10): spawns the enemies, detects defeat and victory
 ## (GDD §14.4 criterion 6) and restarts everything on request without reloading the scene.
 ## With `zone_sizes` set (F4 task 2) it runs one zone at a time: nothing spawns until
-## start_zone(), a defeat respawns only the active zone, and won zones stay empty.
+## start_zone(), a defeat respawns only the active zone, and won zones stay empty. Once a
+## zone has noticed the player its warriors keep hunting them, so no straggler is left
+## standing far away holding the slice (F4 task 6).
 
 signal encounter_started
 signal player_defeated
@@ -28,6 +30,8 @@ const ACTION_RESTART: StringName = &"restart"
 ## Seconds between the player's fall and the defeat message.
 @export_range(0.0, 5.0, 0.1, "suffix:s") var defeat_delay: float = 1.5
 @export var death_clip: StringName = &"Death01"
+## Zone mode: how often warriors that do not sense the player are told where they are.
+@export_range(0.5, 10.0, 0.5, "suffix:s") var hunt_interval: float = 2.0
 
 var state: EncounterState = EncounterState.FIGHTING
 ## Zone being fought (1-based); 0 before the first one.
@@ -37,6 +41,8 @@ var _enemies: Array[EnemyController] = []
 var _in_combat: bool = false
 var _player_health: HealthComponent
 var _player_stamina: StaminaComponent
+var _engaged: bool = false
+var _hunt_left: float = 0.0
 
 
 func _ready() -> void:
@@ -48,7 +54,7 @@ func _ready() -> void:
 	reset_encounter.call_deferred()
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	var aware: bool = false
 	for enemy: EnemyController in alive_enemies():
 		if enemy.perception.has_target():
@@ -56,6 +62,14 @@ func _physics_process(_delta: float) -> void:
 	if aware != _in_combat:
 		_in_combat = aware
 		combat_changed.emit(_in_combat)
+	if not is_zoned() or state != EncounterState.FIGHTING:
+		return
+	_engaged = _engaged or aware
+	if _engaged:
+		_hunt_left -= delta
+		if _hunt_left <= 0.0:
+			_hunt_left = hunt_interval
+			_hunt()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -80,6 +94,7 @@ func reset_encounter() -> void:
 			_spawn_enemy(point)
 	elif active_zone > 0 and not _won_zones.has(active_zone):
 		_spawn_zone(active_zone)
+	_disengage()
 	state = EncounterState.FIGHTING
 	encounter_started.emit()
 
@@ -90,6 +105,7 @@ func start_zone(zone: int) -> void:
 	_clear_enemies()
 	active_zone = zone
 	_spawn_zone(zone)
+	_disengage()
 	state = EncounterState.FIGHTING
 	encounter_started.emit()
 
@@ -112,6 +128,29 @@ func alive_enemies() -> Array[EnemyController]:
 
 func is_in_combat() -> bool:
 	return _in_combat
+
+
+## Zone mode: the active zone has noticed the player and still has warriors standing.
+func is_zone_engaged() -> bool:
+	return (
+		is_zoned()
+		and _engaged
+		and state == EncounterState.FIGHTING
+		and not alive_enemies().is_empty()
+	)
+
+
+func _disengage() -> void:
+	_engaged = false
+	_hunt_left = 0.0
+
+
+## Warriors of the active zone that do not sense the player go to where they are.
+func _hunt() -> void:
+	for enemy: EnemyController in alive_enemies():
+		var sense: PerceptionComponent = enemy.perception
+		if sense.target != null and not sense.can_sense():
+			sense.alert_to(player.global_position)
 
 
 func _clear_enemies() -> void:

@@ -23,10 +23,15 @@ func _ready() -> void:
 	hide_prompt()
 
 
-## `key` is a translation key.
-func show_prompt(key: StringName) -> void:
+## `key` is a translation key. Dimmed: something is there but cannot be done yet.
+func show_prompt(key: StringName, dimmed: bool = false) -> void:
 	_label.text = tr(key)
+	_label.modulate = Color(0.75, 0.72, 0.68, 0.8) if dimmed else Color.WHITE
 	_label.visible = true
+
+
+func is_dimmed() -> bool:
+	return _label.visible and _label.modulate != Color.WHITE
 
 
 func hide_prompt() -> void:

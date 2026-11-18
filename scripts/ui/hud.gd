@@ -40,6 +40,8 @@ const ACT_KEYS: Array[StringName] = [
 @export var hint_label: Label
 
 var _calm_time: float = 0.0
+## Warriors left in the active zone (F4 task 6); built here, shown only while it fights.
+var _enemies_left: Label
 ## Seconds left for the act banner; 0 when no banner is up.
 var _banner_left: float = 0.0
 
@@ -48,6 +50,7 @@ func _ready() -> void:
 	assert(health != null and stamina != null and root != null, "Hud needs its parts.")
 	message_panel.visible = false
 	target_panel.visible = false
+	_build_enemies_left()
 	reticle.visible = false
 	if arena != null:
 		arena.player_defeated.connect(_show_message.bind(&"HUD_DEFEAT"))
@@ -65,6 +68,7 @@ func _process(delta: float) -> void:
 	stamina_bar.max_value = stamina.get_maximum()
 	stamina_bar.value = stamina.current
 	_update_target()
+	_update_enemies_left()
 	_update_fade(delta)
 	if _banner_left > 0.0:
 		_banner_left -= delta
@@ -96,6 +100,39 @@ func _update_target() -> void:
 		if not camera.is_position_behind(point):
 			reticle.position = camera.unproject_position(point)
 			reticle.visible = true
+
+
+func is_counting_enemies() -> bool:
+	return _enemies_left.visible
+
+
+func enemies_left_text() -> String:
+	return _enemies_left.text
+
+
+func _build_enemies_left() -> void:
+	_enemies_left = Label.new()
+	_enemies_left.name = "EnemiesLeft"
+	_enemies_left.anchor_left = 0.5
+	_enemies_left.anchor_right = 0.5
+	_enemies_left.offset_left = -200.0
+	_enemies_left.offset_right = 200.0
+	_enemies_left.offset_top = 24.0
+	_enemies_left.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_enemies_left.add_theme_font_size_override(&"font_size", 24)
+	_enemies_left.add_theme_color_override(&"font_color", Color(0.98, 0.94, 0.86))
+	_enemies_left.add_theme_color_override(&"font_outline_color", Color(0.1, 0.07, 0.05))
+	_enemies_left.add_theme_constant_override(&"outline_size", 8)
+	_enemies_left.visible = false
+	add_child(_enemies_left)
+
+
+func _update_enemies_left() -> void:
+	var on: bool = arena != null and arena.is_zone_engaged()
+	_enemies_left.visible = on
+	if on:
+		var count: int = arena.alive_enemies().size()
+		_enemies_left.text = tr(&"HUD_ENEMIES_LEFT").format({"count": count})
 
 
 func _update_fade(delta: float) -> void:
