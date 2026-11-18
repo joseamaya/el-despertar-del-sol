@@ -78,6 +78,24 @@ valle de fondo.
 Con la configuración adoptada, bajar al 75 % apenas cambia nada: la GPU ya no es el límite
 (la sombra del sol era lo que dependía de la geometría, no de los píxeles).
 
+## F4, tarea 6b: el paso con los comuneros
+
+Combate en el paso con 3 chancas y 2 comuneros (`--fight-zone=3 --slice-flag=llamas_freed`)
+frente a solo los 3 chancas, 83 %, pasadas alternadas. Medido con otros procesos usando la CPU,
+así que vale la comparación, no las cifras absolutas.
+
+| Pasada | FPS medio | 1 % bajo | Frames > 16,7 ms | Primitivas máx. | Draw calls máx. | Física (ms) |
+| --- | --- | --- | --- | --- | --- | --- |
+| 3 chancas (1) | 116,9 | 67,5 | 0,00 % | 0,94 M | 138 | 3,8 |
+| + 2 comuneros (1) | 118,7 | 55,9 | 0,01 % | 1,02 M | 162 | 7,0 |
+| 3 chancas (2) | 112,7 | 49,2 | 0,02 % | 0,94 M | 138 | 8,7 |
+| + 2 comuneros (2) | 108,8 | 41,1 | 0,05 % | 1,02 M | 162 | 11,2 |
+
+Los dos comuneros añaden unas 0,08 M primitivas y 24 draw calls; el FPS medio no cambia más
+que el ruido entre pasadas. Sigue dentro del criterio de F3 (más de 60 FPS, menos de 1 % de
+frames lentos, menos de 1,2 M primitivas). La física sube unos 3 ms: hay que repetir la medida
+con la máquina en reposo en el cierre de F4 (tarea 12).
+
 ## Coste de la luz (pendiente de la tarea 7)
 - **Sombras del sol:** con 4 cascadas costaban 0,59 M primitivas (37 % del total) y 13 FPS
   de media frente a 2 cascadas.

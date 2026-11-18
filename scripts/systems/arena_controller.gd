@@ -145,12 +145,13 @@ func _disengage() -> void:
 	_hunt_left = 0.0
 
 
-## Warriors of the active zone that do not sense the player go to where they are.
+## Warriors of the active zone that do not sense their target (the player, or a comunero
+## who drew them away, F4 task 6) go to where it is.
 func _hunt() -> void:
 	for enemy: EnemyController in alive_enemies():
 		var sense: PerceptionComponent = enemy.perception
-		if sense.target != null and not sense.can_sense():
-			sense.alert_to(player.global_position)
+		if is_instance_valid(sense.target) and not sense.can_sense():
+			sense.alert_to(sense.target.global_position)
 
 
 func _clear_enemies() -> void:

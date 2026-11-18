@@ -31,6 +31,8 @@
 [ext_resource type="Script" path="res://scripts/dialogue/choice_box.gd" id="29_choice"]
 [ext_resource type="Script" path="res://scripts/interaction/llama_pen.gd" id="30_pen"]
 [ext_resource type="Resource" path="res://resources/tuning/llama_pen.tres" id="31_pen"]
+[ext_resource type="Script" path="res://scripts/allies/support_allies.gd" id="32_allies"]
+[ext_resource type="Resource" path="res://resources/tuning/support_allies.tres" id="33_allies"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -217,6 +219,14 @@ face = NodePath("../Player")
 idle_clip = &"Idle"
 
 [node name="Model" parent="Comunero" unique_id=1544120744 instance=ExtResource("20_model")]
+
+[node name="SupportAllies" type="Node3D" parent="." unique_id=1544120746 node_paths=PackedStringArray("arena", "slice", "level")]
+script = ExtResource("32_allies")
+tuning = ExtResource("33_allies")
+ally_scene = ExtResource("12_27mym")
+arena = NodePath("../ArenaController")
+slice = NodePath("../SliceDirector")
+level = NodePath("../SectorLevel")
 
 [node name="LlamaPen" type="Node3D" parent="." unique_id=1544120745 node_paths=PackedStringArray("level", "interaction")]
 script = ExtResource("30_pen")
