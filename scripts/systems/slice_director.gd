@@ -44,6 +44,7 @@ var _checkpoint: StringName = &""
 func _ready() -> void:
 	assert(sequence != null and level != null and arena != null, "SliceDirector: parts.")
 	arena.zone_won.connect(_on_zone_won)
+	arena.reinforcements_called.connect(_on_reinforcements_called)
 	if dialogue != null:
 		dialogue.dialogue_finished.connect(_on_dialogue_finished)
 	if interaction != null:
@@ -195,6 +196,13 @@ func _on_chosen(index: int) -> void:
 	var step: SliceStep = flow.current() if flow != null else null
 	if step != null and step.kind == SliceStep.Kind.CHOICE:
 		_complete(step.choice.options[index].flag)
+
+
+func _on_reinforcements_called(zone: int) -> void:
+	var step: SliceStep = flow.current() if flow != null else null
+	if step != null and step.kind == SliceStep.Kind.ENCOUNTER and step.zone == zone:
+		if step.wave_notice != &"":
+			notice_shown.emit(step.wave_notice)
 
 
 func _on_zone_won(zone: int) -> void:

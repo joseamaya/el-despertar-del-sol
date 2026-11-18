@@ -12,6 +12,8 @@ const STEP_RISE: float = 0.2
 const STEP_RUN: float = 0.3
 const STAIR_WIDTH: float = 1.8
 const RAMP_THICKNESS: float = 0.3
+## Gap between reinforcements arriving side by side (F4 task 12b).
+const WAVE_SPREAD: float = 1.8
 
 
 ## Builds the sector under a new Node3D named "Sector" (local frame; caller rotates it).
@@ -222,6 +224,11 @@ static func _build_markers(root: Node3D, layout: SectorLayout) -> void:
 		for xz: Vector2 in spawn_points(e, count):
 			_marker(root, "Spawn%d_%d" % [i, k], layout, xz, 0.0)
 			k += 1
+		if i - 1 < layout.encounter_reinforcements.size():
+			var wave: Vector3 = layout.encounter_reinforcements[i - 1]
+			for w: int in int(wave.z):
+				var side: float = (w - (wave.z - 1.0) * 0.5) * WAVE_SPREAD
+				_marker(root, "Wave%d_%d" % [i, w], layout, Vector2(wave.x + side, wave.y), 0.0)
 		i += 1
 
 

@@ -70,6 +70,20 @@ func test_pututu_when_the_pass_sees_the_player() -> void:
 	assert_object(_audio.last_call()).is_same(_audio.tuning.pututu)
 
 
+func test_pututu_again_when_the_pass_calls_reinforcements() -> void:
+	await _skip_opening()
+	var zone: int = _audio.tuning.pututu_zone
+	_arena.start_zone(zone)
+	await _frames(2)
+	assert_int(_arena.wave_size(zone)).is_greater(0)
+	_audio.play_call(null, 0.0)
+	for enemy: EnemyController in _arena.alive_enemies():
+		enemy.health.apply_damage(enemy.health.get_maximum())
+	await _frames(3)
+	assert_bool(_arena.is_wave_pending()).is_true()
+	assert_object(_audio.last_call()).is_same(_audio.tuning.pututu)
+
+
 func test_the_vision_is_heard_muffled_then_clear() -> void:
 	var rite := _runner.find_child("HuacaRite") as HuacaRite
 	var master: int = AudioServer.get_bus_index(&"Master")

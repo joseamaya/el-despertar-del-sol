@@ -2,8 +2,9 @@ extends GdUnitTestSuite
 ## Integration: the family's men at the pass (F4 task 6). They come only if the llamas
 ## were freed, once the pass has seen the player; each draws a different chanca away and
 ## the nearest stays the player's; they cannot hurt the player nor kill anyone; the
-## drawn chancas come back one at a time; the zone is won on chancas alone; a defeat
-## sends them away until the pass sees the player again.
+## drawn chancas come back one at a time; idle ones draw the reinforcements away too
+## (F4 task 12b); the zone is won on chancas alone; a defeat sends them away until the
+## pass sees the player again.
 
 const SCENE: String = "res://scenes/levels/carmenca.tscn"
 const TIME_SCALE: float = 2.0
@@ -139,6 +140,22 @@ func test_drawn_chancas_come_back_one_at_a_time_and_the_zone_is_won() -> void:
 	assert_object(_allies.holder_of(held[0])).is_null()
 	assert_object(held[0].perception.target).is_same(_player)
 	await _kill(held[0])
+	assert_array(won).is_empty()
+	# The reinforcements: the idle comuneros draw the farthest away, the nearest is free.
+	await _frames(int(_arena.wave_delay * 60.0 / TIME_SCALE) + 10)
+	var wave: Array[EnemyController] = _arena.alive_enemies()
+	assert_int(wave.size()).is_equal(_arena.wave_size(PASS))
+	var free: Array[EnemyController] = []
+	for chanca: EnemyController in wave:
+		if _allies.holder_of(chanca) == null:
+			free.append(chanca)
+	assert_int(free.size()).is_equal(1)
+	assert_object(free[0].perception.target).is_same(_player)
+	for chanca: EnemyController in wave:
+		if _allies.holder_of(chanca) == null:
+			await _kill(chanca)
+	for chanca: EnemyController in _arena.alive_enemies():
+		await _kill(chanca)
 	assert_array(won).is_equal([PASS])
 	for ally: EnemyController in _allies.allies():
 		assert_bool(ally.is_dead()).is_false()

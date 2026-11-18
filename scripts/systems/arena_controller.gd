@@ -5,7 +5,9 @@ extends Node
 ## With `zone_sizes` set (F4 task 2) it runs one zone at a time: nothing spawns until
 ## start_zone(), a defeat respawns only the active zone, and won zones stay empty. Once a
 ## zone has noticed the player its warriors keep hunting them, so no straggler is left
-## standing far away holding the slice (F4 task 6).
+## standing far away holding the slice (F4 task 6). A zone may also have reinforcements:
+## when its first warriors fall, more come from `wave_points` already hunting the player,
+## and the zone is won only when they fall too (F4 task 12b).
 
 signal encounter_started
 signal player_defeated
@@ -13,6 +15,10 @@ signal encounter_won
 signal combat_changed(in_combat: bool)
 ## Zone mode only, instead of encounter_won: zone `zone` (1-based) has been cleared.
 signal zone_won(zone: int)
+## Zone mode: the first warriors of `zone` fell and its reinforcements are on their way.
+signal reinforcements_called(zone: int)
+## Zone mode: the reinforcements of `zone` are on the field.
+signal reinforcements_arrived(zone: int)
 
 enum EncounterState { FIGHTING, DEFEATED, WON }
 
@@ -32,6 +38,12 @@ const ACTION_RESTART: StringName = &"restart"
 @export var death_clip: StringName = &"Death01"
 ## Zone mode: how often warriors that do not sense the player are told where they are.
 @export_range(0.5, 10.0, 0.5, "suffix:s") var hunt_interval: float = 2.0
+## Zone mode: where each zone's reinforcements appear, in zone order (see `wave_sizes`).
+@export var wave_points: Array[Node3D] = []
+## Zone mode: reinforcements per zone, in `wave_points` order. Empty: none anywhere.
+@export var wave_sizes: PackedInt32Array = PackedInt32Array()
+## Seconds between the call (the pututu) and the reinforcements appearing.
+@export_range(0.0, 10.0, 0.1, "suffix:s") var wave_delay: float = 2.0
 
 var state: EncounterState = EncounterState.FIGHTING
 ## Zone being fought (1-based); 0 before the first one.
@@ -43,6 +55,10 @@ var _player_health: HealthComponent
 var _player_stamina: StaminaComponent
 var _engaged: bool = false
 var _hunt_left: float = 0.0
+## The active zone's reinforcements have been called in this attempt.
+var _wave_called: bool = false
+## Bumped on every (re)start, so a wave called before a defeat never arrives after it.
+var _attempt: int = 0
 
 
 func _ready() -> void:
@@ -85,6 +101,7 @@ func _unhandled_input(event: InputEvent) -> void:
 ## zone mode only those of the active zone if it has not been won.
 func reset_encounter() -> void:
 	_clear_enemies()
+	_new_attempt()
 	player.respawn(player_spawn.global_position, player_spawn.global_rotation.y)
 	_player_health.reset()
 	_player_stamina.reset()
@@ -103,6 +120,7 @@ func reset_encounter() -> void:
 func start_zone(zone: int) -> void:
 	assert(is_zoned() and zone >= 1 and zone <= zone_sizes.size(), "Arena: no zone %d." % zone)
 	_clear_enemies()
+	_new_attempt()
 	active_zone = zone
 	_spawn_zone(zone)
 	_disengage()
@@ -130,14 +148,30 @@ func is_in_combat() -> bool:
 	return _in_combat
 
 
-## Zone mode: the active zone has noticed the player and still has warriors standing.
+## Zone mode: the active zone has noticed the player and still has warriors standing
+## (or on their way).
 func is_zone_engaged() -> bool:
 	return (
 		is_zoned()
 		and _engaged
 		and state == EncounterState.FIGHTING
-		and not alive_enemies().is_empty()
+		and (not alive_enemies().is_empty() or is_wave_pending())
 	)
+
+
+## Zone mode: the active zone's reinforcements have been called and are not here yet.
+func is_wave_pending() -> bool:
+	return _wave_called and alive_enemies().is_empty() and state == EncounterState.FIGHTING
+
+
+## Zone mode: reinforcements zone `zone` (1-based) has.
+func wave_size(zone: int) -> int:
+	return wave_sizes[zone - 1] if zone >= 1 and zone <= wave_sizes.size() else 0
+
+
+func _new_attempt() -> void:
+	_attempt += 1
+	_wave_called = false
 
 
 func _disengage() -> void:
@@ -169,7 +203,7 @@ func _spawn_zone(zone: int) -> void:
 		_spawn_enemy(spawn_points[i])
 
 
-func _spawn_enemy(point: Node3D) -> void:
+func _spawn_enemy(point: Node3D) -> EnemyController:
 	var enemy := enemy_scene.instantiate() as EnemyController
 	enemy.director = director
 	(enemy.get_node("Perception") as PerceptionComponent).target = player
@@ -179,10 +213,35 @@ func _spawn_enemy(point: Node3D) -> void:
 	enemy.home_position = point.global_position
 	enemy.health.died.connect(_on_enemy_died)
 	_enemies.append(enemy)
+	return enemy
+
+
+## Calls the active zone's reinforcements: after `wave_delay` they appear uphill and go
+## for the player (or for whoever the player's side has them fight).
+func _call_wave() -> void:
+	var zone: int = active_zone
+	var attempt: int = _attempt
+	reinforcements_called.emit(zone)
+	if wave_delay > 0.0:
+		await get_tree().create_timer(wave_delay, false).timeout
+	if attempt != _attempt or state != EncounterState.FIGHTING:
+		return
+	var first: int = 0
+	for i: int in zone - 1:
+		first += wave_size(i + 1)
+	for i: int in range(first, mini(first + wave_size(zone), wave_points.size())):
+		var enemy: EnemyController = _spawn_enemy(wave_points[i])
+		enemy.perception.alert_to(player.global_position)
+	reinforcements_arrived.emit(zone)
 
 
 func _on_enemy_died() -> void:
 	if state != EncounterState.FIGHTING or not alive_enemies().is_empty():
+		return
+	if is_zoned() and not _wave_called and wave_size(active_zone) > 0:
+		_wave_called = true
+		# Deferred: spawning here could add bodies while physics is flushing the hit.
+		_call_wave.call_deferred()
 		return
 	state = EncounterState.WON
 	if is_zoned():
