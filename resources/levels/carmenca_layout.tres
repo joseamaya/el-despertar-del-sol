@@ -19,6 +19,7 @@ huaca_smoke_height = 12.0
 llamas = Vector2(-20, -27)
 mentor = Vector2(11, 145.5)
 ending = Vector2(0, -140)
+cusco_view = Vector2(30, 620)
 checkpoints = PackedVector2Array(3, 115.5, -6, 60, 0, 12, 0, -90)
 encounters = PackedVector3Array(4, 103, 7, 0, -12, 10, 0, -110, 10)
 encounter_enemies = PackedInt32Array(2, 2, 3)

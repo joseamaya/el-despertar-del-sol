@@ -33,6 +33,7 @@
 [ext_resource type="Resource" path="res://resources/tuning/llama_pen.tres" id="31_pen"]
 [ext_resource type="Script" path="res://scripts/allies/support_allies.gd" id="32_allies"]
 [ext_resource type="Resource" path="res://resources/tuning/support_allies.tres" id="33_allies"]
+[ext_resource type="Script" path="res://scripts/systems/view_focus.gd" id="34_focus"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -219,6 +220,14 @@ face = NodePath("../Player")
 idle_clip = &"Idle"
 
 [node name="Model" parent="Comunero" unique_id=1544120744 instance=ExtResource("20_model")]
+
+[node name="ViewFocus" type="Node" parent="." unique_id=1544120747 node_paths=PackedStringArray("slice", "level", "camera_rig", "player", "frozen")]
+script = ExtResource("34_focus")
+slice = NodePath("../SliceDirector")
+level = NodePath("../SectorLevel")
+camera_rig = NodePath("../CameraRig")
+player = NodePath("../Player")
+frozen = [NodePath("../Player/Combat"), NodePath("../Player/Defense")]
 
 [node name="SupportAllies" type="Node3D" parent="." unique_id=1544120746 node_paths=PackedStringArray("arena", "slice", "level")]
 script = ExtResource("32_allies")

@@ -273,3 +273,37 @@ func test_objective_counts_the_fight_then_points_onwards() -> void:
 	await _kill_zone()
 	await _drawn_frames(3)
 	assert_str(hud.objective_text()).is_equal(tr(&"OBJ_HUACA"))
+
+
+func test_the_ending_looks_at_cusco_then_ends() -> void:
+	var focus := _runner.find_child("ViewFocus") as ViewFocus
+	var rig := _runner.find_child("CameraRig") as CameraController
+	var box := _runner.find_child("DialogueBox") as DialogueBox
+	var talk := _runner.find_child("DialoguePlayer") as DialoguePlayer
+	var finished: Array[bool] = [false]
+	_slice.slice_finished.connect(func() -> void: finished[0] = true)
+	while _slice.flow.current().marker != &"Ending":
+		await _finish_step()
+	assert_bool(focus.is_focused()).is_false()
+	await _finish_step()
+	assert_bool(focus.is_focused()).is_true()
+	assert_str(box.shown_text()).is_equal(tr(&"DLG_ENDING_1"))
+	await _frames(int(focus.turn_time * 60.0) + 10)
+	var to: Vector3 = _level.marker_position(&"CuscoView") - _player.global_position
+	var yaw: float = atan2(-to.x, -to.z)
+	assert_float(absf(wrapf(rig.yaw - yaw, -PI, PI))).is_less(0.05)
+	assert_bool(_player.get_node(^"Combat").is_physics_processing()).is_false()
+	talk.advance()
+	assert_str(box.shown_text()).is_equal(tr(&"DLG_ENDING_2"))
+	talk.advance()
+	assert_str(box.shown_text()).is_equal(tr(&"DLG_ENDING_3"))
+	talk.advance()
+	await _frames(2)
+	# The quiet look at the valley: still held, not over yet.
+	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.WAIT)
+	assert_bool(focus.is_focused()).is_true()
+	assert_bool(_player.get_node(^"Combat").is_physics_processing()).is_false()
+	assert_bool(finished[0]).is_false()
+	await _frames(int(_slice.flow.current().seconds * 60.0) + 10)
+	assert_bool(finished[0]).is_true()
+	assert_bool(focus.is_focused()).is_false()

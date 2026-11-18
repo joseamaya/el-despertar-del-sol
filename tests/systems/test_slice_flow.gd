@@ -186,7 +186,7 @@ func test_carmenca_objectives_are_set_and_translated() -> void:
 		if row.size() >= 3:
 			keys[row[0]] = row[1] != "" and row[2] != ""
 	var quiet: Array[SliceStep.Kind] = [
-		SliceStep.Kind.DIALOGUE, SliceStep.Kind.CHOICE, SliceStep.Kind.RITE
+		SliceStep.Kind.DIALOGUE, SliceStep.Kind.CHOICE, SliceStep.Kind.RITE, SliceStep.Kind.WAIT
 	]
 	for s: SliceStep in (load(CARMENCA) as SliceSequence).steps:
 		if s.kind in quiet:
@@ -199,3 +199,19 @@ func test_carmenca_objectives_are_set_and_translated() -> void:
 		)
 		if s.kind == SliceStep.Kind.ENCOUNTER:
 			assert_str(tr(s.objective)).contains("{count}")
+
+
+## The slice ends looking at Cusco (F4 task 7): the last steps, after reaching the top of
+## the pass, turn the view there.
+func test_carmenca_ends_looking_at_cusco() -> void:
+	var steps: Array[SliceStep] = (load(CARMENCA) as SliceSequence).steps
+	var reach: int = -1
+	for i: int in steps.size():
+		if steps[i].marker == &"Ending":
+			reach = i
+	assert_int(reach).is_greater(0)
+	assert_int(steps.size() - 1 - reach).is_equal(2)
+	for i: int in range(reach + 1, steps.size()):
+		assert_str(steps[i].look_at).is_equal("CuscoView")
+		assert_int(steps[i].act).is_equal(SliceStep.Act.ENDING)
+	assert_int(steps[-1].kind).is_equal(SliceStep.Kind.WAIT)
