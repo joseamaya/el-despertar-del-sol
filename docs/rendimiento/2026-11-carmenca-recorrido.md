@@ -96,6 +96,23 @@ que el ruido entre pasadas. Sigue dentro del criterio de F3 (más de 60 FPS, men
 frames lentos, menos de 1,2 M primitivas). La física sube unos 3 ms: hay que repetir la medida
 con la máquina en reposo en el cierre de F4 (tarea 12).
 
+## F4, tarea 10: atuendos de los personajes
+
+El mismo combate del paso con comuneros, ahora con los atuendos (unku, llauto, orejeras y
+manta, unas 4–6 piezas por personaje). Medido con la máquina muy cargada (carga media 15),
+así que solo vale la comparación.
+
+| Pasada | FPS medio | 1 % bajo | Frames > 16,7 ms | Primitivas máx. | Draw calls máx. |
+| --- | --- | --- | --- | --- | --- |
+| Sin atuendos (tarea 6b, 1) | 118,7 | 55,9 | 0,01 % | 1,02 M | 162 |
+| Sin atuendos (tarea 6b, 2) | 108,8 | 41,1 | 0,05 % | 1,02 M | 162 |
+| Con atuendos (1) | 110,5 | 62,9 | 0,00 % | 1,03 M | 194 |
+| Con atuendos (2) | 117,4 | 47,5 | 0,02 % | 1,02 M | 190 |
+
+Los atuendos añaden unos 30 draw calls (cada pieza es una malla con su material) y casi
+ninguna primitiva; el FPS no cambia más que el ruido. Si hiciera falta, las piezas de cada
+hueso se pueden fusionar en una malla con color por vértice.
+
 ## Coste de la luz (pendiente de la tarea 7)
 - **Sombras del sol:** con 4 cascadas costaban 0,59 M primitivas (37 % del total) y 13 FPS
   de media frente a 2 cascadas.

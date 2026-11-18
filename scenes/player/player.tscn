@@ -24,6 +24,8 @@
 [ext_resource type="Resource" path="res://resources/tuning/player_defense.tres" id="21_yj68g"]
 [ext_resource type="Script" path="res://scripts/audio/combat_audio.gd" id="23_cnsyf"]
 [ext_resource type="Resource" path="res://resources/audio/player_combat_sounds.tres" id="24_007i1"]
+[ext_resource type="Script" path="res://scripts/characters/character_outfit.gd" id="25_outfit"]
+[ext_resource type="Resource" path="res://resources/characters/cusi_yupanqui.tres" id="26_look"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lvxji"]
 radius = 0.35
@@ -255,6 +257,11 @@ sounds = ExtResource("24_007i1")
 hurtbox = NodePath("../Hurtbox")
 health = NodePath("../Health")
 player_defense = NodePath("../Defense")
+
+[node name="Outfit" type="Node" parent="." unique_id=1544120760 node_paths=PackedStringArray("model")]
+script = ExtResource("25_outfit")
+look = ExtResource("26_look")
+model = NodePath("../Visual/Model")
 
 [connection signal="target_locked" from="LockOn" to="." method="set_face_target"]
 [connection signal="target_released" from="LockOn" to="." method="release_face_target"]
