@@ -83,6 +83,9 @@ func _initialize() -> void:
 	root.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
 	root.content_scale_size = RENDER_SIZE
 	root.scaling_3d_scale = _scale_3d
+	# The Settings autoload applies the player's 3D scale once it is ready, after this:
+	# set the measured one again on the first frame.
+	process_frame.connect(func() -> void: root.scaling_3d_scale = _scale_3d, CONNECT_ONE_SHOT)
 	var scene: Node = (load(_scene_path) as PackedScene).instantiate()
 	_disable_mouse_capture(scene)
 	_prepare_arena(scene)

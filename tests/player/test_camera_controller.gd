@@ -89,3 +89,14 @@ func test_open_space_keeps_full_distance() -> void:
 	await _place_player(Vector3(0, 0.05, 8))
 	await _physics_frames(5)
 	assert_float(_rig.spring_arm.get_hit_length()).is_equal_approx(_rig.tuning.distance, 0.01)
+
+
+## F4 task 8: the sensitivity setting scales mouse look.
+func test_look_scale_multiplies_mouse_look() -> void:
+	_rig.yaw = 0.0
+	_rig.add_look_input(Vector2(10.0, 0.0))
+	var once: float = absf(_rig.yaw)
+	_rig.yaw = 0.0
+	_rig.look_scale = 2.0
+	_rig.add_look_input(Vector2(10.0, 0.0))
+	assert_float(absf(_rig.yaw)).is_equal_approx(once * 2.0, 0.0001)

@@ -55,3 +55,15 @@ NOTICE_ALLIES,¡Los hombres del ayllu llegan!,The men of the ayllu are here!
 DLG_ENDING_1,(Suenan pututus en el valle),(Pututus sound in the valley)
 DLG_ENDING_2,Pututus chancas. Ya no son exploradores: es el ejército de Uscovilca.,Chanca pututus. These are no scouts: it is Uscovilca's army.
 DLG_ENDING_3,Mi padre dejó el Cusco. Yo no lo dejaré.,My father left Cusco. I will not.
+PAUSE_TITLE,Pausa,Paused
+PAUSE_RESUME,Continuar,Resume
+PAUSE_SETTINGS,Ajustes,Settings
+PAUSE_RESTART,Volver a empezar,Start again
+PAUSE_QUIT,Salir del juego,Quit game
+SETTINGS_VOLUME,Volumen,Volume
+SETTINGS_SENSITIVITY,Sensibilidad de cámara,Camera sensitivity
+SETTINGS_SCALE_3D,Calidad gráfica,Graphics quality
+SETTINGS_SCALE_PERFORMANCE,Rendimiento,Performance
+SETTINGS_SCALE_BALANCED,Equilibrado,Balanced
+SETTINGS_SCALE_QUALITY,Calidad,Quality
+SETTINGS_BACK,Volver,Back

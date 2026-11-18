@@ -18,6 +18,9 @@ const ACTION_RELEASE_MOUSE: StringName = &"ui_cancel"
 ## Capture the mouse on start and on click; Esc releases it.
 @export var capture_mouse: bool = true
 
+## The player's sensitivity setting, a factor on mouse and stick look (F4 task 8; set by
+## SettingsBinder).
+var look_scale: float = 1.0
 ## Current orbit, radians. Public so tests and cutscenes can set it.
 var yaw: float = 0.0
 var pitch: float = 0.0
@@ -59,7 +62,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func add_look_input(relative: Vector2) -> void:
 	if _lock_target != null:
 		return
-	_apply(CameraMath.look_from_mouse(relative, tuning))
+	_apply(CameraMath.look_from_mouse(relative * look_scale, tuning))
 
 
 ## Adds camera shake (0..1, accumulates up to 1). Ignored when shake is disabled.
@@ -96,7 +99,7 @@ func tick(delta: float) -> void:
 	if _lock_target != null:
 		_frame_lock_target(delta)
 	elif not stick.is_zero_approx():
-		_apply(CameraMath.look_from_stick(stick, delta, tuning))
+		_apply(CameraMath.look_from_stick(stick * look_scale, delta, tuning))
 	global_position = CameraMath.follow(
 		global_position, _pivot_position(), tuning.follow_sharpness, delta
 	)
