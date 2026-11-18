@@ -19,7 +19,8 @@ DLG_OPENING_4,Entonces nos quedamos nosotros.,Then we are the ones who stay.
 DLG_OPENING_5,"Sube por las terrazas. Si sus exploradores ya están aquí, que nos encuentren de pie.","Climb the terraces. If their scouts are already here, let them find us standing."
 DLG_OPENING_6,"Y al subir, detente en la huaca de la ladera. Déjale coca: hoy vamos a necesitar su fuerza.","And on the way up, stop at the huaca on the slope. Leave it coca: today we will need its strength."
 PROMPT_OFFERING,E / A: ofrendar hojas de coca,E / A: offer coca leaves
-DLG_HUACA_1,"Piedras… de pie, como guerreros. ¿Qué me estás pidiendo?","Stones… standing, like warriors. What are you asking of me?"
+DLG_HUACA_1,"Por un momento, las piedras de la ladera parecían guerreros de pie…","For a moment, the stones on the slope looked like warriors standing…"
+DLG_HUACA_2,¿Fue la huaca quien me lo mostró? ¿Qué quiere decirme?,Was it the huaca that showed me? What is it trying to tell me?
 CODEX_TITLE,Códice,Codex
 CODEX_EMPTY,Aún no hay entradas.,No entries yet.
 CODEX_CLOSE,Tab / Back: cerrar,Tab / Back: close
@@ -37,9 +38,10 @@ DLG_FAMILY_2,"Las tienen atadas más abajo, pasadas las casas. Sin ellas no pasa
 CHOICE_FAMILY_ACCEPT,Recuperaré tus llamas.,I will bring your llamas back.
 CHOICE_FAMILY_DECLINE,No puedo detenerme: el Cusco me espera.,I cannot stop: Cusco is waiting for me.
 CHOICE_CONFIRM,W / S: elegir · E / A: confirmar,W / S: choose · E / A: confirm
-DLG_FAMILY_YES,"Si lo haces, los hombres del ayllu bajarán contigo al paso.","If you do, the men of the ayllu will go down to the pass with you."
+DLG_FAMILY_YES,"Si lo haces, los hombres de mi familia te ayudarán a defender el paso.","If you do, the men of my family will help you defend the pass."
 DLG_FAMILY_NO,"…Que las huacas te acompañen, entonces.","…May the huacas go with you, then."
 PROMPT_LLAMAS,E / A: desatar las llamas,E / A: untie the llamas
-NOTICE_SUPPORT,El ayllu bajará contigo al paso,The ayllu will go down to the pass with you
+NOTICE_SUPPORT,Apoyo ganado: la familia te ayudará a defender el paso,Support gained: the family will help you defend the pass
 HUD_ENEMIES_LEFT,Chancas: {count},Chancas: {count}
 PROMPT_ENEMIES_NEAR,Aún hay chancas cerca,There are still Chancas nearby
+NOTICE_OFFERING,Ofrenda aceptada: resistencia máxima +10,Offering accepted: maximum stamina +10

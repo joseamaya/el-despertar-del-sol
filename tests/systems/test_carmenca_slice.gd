@@ -185,7 +185,7 @@ func test_helping_the_family_frees_the_llamas() -> void:
 	await _finish_step()
 	assert_bool(pen.is_free()).is_true()
 	assert_bool(_slice.has_flag(&"llamas_freed")).is_true()
-	assert_array(notices).contains([&"NOTICE_SUPPORT"])
+	assert_array(notices).contains([&"NOTICE_OFFERING", &"NOTICE_SUPPORT"])
 	assert_int(_slice.flow.current().zone).is_equal(3)
 	await _frames(int(pen.tuning.trot_time * 60.0) + 40)
 	var gone: float = pen.llamas()[0].global_position.distance_to(home)
@@ -216,6 +216,8 @@ func test_passing_the_huaca_by_does_not_stall_the_slice() -> void:
 	while _slice.flow.current().kind != SliceStep.Kind.INTERACT:
 		await _finish_step()
 	assert_bool(point.is_active()).is_true()
+	var notices: Array[StringName] = []
+	_slice.notice_shown.connect(func(key: StringName) -> void: notices.append(key))
 	# Straight on to the family, without the offering.
 	await _go_to(&"Family")
 	await _frames(3)
@@ -225,6 +227,7 @@ func test_passing_the_huaca_by_does_not_stall_the_slice() -> void:
 	assert_str(box.shown_text()).is_equal(tr(&"DLG_FAMILY_1"))
 	assert_float(stamina.get_maximum()).is_equal(100.0)
 	assert_array(codex.unlocked_entries()).is_empty()
+	assert_array(notices).not_contains([&"NOTICE_OFFERING"])
 	await _play_to_end()
 	assert_bool(_slice.is_finished()).is_true()
 
