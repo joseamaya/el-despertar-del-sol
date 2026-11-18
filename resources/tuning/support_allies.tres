@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" path="res://scripts/allies/support_allies_tuning.gd" id="1_tuning"]
 [ext_resource type="Resource" path="res://resources/enemies/comunero.tres" id="2_data"]
+[ext_resource type="Resource" path="res://resources/characters/comunero.tres" id="3_look"]
 
 [resource]
 script = ExtResource("1_tuning")
 data = ExtResource("2_data")
+look = ExtResource("3_look")

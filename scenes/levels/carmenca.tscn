@@ -40,6 +40,8 @@
 [ext_resource type="Resource" path="res://resources/audio/slice_audio.tres" id="38_saudio"]
 [ext_resource type="Script" path="res://scripts/audio/footstep_audio.gd" id="39_steps"]
 [ext_resource type="Resource" path="res://resources/audio/footsteps.tres" id="40_steps"]
+[ext_resource type="Resource" path="res://resources/characters/vicaquirao.tres" id="41_vica"]
+[ext_resource type="Resource" path="res://resources/characters/comunero.tres" id="42_comunero"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -210,6 +212,7 @@ frozen = [NodePath("../Player/Combat"), NodePath("../Player/Defense")]
 script = ExtResource("19_npc")
 level = NodePath("../SectorLevel")
 face = NodePath("../Player")
+look = ExtResource("41_vica")
 
 [node name="Model" parent="Vicaquirao" unique_id=1544120735 instance=ExtResource("20_model")]
 
@@ -224,6 +227,7 @@ level = NodePath("../SectorLevel")
 marker = &"Family"
 face = NodePath("../Player")
 idle_clip = &"Idle"
+look = ExtResource("42_comunero")
 
 [node name="Model" parent="Comunero" unique_id=1544120744 instance=ExtResource("20_model")]
 

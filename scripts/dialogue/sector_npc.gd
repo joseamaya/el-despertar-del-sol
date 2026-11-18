@@ -11,10 +11,16 @@ extends Node3D
 @export var face: Node3D
 ## Looping clip of the model's AnimationPlayer.
 @export var idle_clip: StringName = &"Idle_Talking"
+## Optional: how they look (F4 task 10), applied to their child model.
+@export var look: CharacterLook
 
 
 func _ready() -> void:
 	assert(level != null, "SectorNpc needs the level.")
+	if look != null:
+		var model := find_child("Model", false, false) as Node3D
+		if model != null:
+			CharacterOutfit.apply(model, look)
 	# After the level has built its markers.
 	_place.call_deferred()
 	var anim := find_child("AnimationPlayer", true, false) as AnimationPlayer

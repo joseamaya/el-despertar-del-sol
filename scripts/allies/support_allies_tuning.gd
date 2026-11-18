@@ -12,7 +12,7 @@ extends Resource
 ## They appear this far behind the player (downhill, where the player came from).
 @export_range(4.0, 40.0, 0.5, "suffix:m") var spawn_behind: float = 12.0
 @export_range(0.5, 5.0, 0.1, "suffix:m") var spawn_spread: float = 1.6
-## Placeholder look until task 10: the body colour.
-@export var body_color: Color = Color(0.55, 0.36, 0.2)
+## How they look: the comunero's outfit (task 10).
+@export var look: CharacterLook
 ## Banner when they arrive (translation key).
 @export var notice: StringName = &"NOTICE_ALLIES"

@@ -95,10 +95,10 @@ func _spawn(index: int) -> EnemyController:
 	# No "!" over the player's side.
 	(ally.get_node(^"AlertMarker") as Node3D).visible = false
 	ally.alert_marker = null
-	var body := StandardMaterial3D.new()
-	body.albedo_color = tuning.body_color
-	body.roughness = 0.8
-	(ally.get_node(BODY_PATH) as GeometryInstance3D).material_override = body
+	# The warrior scene tints its body; the comunero's look tints both surfaces.
+	(ally.get_node(BODY_PATH) as GeometryInstance3D).material_override = null
+	if tuning.look != null:
+		CharacterOutfit.apply(ally.get_node(^"Visual/Model") as Node3D, tuning.look)
 	ally.director = null
 	ally.position = _spawn_point(index)
 	add_child(ally)
