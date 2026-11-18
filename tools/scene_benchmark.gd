@@ -21,6 +21,12 @@ extends SceneTree
 ##   godot --path . -s res://tools/scene_benchmark.gd -- \
 ##       --scene=res://scenes/levels/carmenca.tscn --walk --scale3d=0.833
 ##
+## Whole slice (F4 task 12): --playthrough plays it from the opening to the end
+## (SlicePlaythroughDriver) and reports per act and the slice's own play time.
+##
+##   godot --path . -s res://tools/scene_benchmark.gd -- \
+##       --scene=res://scenes/levels/carmenca.tscn --playthrough --scale3d=0.833
+##
 ## --slice-flag=NAME sets a slice flag as if the player had earned it (F4 task 6), e.g.
 ## llamas_freed brings the comuneros to the pass in --fight-zone=3.
 
@@ -28,6 +34,8 @@ const RENDER_SIZE: Vector2i = Vector2i(1920, 1080)
 ## A walk takes ~80 s. Past this the walker is stuck (e.g. a broken layout): give up
 ## with exit code 1 instead of hanging.
 const WALK_TIMEOUT: float = 300.0
+## A playthrough takes ~8–10 min; past this the bot is stuck.
+const PLAYTHROUGH_TIMEOUT: float = 1200.0
 
 var _scene_path: String = "res://scenes/tests/locomotion_test.tscn"
 var _hold: PackedStringArray = PackedStringArray()
@@ -49,6 +57,9 @@ var _walk: bool = false
 var _fight_zone: int = 0
 var _slice_flag: StringName = &""
 var _walker: SectorWalkDriver
+var _playthrough: bool = false
+var _player_bot: SlicePlaythroughDriver
+var _stuck: String = ""
 ## Per stretch while walking: name -> {"frames": PackedFloat64Array, "primitives": ...}.
 var _stretches: Dictionary = {}
 
@@ -71,6 +82,8 @@ func _initialize() -> void:
 			_fight = true
 		elif arg.begins_with("--enemies="):
 			_enemies = arg.trim_prefix("--enemies=").to_int()
+		elif arg == "--playthrough":
+			_playthrough = true
 		elif arg == "--walk":
 			_walk = true
 		elif arg.begins_with("--fight-zone="):
@@ -108,18 +121,32 @@ func _process(_delta: float) -> bool:
 	_physics_ms.append(Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0)
 	_draw_calls.append(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
 	_primitives.append(Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME))
-	if _walker != null:
-		_record_stretch(frame)
-		if elapsed > _warmup + WALK_TIMEOUT:
-			push_error("SCENE_BENCHMARK walk did not finish in %d s" % WALK_TIMEOUT)
-			quit(1)
-			return false
-		if not _walker.is_done():
-			return false
-	elif elapsed < _warmup + _seconds:
+	if _still_measuring(frame, elapsed - _warmup):
 		return false
 	_finish()
 	return true
+
+
+## Whether the run goes on. A driver that gets stuck ends it with exit code 1.
+func _still_measuring(frame: float, measured: float) -> bool:
+	if _player_bot != null:
+		_record_stretch(frame)
+		if measured > PLAYTHROUGH_TIMEOUT:
+			_stuck = "no end in %d s" % PLAYTHROUGH_TIMEOUT
+		if _stuck != "":
+			push_error("SCENE_BENCHMARK playthrough stuck: " + _stuck)
+			_finish()
+			quit(1)
+			return true
+		return not _player_bot.is_done()
+	if _walker != null:
+		_record_stretch(frame)
+		if measured > WALK_TIMEOUT:
+			push_error("SCENE_BENCHMARK walk did not finish in %d s" % WALK_TIMEOUT)
+			quit(1)
+			return true
+		return not _walker.is_done()
+	return measured < _seconds
 
 
 func _finish() -> void:
@@ -144,6 +171,12 @@ func _finish() -> void:
 		"primitives_max": _maximum(_primitives),
 		"stretches": _stretch_report(),
 	}
+	if _player_bot != null:
+		var slice: SliceDirector = _player_bot.slice
+		report["slice_play_time"] = slice.play_time
+		report["slice_finished"] = slice.is_finished()
+		report["act_times"] = _player_bot.act_times()
+		report["stuck"] = _stuck
 	var file: FileAccess = FileAccess.open(_out, FileAccess.WRITE)
 	if file != null:
 		file.store_string(JSON.stringify(report, "  "))
@@ -177,6 +210,19 @@ func _prepare_arena(scene: Node) -> void:
 		driver.level = level
 		driver.zone = _fight_zone
 		scene.add_child(driver)
+	if _playthrough and level != null:
+		_player_bot = SlicePlaythroughDriver.new()
+		_player_bot.name = "SlicePlaythroughDriver"
+		_player_bot.slice = scene.find_child("SliceDirector", true, false) as SliceDirector
+		_player_bot.level = level
+		_player_bot.arena = arena
+		_player_bot.dialogue = scene.find_child("DialoguePlayer", true, false) as DialoguePlayer
+		_player_bot.choice = scene.find_child("ChoiceBox", true, false) as ChoiceBox
+		_player_bot.interaction = (
+			scene.find_child("InteractionPoint", true, false) as InteractionPoint
+		)
+		_player_bot.stuck.connect(func(reason: String) -> void: _stuck = reason)
+		scene.add_child(_player_bot)
 	if _walk and level != null:
 		_walker = SectorWalkDriver.new()
 		_walker.name = "SectorWalkDriver"
@@ -196,7 +242,7 @@ func _find_arena(node: Node) -> ArenaController:
 
 
 func _record_stretch(frame: float) -> void:
-	var name: String = _walker.stretch()
+	var name: String = _player_bot.stretch() if _player_bot != null else _walker.stretch()
 	if not _stretches.has(name):
 		_stretches[name] = {"frames": PackedFloat64Array(), "primitives": PackedFloat64Array()}
 	# Packed arrays are values: append to a copy and store it back.

@@ -307,3 +307,24 @@ func test_the_ending_looks_at_cusco_then_ends() -> void:
 	await _frames(int(_slice.flow.current().seconds * 60.0) + 10)
 	assert_bool(finished[0]).is_true()
 	assert_bool(focus.is_focused()).is_false()
+
+
+## F4 task 12: the slice counts its play time, pauses aside, and the end shows it.
+func test_play_time_counts_play_not_pauses_and_shows_at_the_end() -> void:
+	await _frames(60)
+	var before: float = _slice.play_time
+	assert_float(before).is_greater(0.5)
+	get_tree().paused = true
+	await get_tree().create_timer(0.5, true).timeout
+	get_tree().paused = false
+	assert_float(_slice.play_time - before).is_less(0.1)
+	await _play_to_end()
+	var hud := _runner.find_child("Hud") as Hud
+	var seconds: int = roundi(_slice.play_time)
+	var expected: String = tr(&"SLICE_TIME").format(
+		{"min": floori(seconds / 60.0), "s": seconds % 60}
+	)
+	assert_str(hud.hint_label.text).contains(expected)
+	var frozen: float = _slice.play_time
+	await _frames(30)
+	assert_float(_slice.play_time).is_equal(frozen)

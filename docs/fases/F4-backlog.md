@@ -21,7 +21,7 @@ del §14.3.
 | 9 | Audio: ambiente, pasos y una pieza musical | Hecha: viento, pasos por superficie, música provisional (apertura y cierre), pututu en el paso y en el cierre, visión amortiguada |
 | 10 | Personajes: Cusi Yupanqui, Vicaquirao y el comunero distinguibles (tintes y accesorios por script) | Hecha: `CharacterLook` por personaje; Cusi (unku rojo y amarillo, llauto, orejeras), Vicaquirao (unku ocre, llauto), comunero (unku pardo, manta), también los del paso |
 | 11 | Mando físico y build de Windows (deuda de F3) | En curso: mapa de mando probado (A/B arreglados en menús) y F3 con FPS; build de Windows con un tester (`F4-prueba-windows.md`); mando físico pasa a F5 |
-| 12 | Partida completa: 8–12 min en la build exportada, rendimiento con todo integrado, partida de bot de principio a fin | Pendiente |
+| 12 | Partida completa: 8–12 min en la build exportada, rendimiento con todo integrado, partida de bot de principio a fin | En curso: bot de principio a fin (2 min 54 s, 109 FPS, 0,6 % lentos); tiempo en el «Fin»; falta la partida del desarrollador en la build exportada y repetir la medida en reposo |
 | 13 | Cierre de F4 con `phase-gate` | Pendiente |
 
 **Qué se recorta primero** si se pasa de 4,5 semanas:
