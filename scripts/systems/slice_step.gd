@@ -28,6 +28,9 @@ enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE }
 @export var checkpoint: StringName = &""
 
 @export_group("Flags")
+## The player may pass it by (the huaca): reaching the next required REACH step while
+## this one waits for them skips it, without setting its flag.
+@export var optional: bool = false
 ## Set when the step completes (e.g. the llamas freed).
 @export var flag: StringName = &""
 ## Played only if this flag is set / only if it is not. Empty: no condition.

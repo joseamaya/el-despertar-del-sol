@@ -39,6 +39,26 @@ func advance(extra_flag: StringName = &"") -> SliceStep:
 	return current()
 
 
+## While the current step is optional: the first required step after it that applies
+## (null if none, or if the current step is required).
+func next_required() -> SliceStep:
+	if is_finished() or not _steps[_index].optional:
+		return null
+	for i: int in range(_index + 1, _steps.size()):
+		if applies(_steps[i]) and not _steps[i].optional:
+			return _steps[i]
+	return null
+
+
+## Leaves the optional steps from the current one on undone (no flags). Returns the
+## step reached.
+func skip_optional() -> SliceStep:
+	while not is_finished() and _steps[_index].optional:
+		_index += 1
+		_settle()
+	return current()
+
+
 func set_flag(flag: StringName) -> void:
 	if flag != &"" and not _flags.has(flag):
 		_flags.append(flag)

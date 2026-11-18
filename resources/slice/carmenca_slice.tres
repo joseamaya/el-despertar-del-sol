@@ -27,6 +27,7 @@ checkpoint = &"Checkpoint1"
 
 [sub_resource type="Resource" id="Step_2"]
 script = ExtResource("2_step")
+optional = true
 act = 1
 kind = 4
 marker = &"Huaca"
@@ -36,6 +37,7 @@ checkpoint = &"Checkpoint2"
 
 [sub_resource type="Resource" id="Step_3"]
 script = ExtResource("2_step")
+optional = true
 act = 1
 kind = 5
 marker = &"Huaca"
@@ -43,6 +45,7 @@ radius = 4.0
 
 [sub_resource type="Resource" id="Step_4"]
 script = ExtResource("2_step")
+optional = true
 act = 1
 kind = 3
 radius = 4.0

@@ -83,6 +83,23 @@ func test_flags_choose_which_steps_play() -> void:
 	assert_bool(passed.has_flag(&"done")).is_false()
 
 
+func test_optional_steps_can_be_left_undone() -> void:
+	var start := _step(SliceStep.Act.OPENING)
+	var offer := _conditional(&"", &"", &"offered")
+	offer.optional = true
+	var vision := _conditional(&"", &"", &"seen")
+	vision.optional = true
+	var family := _step(SliceStep.Act.SUPPORT)
+	var flow := SliceFlow.new(_sequence([start, offer, vision, family]))
+	assert_object(flow.next_required()).is_null()
+	flow.advance()
+	assert_object(flow.next_required()).is_same(family)
+	assert_object(flow.skip_optional()).is_same(family)
+	assert_bool(flow.has_flag(&"offered")).is_false()
+	assert_bool(flow.has_flag(&"seen")).is_false()
+	assert_object(flow.skip_optional()).is_same(family)
+
+
 func test_skipped_steps_neither_start_nor_set_a_checkpoint() -> void:
 	var skipped := _conditional(&"never", &"")
 	skipped.checkpoint = &"Nowhere"
@@ -151,4 +168,10 @@ func test_carmenca_conditions_read_flags_set_earlier() -> void:
 				if option.flag != &"":
 					set_so_far.append(option.flag)
 	assert_int(choices).is_equal(1)
+	# The huaca can be passed by; nothing else can.
+	var optional: Array[StringName] = []
+	for s: SliceStep in seq.steps:
+		if s.optional:
+			optional.append(s.marker)
+	assert_array(optional).is_equal([&"Huaca", &"Huaca", &""])
 	assert_array(set_so_far).contains([&"help_family", &"llamas_freed"])

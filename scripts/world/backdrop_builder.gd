@@ -205,30 +205,40 @@ static func _build_apus(root: Node3D, b: BackdropLayout, p: PaletteTuning) -> vo
 static func _build_smoke(
 	root: Node3D, b: BackdropLayout, layout: SectorLayout, p: PaletteTuning
 ) -> void:
-	var shader := load(SMOKE_SHADER) as Shader
 	var i: int = 0
 	for s: Vector3 in b.smoke:
-		var tube := CylinderMesh.new()
-		tube.top_radius = s.z * 0.1
-		tube.bottom_radius = s.z * 0.045
-		tube.height = s.z
-		tube.radial_segments = 10
-		tube.rings = 1
-		tube.cap_top = false
-		tube.cap_bottom = false
-		var mat := ShaderMaterial.new()
-		mat.shader = shader
-		mat.set_shader_parameter(&"smoke_color", p.smoke)
-		mat.set_shader_parameter(&"seed", float(i) * 3.7)
-		mat.set_shader_parameter(&"column_height", s.z)
-		var node := MeshInstance3D.new()
+		var node := smoke_column(s.z, p.smoke, float(i) * 3.7)
 		node.name = "Smoke%d" % i
-		node.mesh = tube
-		node.material_override = mat
-		node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		node.position = Vector3(s.x, height_at(b, layout, s.x, s.y) + s.z * 0.5, s.y)
 		root.add_child(node)
 		i += 1
+
+
+## A smoke column `height` metres tall, centred on its origin (place it at base + half
+## the height). Also used small for the offering at the huaca (F4 task 6).
+static func smoke_column(
+	height: float, colour: Color, seed: float, rise_speed: float = 0.03, opacity: float = 0.6
+) -> MeshInstance3D:
+	var tube := CylinderMesh.new()
+	tube.top_radius = height * 0.1
+	tube.bottom_radius = height * 0.045
+	tube.height = height
+	tube.radial_segments = 10
+	tube.rings = 1
+	tube.cap_top = false
+	tube.cap_bottom = false
+	var mat := ShaderMaterial.new()
+	mat.shader = load(SMOKE_SHADER) as Shader
+	mat.set_shader_parameter(&"smoke_color", colour)
+	mat.set_shader_parameter(&"seed", seed)
+	mat.set_shader_parameter(&"column_height", height)
+	mat.set_shader_parameter(&"rise_speed", rise_speed)
+	mat.set_shader_parameter(&"opacity", opacity)
+	var node := MeshInstance3D.new()
+	node.mesh = tube
+	node.material_override = mat
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	return node
 
 
 static func _far_mesh(

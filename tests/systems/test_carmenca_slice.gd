@@ -206,3 +206,24 @@ func test_passing_by_leaves_the_llamas_tied() -> void:
 	assert_bool(_slice.is_finished()).is_true()
 	assert_bool(pen.is_free()).is_false()
 	assert_bool(_slice.has_flag(&"llamas_freed")).is_false()
+
+
+func test_passing_the_huaca_by_does_not_stall_the_slice() -> void:
+	var stamina := _player.get_node(^"Stamina") as StaminaComponent
+	var codex := _runner.find_child("Codex") as Codex
+	var point := _runner.find_child("InteractionPoint") as InteractionPoint
+	assert_object(_level.sector.get_node_or_null(^"HuacaSmoke")).is_not_null()
+	while _slice.flow.current().kind != SliceStep.Kind.INTERACT:
+		await _finish_step()
+	assert_bool(point.is_active()).is_true()
+	# Straight on to the family, without the offering.
+	await _go_to(&"Family")
+	await _frames(3)
+	assert_bool(point.is_active()).is_false()
+	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.DIALOGUE)
+	var box := _runner.find_child("DialogueBox") as DialogueBox
+	assert_str(box.shown_text()).is_equal(tr(&"DLG_FAMILY_1"))
+	assert_float(stamina.get_maximum()).is_equal(100.0)
+	assert_array(codex.unlocked_entries()).is_empty()
+	await _play_to_end()
+	assert_bool(_slice.is_finished()).is_true()

@@ -60,9 +60,9 @@ func _physics_process(delta: float) -> void:
 			if _waited >= step.seconds:
 				_complete()
 		SliceStep.Kind.REACH:
-			var to: Vector3 = level.marker_position(step.marker) - arena.player.global_position
-			if Vector2(to.x, to.z).length() <= step.radius:
+			if _reached(step):
 				_complete()
+	_skip_if_passed(step)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -82,6 +82,24 @@ func has_flag(flag: StringName) -> bool:
 func _begin() -> void:
 	flow = SliceFlow.new(sequence)
 	_start(flow.current())
+
+
+func _reached(step: SliceStep) -> bool:
+	var to: Vector3 = level.marker_position(step.marker) - arena.player.global_position
+	return Vector2(to.x, to.z).length() <= step.radius
+
+
+## The player walked past an optional step that waits for them (the huaca) and reached
+## the next place: leave it undone and go on from there.
+func _skip_if_passed(step: SliceStep) -> void:
+	if flow.current() != step or step.kind not in [SliceStep.Kind.INTERACT, SliceStep.Kind.REACH]:
+		return
+	var ahead: SliceStep = flow.next_required()
+	if ahead == null or ahead.kind != SliceStep.Kind.REACH or not _reached(ahead):
+		return
+	if interaction != null and step.kind == SliceStep.Kind.INTERACT:
+		interaction.deactivate()
+	_start(flow.skip_optional())
 
 
 func _start(step: SliceStep) -> void:
