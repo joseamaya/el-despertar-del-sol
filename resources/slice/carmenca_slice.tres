@@ -8,6 +8,7 @@
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_family_yes.tres" id="6_yes"]
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_family_no.tres" id="7_no"]
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_family_choice.tres" id="8_choice"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_ending.tres" id="9_ending"]
 
 [sub_resource type="Resource" id="Step_0"]
 script = ExtResource("2_step")
@@ -130,6 +131,22 @@ kind = 0
 marker = &"Ending"
 radius = 5.0
 
+[sub_resource type="Resource" id="Step_14"]
+script = ExtResource("2_step")
+act = 4
+kind = 3
+radius = 4.0
+dialogue = ExtResource("9_ending")
+look_at = &"CuscoView"
+
+[sub_resource type="Resource" id="Step_15"]
+script = ExtResource("2_step")
+act = 4
+kind = 2
+radius = 4.0
+seconds = 3.0
+look_at = &"CuscoView"
+
 [resource]
 script = ExtResource("1_seq")
-steps = Array[ExtResource("2_step")]([SubResource("Step_0"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_13")])
+steps = Array[ExtResource("2_step")]([SubResource("Step_0"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_13"), SubResource("Step_14"), SubResource("Step_15")])

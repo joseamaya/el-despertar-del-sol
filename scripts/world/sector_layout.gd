@@ -50,6 +50,9 @@ const STEP_MAX_RUN: float = 1.5
 ## Where Vicaquirao waits at the opening (F4 task 3); he faces the valley.
 @export var mentor: Vector2 = Vector2.ZERO
 @export var ending: Vector2 = Vector2.ZERO
+## Where Cusi looks at the end of the slice: Cusco down in the valley (F4 task 7). Far
+## outside the sector; only its marker is built.
+@export var cusco_view: Vector2 = Vector2.ZERO
 ## Respawn points after a defeat, in the order they are reached; they face uphill.
 @export var checkpoints: PackedVector2Array = PackedVector2Array()
 ## Encounter zones: (x, z, radius). Order: skirmish 1, skirmish 2, the pass.

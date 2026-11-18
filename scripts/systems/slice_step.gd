@@ -27,6 +27,9 @@ enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE }
 ## What the player has to do now, shown by the HUD (translation key; ENCOUNTER texts take
 ## {count}, the warriors left). Empty: no objective (conversations, the vision).
 @export var objective: StringName = &""
+## Marker the player and the camera turn to while the step lasts, the player held still
+## (the ending looks at Cusco, F4 task 7). Empty: free camera.
+@export var look_at: StringName = &""
 ## Respawn marker from the moment this step starts (empty: keep the previous one).
 @export var checkpoint: StringName = &""
 

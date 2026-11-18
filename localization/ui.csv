@@ -52,3 +52,6 @@ OBJ_LLAMAS,"Desata las llamas del corral, a la izquierda, pasadas las casas","Un
 OBJ_PASS,Defiende el paso ({count}),Defend the pass ({count})
 OBJ_SUMMIT,Sube hasta lo alto del paso,Climb to the top of the pass
 NOTICE_ALLIES,¡Los hombres del ayllu llegan!,The men of the ayllu are here!
+DLG_ENDING_1,(Suenan pututus en el valle),(Pututus sound in the valley)
+DLG_ENDING_2,Pututus chancas. Ya no son exploradores: es el ejército de Uscovilca.,Chanca pututus. These are no scouts: it is Uscovilca's army.
+DLG_ENDING_3,Mi padre dejó el Cusco. Yo no lo dejaré.,My father left Cusco. I will not.

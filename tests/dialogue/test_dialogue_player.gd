@@ -93,7 +93,10 @@ func test_every_dialogue_key_is_translated() -> void:
 		if dialogue == null:
 			continue  # a DialogueChoice: test_choice_box checks those
 		for line: DialogueLine in dialogue.lines:
+			assert_str(line.text).is_not_empty()
 			for key: StringName in [line.speaker, line.text]:
+				if key == &"":
+					continue  # no speaker: a caption (the ending's pututus)
 				(
 					assert_bool(keys.get(String(key), false))
 					. override_failure_message("%s: missing key %s" % [name, key])

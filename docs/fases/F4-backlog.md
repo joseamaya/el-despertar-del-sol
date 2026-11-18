@@ -16,7 +16,7 @@ del §14.3.
 | 4 | Huaca: interacción, ofrenda y visión breve (siluetas de piedra en la niebla, compatible con Mobile) | Hecha: aviso «ofrendar hojas de coca», +10 de resistencia máxima, visión de 6 s con 6 figuras de piedra, línea de Cusi |
 | 5 | Códice: una entrada con su etiqueta (Documentado / Según los cronistas / Licencia del juego) | Hecha: entrada «Huaca» (Según los cronistas) al terminar la visión; aviso y pantalla con Tab / Back, que pausa el juego |
 | 6 | Decisión de Apoyo: la familia y las llamas, aceptar o seguir, con diferencia visible en el combate del paso | Hecha: familia, elección y llamas (#43); 2 comuneros que distraen a 2 chancas en el paso |
-| 7 | Cierre: pututus chancas, Cusi Yupanqui mira al Cusco, fin | Pendiente |
+| 7 | Cierre: pututus chancas, Cusi Yupanqui mira al Cusco, fin | Hecha: Cusi gira hacia el Cusco, rótulo de pututus (sonido en la tarea 9), dos líneas y 3 s mirando el valle |
 | 8 | Interfaz: menú de pausa y ajustes básicos (volumen, sensibilidad, escala 3D) guardados con un autoload | Pendiente |
 | 9 | Audio: ambiente, pasos y una pieza musical | Pendiente |
 | 10 | Personajes: Cusi Yupanqui, Vicaquirao y el comunero distinguibles (tintes y accesorios por script) | Pendiente |
