@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/combat/attack_data.gd" id="2_attack"]
+[ext_resource type="Resource" path="res://resources/tuning/comunero_health.tres" id="3_health"]
+[ext_resource type="Resource" path="res://resources/tuning/chanca_warrior_posture.tres" id="4_posture"]
+[ext_resource type="Resource" path="res://resources/combat/attacks/enemy/comunero_golpe.tres" id="5_golpe"]
+
+[resource]
+script = ExtResource("1_data")
+display_name = "Comunero"
+health = ExtResource("3_health")
+posture = ExtResource("4_posture")
+view_distance = 30.0
+view_angle_deg = 220.0
+hearing_radius = 12.0
+lose_target_time = 30.0
+alert_time = 0.3
+attacks = Array[ExtResource("2_attack")]([ExtResource("5_golpe")])
+attack_cooldown_min = 2.5
+attack_cooldown_max = 4.0
+feint_chance = 0.0
+block_chance = 0.5

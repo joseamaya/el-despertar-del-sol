@@ -76,6 +76,11 @@ func is_finished() -> bool:
 	return flow != null and flow.is_finished()
 
 
+## Shows a banner from elsewhere in the slice (the comuneros arriving, F4 task 6).
+func announce(key: StringName) -> void:
+	notice_shown.emit(key)
+
+
 ## Whether a choice or a step has set `flag` (false before the slice starts).
 func has_flag(flag: StringName) -> bool:
 	return flow != null and flow.has_flag(flag)

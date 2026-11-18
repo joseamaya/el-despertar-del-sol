@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AttackData" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/attack_data.gd" id="1_attack"]
+
+[resource]
+script = ExtResource("1_attack")
+id = &"comunero_golpe"
+damage = 0.0
+posture_damage = 12.0
+stamina_cost = 0.0
+clip_speed = 0.5
+windup_end = 0.33
+active_end = 0.47
+chain_from = 1.0
+lunge_distance = 0.6

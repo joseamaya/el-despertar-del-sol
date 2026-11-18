@@ -20,6 +20,9 @@ extends SceneTree
 ##
 ##   godot --path . -s res://tools/scene_benchmark.gd -- \
 ##       --scene=res://scenes/levels/carmenca.tscn --walk --scale3d=0.833
+##
+## --slice-flag=NAME sets a slice flag as if the player had earned it (F4 task 6), e.g.
+## llamas_freed brings the comuneros to the pass in --fight-zone=3.
 
 const RENDER_SIZE: Vector2i = Vector2i(1920, 1080)
 ## A walk takes ~80 s. Past this the walker is stuck (e.g. a broken layout): give up
@@ -44,6 +47,7 @@ var _primitives: PackedFloat64Array = PackedFloat64Array()
 var _spawned: int = 0
 var _walk: bool = false
 var _fight_zone: int = 0
+var _slice_flag: StringName = &""
 var _walker: SectorWalkDriver
 ## Per stretch while walking: name -> {"frames": PackedFloat64Array, "primitives": ...}.
 var _stretches: Dictionary = {}
@@ -71,6 +75,8 @@ func _initialize() -> void:
 			_walk = true
 		elif arg.begins_with("--fight-zone="):
 			_fight_zone = arg.trim_prefix("--fight-zone=").to_int()
+		elif arg.begins_with("--slice-flag="):
+			_slice_flag = StringName(arg.trim_prefix("--slice-flag="))
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	Engine.max_fps = 0
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
@@ -158,6 +164,9 @@ func _prepare_arena(scene: Node) -> void:
 		var slice := scene.find_child("SliceDirector", true, false) as SliceDirector
 		if slice != null:
 			slice.autostart = false
+			if _slice_flag != &"":
+				slice.flow = SliceFlow.new(slice.sequence)
+				slice.flow.set_flag(_slice_flag)
 	if _fight or _fight_zone > 0:
 		var driver := ArenaFightDriver.new()
 		driver.name = "ArenaFightDriver"

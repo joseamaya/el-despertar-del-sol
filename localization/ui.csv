@@ -38,10 +38,10 @@ DLG_FAMILY_2,"Las tienen atadas más abajo, pasadas las casas. Sin ellas no pasa
 CHOICE_FAMILY_ACCEPT,Recuperaré tus llamas.,I will bring your llamas back.
 CHOICE_FAMILY_DECLINE,No puedo detenerme: el Cusco me espera.,I cannot stop: Cusco is waiting for me.
 CHOICE_CONFIRM,W / S: elegir · E / A: confirmar,W / S: choose · E / A: confirm
-DLG_FAMILY_YES,"Si lo haces, los hombres de mi familia te ayudarán a defender el paso.","If you do, the men of my family will help you defend the pass."
+DLG_FAMILY_YES,"Si lo haces, los hombres de mi ayllu te ayudarán a defender el paso.","If you do, the men of my ayllu will help you defend the pass."
 DLG_FAMILY_NO,"…Que las huacas te acompañen, entonces.","…May the huacas go with you, then."
 PROMPT_LLAMAS,E / A: desatar las llamas,E / A: untie the llamas
-NOTICE_SUPPORT,Apoyo ganado: la familia te ayudará a defender el paso,Support gained: the family will help you defend the pass
+NOTICE_SUPPORT,Apoyo ganado: el ayllu te ayudará a defender el paso,Support gained: the ayllu will help you defend the pass
 PROMPT_ENEMIES_NEAR,Aún hay chancas cerca,There are still Chancas nearby
 NOTICE_OFFERING,Ofrenda aceptada: resistencia máxima +10,Offering accepted: maximum stamina +10
 OBJ_TERRACES,Derrota a los chancas de las terrazas ({count}),Defeat the Chancas on the terraces ({count})
@@ -51,3 +51,4 @@ OBJ_HOUSES,Derrota a los chancas de las casas ({count}),Defeat the Chancas at th
 OBJ_LLAMAS,"Desata las llamas del corral, a la izquierda, pasadas las casas","Untie the llamas in the corral, on the left past the houses"
 OBJ_PASS,Defiende el paso ({count}),Defend the pass ({count})
 OBJ_SUMMIT,Sube hasta lo alto del paso,Climb to the top of the pass
+NOTICE_ALLIES,¡Los hombres del ayllu llegan!,The men of the ayllu are here!
