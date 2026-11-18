@@ -2,7 +2,7 @@ class_name Hud
 extends CanvasLayer
 ## Combat HUD (GDD §12.1): player health and stamina, the locked target's posture and
 ## health with a reticle on it, the defeat/victory messages and, in the slice, a banner
-## with each act and the end (F4 task 2). Hides out of combat.
+## with each act, its notices and the end (F4 tasks 2 and 6). Hides out of combat.
 ## Every visible text goes through tr() (GDD §12.5).
 
 const FADE_SPEED: float = 2.0
@@ -56,6 +56,7 @@ func _ready() -> void:
 	if slice != null:
 		slice.act_changed.connect(_show_banner)
 		slice.slice_finished.connect(_show_end)
+		slice.notice_shown.connect(_show_notice)
 
 
 func _process(delta: float) -> void:
@@ -123,7 +124,12 @@ func _hide_message() -> void:
 
 
 func _show_banner(act: SliceStep.Act) -> void:
-	message_label.text = tr(ACT_KEYS[act])
+	_show_notice(ACT_KEYS[act])
+
+
+## A slice notice (F4 task 6), shown like an act banner.
+func _show_notice(key: StringName) -> void:
+	message_label.text = tr(key)
 	hint_label.text = ""
 	message_panel.visible = true
 	_banner_left = BANNER_TIME

@@ -2,10 +2,11 @@ class_name SliceStep
 extends Resource
 ## One step of the vertical slice (F4 task 2, GDD §14.1): reach a place, clear an
 ## encounter zone, wait a moment, hold a conversation (task 3), or do something at a
-## marker and play a huaca rite there (task 4). Steps run one after another; see SliceFlow.
+## marker and play a huaca rite there (task 4), or choose (task 6). Steps run one after
+## another; a step can depend on a flag set by an earlier one. See SliceFlow.
 
 enum Act { OPENING, EXPLORATION, SUPPORT, COMBAT, ENDING }
-enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE }
+enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE }
 
 @export var act: Act = Act.OPENING
 @export var kind: Kind = Kind.REACH
@@ -21,5 +22,16 @@ enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE }
 @export var prompt: StringName = &""
 ## DIALOGUE: the conversation; the step ends with it.
 @export var dialogue: DialogueScript
+## CHOICE: the options; the one picked sets its flag.
+@export var choice: DialogueChoice
 ## Respawn marker from the moment this step starts (empty: keep the previous one).
 @export var checkpoint: StringName = &""
+
+@export_group("Flags")
+## Set when the step completes (e.g. the llamas freed).
+@export var flag: StringName = &""
+## Played only if this flag is set / only if it is not. Empty: no condition.
+@export var only_if: StringName = &""
+@export var unless: StringName = &""
+## Shown as a banner when the step completes (translation key).
+@export var notice: StringName = &""

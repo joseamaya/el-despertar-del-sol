@@ -4,6 +4,10 @@
 [ext_resource type="Script" path="res://scripts/systems/slice_step.gd" id="2_step"]
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_opening.tres" id="3_opening"]
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_huaca.tres" id="4_huaca"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_family.tres" id="5_family"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_family_yes.tres" id="6_yes"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_family_no.tres" id="7_no"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_family_choice.tres" id="8_choice"]
 
 [sub_resource type="Resource" id="Step_0"]
 script = ExtResource("2_step")
@@ -53,13 +57,54 @@ radius = 6.0
 
 [sub_resource type="Resource" id="Step_6"]
 script = ExtResource("2_step")
+act = 2
+kind = 3
+radius = 4.0
+dialogue = ExtResource("5_family")
+
+[sub_resource type="Resource" id="Step_7"]
+script = ExtResource("2_step")
+act = 2
+kind = 6
+radius = 4.0
+choice = ExtResource("8_choice")
+
+[sub_resource type="Resource" id="Step_8"]
+script = ExtResource("2_step")
+act = 2
+kind = 3
+radius = 4.0
+dialogue = ExtResource("6_yes")
+only_if = &"help_family"
+
+[sub_resource type="Resource" id="Step_9"]
+script = ExtResource("2_step")
+act = 2
+kind = 3
+radius = 4.0
+dialogue = ExtResource("7_no")
+unless = &"help_family"
+
+[sub_resource type="Resource" id="Step_10"]
+script = ExtResource("2_step")
 act = 3
 kind = 1
 radius = 4.0
 zone = 2
 checkpoint = &"Checkpoint3"
 
-[sub_resource type="Resource" id="Step_7"]
+[sub_resource type="Resource" id="Step_11"]
+script = ExtResource("2_step")
+act = 3
+kind = 4
+marker = &"Llamas"
+radius = 4.5
+prompt = &"PROMPT_LLAMAS"
+flag = &"llamas_freed"
+only_if = &"help_family"
+notice = &"NOTICE_SUPPORT"
+
+[sub_resource type="Resource" id="Step_12"]
 script = ExtResource("2_step")
 act = 3
 kind = 1
@@ -67,7 +112,7 @@ radius = 4.0
 zone = 3
 checkpoint = &"Checkpoint4"
 
-[sub_resource type="Resource" id="Step_8"]
+[sub_resource type="Resource" id="Step_13"]
 script = ExtResource("2_step")
 act = 4
 kind = 0
@@ -76,4 +121,4 @@ radius = 5.0
 
 [resource]
 script = ExtResource("1_seq")
-steps = Array[ExtResource("2_step")]([SubResource("Step_0"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8")])
+steps = Array[ExtResource("2_step")]([SubResource("Step_0"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_13")])

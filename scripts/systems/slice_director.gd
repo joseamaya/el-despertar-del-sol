@@ -3,12 +3,15 @@ extends Node
 ## Plays the vertical slice step by step (F4 task 2, GDD §14.1): starts each encounter
 ## zone, notices when the player reaches a place, moves the respawn point to the latest
 ## checkpoint, and says when the slice is over. Tasks 3–7 hang dialogue, the huaca, the
-## Apoyo choice and the ending on its signals.
+## Apoyo choice and the ending on its signals; choices set flags that later steps and
+## other systems read (`has_flag`).
 
 signal act_changed(act: SliceStep.Act)
 signal step_started(step: SliceStep)
 signal checkpoint_reached(marker: StringName)
 signal slice_finished
+## A step with a notice completed: show it (translation key).
+signal notice_shown(key: StringName)
 
 const ACTION_RESTART: StringName = &"restart"
 
@@ -20,6 +23,8 @@ const ACTION_RESTART: StringName = &"restart"
 ## INTERACT and RITE steps (F4 task 4). Needed only if the sequence has any.
 @export var interaction: InteractionPoint
 @export var rite: HuacaRite
+## CHOICE steps (F4 task 6). Needed only if the sequence has any.
+@export var choice: ChoiceBox
 ## Off for tools that drive the zones themselves (benchmark, captures).
 @export var autostart: bool = true
 
@@ -38,6 +43,8 @@ func _ready() -> void:
 		interaction.interacted.connect(_on_kind_done.bind(SliceStep.Kind.INTERACT).unbind(1))
 	if rite != null:
 		rite.rite_finished.connect(_on_kind_done.bind(SliceStep.Kind.RITE))
+	if choice != null:
+		choice.chosen.connect(_on_chosen)
 	# After the level and the arena have set up the sector and the first respawn.
 	if autostart:
 		_begin.call_deferred()
@@ -65,6 +72,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func is_finished() -> bool:
 	return flow != null and flow.is_finished()
+
+
+## Whether a choice or a step has set `flag` (false before the slice starts).
+func has_flag(flag: StringName) -> bool:
+	return flow != null and flow.has_flag(flag)
 
 
 func _begin() -> void:
@@ -101,10 +113,17 @@ func _start(step: SliceStep) -> void:
 		SliceStep.Kind.RITE:
 			assert(rite != null, "SliceDirector: a RITE step needs the rite.")
 			rite.perform(step.marker)
+		SliceStep.Kind.CHOICE:
+			assert(choice != null, "SliceDirector: a CHOICE step needs the box.")
+			choice.ask(step.choice)
 
 
-func _complete() -> void:
-	_start(flow.advance())
+func _complete(extra_flag: StringName = &"") -> void:
+	var notice: StringName = flow.current().notice
+	var next: SliceStep = flow.advance(extra_flag)
+	if notice != &"":
+		notice_shown.emit(notice)
+	_start(next)
 
 
 func _on_dialogue_finished() -> void:
@@ -116,6 +135,12 @@ func _on_kind_done(kind: SliceStep.Kind) -> void:
 	var step: SliceStep = flow.current() if flow != null else null
 	if step != null and step.kind == kind:
 		_complete()
+
+
+func _on_chosen(index: int) -> void:
+	var step: SliceStep = flow.current() if flow != null else null
+	if step != null and step.kind == SliceStep.Kind.CHOICE:
+		_complete(step.choice.options[index].flag)
 
 
 func _on_zone_won(zone: int) -> void:

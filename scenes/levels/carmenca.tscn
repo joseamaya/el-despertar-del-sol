@@ -28,6 +28,9 @@
 [ext_resource type="Resource" path="res://resources/codex/codex_book.tres" id="26_book"]
 [ext_resource type="Script" path="res://scripts/codex/codex_screen.gd" id="27_cscreen"]
 [ext_resource type="Script" path="res://scripts/codex/codex_notice.gd" id="28_cnotice"]
+[ext_resource type="Script" path="res://scripts/dialogue/choice_box.gd" id="29_choice"]
+[ext_resource type="Script" path="res://scripts/interaction/llama_pen.gd" id="30_pen"]
+[ext_resource type="Resource" path="res://resources/tuning/llama_pen.tres" id="31_pen"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -142,7 +145,7 @@ enemy_scene = ExtResource("12_27mym")
 enemies_root = NodePath("../Enemies")
 director = NodePath("../EncounterDirector")
 
-[node name="SliceDirector" type="Node" parent="." unique_id=1544120731 node_paths=PackedStringArray("level", "arena", "dialogue", "interaction", "rite")]
+[node name="SliceDirector" type="Node" parent="." unique_id=1544120731 node_paths=PackedStringArray("level", "arena", "dialogue", "interaction", "rite", "choice")]
 script = ExtResource("15_slice")
 sequence = ExtResource("16_slice")
 level = NodePath("../SectorLevel")
@@ -150,6 +153,7 @@ arena = NodePath("../ArenaController")
 dialogue = NodePath("../DialoguePlayer")
 interaction = NodePath("../InteractionPoint")
 rite = NodePath("../HuacaRite")
+choice = NodePath("../ChoiceBox")
 
 [node name="InteractionPrompt" type="CanvasLayer" parent="." unique_id=1544120736]
 script = ExtResource("21_prompt")
@@ -199,6 +203,26 @@ level = NodePath("../SectorLevel")
 face = NodePath("../Player")
 
 [node name="Model" parent="Vicaquirao" unique_id=1544120735 instance=ExtResource("20_model")]
+
+[node name="ChoiceBox" type="CanvasLayer" parent="." unique_id=1544120742 node_paths=PackedStringArray("player", "frozen")]
+script = ExtResource("29_choice")
+player = NodePath("../Player")
+frozen = [NodePath("../Player/Combat"), NodePath("../Player/Defense")]
+
+[node name="Comunero" type="Node3D" parent="." unique_id=1544120743 node_paths=PackedStringArray("level", "face")]
+script = ExtResource("19_npc")
+level = NodePath("../SectorLevel")
+marker = &"Family"
+face = NodePath("../Player")
+idle_clip = &"Idle"
+
+[node name="Model" parent="Comunero" unique_id=1544120744 instance=ExtResource("20_model")]
+
+[node name="LlamaPen" type="Node3D" parent="." unique_id=1544120745 node_paths=PackedStringArray("level", "interaction")]
+script = ExtResource("30_pen")
+tuning = ExtResource("31_pen")
+level = NodePath("../SectorLevel")
+interaction = NodePath("../InteractionPoint")
 
 [node name="Hud" parent="." unique_id=1068922280 node_paths=PackedStringArray("health", "stamina", "lock_on", "camera", "arena", "slice") instance=ExtResource("13_i2j4s")]
 health = NodePath("../Player/Health")

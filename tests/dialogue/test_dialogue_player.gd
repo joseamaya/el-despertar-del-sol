@@ -90,6 +90,8 @@ func test_every_dialogue_key_is_translated() -> void:
 		if not name.ends_with(".tres"):
 			continue
 		var dialogue := load(DIALOGUE_DIR.path_join(name)) as DialogueScript
+		if dialogue == null:
+			continue  # a DialogueChoice: test_choice_box checks those
 		for line: DialogueLine in dialogue.lines:
 			for key: StringName in [line.speaker, line.text]:
 				(

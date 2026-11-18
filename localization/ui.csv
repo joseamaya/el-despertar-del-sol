@@ -30,3 +30,13 @@ CODEX_HUACA_TITLE,Huaca,Huaca
 CODEX_HUACA_SOURCE,"Bernabé Cobo, Historia del Nuevo Mundo (1653)","Bernabé Cobo, Historia del Nuevo Mundo (1653)"
 CODEX_HUACA_BODY,"Para los pueblos andinos, una huaca era cualquier lugar o cosa donde habitaba lo sagrado: un manantial, una cumbre, una roca de forma extraña. Se le dejaban hojas de coca, chicha o maíz, y se le pedía fuerza y consejo. Más de un siglo después de la guerra, Cobo describió cientos de huacas alrededor del Cusco, ordenadas en líneas que partían del templo del Sol.","For the Andean peoples, a huaca was any place or thing where the sacred dwelt: a spring, a peak, a strangely shaped rock. People left it coca leaves, chicha or maize, and asked it for strength and counsel. More than a century after the war, Cobo described hundreds of huacas around Cusco, laid out in lines that ran from the temple of the Sun."
 CODEX_HUACA_NOTE,La forma de la huaca de Carmenca es licencia del juego.,The shape of the Carmenca huaca is a creative licence.
+NAME_COMUNERO,Comunero,Villager
+DLG_FAMILY_1,¡Señor! Los chancas pasaron al alba y se llevaron nuestras llamas.,My lord! The Chancas came through at dawn and took our llamas.
+DLG_FAMILY_2,"Las tienen atadas más abajo, pasadas las casas. Sin ellas no pasaremos el invierno.","They have them tied up further on, past the houses. Without them we will not last the winter."
+CHOICE_FAMILY_ACCEPT,Recuperaré tus llamas.,I will bring your llamas back.
+CHOICE_FAMILY_DECLINE,No puedo detenerme: el Cusco me espera.,I cannot stop: Cusco is waiting for me.
+CHOICE_CONFIRM,W / S: elegir · E / A: confirmar,W / S: choose · E / A: confirm
+DLG_FAMILY_YES,"Si lo haces, los hombres del ayllu bajarán contigo al paso.","If you do, the men of the ayllu will go down to the pass with you."
+DLG_FAMILY_NO,"…Que las huacas te acompañen, entonces.","…May the huacas go with you, then."
+PROMPT_LLAMAS,E / A: desatar las llamas,E / A: untie the llamas
+NOTICE_SUPPORT,El ayllu bajará contigo al paso,The ayllu will go down to the pass with you

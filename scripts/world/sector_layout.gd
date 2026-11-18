@@ -40,6 +40,9 @@ const STEP_MAX_RUN: float = 1.5
 ## Slice story points (F4 task 2): where the family asks for help (Apoyo) and where the
 ## slice ends.
 @export var family: Vector2 = Vector2.ZERO
+## The family's llamas, in a corral past the houses (F4 task 6): the corral's centre
+## (its corral is the one in `corrals` at this point).
+@export var llamas: Vector2 = Vector2.ZERO
 ## Where Vicaquirao waits at the opening (F4 task 3); he faces the valley.
 @export var mentor: Vector2 = Vector2.ZERO
 @export var ending: Vector2 = Vector2.ZERO
