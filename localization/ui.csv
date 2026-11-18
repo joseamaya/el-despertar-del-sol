@@ -69,3 +69,4 @@ SETTINGS_SCALE_QUALITY,Calidad,Quality
 SETTINGS_BACK,Volver,Back
 CREDITS_CONCH,"Sonido de caracola: David Bolton, CC BY 2.5 (Wikimedia Commons)","Conch shell sound: David Bolton, CC BY 2.5 (Wikimedia Commons)"
 HUD_FPS,{fps} FPS · {ms} ms,{fps} FPS · {ms} ms
+SLICE_TIME,Tiempo: {min} min {s} s,Time: {min} min {s} s

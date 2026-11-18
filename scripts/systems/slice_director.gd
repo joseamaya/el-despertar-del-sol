@@ -31,6 +31,9 @@ const LOCKED_PROMPT: StringName = &"PROMPT_ENEMIES_NEAR"
 @export var autostart: bool = true
 
 var flow: SliceFlow
+## Seconds of play since the slice began, frozen at its end; pauses do not count
+## (F4 task 12: the 8–12 min of the exit criterion).
+var play_time: float = 0.0
 var _waited: float = 0.0
 var _act: int = -1
 var _checkpoint: StringName = &""
@@ -56,6 +59,7 @@ func _physics_process(delta: float) -> void:
 	var step: SliceStep = flow.current() if flow != null else null
 	if step == null:
 		return
+	play_time += delta / maxf(Engine.time_scale, 0.0001)
 	match step.kind:
 		SliceStep.Kind.WAIT:
 			_waited += delta

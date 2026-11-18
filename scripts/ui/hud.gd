@@ -199,5 +199,7 @@ func _show_end() -> void:
 	_banner_left = 0.0
 	message_label.text = tr(&"SLICE_THE_END")
 	# Credits that a licence asks for (docs/ASSET_SOURCES.md: the CC BY conch).
-	hint_label.text = "%s\n\n%s" % [tr(&"SLICE_PLAY_AGAIN"), tr(&"CREDITS_CONCH")]
+	var seconds: int = roundi(slice.play_time)
+	var time: String = tr(&"SLICE_TIME").format({"min": floori(seconds / 60.0), "s": seconds % 60})
+	hint_label.text = "%s\n%s\n\n%s" % [time, tr(&"SLICE_PLAY_AGAIN"), tr(&"CREDITS_CONCH")]
 	message_panel.visible = true
