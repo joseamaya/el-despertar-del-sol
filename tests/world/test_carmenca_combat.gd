@@ -115,7 +115,10 @@ func test_warriors_chase_down_the_slope() -> void:
 	assert_float(_player.global_position.y).is_less(start_y - 2.5)
 	_health.reset()
 	var hit: bool = false
-	for i: int in 900:
+	# Up to ~30 s of game time: on a slow CI machine the warriors take longer to come down
+	# (it failed once at 15 s on the merge of PR #50). What is checked is that they follow
+	# and hit, not how fast.
+	for i: int in 1800:
 		await get_tree().physics_frame
 		if _health.current < _health.get_maximum():
 			hit = true
