@@ -30,10 +30,33 @@ jobs:
       - run: pip install -r requirements-dev.txt
       - run: gdlint $(git ls-files '*.gd' ':!:addons/*')
       - run: gdformat --check $(git ls-files '*.gd' ':!:addons/*')
+      # The tests run in two jobs by folder (see `test`): a folder left out of both would
+      # silently never run.
+      - name: Every test folder is in a test job
+        run: |
+          status=0
+          for dir in tests/*/; do
+            grep -q "res://${dir%/}[,\"]" .github/workflows/ci.yml || { echo "::error::${dir} is in no test job"; status=1; }
+          done
+          for file in tests/*.gd; do
+            [ -e "$file" ] && { echo "::error::$file must live in a folder"; status=1; }
+          done
+          exit $status
 
   test:
-    name: Tests (gdUnit4)
+    name: Tests (${{ matrix.group }})
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        # Two halves of similar length (~6 min each on PR #45): the integration suites that
+        # play Carmenca, and everything else. Every folder of tests/ must be in one of them
+        # (the lint job checks it).
+        include:
+          - group: Carmenca
+            paths: "res://tests/world,res://tests/systems"
+          - group: Sistemas
+            paths: "res://tests/allies,res://tests/audio,res://tests/codex,res://tests/combat,res://tests/core,res://tests/dialogue,res://tests/enemies,res://tests/interaction,res://tests/physics,res://tests/player,res://tests/tools,res://tests/ui"
     steps:
       - uses: actions/checkout@v7
         with:
@@ -42,10 +65,10 @@ jobs:
         with:
           godot-version: ${{ env.GODOT_VERSION }}
           version: installed
-          paths: res://tests
-          # Minutes for the whole suite. It took 8m44s on PR #32 and passed 10 on PR #34,
-          # when F3 added integration tests that play real fights in Carmenca.
-          timeout: 20
+          paths: ${{ matrix.paths }}
+          # Minutes per half. The whole suite took 8m44s on PR #32, ~14 min on PR #45 (then
+          # split in two).
+          timeout: 15
           # The check-run report (dorny/test-reporter) fails with HTTP 404 when it updates
           # its own check run, although all tests pass: first on push to main (F1
           # close-out), then on PR #27 (F3). It is a convenience view, so it stays off.
