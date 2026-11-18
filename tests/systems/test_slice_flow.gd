@@ -175,3 +175,27 @@ func test_carmenca_conditions_read_flags_set_earlier() -> void:
 			optional.append(s.marker)
 	assert_array(optional).is_equal([&"Huaca", &"Huaca", &""])
 	assert_array(set_so_far).contains([&"help_family", &"llamas_freed"])
+
+
+## Every step where the player acts has an objective, translated; fights count warriors.
+func test_carmenca_objectives_are_set_and_translated() -> void:
+	var keys: Dictionary = {}
+	var file := FileAccess.open("res://localization/ui.csv", FileAccess.READ)
+	while not file.eof_reached():
+		var row: PackedStringArray = file.get_csv_line()
+		if row.size() >= 3:
+			keys[row[0]] = row[1] != "" and row[2] != ""
+	var quiet: Array[SliceStep.Kind] = [
+		SliceStep.Kind.DIALOGUE, SliceStep.Kind.CHOICE, SliceStep.Kind.RITE
+	]
+	for s: SliceStep in (load(CARMENCA) as SliceSequence).steps:
+		if s.kind in quiet:
+			assert_str(s.objective).is_empty()
+			continue
+		(
+			assert_bool(keys.get(String(s.objective), false))
+			. override_failure_message("Step %s %s" % [s.kind, s.objective])
+			. is_true()
+		)
+		if s.kind == SliceStep.Kind.ENCOUNTER:
+			assert_str(tr(s.objective)).contains("{count}")

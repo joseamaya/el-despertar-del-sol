@@ -19,6 +19,7 @@ checkpoint = &"Start"
 
 [sub_resource type="Resource" id="Step_1"]
 script = ExtResource("2_step")
+objective = &"OBJ_TERRACES"
 act = 1
 kind = 1
 radius = 4.0
@@ -27,6 +28,7 @@ checkpoint = &"Checkpoint1"
 
 [sub_resource type="Resource" id="Step_2"]
 script = ExtResource("2_step")
+objective = &"OBJ_HUACA"
 optional = true
 act = 1
 kind = 4
@@ -54,6 +56,7 @@ dialogue = ExtResource("4_huaca")
 
 [sub_resource type="Resource" id="Step_5"]
 script = ExtResource("2_step")
+objective = &"OBJ_TO_HOUSES"
 act = 2
 kind = 0
 marker = &"Family"
@@ -91,6 +94,7 @@ unless = &"help_family"
 
 [sub_resource type="Resource" id="Step_10"]
 script = ExtResource("2_step")
+objective = &"OBJ_HOUSES"
 act = 3
 kind = 1
 radius = 4.0
@@ -99,6 +103,7 @@ checkpoint = &"Checkpoint3"
 
 [sub_resource type="Resource" id="Step_11"]
 script = ExtResource("2_step")
+objective = &"OBJ_LLAMAS"
 act = 3
 kind = 4
 marker = &"Llamas"
@@ -110,6 +115,7 @@ notice = &"NOTICE_SUPPORT"
 
 [sub_resource type="Resource" id="Step_12"]
 script = ExtResource("2_step")
+objective = &"OBJ_PASS"
 act = 3
 kind = 1
 radius = 4.0
@@ -118,6 +124,7 @@ checkpoint = &"Checkpoint4"
 
 [sub_resource type="Resource" id="Step_13"]
 script = ExtResource("2_step")
+objective = &"OBJ_SUMMIT"
 act = 4
 kind = 0
 marker = &"Ending"

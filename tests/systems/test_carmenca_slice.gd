@@ -250,3 +250,26 @@ func test_huaca_waits_dimmed_while_the_skirmish_is_on() -> void:
 	assert_bool(point.is_active()).is_true()
 	assert_bool(prompt.is_dimmed()).is_false()
 	assert_str(prompt.shown_text()).is_equal(tr(&"PROMPT_OFFERING"))
+
+
+## The HUD reads on _process: on a slow machine several physics frames can pass first.
+func _drawn_frames(count: int) -> void:
+	for i: int in count:
+		await get_tree().process_frame
+
+
+func test_objective_counts_the_fight_then_points_onwards() -> void:
+	var hud := _runner.find_child("Hud") as Hud
+	await _finish_step()
+	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.ENCOUNTER)
+	await _drawn_frames(3)
+	assert_bool(hud.is_showing_objective()).is_true()
+	var size: int = _level.layout.encounter_enemies[0]
+	assert_str(hud.objective_text()).is_equal(tr(&"OBJ_TERRACES").format({"count": size}))
+	var enemies: Array[EnemyController] = _arena.alive_enemies()
+	enemies[0].health.apply_damage(enemies[0].health.get_maximum())
+	await _drawn_frames(3)
+	assert_str(hud.objective_text()).is_equal(tr(&"OBJ_TERRACES").format({"count": size - 1}))
+	await _kill_zone()
+	await _drawn_frames(3)
+	assert_str(hud.objective_text()).is_equal(tr(&"OBJ_HUACA"))

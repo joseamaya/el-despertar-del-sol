@@ -3,7 +3,7 @@ extends GdUnitTestSuite
 ## covers the path and the zones; warriors in each zone engage and land hits, also
 ## down a slope; at the pass no more than two attack at once; a defeat brings back only
 ## the zone being fought (F4 task 2: one zone at a time); once a zone has seen the player
-## its stragglers come after them, and the HUD counts who is left (F4 task 6).
+## its stragglers come after them (F4 task 6).
 
 const SCENE: String = "res://scenes/levels/carmenca.tscn"
 const TIME_SCALE: float = 2.0
@@ -158,13 +158,6 @@ func test_defeat_brings_back_only_the_active_zone() -> void:
 	assert_bool(_health.is_dead()).is_false()
 
 
-## The HUD updates in _process: on a slow machine at TIME_SCALE several physics frames
-## can pass before it runs once, so wait for drawn frames before reading it.
-func _drawn_frames(count: int) -> void:
-	for i: int in count:
-		await get_tree().process_frame
-
-
 func _all_aware(enemies: Array[EnemyController]) -> bool:
 	for enemy: EnemyController in enemies:
 		if not enemy.perception.has_target():
@@ -172,23 +165,16 @@ func _all_aware(enemies: Array[EnemyController]) -> bool:
 	return true
 
 
-func test_stragglers_of_a_noticed_zone_come_back_and_are_counted() -> void:
+func test_stragglers_of_a_noticed_zone_come_back() -> void:
 	Engine.time_scale = TIME_SCALE
-	var hud := _runner.find_child("Hud") as Hud
 	var enemies: Array[EnemyController] = _only_zone(1)
 	var zone: Vector3 = _level.layout.encounters[0]
-	assert_bool(hud.is_counting_enemies()).is_false()
 	_place(Vector2(zone.x, zone.y))
 	for i: int in 240:
 		if _all_aware(enemies):
 			break
 		await _frames(1)
 	assert_bool(_arena.is_zone_engaged()).is_true()
-	await _drawn_frames(3)
-	assert_bool(hud.is_counting_enemies()).is_true()
-	assert_str(hud.enemies_left_text()).is_equal(
-		tr(&"HUD_ENEMIES_LEFT").format({"count": enemies.size()})
-	)
 	# The player runs far up the slope, out of sight and hearing.
 	_place(Vector2(0.0, 48.0))
 	var far: float = enemies[0].global_position.distance_to(_player.global_position)
@@ -197,15 +183,6 @@ func test_stragglers_of_a_noticed_zone_come_back_and_are_counted() -> void:
 		assert_bool(enemy.perception.has_target()).is_true()
 	var now: float = enemies[0].global_position.distance_to(_player.global_position)
 	assert_float(now).is_less(far - 10.0)
-	enemies[0].health.apply_damage(enemies[0].health.get_maximum())
-	await _drawn_frames(3)
-	assert_str(hud.enemies_left_text()).is_equal(
-		tr(&"HUD_ENEMIES_LEFT").format({"count": enemies.size() - 1})
-	)
-	for enemy: EnemyController in _arena.alive_enemies():
-		enemy.health.apply_damage(enemy.health.get_maximum())
-	await _drawn_frames(3)
-	assert_bool(hud.is_counting_enemies()).is_false()
 
 
 func test_a_zone_that_has_not_seen_the_player_does_not_hunt() -> void:

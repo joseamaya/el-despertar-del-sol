@@ -24,6 +24,9 @@ enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE }
 @export var dialogue: DialogueScript
 ## CHOICE: the options; the one picked sets its flag.
 @export var choice: DialogueChoice
+## What the player has to do now, shown by the HUD (translation key; ENCOUNTER texts take
+## {count}, the warriors left). Empty: no objective (conversations, the vision).
+@export var objective: StringName = &""
 ## Respawn marker from the moment this step starts (empty: keep the previous one).
 @export var checkpoint: StringName = &""
 
