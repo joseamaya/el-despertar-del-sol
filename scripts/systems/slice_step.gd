@@ -30,6 +30,8 @@ enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE }
 ## Marker the player and the camera turn to while the step lasts, the player held still
 ## (the ending looks at Cusco, F4 task 7). Empty: free camera.
 @export var look_at: StringName = &""
+## Played when the step starts (the far pututus of the ending, F4 task 9).
+@export var sound: AudioStream
 ## Respawn marker from the moment this step starts (empty: keep the previous one).
 @export var checkpoint: StringName = &""
 

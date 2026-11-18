@@ -198,5 +198,6 @@ func _show_notice(key: StringName) -> void:
 func _show_end() -> void:
 	_banner_left = 0.0
 	message_label.text = tr(&"SLICE_THE_END")
-	hint_label.text = tr(&"SLICE_PLAY_AGAIN")
+	# Credits that a licence asks for (docs/ASSET_SOURCES.md: the CC BY conch).
+	hint_label.text = "%s\n\n%s" % [tr(&"SLICE_PLAY_AGAIN"), tr(&"CREDITS_CONCH")]
 	message_panel.visible = true

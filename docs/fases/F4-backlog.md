@@ -18,7 +18,7 @@ del §14.3.
 | 6 | Decisión de Apoyo: la familia y las llamas, aceptar o seguir, con diferencia visible en el combate del paso | Hecha: familia, elección y llamas (#43); 2 comuneros que distraen a 2 chancas en el paso |
 | 7 | Cierre: pututus chancas, Cusi Yupanqui mira al Cusco, fin | Hecha: Cusi gira hacia el Cusco, rótulo de pututus (sonido en la tarea 9), dos líneas y 3 s mirando el valle |
 | 8 | Interfaz: menú de pausa y ajustes básicos (volumen, sensibilidad, escala 3D) guardados con un autoload | Hecha: pausa con Esc / Start; volumen, sensibilidad y calidad gráfica (75/83/100 %, por defecto 83 %) en el autoload `Settings` |
-| 9 | Audio: ambiente, pasos y una pieza musical | Pendiente |
+| 9 | Audio: ambiente, pasos y una pieza musical | Hecha: viento, pasos por superficie, música provisional (apertura y cierre), pututu en el paso y en el cierre, visión amortiguada |
 | 10 | Personajes: Cusi Yupanqui, Vicaquirao y el comunero distinguibles (tintes y accesorios por script) | Pendiente |
 | 11 | Mando físico y build de Windows (deuda de F3) | Pendiente |
 | 12 | Partida completa: 8–12 min en la build exportada, rendimiento con todo integrado, partida de bot de principio a fin | Pendiente |
