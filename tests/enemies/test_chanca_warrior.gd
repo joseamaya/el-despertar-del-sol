@@ -138,3 +138,16 @@ func test_patrols_between_points() -> void:
 	await _frames(240)
 	assert_str(_state(_w2)).is_equal("patrol")
 	assert_float(_w2.global_position.distance_to(start)).is_greater(3.0)
+
+
+## F4 task 6: the encounter can tell it where the player is without it sensing them.
+func test_told_where_the_player_is_it_goes_there() -> void:
+	assert_bool(_w1.perception.can_sense()).is_false()
+	_w1.perception.alert_to(_player.global_position)
+	assert_bool(_w1.perception.has_target()).is_true()
+	assert_vector(_w1.perception.last_known_position).is_equal(_player.global_position)
+	await _until_state(_w1, "chase", 120)
+	assert_str(_state(_w1)).is_equal("chase")
+	var before: float = _w1.distance_to(_player.global_position)
+	await _frames(60)
+	assert_float(_w1.distance_to(_player.global_position)).is_less(before)

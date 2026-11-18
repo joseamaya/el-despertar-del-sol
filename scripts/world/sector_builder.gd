@@ -191,6 +191,13 @@ static func _build_huaca(root: Node3D, layout: SectorLayout, palette: PaletteTun
 	cyl.height = 2.8
 	col.shape = cyl
 	body.add_child(col)
+	if layout.huaca_smoke_height > 0.0:
+		var h: float = layout.huaca_smoke_height
+		var smoke := BackdropBuilder.smoke_column(h, palette.smoke, 1.3, 0.12, 0.85)
+		smoke.name = "HuacaSmoke"
+		var base: Vector2 = layout.huaca + layout.huaca_smoke_offset
+		smoke.position = Vector3(base.x, layout.height_at(base.x, base.y) + h * 0.5, base.y)
+		root.add_child(smoke)
 
 
 static func _build_markers(root: Node3D, layout: SectorLayout) -> void:
@@ -198,6 +205,7 @@ static func _build_markers(root: Node3D, layout: SectorLayout) -> void:
 	_marker(root, "Start", layout, layout.start, 0.0)
 	_marker(root, "Huaca", layout, layout.huaca, 0.0)
 	_marker(root, "Family", layout, layout.family, 0.0)
+	_marker(root, "Llamas", layout, layout.llamas, 0.0)
 	_marker(root, "Mentor", layout, layout.mentor, 0.0)
 	_marker(root, "Ending", layout, layout.ending, 0.0)
 	for c: int in layout.checkpoints.size():

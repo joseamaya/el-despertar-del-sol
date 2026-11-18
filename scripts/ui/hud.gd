@@ -2,13 +2,15 @@ class_name Hud
 extends CanvasLayer
 ## Combat HUD (GDD §12.1): player health and stamina, the locked target's posture and
 ## health with a reticle on it, the defeat/victory messages and, in the slice, a banner
-## with each act and the end (F4 task 2). Hides out of combat.
+## with each act, its notices and the end (F4 tasks 2 and 6). Hides out of combat.
 ## Every visible text goes through tr() (GDD §12.5).
 
 const FADE_SPEED: float = 2.0
 const HIDE_DELAY: float = 3.0
 ## How long an act banner stays up.
 const BANNER_TIME: float = 3.0
+## How long a new objective stays up out of combat (in combat it stays).
+const OBJECTIVE_TIME: float = 7.0
 ## Banner text of each SliceStep.Act, in order.
 const ACT_KEYS: Array[StringName] = [
 	&"SLICE_ACT_OPENING",
@@ -40,6 +42,12 @@ const ACT_KEYS: Array[StringName] = [
 @export var hint_label: Label
 
 var _calm_time: float = 0.0
+## The current objective of the slice (GDD §12.1, F4 task 6), built here: shown for a
+## while when it changes and all through a fight, with the warriors left.
+var _objective_panel: PanelContainer
+var _objective: Label
+var _objective_step: SliceStep
+var _objective_left: float = 0.0
 ## Seconds left for the act banner; 0 when no banner is up.
 var _banner_left: float = 0.0
 
@@ -48,6 +56,7 @@ func _ready() -> void:
 	assert(health != null and stamina != null and root != null, "Hud needs its parts.")
 	message_panel.visible = false
 	target_panel.visible = false
+	_build_objective()
 	reticle.visible = false
 	if arena != null:
 		arena.player_defeated.connect(_show_message.bind(&"HUD_DEFEAT"))
@@ -56,6 +65,8 @@ func _ready() -> void:
 	if slice != null:
 		slice.act_changed.connect(_show_banner)
 		slice.slice_finished.connect(_show_end)
+		slice.notice_shown.connect(_show_notice)
+		slice.step_started.connect(_on_step_started)
 
 
 func _process(delta: float) -> void:
@@ -64,6 +75,7 @@ func _process(delta: float) -> void:
 	stamina_bar.max_value = stamina.get_maximum()
 	stamina_bar.value = stamina.current
 	_update_target()
+	_update_objective(delta)
 	_update_fade(delta)
 	if _banner_left > 0.0:
 		_banner_left -= delta
@@ -97,6 +109,55 @@ func _update_target() -> void:
 			reticle.visible = true
 
 
+func is_showing_objective() -> bool:
+	return _objective_panel.visible
+
+
+func objective_text() -> String:
+	return _objective.text
+
+
+func _build_objective() -> void:
+	_objective_panel = PanelContainer.new()
+	_objective_panel.name = "Objective"
+	_objective_panel.offset_left = 32.0
+	_objective_panel.offset_top = 28.0
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.08, 0.06, 0.05, 0.72)
+	style.set_corner_radius_all(4)
+	style.content_margin_left = 16.0
+	style.content_margin_right = 16.0
+	style.content_margin_top = 8.0
+	style.content_margin_bottom = 8.0
+	_objective_panel.add_theme_stylebox_override(&"panel", style)
+	_objective = Label.new()
+	_objective.add_theme_font_size_override(&"font_size", 26)
+	_objective.add_theme_color_override(&"font_color", Color(0.98, 0.9, 0.7))
+	_objective_panel.add_child(_objective)
+	_objective_panel.visible = false
+	add_child(_objective_panel)
+
+
+func _on_step_started(step: SliceStep) -> void:
+	_objective_step = step if step.objective != &"" else null
+	_objective_left = OBJECTIVE_TIME
+
+
+func _update_objective(delta: float) -> void:
+	_objective_left = maxf(0.0, _objective_left - delta)
+	var step: SliceStep = _objective_step
+	var fighting: bool = (
+		step != null
+		and step.kind == SliceStep.Kind.ENCOUNTER
+		and arena != null
+		and arena.is_zone_engaged()
+	)
+	_objective_panel.visible = step != null and (_objective_left > 0.0 or fighting)
+	if _objective_panel.visible:
+		var count: int = arena.alive_enemies().size() if arena != null else 0
+		_objective.text = tr(step.objective).format({"count": count})
+
+
 func _update_fade(delta: float) -> void:
 	var busy: bool = (
 		(arena != null and arena.is_in_combat())
@@ -123,7 +184,12 @@ func _hide_message() -> void:
 
 
 func _show_banner(act: SliceStep.Act) -> void:
-	message_label.text = tr(ACT_KEYS[act])
+	_show_notice(ACT_KEYS[act])
+
+
+## A slice notice (F4 task 6), shown like an act banner.
+func _show_notice(key: StringName) -> void:
+	message_label.text = tr(key)
 	hint_label.text = ""
 	message_panel.visible = true
 	_banner_left = BANNER_TIME

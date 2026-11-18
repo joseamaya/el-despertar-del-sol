@@ -15,7 +15,7 @@ del §14.3.
 | 3 | Diálogo mínimo: caja de texto con `tr()`, líneas en `.tres`, Vicaquirao en el mirador | Hecha: caja de diálogo, `DialoguePlayer`, paso `DIALOGUE` del slice; apertura de 5 líneas aprobada; acción `interact` (E / A) |
 | 4 | Huaca: interacción, ofrenda y visión breve (siluetas de piedra en la niebla, compatible con Mobile) | Hecha: aviso «ofrendar hojas de coca», +10 de resistencia máxima, visión de 6 s con 6 figuras de piedra, línea de Cusi |
 | 5 | Códice: una entrada con su etiqueta (Documentado / Según los cronistas / Licencia del juego) | Hecha: entrada «Huaca» (Según los cronistas) al terminar la visión; aviso y pantalla con Tab / Back, que pausa el juego |
-| 6 | Decisión de Apoyo: la familia y las llamas, aceptar o seguir, con diferencia visible en el combate del paso | Pendiente |
+| 6 | Decisión de Apoyo: la familia y las llamas, aceptar o seguir, con diferencia visible en el combate del paso | En curso: 6a (familia, elección, llamas) en PR; 6b (comuneros en el paso) pendiente |
 | 7 | Cierre: pututus chancas, Cusi Yupanqui mira al Cusco, fin | Pendiente |
 | 8 | Interfaz: menú de pausa y ajustes básicos (volumen, sensibilidad, escala 3D) guardados con un autoload | Pendiente |
 | 9 | Audio: ambiente, pasos y una pieza musical | Pendiente |

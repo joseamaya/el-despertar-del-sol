@@ -8,6 +8,11 @@ script = ExtResource("2_line")
 speaker = &"NAME_CUSI"
 text = &"DLG_HUACA_1"
 
+[sub_resource type="Resource" id="Line_1"]
+script = ExtResource("2_line")
+speaker = &"NAME_CUSI"
+text = &"DLG_HUACA_2"
+
 [resource]
 script = ExtResource("1_script")
-lines = Array[ExtResource("2_line")]([SubResource("Line_0")])
+lines = Array[ExtResource("2_line")]([SubResource("Line_0"), SubResource("Line_1")])

@@ -1,8 +1,9 @@
 class_name InteractionPoint
 extends Node
 ## One thing the player can do at a layout marker (F4 task 4: the huaca; task 6: the
-## family). While active it shows its prompt when the player is close enough and emits
-## `interacted` when they press `interact` there. Then it switches off.
+## llamas). While active it shows its prompt when the player is close enough and emits
+## `interacted` when they press `interact` there. Then it switches off. Locked, it only
+## shows a dimmed prompt saying why it cannot be done yet (enemies near, task 6).
 
 signal interacted(marker: StringName)
 
@@ -17,6 +18,7 @@ const ACTION_INTERACT: StringName = &"interact"
 var _marker: StringName = &""
 var _radius: float = 0.0
 var _prompt_key: StringName = &""
+var _locked: bool = false
 
 
 func _ready() -> void:
@@ -24,10 +26,10 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if not is_active():
+	if _marker == &"":
 		return
 	if is_in_reach() and not _busy():
-		prompt.show_prompt(_prompt_key)
+		prompt.show_prompt(_prompt_key, _locked)
 	else:
 		prompt.hide_prompt()
 
@@ -42,6 +44,13 @@ func activate(marker: StringName, radius: float, prompt_key: StringName) -> void
 	_marker = marker
 	_radius = radius
 	_prompt_key = prompt_key
+	_locked = false
+
+
+## Shows `prompt_key` dimmed near `marker` but does not let the player interact yet.
+func lock(marker: StringName, radius: float, prompt_key: StringName) -> void:
+	activate(marker, radius, prompt_key)
+	_locked = true
 
 
 func deactivate() -> void:
@@ -50,11 +59,15 @@ func deactivate() -> void:
 
 
 func is_active() -> bool:
-	return _marker != &""
+	return _marker != &"" and not _locked
+
+
+func is_locked() -> bool:
+	return _marker != &"" and _locked
 
 
 func is_in_reach() -> bool:
-	if not is_active():
+	if _marker == &"":
 		return false
 	var to: Vector3 = level.marker_position(_marker) - player.global_position
 	return Vector2(to.x, to.z).length() <= _radius
@@ -62,7 +75,7 @@ func is_in_reach() -> bool:
 
 ## Interacts if possible (the input handler and tests call this). True if it happened.
 func try_interact() -> bool:
-	if not is_in_reach() or _busy():
+	if not is_active() or not is_in_reach() or _busy():
 		return false
 	var marker: StringName = _marker
 	deactivate()

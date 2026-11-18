@@ -17,8 +17,10 @@ DLG_OPENING_2,"Viracocha se ha ido a Xaquixaguana con Urco y su corte. Dicen que
 DLG_OPENING_3,"Esos humos son los chancas. Uscovilca viene desde Andahuaylas.","That smoke is the Chancas. Uscovilca is coming from Andahuaylas."
 DLG_OPENING_4,Entonces nos quedamos nosotros.,Then we are the ones who stay.
 DLG_OPENING_5,"Sube por las terrazas. Si sus exploradores ya están aquí, que nos encuentren de pie.","Climb the terraces. If their scouts are already here, let them find us standing."
+DLG_OPENING_6,"Y al subir, detente en la huaca de la ladera. Déjale coca: hoy vamos a necesitar su fuerza.","And on the way up, stop at the huaca on the slope. Leave it coca: today we will need its strength."
 PROMPT_OFFERING,E / A: ofrendar hojas de coca,E / A: offer coca leaves
-DLG_HUACA_1,"Piedras… de pie, como guerreros. ¿Qué me estás pidiendo?","Stones… standing, like warriors. What are you asking of me?"
+DLG_HUACA_1,"Por un momento, las piedras de la ladera parecían guerreros de pie…","For a moment, the stones on the slope looked like warriors standing…"
+DLG_HUACA_2,¿Fue la huaca quien me lo mostró? ¿Qué quiere decirme?,Was it the huaca that showed me? What is it trying to tell me?
 CODEX_TITLE,Códice,Codex
 CODEX_EMPTY,Aún no hay entradas.,No entries yet.
 CODEX_CLOSE,Tab / Back: cerrar,Tab / Back: close
@@ -30,3 +32,22 @@ CODEX_HUACA_TITLE,Huaca,Huaca
 CODEX_HUACA_SOURCE,"Bernabé Cobo, Historia del Nuevo Mundo (1653)","Bernabé Cobo, Historia del Nuevo Mundo (1653)"
 CODEX_HUACA_BODY,"Para los pueblos andinos, una huaca era cualquier lugar o cosa donde habitaba lo sagrado: un manantial, una cumbre, una roca de forma extraña. Se le dejaban hojas de coca, chicha o maíz, y se le pedía fuerza y consejo. Más de un siglo después de la guerra, Cobo describió cientos de huacas alrededor del Cusco, ordenadas en líneas que partían del templo del Sol.","For the Andean peoples, a huaca was any place or thing where the sacred dwelt: a spring, a peak, a strangely shaped rock. People left it coca leaves, chicha or maize, and asked it for strength and counsel. More than a century after the war, Cobo described hundreds of huacas around Cusco, laid out in lines that ran from the temple of the Sun."
 CODEX_HUACA_NOTE,La forma de la huaca de Carmenca es licencia del juego.,The shape of the Carmenca huaca is a creative licence.
+NAME_COMUNERO,Comunero,Villager
+DLG_FAMILY_1,¡Señor! Los chancas pasaron al alba y se llevaron nuestras llamas.,My lord! The Chancas came through at dawn and took our llamas.
+DLG_FAMILY_2,"Las tienen atadas más abajo, pasadas las casas. Sin ellas no pasaremos el invierno.","They have them tied up further on, past the houses. Without them we will not last the winter."
+CHOICE_FAMILY_ACCEPT,Recuperaré tus llamas.,I will bring your llamas back.
+CHOICE_FAMILY_DECLINE,No puedo detenerme: el Cusco me espera.,I cannot stop: Cusco is waiting for me.
+CHOICE_CONFIRM,W / S: elegir · E / A: confirmar,W / S: choose · E / A: confirm
+DLG_FAMILY_YES,"Si lo haces, los hombres de mi familia te ayudarán a defender el paso.","If you do, the men of my family will help you defend the pass."
+DLG_FAMILY_NO,"…Que las huacas te acompañen, entonces.","…May the huacas go with you, then."
+PROMPT_LLAMAS,E / A: desatar las llamas,E / A: untie the llamas
+NOTICE_SUPPORT,Apoyo ganado: la familia te ayudará a defender el paso,Support gained: the family will help you defend the pass
+PROMPT_ENEMIES_NEAR,Aún hay chancas cerca,There are still Chancas nearby
+NOTICE_OFFERING,Ofrenda aceptada: resistencia máxima +10,Offering accepted: maximum stamina +10
+OBJ_TERRACES,Derrota a los chancas de las terrazas ({count}),Defeat the Chancas on the terraces ({count})
+OBJ_HUACA,Opcional: deja coca en la huaca de la ladera,Optional: leave coca at the huaca on the slope
+OBJ_TO_HOUSES,Sigue el camino hacia las casas,Follow the path to the houses
+OBJ_HOUSES,Derrota a los chancas de las casas ({count}),Defeat the Chancas at the houses ({count})
+OBJ_LLAMAS,"Desata las llamas del corral, a la izquierda, pasadas las casas","Untie the llamas in the corral, on the left past the houses"
+OBJ_PASS,Defiende el paso ({count}),Defend the pass ({count})
+OBJ_SUMMIT,Sube hasta lo alto del paso,Climb to the top of the pass

@@ -37,9 +37,16 @@ const STEP_MAX_RUN: float = 1.5
 ## Points of interest, all (x, z).
 @export var start: Vector2 = Vector2.ZERO
 @export var huaca: Vector2 = Vector2.ZERO
+## A thread of smoke from the offering at the huaca, so it can be found from the path
+## (F4 task 6): where it rises from (offset from the huaca) and how high. 0: none.
+@export var huaca_smoke_offset: Vector2 = Vector2(0.6, 1.8)
+@export_range(0.0, 30.0, 0.5, "suffix:m") var huaca_smoke_height: float = 0.0
 ## Slice story points (F4 task 2): where the family asks for help (Apoyo) and where the
 ## slice ends.
 @export var family: Vector2 = Vector2.ZERO
+## The family's llamas, in a corral past the houses (F4 task 6): the corral's centre
+## (its corral is the one in `corrals` at this point).
+@export var llamas: Vector2 = Vector2.ZERO
 ## Where Vicaquirao waits at the opening (F4 task 3); he faces the valley.
 @export var mentor: Vector2 = Vector2.ZERO
 @export var ending: Vector2 = Vector2.ZERO
