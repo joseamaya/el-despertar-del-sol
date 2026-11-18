@@ -42,6 +42,7 @@
 [ext_resource type="Resource" path="res://resources/audio/footsteps.tres" id="40_steps"]
 [ext_resource type="Resource" path="res://resources/characters/vicaquirao.tres" id="41_vica"]
 [ext_resource type="Resource" path="res://resources/characters/comunero.tres" id="42_comunero"]
+[ext_resource type="Script" path="res://scripts/ui/fps_overlay.gd" id="43_fps"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -292,6 +293,9 @@ camera_rig = NodePath("../CameraRig")
 script = ExtResource("35_pause")
 arena = NodePath("../ArenaController")
 slice = NodePath("../SliceDirector")
+
+[node name="FpsOverlay" type="CanvasLayer" parent="." unique_id=1544120770]
+script = ExtResource("43_fps")
 
 [connection signal="hit_landed" from="Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox" to="HitStop" method="on_hit_landed"]
 [connection signal="target_locked" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
