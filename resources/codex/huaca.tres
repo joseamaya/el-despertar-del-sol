@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CodexEntry" format=3]
+
+[ext_resource type="Script" path="res://scripts/codex/codex_entry.gd" id="1_entry"]
+
+[resource]
+script = ExtResource("1_entry")
+id = &"huaca"
+title = &"CODEX_HUACA_TITLE"
+tag = 1
+source = &"CODEX_HUACA_SOURCE"
+body = &"CODEX_HUACA_BODY"
+note = &"CODEX_HUACA_NOTE"

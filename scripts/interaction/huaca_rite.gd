@@ -14,6 +14,8 @@ signal rite_finished
 @export var animator: CharacterAnimator
 @export var stamina: StaminaComponent
 @export var camera_rig: CameraController
+## Optional: where the huaca's codex entry unlocks.
+@export var codex: Codex
 ## Nodes that read combat input, paused while the rite plays.
 @export var frozen: Array[Node] = []
 
@@ -40,6 +42,8 @@ func perform(marker: StringName) -> void:
 	offering_made.emit(marker)
 	await get_tree().create_timer(tuning.offering_time, false).timeout
 	await _vision(marker)
+	if codex != null and tuning.codex_entry != &"":
+		codex.unlock(tuning.codex_entry)
 	PlayerHold.set_held(player, frozen, false)
 	_playing = false
 	rite_finished.emit()

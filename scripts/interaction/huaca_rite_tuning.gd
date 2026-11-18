@@ -8,6 +8,8 @@ extends Resource
 ## Clip Cusi plays while leaving the offering, and how long it lasts.
 @export var offering_clip: StringName = &"Interact"
 @export_range(0.2, 5.0, 0.1, "suffix:s") var offering_time: float = 1.4
+## Codex entry the offering unlocks (GDD §8.4), once the vision ends; empty for none.
+@export var codex_entry: StringName = &""
 
 @export_group("Vision")
 ## Fog thickens, the stones stand, everything fades back.

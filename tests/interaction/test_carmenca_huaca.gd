@@ -1,7 +1,8 @@
 extends GdUnitTestSuite
 ## Integration: the huaca in Carmenca (F4 task 4). The offering prompt shows only near
 ## the huaca; the offering raises stamina for good; the vision thickens the fog, raises
-## the stone figures and puts everything back; then Cusi speaks and the slice goes on.
+## the stone figures and puts everything back; then the codex entry unlocks, Cusi speaks
+## and the slice goes on.
 
 const SCENE: String = "res://scenes/levels/carmenca.tscn"
 ## The rite lasts ~7 s of game time: run it faster.
@@ -80,6 +81,8 @@ func test_offering_and_vision_then_cusi_speaks() -> void:
 	assert_array(offered).is_equal([&"Huaca"])
 	assert_float(stamina.get_maximum()).is_equal(110.0)
 	assert_bool(_rite.is_playing()).is_true()
+	var codex := _runner.find_child("Codex") as Codex
+	assert_bool(codex.is_unlocked(_rite.tuning.codex_entry)).is_false()
 	Engine.time_scale = TIME_SCALE
 	# Peak of the vision: thick fog, short view, figures standing.
 	var t: HuacaRiteTuning = _rite.tuning
@@ -101,3 +104,5 @@ func test_offering_and_vision_then_cusi_speaks() -> void:
 	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.DIALOGUE)
 	var box := _runner.find_child("DialogueBox") as DialogueBox
 	assert_str(box.shown_text()).is_equal(tr(&"DLG_HUACA_1"))
+	assert_bool(codex.is_unlocked(t.codex_entry)).is_true()
+	assert_bool((_runner.find_child("CodexNotice") as CodexNotice).is_showing()).is_true()
