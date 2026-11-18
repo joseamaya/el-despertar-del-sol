@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PostureTuning" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/posture_tuning.gd" id="1_posture"]
+
+[resource]
+script = ExtResource("1_posture")
+max_posture = 1000.0
+decay_per_second = 200.0

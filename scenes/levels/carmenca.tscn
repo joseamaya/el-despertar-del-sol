@@ -43,6 +43,8 @@
 [ext_resource type="Resource" path="res://resources/characters/vicaquirao.tres" id="41_vica"]
 [ext_resource type="Resource" path="res://resources/characters/comunero.tres" id="42_comunero"]
 [ext_resource type="Script" path="res://scripts/ui/fps_overlay.gd" id="43_fps"]
+[ext_resource type="Script" path="res://scripts/training/training_drill.gd" id="44_drill"]
+[ext_resource type="Resource" path="res://resources/tuning/training_drill.tres" id="45_drill"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -157,7 +159,7 @@ enemy_scene = ExtResource("12_27mym")
 enemies_root = NodePath("../Enemies")
 director = NodePath("../EncounterDirector")
 
-[node name="SliceDirector" type="Node" parent="." unique_id=1544120731 node_paths=PackedStringArray("level", "arena", "dialogue", "interaction", "rite", "choice")]
+[node name="SliceDirector" type="Node" parent="." unique_id=1544120731 node_paths=PackedStringArray("level", "arena", "dialogue", "interaction", "rite", "choice", "drill")]
 script = ExtResource("15_slice")
 sequence = ExtResource("16_slice")
 level = NodePath("../SectorLevel")
@@ -166,6 +168,7 @@ dialogue = NodePath("../DialoguePlayer")
 interaction = NodePath("../InteractionPoint")
 rite = NodePath("../HuacaRite")
 choice = NodePath("../ChoiceBox")
+drill = NodePath("../TrainingDrill")
 
 [node name="InteractionPrompt" type="CanvasLayer" parent="." unique_id=1544120736]
 script = ExtResource("21_prompt")
@@ -239,6 +242,14 @@ level = NodePath("../SectorLevel")
 camera_rig = NodePath("../CameraRig")
 player = NodePath("../Player")
 frozen = [NodePath("../Player/Combat"), NodePath("../Player/Defense")]
+
+[node name="TrainingDrill" type="Node" parent="." unique_id=1544120771 node_paths=PackedStringArray("slice", "player", "npc")]
+script = ExtResource("44_drill")
+tuning = ExtResource("45_drill")
+trainer_scene = ExtResource("12_27mym")
+slice = NodePath("../SliceDirector")
+player = NodePath("../Player")
+npc = NodePath("../Vicaquirao")
 
 [node name="SupportAllies" type="Node3D" parent="." unique_id=1544120746 node_paths=PackedStringArray("arena", "slice", "level")]
 script = ExtResource("32_allies")

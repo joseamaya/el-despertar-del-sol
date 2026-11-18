@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TrainingDrillTuning" format=3]
+
+[ext_resource type="Script" path="res://scripts/training/training_drill_tuning.gd" id="1_tuning"]
+[ext_resource type="Resource" path="res://resources/enemies/vicaquirao_trainer.tres" id="2_data"]
+[ext_resource type="Resource" path="res://resources/characters/vicaquirao.tres" id="3_look"]
+
+[resource]
+script = ExtResource("1_tuning")
+data = ExtResource("2_data")
+look = ExtResource("3_look")

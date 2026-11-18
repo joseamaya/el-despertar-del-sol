@@ -21,6 +21,8 @@ func before_test() -> void:
 	await _frames(3)
 	# The opening dialogue holds the player still: skip it (F4 task 3).
 	var talk := _runner.find_child("DialoguePlayer") as DialoguePlayer
+	# Past the opening, without Vicaquirao's training (F4 task 12a).
+	(_runner.find_child("SliceDirector") as SliceDirector).flow.set_flag(&"skip_training")
 	while talk.is_playing():
 		talk.advance()
 	# Walkability is tested without enemies: the warriors have their own suite.

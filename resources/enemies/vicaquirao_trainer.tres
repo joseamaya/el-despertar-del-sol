@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/enemy_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/combat/attack_data.gd" id="2_attack"]
+[ext_resource type="Resource" path="res://resources/tuning/vicaquirao_trainer_health.tres" id="3_health"]
+[ext_resource type="Resource" path="res://resources/tuning/vicaquirao_trainer_posture.tres" id="4_posture"]
+[ext_resource type="Resource" path="res://resources/combat/attacks/enemy/vicaquirao_entreno.tres" id="5_attack"]
+
+[resource]
+script = ExtResource("1_data")
+display_name = "Vicaquirao"
+health = ExtResource("3_health")
+posture = ExtResource("4_posture")
+view_distance = 30.0
+view_angle_deg = 360.0
+hearing_radius = 30.0
+lose_target_time = 60.0
+alert_time = 0.2
+walk_speed = 1.4
+run_speed = 3.0
+engage_distance = 2.6
+attacks = Array[ExtResource("2_attack")]([ExtResource("5_attack")])
+attack_cooldown_min = 1.8
+attack_cooldown_max = 2.6
+feint_chance = 0.0
+block_chance = 0.0
+retreat_posture_threshold = 200.0

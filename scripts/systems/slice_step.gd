@@ -6,7 +6,9 @@ extends Resource
 ## another; a step can depend on a flag set by an earlier one. See SliceFlow.
 
 enum Act { OPENING, EXPLORATION, SUPPORT, COMBAT, ENDING }
-enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE }
+enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE, DRILL }
+## DRILL: what Vicaquirao asks the player to do (F4 task 12a).
+enum Drill { BLOCK, PARRY, EVADE, HIT }
 
 @export var act: Act = Act.OPENING
 @export var kind: Kind = Kind.REACH
@@ -22,6 +24,9 @@ enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE }
 @export var prompt: StringName = &""
 ## DIALOGUE: the conversation; the step ends with it.
 @export var dialogue: DialogueScript
+## DRILL: the exercise and how many times it has to be done.
+@export var drill: Drill = Drill.BLOCK
+@export_range(1, 10, 1) var count: int = 1
 ## CHOICE: the options; the one picked sets its flag.
 @export var choice: DialogueChoice
 ## What the player has to do now, shown by the HUD (translation key; ENCOUNTER texts take

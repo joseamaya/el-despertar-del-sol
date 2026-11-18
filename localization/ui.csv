@@ -70,3 +70,12 @@ SETTINGS_BACK,Volver,Back
 CREDITS_CONCH,"Sonido de caracola: David Bolton, CC BY 2.5 (Wikimedia Commons)","Conch shell sound: David Bolton, CC BY 2.5 (Wikimedia Commons)"
 HUD_FPS,{fps} FPS · {ms} ms,{fps} FPS · {ms} ms
 SLICE_TIME,Tiempo: {min} min {s} s,Time: {min} min {s} s
+DLG_TRAIN_START,"Antes de subir, enséñame tu guardia. Para mis golpes.","Before we climb, show me your guard. Stop my blows."
+DLG_TRAIN_PARRY,Bien. Ahora páralo justo antes de que llegue: así se rompe la guardia del enemigo.,Good. Now stop it just before it lands: that is how you break an enemy's guard.
+DLG_TRAIN_EVADE,"Si no puedes pararlo, apártate.","If you cannot stop it, get out of its way."
+DLG_TRAIN_ATTACK,Ahora golpéame tú. No te contengas.,Now strike me. Do not hold back.
+DLG_TRAIN_END,Suficiente. Los chancas no serán tan pacientes.,Enough. The Chancas will not be so patient.
+OBJ_TRAIN_BLOCK,Bloquea los golpes de Vicaquirao (F / LB) ({count}),Block Vicaquirao's blows (F / LB) ({count})
+OBJ_TRAIN_PARRY,Bloquea justo antes del golpe para hacer un parry (F / LB),Block just before the blow lands to parry (F / LB)
+OBJ_TRAIN_EVADE,Esquiva sus golpes (Espacio / B) ({count}),Dodge his blows (Space / B) ({count})
+OBJ_TRAIN_HIT,Golpéalo (clic izquierdo / RB) ({count}),Strike him (left click / RB) ({count})

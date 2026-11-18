@@ -26,6 +26,8 @@ func before_test() -> void:
 	_health = _player.get_node("Health") as HealthComponent
 	(_runner.find_child("CameraRig") as CameraController).capture_mouse = false
 	await _frames(5)
+	# Vicaquirao's training has its own suite (tests/training).
+	_slice.flow.set_flag(&"skip_training")
 
 
 func after_test() -> void:
@@ -77,6 +79,11 @@ func _finish_step() -> void:
 			while rite.is_playing():
 				await _frames(5)
 			Engine.time_scale = 1.0
+			await _frames(2)
+		SliceStep.Kind.DRILL:
+			var drill := _runner.find_child("TrainingDrill") as TrainingDrill
+			for i: int in step.count:
+				drill.count(step.drill)
 			await _frames(2)
 		SliceStep.Kind.CHOICE:
 			var box := _runner.find_child("ChoiceBox") as ChoiceBox

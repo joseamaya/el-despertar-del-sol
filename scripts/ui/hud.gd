@@ -148,13 +148,14 @@ func _update_objective(delta: float) -> void:
 	var step: SliceStep = _objective_step
 	var fighting: bool = (
 		step != null
-		and step.kind == SliceStep.Kind.ENCOUNTER
-		and arena != null
-		and arena.is_zone_engaged()
+		and (
+			step.kind == SliceStep.Kind.DRILL
+			or (step.kind == SliceStep.Kind.ENCOUNTER and arena != null and arena.is_zone_engaged())
+		)
 	)
 	_objective_panel.visible = step != null and (_objective_left > 0.0 or fighting)
 	if _objective_panel.visible:
-		var count: int = arena.alive_enemies().size() if arena != null else 0
+		var count: int = slice.objective_count() if slice != null else 0
 		_objective.text = tr(step.objective).format({"count": count})
 
 

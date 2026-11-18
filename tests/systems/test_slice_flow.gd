@@ -153,7 +153,8 @@ func test_carmenca_unmarked_places_are_reached_from_the_path() -> void:
 ## and the Apoyo choice can set it (F4 task 6).
 func test_carmenca_conditions_read_flags_set_earlier() -> void:
 	var seq := load(CARMENCA) as SliceSequence
-	var set_so_far: Array[StringName] = []
+	# skip_training comes from outside the slice (tests; a menu option later).
+	var set_so_far: Array[StringName] = [&"skip_training"]
 	var choices: int = 0
 	for s: SliceStep in seq.steps:
 		for flag: StringName in [s.only_if, s.unless]:

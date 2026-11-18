@@ -10,6 +10,11 @@
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_family_choice.tres" id="8_choice"]
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_ending.tres" id="9_ending"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/pututu/conch_shell.ogg" id="10_pututu"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_training_start.tres" id="11_train_start"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_training_parry.tres" id="12_train_parry"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_training_evade.tres" id="13_train_evade"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_training_attack.tres" id="14_train_attack"]
+[ext_resource type="Resource" path="res://resources/dialogue/carmenca_training_end.tres" id="15_train_end"]
 
 [sub_resource type="Resource" id="Step_0"]
 script = ExtResource("2_step")
@@ -18,6 +23,86 @@ kind = 3
 radius = 4.0
 dialogue = ExtResource("3_opening")
 checkpoint = &"Start"
+
+[sub_resource type="Resource" id="Step_T0"]
+script = ExtResource("2_step")
+act = 0
+kind = 3
+radius = 4.0
+dialogue = ExtResource("11_train_start")
+unless = &"skip_training"
+
+[sub_resource type="Resource" id="Step_T1"]
+script = ExtResource("2_step")
+act = 0
+kind = 7
+radius = 4.0
+drill = 0
+count = 2
+objective = &"OBJ_TRAIN_BLOCK"
+unless = &"skip_training"
+
+[sub_resource type="Resource" id="Step_T2"]
+script = ExtResource("2_step")
+act = 0
+kind = 3
+radius = 4.0
+dialogue = ExtResource("12_train_parry")
+unless = &"skip_training"
+
+[sub_resource type="Resource" id="Step_T3"]
+script = ExtResource("2_step")
+act = 0
+kind = 7
+radius = 4.0
+drill = 1
+count = 1
+objective = &"OBJ_TRAIN_PARRY"
+unless = &"skip_training"
+
+[sub_resource type="Resource" id="Step_T4"]
+script = ExtResource("2_step")
+act = 0
+kind = 3
+radius = 4.0
+dialogue = ExtResource("13_train_evade")
+unless = &"skip_training"
+
+[sub_resource type="Resource" id="Step_T5"]
+script = ExtResource("2_step")
+act = 0
+kind = 7
+radius = 4.0
+drill = 2
+count = 2
+objective = &"OBJ_TRAIN_EVADE"
+unless = &"skip_training"
+
+[sub_resource type="Resource" id="Step_T6"]
+script = ExtResource("2_step")
+act = 0
+kind = 3
+radius = 4.0
+dialogue = ExtResource("14_train_attack")
+unless = &"skip_training"
+
+[sub_resource type="Resource" id="Step_T7"]
+script = ExtResource("2_step")
+act = 0
+kind = 7
+radius = 4.0
+drill = 3
+count = 3
+objective = &"OBJ_TRAIN_HIT"
+unless = &"skip_training"
+
+[sub_resource type="Resource" id="Step_T8"]
+script = ExtResource("2_step")
+act = 0
+kind = 3
+radius = 4.0
+dialogue = ExtResource("15_train_end")
+unless = &"skip_training"
 
 [sub_resource type="Resource" id="Step_1"]
 script = ExtResource("2_step")
@@ -151,4 +236,4 @@ look_at = &"CuscoView"
 
 [resource]
 script = ExtResource("1_seq")
-steps = Array[ExtResource("2_step")]([SubResource("Step_0"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_13"), SubResource("Step_14"), SubResource("Step_15")])
+steps = Array[ExtResource("2_step")]([SubResource("Step_0"), SubResource("Step_T0"), SubResource("Step_T1"), SubResource("Step_T2"), SubResource("Step_T3"), SubResource("Step_T4"), SubResource("Step_T5"), SubResource("Step_T6"), SubResource("Step_T7"), SubResource("Step_T8"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_13"), SubResource("Step_14"), SubResource("Step_15")])
