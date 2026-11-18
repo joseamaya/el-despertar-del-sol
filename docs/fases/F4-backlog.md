@@ -20,7 +20,7 @@ del §14.3.
 | 8 | Interfaz: menú de pausa y ajustes básicos (volumen, sensibilidad, escala 3D) guardados con un autoload | Hecha: pausa con Esc / Start; volumen, sensibilidad y calidad gráfica (75/83/100 %, por defecto 83 %) en el autoload `Settings` |
 | 9 | Audio: ambiente, pasos y una pieza musical | Hecha: viento, pasos por superficie, música provisional (apertura y cierre), pututu en el paso y en el cierre, visión amortiguada |
 | 10 | Personajes: Cusi Yupanqui, Vicaquirao y el comunero distinguibles (tintes y accesorios por script) | Hecha: `CharacterLook` por personaje; Cusi (unku rojo y amarillo, llauto, orejeras), Vicaquirao (unku ocre, llauto), comunero (unku pardo, manta), también los del paso |
-| 11 | Mando físico y build de Windows (deuda de F3) | Pendiente |
+| 11 | Mando físico y build de Windows (deuda de F3) | En curso: mapa de mando probado (A/B arreglados en menús) y F3 con FPS; build de Windows con un tester (`F4-prueba-windows.md`); mando físico pasa a F5 |
 | 12 | Partida completa: 8–12 min en la build exportada, rendimiento con todo integrado, partida de bot de principio a fin | Pendiente |
 | 13 | Cierre de F4 con `phase-gate` | Pendiente |
 
