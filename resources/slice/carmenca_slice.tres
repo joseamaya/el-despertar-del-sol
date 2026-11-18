@@ -9,6 +9,7 @@
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_family_no.tres" id="7_no"]
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_family_choice.tres" id="8_choice"]
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_ending.tres" id="9_ending"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/pututu/conch_shell.ogg" id="10_pututu"]
 
 [sub_resource type="Resource" id="Step_0"]
 script = ExtResource("2_step")
@@ -138,6 +139,7 @@ kind = 3
 radius = 4.0
 dialogue = ExtResource("9_ending")
 look_at = &"CuscoView"
+sound = ExtResource("10_pututu")
 
 [sub_resource type="Resource" id="Step_15"]
 script = ExtResource("2_step")

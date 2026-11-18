@@ -35,6 +35,7 @@ func _ready() -> void:
 		player.stream = randomizer
 		player.volume_db = sounds.volume_db
 		player.max_distance = sounds.max_distance
+		player.bus = &"SFX"
 		add_child(player)
 		_players[event] = player
 	if hurtbox != null:

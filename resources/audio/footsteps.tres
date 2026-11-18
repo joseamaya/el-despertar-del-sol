@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="FootstepTuning" format=3]
+
+[ext_resource type="Script" path="res://scripts/audio/footstep_tuning.gd" id="1_tuning"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/tinyworlds_steps/gravel.ogg" id="2_gravel"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/tinyworlds_steps/mud02.ogg" id="3_mud"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/tinyworlds_steps/stone01.ogg" id="4_stone"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/tinyworlds_steps/leaves01.ogg" id="5_leaves1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/tinyworlds_steps/leaves02.ogg" id="6_leaves2"]
+
+[resource]
+script = ExtResource("1_tuning")
+path = Array[AudioStream]([ExtResource("2_gravel"), ExtResource("3_mud")])
+stone = Array[AudioStream]([ExtResource("4_stone")])
+grass = Array[AudioStream]([ExtResource("5_leaves1"), ExtResource("6_leaves2")])
