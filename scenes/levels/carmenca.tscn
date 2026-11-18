@@ -24,6 +24,10 @@
 [ext_resource type="Script" path="res://scripts/interaction/interaction_point.gd" id="22_point"]
 [ext_resource type="Script" path="res://scripts/interaction/huaca_rite.gd" id="23_rite"]
 [ext_resource type="Resource" path="res://resources/tuning/huaca_rite.tres" id="24_rite"]
+[ext_resource type="Script" path="res://scripts/codex/codex.gd" id="25_codex"]
+[ext_resource type="Resource" path="res://resources/codex/codex_book.tres" id="26_book"]
+[ext_resource type="Script" path="res://scripts/codex/codex_screen.gd" id="27_cscreen"]
+[ext_resource type="Script" path="res://scripts/codex/codex_notice.gd" id="28_cnotice"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -157,7 +161,7 @@ player = NodePath("../Player")
 prompt = NodePath("../InteractionPrompt")
 dialogue = NodePath("../DialoguePlayer")
 
-[node name="HuacaRite" type="Node" parent="." unique_id=1544120738 node_paths=PackedStringArray("level", "player", "animator", "stamina", "camera_rig", "frozen")]
+[node name="HuacaRite" type="Node" parent="." unique_id=1544120738 node_paths=PackedStringArray("level", "player", "animator", "stamina", "camera_rig", "codex", "frozen")]
 script = ExtResource("23_rite")
 tuning = ExtResource("24_rite")
 level = NodePath("../SectorLevel")
@@ -165,7 +169,20 @@ player = NodePath("../Player")
 animator = NodePath("../Player/Animator")
 stamina = NodePath("../Player/Stamina")
 camera_rig = NodePath("../CameraRig")
+codex = NodePath("../Codex")
 frozen = [NodePath("../Player/Combat"), NodePath("../Player/Defense")]
+
+[node name="Codex" type="Node" parent="." unique_id=1544120739]
+script = ExtResource("25_codex")
+book = ExtResource("26_book")
+
+[node name="CodexScreen" type="CanvasLayer" parent="." unique_id=1544120740 node_paths=PackedStringArray("codex")]
+script = ExtResource("27_cscreen")
+codex = NodePath("../Codex")
+
+[node name="CodexNotice" type="CanvasLayer" parent="." unique_id=1544120741 node_paths=PackedStringArray("codex")]
+script = ExtResource("28_cnotice")
+codex = NodePath("../Codex")
 
 [node name="DialogueBox" type="CanvasLayer" parent="." unique_id=1544120732]
 script = ExtResource("17_dbox")

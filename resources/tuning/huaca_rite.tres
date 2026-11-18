@@ -4,3 +4,4 @@
 
 [resource]
 script = ExtResource("1_rite")
+codex_entry = &"huaca"

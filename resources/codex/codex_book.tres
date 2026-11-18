@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CodexBook" format=3]
+
+[ext_resource type="Script" path="res://scripts/codex/codex_book.gd" id="1_book"]
+[ext_resource type="Script" path="res://scripts/codex/codex_entry.gd" id="2_entry"]
+[ext_resource type="Resource" path="res://resources/codex/huaca.tres" id="3_huaca"]
+
+[resource]
+script = ExtResource("1_book")
+entries = Array[ExtResource("2_entry")]([ExtResource("3_huaca")])
