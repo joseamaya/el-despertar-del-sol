@@ -158,6 +158,13 @@ func test_defeat_brings_back_only_the_active_zone() -> void:
 	assert_bool(_health.is_dead()).is_false()
 
 
+## The HUD updates in _process: on a slow machine at TIME_SCALE several physics frames
+## can pass before it runs once, so wait for drawn frames before reading it.
+func _drawn_frames(count: int) -> void:
+	for i: int in count:
+		await get_tree().process_frame
+
+
 func _all_aware(enemies: Array[EnemyController]) -> bool:
 	for enemy: EnemyController in enemies:
 		if not enemy.perception.has_target():
@@ -177,7 +184,7 @@ func test_stragglers_of_a_noticed_zone_come_back_and_are_counted() -> void:
 			break
 		await _frames(1)
 	assert_bool(_arena.is_zone_engaged()).is_true()
-	await _frames(2)
+	await _drawn_frames(3)
 	assert_bool(hud.is_counting_enemies()).is_true()
 	assert_str(hud.enemies_left_text()).is_equal(
 		tr(&"HUD_ENEMIES_LEFT").format({"count": enemies.size()})
@@ -191,13 +198,13 @@ func test_stragglers_of_a_noticed_zone_come_back_and_are_counted() -> void:
 	var now: float = enemies[0].global_position.distance_to(_player.global_position)
 	assert_float(now).is_less(far - 10.0)
 	enemies[0].health.apply_damage(enemies[0].health.get_maximum())
-	await _frames(2)
+	await _drawn_frames(3)
 	assert_str(hud.enemies_left_text()).is_equal(
 		tr(&"HUD_ENEMIES_LEFT").format({"count": enemies.size() - 1})
 	)
 	for enemy: EnemyController in _arena.alive_enemies():
 		enemy.health.apply_damage(enemy.health.get_maximum())
-	await _frames(2)
+	await _drawn_frames(3)
 	assert_bool(hud.is_counting_enemies()).is_false()
 
 

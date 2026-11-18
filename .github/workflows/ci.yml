@@ -49,9 +49,11 @@ jobs:
           # The check-run report (dorny/test-reporter) fails with HTTP 404 when it updates
           # its own check run, although all tests pass: first on push to main (F1
           # close-out), then on PR #27 (F3). It is a convenience view, so it stays off.
-          # Failing tests still fail this job (non-zero exit code), and the JUnit report
-          # is still uploaded as an artifact (artifact_test-report.xml).
+          # Failing tests still fail this job (non-zero exit code).
           publish-report: false
+          # No report artifact either: the failures are in the job log, and on PR #43 the
+          # upload failed the job (artifact storage quota hit) although every test passed.
+          upload-report: false
 
   export:
     name: Export ${{ matrix.preset }}
@@ -104,8 +106,12 @@ jobs:
         if: matrix.preset == 'Linux'
         run: timeout 60 ./${{ matrix.output }} --headless --quit-after 10
 
+      # Builds are kept only from main and manual runs: a pull request is played from its
+      # branch, and keeping every PR build for 14 days filled the artifact storage quota
+      # (6.3 GB by PR #43).
       - uses: actions/upload-artifact@v7
+        if: github.event_name != 'pull_request'
         with:
           name: el-despertar-del-sol-${{ matrix.preset }}-${{ github.sha }}
           path: ${{ matrix.output }}
-          retention-days: 14
+          retention-days: 7
