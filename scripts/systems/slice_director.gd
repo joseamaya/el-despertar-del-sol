@@ -17,6 +17,9 @@ const ACTION_RESTART: StringName = &"restart"
 @export var arena: ArenaController
 ## Plays the DIALOGUE steps (F4 task 3). Needed only if the sequence has any.
 @export var dialogue: DialoguePlayer
+## INTERACT and RITE steps (F4 task 4). Needed only if the sequence has any.
+@export var interaction: InteractionPoint
+@export var rite: HuacaRite
 ## Off for tools that drive the zones themselves (benchmark, captures).
 @export var autostart: bool = true
 
@@ -31,6 +34,10 @@ func _ready() -> void:
 	arena.zone_won.connect(_on_zone_won)
 	if dialogue != null:
 		dialogue.dialogue_finished.connect(_on_dialogue_finished)
+	if interaction != null:
+		interaction.interacted.connect(_on_kind_done.bind(SliceStep.Kind.INTERACT).unbind(1))
+	if rite != null:
+		rite.rite_finished.connect(_on_kind_done.bind(SliceStep.Kind.RITE))
 	# After the level and the arena have set up the sector and the first respawn.
 	if autostart:
 		_begin.call_deferred()
@@ -88,6 +95,12 @@ func _start(step: SliceStep) -> void:
 		SliceStep.Kind.DIALOGUE:
 			assert(dialogue != null, "SliceDirector: a DIALOGUE step needs the player.")
 			dialogue.play(step.dialogue)
+		SliceStep.Kind.INTERACT:
+			assert(interaction != null, "SliceDirector: an INTERACT step needs the point.")
+			interaction.activate(step.marker, step.radius, step.prompt)
+		SliceStep.Kind.RITE:
+			assert(rite != null, "SliceDirector: a RITE step needs the rite.")
+			rite.perform(step.marker)
 
 
 func _complete() -> void:
@@ -95,8 +108,13 @@ func _complete() -> void:
 
 
 func _on_dialogue_finished() -> void:
+	_on_kind_done(SliceStep.Kind.DIALOGUE)
+
+
+## Completes the current step if it is of `kind` (signals of dialogue, interaction, rite).
+func _on_kind_done(kind: SliceStep.Kind) -> void:
 	var step: SliceStep = flow.current() if flow != null else null
-	if step != null and step.kind == SliceStep.Kind.DIALOGUE:
+	if step != null and step.kind == kind:
 		_complete()
 
 

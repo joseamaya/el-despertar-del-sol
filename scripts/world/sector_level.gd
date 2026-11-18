@@ -19,6 +19,8 @@ const START_PITCH: float = -0.22
 
 var sector: Node3D
 var navigation: NavigationRegion3D
+## Sky, fog and ambient of the sector, built from the palette (visions change the fog).
+var environment: Environment
 
 
 func _ready() -> void:
@@ -97,7 +99,8 @@ func _build_light() -> void:
 		old.free()
 	var env := WorldEnvironment.new()
 	env.name = "WorldEnvironment"
-	env.environment = PaletteMaterials.environment_for(palette)
+	environment = PaletteMaterials.environment_for(palette)
+	env.environment = environment
 	add_child(env)
 	var sun := DirectionalLight3D.new()
 	sun.name = "Sun"

@@ -5,12 +5,13 @@ extends RefCounted
 
 ## Value after `delta` seconds. Only the part of `delta` past `regen_delay` regenerates, so
 ## the frame that crosses the delay is frame-rate independent too. `idle_time` already
-## includes this `delta`.
+## includes this `delta`. `maximum` overrides the tuning's (bonuses from huacas).
 static func regenerate(
-	current: float, idle_time: float, delta: float, tuning: StaminaTuning
+	current: float, idle_time: float, delta: float, tuning: StaminaTuning, maximum: float = -1.0
 ) -> float:
 	var regen_time: float = clampf(idle_time - tuning.regen_delay, 0.0, maxf(delta, 0.0))
-	return minf(current + tuning.regen_per_second * regen_time, tuning.max_stamina)
+	var top: float = tuning.max_stamina if maximum < 0.0 else maximum
+	return minf(current + tuning.regen_per_second * regen_time, top)
 
 
 ## Attacks (0007): allowed with any stamina left.

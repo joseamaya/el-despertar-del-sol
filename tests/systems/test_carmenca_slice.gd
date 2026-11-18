@@ -25,6 +25,10 @@ func before_test() -> void:
 	await _frames(5)
 
 
+func after_test() -> void:
+	Engine.time_scale = 1.0
+
+
 func _frames(count: int) -> void:
 	for i: int in count:
 		await get_tree().physics_frame
@@ -55,6 +59,21 @@ func _finish_step() -> void:
 			var talk := _runner.find_child("DialoguePlayer") as DialoguePlayer
 			while talk.is_playing():
 				talk.advance()
+			await _frames(2)
+		SliceStep.Kind.INTERACT:
+			await _go_to(step.marker)
+			# Off the marker by a step: the huaca rock stands on it.
+			var at: Vector3 = _level.marker_position(step.marker) + Vector3(0.0, 0.1, 3.0)
+			_player.respawn(at, 0.0)
+			await _frames(3)
+			(_runner.find_child("InteractionPoint") as InteractionPoint).try_interact()
+			await _frames(2)
+		SliceStep.Kind.RITE:
+			var rite := _runner.find_child("HuacaRite") as HuacaRite
+			Engine.time_scale = 8.0
+			while rite.is_playing():
+				await _frames(5)
+			Engine.time_scale = 1.0
 			await _frames(2)
 
 

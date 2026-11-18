@@ -64,3 +64,15 @@ func test_drain_over_time_spends_rate() -> void:
 	for i: int in 60:
 		_s.drain_over_time(8.0, FRAME)
 	assert_float(_s.current).is_equal_approx(92.0, 0.01)
+
+
+## Offerings at huacas (F4 task 4, GDD §8.4): the maximum rises for good.
+func test_bonus_raises_the_maximum_and_regeneration_reaches_it() -> void:
+	_s.add_bonus(10.0)
+	assert_float(_s.get_maximum()).is_equal(110.0)
+	assert_float(_s.current).is_equal(110.0)
+	_s.drain(50.0)
+	_advance(10.0)
+	assert_float(_s.current).is_equal_approx(110.0, 0.001)
+	_s.reset()
+	assert_float(_s.current).is_equal(110.0)

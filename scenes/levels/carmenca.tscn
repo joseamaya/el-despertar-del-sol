@@ -20,6 +20,10 @@
 [ext_resource type="Script" path="res://scripts/dialogue/dialogue_player.gd" id="18_dplayer"]
 [ext_resource type="Script" path="res://scripts/dialogue/sector_npc.gd" id="19_npc"]
 [ext_resource type="PackedScene" path="res://assets/characters/stock/ual1_standard.glb" id="20_model"]
+[ext_resource type="Script" path="res://scripts/interaction/interaction_prompt.gd" id="21_prompt"]
+[ext_resource type="Script" path="res://scripts/interaction/interaction_point.gd" id="22_point"]
+[ext_resource type="Script" path="res://scripts/interaction/huaca_rite.gd" id="23_rite"]
+[ext_resource type="Resource" path="res://resources/tuning/huaca_rite.tres" id="24_rite"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -134,12 +138,34 @@ enemy_scene = ExtResource("12_27mym")
 enemies_root = NodePath("../Enemies")
 director = NodePath("../EncounterDirector")
 
-[node name="SliceDirector" type="Node" parent="." unique_id=1544120731 node_paths=PackedStringArray("level", "arena", "dialogue")]
+[node name="SliceDirector" type="Node" parent="." unique_id=1544120731 node_paths=PackedStringArray("level", "arena", "dialogue", "interaction", "rite")]
 script = ExtResource("15_slice")
 sequence = ExtResource("16_slice")
 level = NodePath("../SectorLevel")
 arena = NodePath("../ArenaController")
 dialogue = NodePath("../DialoguePlayer")
+interaction = NodePath("../InteractionPoint")
+rite = NodePath("../HuacaRite")
+
+[node name="InteractionPrompt" type="CanvasLayer" parent="." unique_id=1544120736]
+script = ExtResource("21_prompt")
+
+[node name="InteractionPoint" type="Node" parent="." unique_id=1544120737 node_paths=PackedStringArray("level", "player", "prompt", "dialogue")]
+script = ExtResource("22_point")
+level = NodePath("../SectorLevel")
+player = NodePath("../Player")
+prompt = NodePath("../InteractionPrompt")
+dialogue = NodePath("../DialoguePlayer")
+
+[node name="HuacaRite" type="Node" parent="." unique_id=1544120738 node_paths=PackedStringArray("level", "player", "animator", "stamina", "camera_rig", "frozen")]
+script = ExtResource("23_rite")
+tuning = ExtResource("24_rite")
+level = NodePath("../SectorLevel")
+player = NodePath("../Player")
+animator = NodePath("../Player/Animator")
+stamina = NodePath("../Player/Stamina")
+camera_rig = NodePath("../CameraRig")
+frozen = [NodePath("../Player/Combat"), NodePath("../Player/Defense")]
 
 [node name="DialogueBox" type="CanvasLayer" parent="." unique_id=1544120732]
 script = ExtResource("17_dbox")
