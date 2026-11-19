@@ -4,13 +4,16 @@ extends Node3D
 ## at their doors, and a family leaving down the path as the slice begins. They are models
 ## with a looping clip and nothing else: no collision, no lock-on, no AI, no shadows. The
 ## ones who walk follow the ground along their route and, once at its end, vanish the
-## first time the camera does not see them.
+## first time the camera does not see them. Beyond the draw distance a person is hidden
+## and their animation stops, so the ones far away cost nothing.
 
 signal person_left(index: int)
 
 const RAY_UP: float = 3.0
 const RAY_DOWN: float = 6.0
 const REACHED: float = 0.15
+## Seconds between checks of who is close enough to be drawn and animated.
+const CULL_INTERVAL: float = 0.25
 
 @export var people: SectorPeople
 @export var level: SectorLevel
@@ -21,6 +24,8 @@ var _bodies: Array[Node3D] = []
 ## Per person: index of the route point they walk to (-1: not walking), seconds to wait.
 var _next: PackedInt32Array = PackedInt32Array()
 var _wait: PackedFloat32Array = PackedFloat32Array()
+var _anims: Array[AnimationPlayer] = []
+var _cull_left: float = 0.0
 
 
 func _ready() -> void:
@@ -30,6 +35,10 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	_cull_left -= delta
+	if _cull_left <= 0.0:
+		_cull_left = CULL_INTERVAL
+		_cull()
 	for i: int in _bodies.size():
 		var body: Node3D = _bodies[i]
 		if body == null or _next[i] < 0:
@@ -44,6 +53,12 @@ func _physics_process(delta: float) -> void:
 			_leave_if_unseen(i)
 			continue
 		_walk(i, delta)
+
+
+## Whether person `index` is close enough to be drawn and animated.
+func is_active(index: int) -> bool:
+	var body: Node3D = _bodies[index]
+	return body != null and body.visible
 
 
 ## The model of person `index`, or null once they have left.
@@ -73,11 +88,29 @@ func _spawn_all() -> void:
 		model.global_position = _ground(level.to_global_point(start)) + Vector3.UP * person.lift
 		model.global_rotation.y = level.sector.global_rotation.y + deg_to_rad(person.yaw_deg)
 		_bodies.append(model)
+		_anims.append(model.find_child("AnimationPlayer", true, false) as AnimationPlayer)
 		_next.append(1 if walks else -1)
 		_wait.append(person.delay if walks else 0.0)
 		if walks:
 			_face(model, level.to_global_point(person.route[1]))
 		_play(model, people.walk_clip if walks and person.delay <= 0.0 else person.clip)
+
+
+## Hides and stills whoever is beyond the draw distance from the camera.
+func _cull() -> void:
+	var camera: Camera3D = get_viewport().get_camera_3d()
+	if camera == null:
+		return
+	var eye: Vector3 = camera.global_position
+	var reach: float = people.draw_distance * people.draw_distance
+	for i: int in _bodies.size():
+		var body: Node3D = _bodies[i]
+		if body == null:
+			continue
+		var near: bool = body.global_position.distance_squared_to(eye) <= reach
+		body.visible = near
+		if _anims[i] != null:
+			_anims[i].active = near
 
 
 func _walk(i: int, delta: float) -> void:
