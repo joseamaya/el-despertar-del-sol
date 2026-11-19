@@ -1,6 +1,6 @@
 # F5 · Difusión de la prueba externa
 
-**Estado:** borrador para aprobar · Protocolo: `DECISIONS/0013` (enmienda del 2026-11-19)
+**Estado:** aprobado por el desarrollador el 2026-11-19 · Protocolo: `DECISIONS/0013` (enmienda del 2026-11-19)
 
 Material para conseguir de 5 a 7 personas que prueben la build `0.1-slice`: un tráiler
 corto, un flyer vertical y un mensaje para grupos y redes. **Todo usa imágenes reales de la
