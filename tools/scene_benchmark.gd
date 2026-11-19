@@ -29,6 +29,13 @@ extends SceneTree
 ##
 ## --slice-flag=NAME sets a slice flag as if the player had earned it (F4 task 6), e.g.
 ## llamas_freed brings the comuneros to the pass in --fight-zone=3.
+##
+## Trailer footage (F5): add Godot's --write-movie to any of these and --timeout=SECONDS
+## (wall clock) so the slower-than-real-time recording is not taken for a stuck driver.
+##
+##   godot --path . --resolution 1920x1080 --write-movie build/trailer/full.avi \
+##       -s res://tools/scene_benchmark.gd -- --scene=res://scenes/levels/carmenca.tscn \
+##       --playthrough --scale3d=1 --timeout=7200
 
 const RENDER_SIZE: Vector2i = Vector2i(1920, 1080)
 ## A walk takes ~80 s. Past this the walker is stuck (e.g. a broken layout): give up
@@ -56,6 +63,7 @@ var _spawned: int = 0
 var _walk: bool = false
 var _fight_zone: int = 0
 var _slice_flag: StringName = &""
+var _timeout: float = 0.0
 var _walker: SectorWalkDriver
 var _playthrough: bool = false
 var _player_bot: SlicePlaythroughDriver
@@ -90,6 +98,8 @@ func _initialize() -> void:
 			_fight_zone = arg.trim_prefix("--fight-zone=").to_int()
 		elif arg.begins_with("--slice-flag="):
 			_slice_flag = StringName(arg.trim_prefix("--slice-flag="))
+		elif arg.begins_with("--timeout="):
+			_timeout = arg.trim_prefix("--timeout=").to_float()
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	Engine.max_fps = 0
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
@@ -131,8 +141,9 @@ func _process(_delta: float) -> bool:
 func _still_measuring(frame: float, measured: float) -> bool:
 	if _player_bot != null:
 		_record_stretch(frame)
-		if measured > PLAYTHROUGH_TIMEOUT:
-			_stuck = "no end in %d s" % PLAYTHROUGH_TIMEOUT
+		var limit: float = _timeout if _timeout > 0.0 else PLAYTHROUGH_TIMEOUT
+		if measured > limit:
+			_stuck = "no end in %d s" % limit
 		if _stuck != "":
 			push_error("SCENE_BENCHMARK playthrough stuck: " + _stuck)
 			_finish()
@@ -141,8 +152,9 @@ func _still_measuring(frame: float, measured: float) -> bool:
 		return not _player_bot.is_done()
 	if _walker != null:
 		_record_stretch(frame)
-		if measured > WALK_TIMEOUT:
-			push_error("SCENE_BENCHMARK walk did not finish in %d s" % WALK_TIMEOUT)
+		var walk_limit: float = _timeout if _timeout > 0.0 else WALK_TIMEOUT
+		if measured > walk_limit:
+			push_error("SCENE_BENCHMARK walk did not finish in %d s" % walk_limit)
 			quit(1)
 			return true
 		return not _walker.is_done()

@@ -1,0 +1,56 @@
+<!doctype html>
+<!-- Recruitment flyer for the external test (F5). make_trailer.sh renders it to
+     build/trailer/flyer.png at 1080x1350 with headless Chrome; the screenshot is a real
+     frame of the 0.1-slice build (build/trailer/flyer_shot.jpg). -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; width: 1080px; height: 1350px; overflow: hidden; background: #120c08; }
+  .shot {
+    position: absolute; inset: 0 0 auto 0; height: 780px;
+    background: url("flyer_shot.jpg") center / cover no-repeat;
+  }
+  .fade {
+    position: absolute; left: 0; right: 0; top: 480px; height: 300px;
+    background: linear-gradient(to bottom, rgba(18,12,8,0), #120c08);
+  }
+  .tag {
+    position: absolute; top: 48px; left: 56px; padding: 14px 26px;
+    font: 700 30px "DejaVu Sans", sans-serif; letter-spacing: 3px; color: #120c08;
+    background: #e8b04a; border-radius: 6px;
+  }
+  .text { position: absolute; left: 72px; right: 72px; top: 610px; color: #f4ead8; }
+  h1 {
+    margin: 0; font: 700 100px/1 "Liberation Serif", "DejaVu Serif", serif;
+    letter-spacing: 2px; color: #f6d48a; text-shadow: 0 4px 18px #000;
+  }
+  h2 { margin: 6px 0 0; font: 400 46px "Liberation Serif", "DejaVu Serif", serif; color: #f4ead8; }
+  .lead { margin: 30px 0 0; font: 400 32px/1.4 "DejaVu Sans", sans-serif; color: #e9dcc4; }
+  ul { list-style: none; margin: 26px 0 0; padding: 0; font: 700 32px/1.55 "DejaVu Sans", sans-serif; }
+  li::before { content: "◆  "; color: #c9472b; }
+  .cta {
+    position: absolute; left: 72px; right: 72px; bottom: 64px; padding: 26px 0;
+    text-align: center; font: 700 38px "DejaVu Sans", sans-serif; color: #120c08;
+    background: #e8b04a; border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+  <div class="shot"></div>
+  <div class="fade"></div>
+  <div class="tag">BUSCAMOS PROBADORES</div>
+  <div class="text">
+    <h1>PACHACÚTEC</h1>
+    <h2>El Despertar del Sol</h2>
+    <p class="lead">Un juego de acción en el Cusco de 1438, en desarrollo.
+      Juega la demo: tu opinión decide cómo sigue.</p>
+    <ul>
+      <li>Gratis, sin registrarte</li>
+      <li>20 minutos: jugar y una encuesta anónima</li>
+      <li>Windows o Linux · teclado o mando</li>
+    </ul>
+  </div>
+  <div class="cta">¿Te animas? Escríbeme y te paso el enlace</div>
+</body>
+</html>
