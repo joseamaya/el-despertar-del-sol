@@ -1,0 +1,97 @@
+extends GdUnitTestSuite
+## Integration: the people of Carmenca (F4 task 12c). Everyone is placed on the ground
+## with their look and clip, nobody collides, casts shadows or can be locked on; the
+## family walks its route down past the lookout and leaves once out of sight, while the
+## ones who stayed are still there.
+
+const SCENE: String = "res://scenes/levels/carmenca.tscn"
+
+var _runner: GdUnitSceneRunner
+var _level: SectorLevel
+var _crowd: SectorCrowd
+
+
+func before_test() -> void:
+	_runner = scene_runner(SCENE)
+	_level = _runner.find_child("SectorLevel") as SectorLevel
+	_crowd = _runner.find_child("Crowd") as SectorCrowd
+	(_runner.find_child("CameraRig") as CameraController).capture_mouse = false
+	await _frames(5)
+
+
+func after_test() -> void:
+	Engine.time_scale = 1.0
+
+
+func _frames(count: int) -> void:
+	for i: int in count:
+		await get_tree().physics_frame
+
+
+func _walkers() -> Array[int]:
+	var out: Array[int] = []
+	for i: int in _crowd.people.people.size():
+		if _crowd.people.people[i].route.size() >= 2:
+			out.append(i)
+	return out
+
+
+func test_everyone_is_there_on_the_ground_and_cheap() -> void:
+	var people: Array[SectorPerson] = _crowd.people.people
+	assert_int(_crowd.count()).is_equal(people.size())
+	assert_int(_walkers().size()).is_greater_equal(3)
+	for i: int in people.size():
+		var body: Node3D = _crowd.body(i)
+		var start: Vector2 = people[i].route[0] if i in _walkers() else people[i].at
+		var ground: Vector3 = _level.to_global_point(start)
+		assert_float(absf(body.global_position.y - ground.y)).is_less(0.6)
+		assert_array(body.find_children("*", "CollisionObject3D", true, false)).is_empty()
+		for node: Node in body.find_children("*", "GeometryInstance3D", true, false):
+			var g := node as GeometryInstance3D
+			assert_int(g.cast_shadow).is_equal(GeometryInstance3D.SHADOW_CASTING_SETTING_OFF)
+			assert_float(g.visibility_range_end).is_greater(0.0)
+		var outfit: Node = body.find_child(CharacterOutfit.PREFIX + "*", true, false)
+		assert_object(outfit).override_failure_message("person %d look" % i).is_not_null()
+		var anim := body.find_child("AnimationPlayer", true, false) as AnimationPlayer
+		var playing: StringName = anim.current_animation
+		assert_bool(playing in [people[i].clip, _crowd.people.walk_clip]).is_true()
+
+
+func test_the_family_walks_down_and_leaves_once_out_of_sight() -> void:
+	var walkers: Array[int] = _walkers()
+	var first: int = walkers[0]
+	var route: PackedVector2Array = _crowd.people.people[first].route
+	var start: Vector3 = _crowd.body(first).global_position
+	var left: Array[int] = []
+	_crowd.person_left.connect(func(i: int) -> void: left.append(i))
+	Engine.time_scale = 8.0
+	await _frames(int(4.0 * 60.0 / 8.0))
+	# Under way: moved, and walking.
+	var anim := _crowd.body(first).find_child("AnimationPlayer", true, false) as AnimationPlayer
+	assert_str(String(anim.current_animation)).is_equal(String(_crowd.people.walk_clip))
+	assert_float(_crowd.body(first).global_position.distance_to(start)).is_greater(2.0)
+	# Look away from the end of the route, then give them time to get there.
+	var away := Camera3D.new()
+	_runner.scene().add_child(away)
+	var end: Vector3 = _level.to_global_point(route[route.size() - 1])
+	away.look_at_from_position(end + Vector3(0, 2, 0), end + (end - start).normalized() * 50.0)
+	away.make_current()
+	var length: float = 0.0
+	for k: int in range(1, route.size()):
+		length += route[k].distance_to(route[k - 1])
+	var seconds: float = length / _crowd.people.walk_speed + 12.0
+	for f: int in int(seconds * 60.0 / 8.0):
+		if left.size() == walkers.size():
+			break
+		await _frames(1)
+	left.sort()
+	assert_array(left).is_equal(walkers)
+	for i: int in _crowd.people.people.size():
+		if not i in walkers:
+			assert_object(_crowd.body(i)).override_failure_message("stayed %d" % i).is_not_null()
+
+
+func test_people_cannot_be_locked_on() -> void:
+	for i: int in _crowd.count():
+		var areas: Array[Node] = _crowd.body(i).find_children("*", "Area3D", true, false)
+		assert_array(areas).is_empty()

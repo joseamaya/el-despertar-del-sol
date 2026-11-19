@@ -140,3 +140,40 @@ func test_carmenca_sides_and_end_cannot_be_climbed() -> void:
 		best = maxf(best, steep_rise)
 		z -= 0.5
 	assert_float(best).is_greater_equal(6.0)
+
+
+## F4 task 12c: the neighbourhood. Houses stand on level ground, apart from each other,
+## off the path and out of the fights; nothing left behind blocks the path or a house.
+func test_carmenca_houses_stand_level_off_the_path_and_out_of_the_fights() -> void:
+	var l := _carmenca()
+	assert_int(l.houses.size()).is_greater_equal(10)
+	for i: int in l.houses.size():
+		var h: Vector3 = l.houses[i]
+		var at := Vector2(h.x, h.y)
+		var name: String = "House %s" % h
+		assert_float(l.distance_to_path(at)).override_failure_message(name).is_greater(5.0)
+		var lo: float = INF
+		var hi: float = -INF
+		for corner: Vector2 in [Vector2(-2.5, -2.5), Vector2(2.5, -2.5), Vector2(-2.5, 2.5)]:
+			var y: float = l.height_at(at.x + corner.x, at.y + corner.y)
+			lo = minf(lo, y)
+			hi = maxf(hi, y)
+		assert_float(hi - lo).override_failure_message(name + " not level").is_less(0.3)
+		for e: Vector3 in l.encounters:
+			assert_float(at.distance_to(Vector2(e.x, e.y))).is_greater(e.z + 1.5)
+		for k: int in range(i + 1, l.houses.size()):
+			assert_float(at.distance_to(Vector2(l.houses[k].x, l.houses[k].y))).is_greater(6.0)
+
+
+func test_carmenca_traces_lie_beside_the_path_not_in_houses() -> void:
+	var l := _carmenca()
+	var hearths: int = 0
+	for prop: Vector4 in l.props:
+		var at := Vector2(prop.x, prop.y)
+		assert_int(int(prop.w)).is_between(0, KitProps.Kind.size() - 1)
+		hearths += 1 if int(prop.w) == KitProps.Kind.HEARTH else 0
+		var gap: float = l.distance_to_path(at) - l.path_width * 0.5
+		assert_float(gap).override_failure_message("Prop %s on the path" % at).is_greater(0.2)
+		for h: Vector3 in l.houses:
+			assert_float(at.distance_to(Vector2(h.x, h.y))).is_greater(2.2)
+	assert_int(hearths).is_greater_equal(2)

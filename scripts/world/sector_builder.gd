@@ -28,10 +28,7 @@ static func build(layout: SectorLayout, palette: PaletteTuning) -> Node3D:
 	_build_path(root, layout, palette, heights)
 	for w: Vector4 in layout.boundary_walls:
 		_build_boundary(root, layout, palette, w)
-	var i: int = 0
-	for h: Vector3 in layout.houses:
-		_build_house(root, layout, palette, h, i)
-		i += 1
+	_build_houses(root, layout, palette)
 	_build_huaca(root, layout, palette)
 	SectorDressing.dress(root, layout, palette)
 	SectorVegetation.plant(root, layout, palette)
@@ -160,17 +157,23 @@ static func _build_boundary(
 	col.rotation.y = angle
 
 
-static func _build_house(
-	root: Node3D, layout: SectorLayout, palette: PaletteTuning, h: Vector3, index: int
-) -> void:
+## Every house in one mesh (one draw call for the neighbourhood, F4 task 12c), each with
+## its own collider.
+static func _build_houses(root: Node3D, layout: SectorLayout, palette: PaletteTuning) -> void:
+	if layout.houses.is_empty():
+		return
 	var size := Vector3(4.5, 2.2, 3.6)
-	var house := Node3D.new()
-	house.name = "House%d" % index
-	house.position = Vector3(h.x, layout.height_at(h.x, h.y), h.y)
-	house.rotation.y = deg_to_rad(h.z)
-	root.add_child(house)
-	add_mesh(house, "Mesh", KitBuildings.house(size, 30 + index, palette), palette, Vector3.ZERO)
-	add_box_collider(house, Vector3(0, size.y * 0.5, 0), size)
+	var parts: Array[Array] = []
+	for index: int in layout.houses.size():
+		var h: Vector3 = layout.houses[index]
+		var house := Node3D.new()
+		house.name = "House%d" % index
+		house.position = Vector3(h.x, layout.height_at(h.x, h.y), h.y)
+		house.rotation.y = deg_to_rad(h.z)
+		root.add_child(house)
+		add_box_collider(house, Vector3(0, size.y * 0.5, 0), size)
+		parts.append([KitBuildings.house(size, 30 + index, palette), house.transform])
+	add_mesh(root, "Houses", KitWalls.merge(parts), palette, Vector3.ZERO)
 
 
 static func _build_huaca(root: Node3D, layout: SectorLayout, palette: PaletteTuning) -> void:

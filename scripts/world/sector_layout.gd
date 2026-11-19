@@ -68,6 +68,10 @@ const STEP_MAX_RUN: float = 1.5
 @export var corrals: PackedVector3Array = PackedVector3Array()
 ## Crags framing the pass: (x, z, height).
 @export var crags: PackedVector3Array = PackedVector3Array()
+## Traces of the people who fled (F4 task 12c): (x, z, yaw in degrees, KitProps.Kind).
+@export var props: PackedVector4Array = PackedVector4Array()
+## Height of the thin smoke still rising from each hearth (0: none).
+@export_range(0.0, 10.0, 0.5, "suffix:m") var hearth_smoke_height: float = 0.0
 ## Irrigation channel: points (x, z) along a terrace.
 @export var channel: PackedVector2Array = PackedVector2Array()
 ## Loose rocks scattered over the sector (deterministic).
