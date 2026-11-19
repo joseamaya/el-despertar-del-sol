@@ -48,6 +48,7 @@
 [ext_resource type="Script" path="res://scripts/world/sector_crowd.gd" id="46_crowd"]
 [ext_resource type="Resource" path="res://resources/levels/carmenca_people.tres" id="47_people"]
 [ext_resource type="Script" path="res://scripts/ui/passing_line.gd" id="48_passing"]
+[ext_resource type="Script" path="res://scripts/systems/session_summary.gd" id="49_summary"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -249,6 +250,14 @@ model_scene = ExtResource("20_model")
 script = ExtResource("48_passing")
 crowd = NodePath("../Crowd")
 
+[node name="SessionSummary" type="Node" parent="." unique_id=1544120803 node_paths=PackedStringArray("slice", "arena", "rite", "codex_screen")]
+script = ExtResource("49_summary")
+slice = NodePath("../SliceDirector")
+arena = NodePath("../ArenaController")
+rite = NodePath("../HuacaRite")
+codex_screen = NodePath("../CodexScreen")
+zone_keys = Array[StringName]([&"SUMMARY_ZONE_TERRACES", &"SUMMARY_ZONE_HOUSES", &"SUMMARY_ZONE_PASS"])
+
 [node name="ViewFocus" type="Node" parent="." unique_id=1544120747 node_paths=PackedStringArray("slice", "level", "camera_rig", "player", "frozen")]
 script = ExtResource("34_focus")
 slice = NodePath("../SliceDirector")
@@ -279,13 +288,14 @@ tuning = ExtResource("31_pen")
 level = NodePath("../SectorLevel")
 interaction = NodePath("../InteractionPoint")
 
-[node name="Hud" parent="." unique_id=1068922280 node_paths=PackedStringArray("health", "stamina", "lock_on", "camera", "arena", "slice") instance=ExtResource("13_i2j4s")]
+[node name="Hud" parent="." unique_id=1068922280 node_paths=PackedStringArray("health", "stamina", "lock_on", "camera", "arena", "slice", "summary") instance=ExtResource("13_i2j4s")]
 health = NodePath("../Player/Health")
 stamina = NodePath("../Player/Stamina")
 lock_on = NodePath("../Player/LockOn")
 camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
 arena = NodePath("../ArenaController")
 slice = NodePath("../SliceDirector")
+summary = NodePath("../SessionSummary")
 
 [node name="CombatFeedback" type="Node3D" parent="." unique_id=1494172289 node_paths=PackedStringArray("hit_stop", "camera_rig", "player_hurtbox", "player_hitbox", "player_defense", "player_combat")]
 script = ExtResource("14_2bif6")

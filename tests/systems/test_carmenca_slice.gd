@@ -345,3 +345,31 @@ func test_play_time_counts_play_not_pauses_and_shows_at_the_end() -> void:
 	var frozen: float = _slice.play_time
 	await _frames(30)
 	assert_float(_slice.play_time).is_equal(frozen)
+
+
+## F5 task 3: the end shows the playthrough summary, saves it and copies it on request.
+func test_the_end_shows_saves_and_copies_the_summary() -> void:
+	var summary := _runner.find_child("SessionSummary") as SessionSummary
+	while not (
+		_slice.flow.current().kind == SliceStep.Kind.ENCOUNTER and _slice.flow.current().zone == 3
+	):
+		await _finish_step()
+	_health.apply_damage(_health.get_maximum())
+	await _frames(int(_arena.defeat_delay * 60.0) + 10)
+	_arena.reset_encounter()
+	await _frames(3)
+	await _play_to_end()
+	assert_bool(summary.is_finished()).is_true()
+	var text: String = summary.text()
+	assert_str(text).contains(tr(&"SUMMARY_ZONE_PASS") + " 1")
+	assert_str(text).contains(tr(&"SUMMARY_ZONE_TERRACES") + " 0")
+	assert_float(summary.stats.total_seconds()).is_equal_approx(_slice.play_time, 0.5)
+	assert_str(FileAccess.get_file_as_string(SessionSummary.FILE_PATH)).contains(text)
+	var hud := _runner.find_child("Hud") as Hud
+	assert_str(hud.hint_label.text).contains(text).contains(tr(&"SUMMARY_COPY"))
+	var key := InputEventKey.new()
+	key.physical_keycode = KEY_C
+	key.pressed = true
+	Input.parse_input_event(key)
+	await _frames(3)
+	assert_str(hud.hint_label.text).contains(tr(&"SUMMARY_COPIED"))

@@ -85,3 +85,21 @@ OBJ_TRAIN_HIT,Golpéalo (clic izquierdo / RB) ({count}),Strike him (left click /
 BARK_FLEE_1,"¡Hay chancas en las terrazas de arriba! Bajamos al valle mientras podamos.","There are Chancas on the terraces above! We are going down to the valley while we can."
 BARK_FLEE_2,"El Inca se fue y nos dejó solos. Que el Sol te guarde, joven señor.","The Inca left and abandoned us. May the Sun keep you, young lord."
 PASSING_LINE,{speaker}: «{line}»,{speaker}: “{line}”
+SUMMARY_TITLE,Resumen de partida · Pachacútec {version},Playthrough summary · Pachacútec {version}
+SUMMARY_TIME,Tiempo: {total} ({acts}),Time: {total} ({acts})
+SUMMARY_DEFEATS,Derrotas: {zones},Defeats: {zones}
+SUMMARY_CHOICES,Ayllu: {ayllu} · Ofrenda en la huaca: {offering} · Códice abierto: {codex} · Tutorial: {tutorial} · Mando: {gamepad},Ayllu: {ayllu} · Offering at the huaca: {offering} · Codex opened: {codex} · Tutorial: {tutorial} · Gamepad: {gamepad}
+SUMMARY_HELPED,ayudó,helped
+SUMMARY_PASSED_BY,siguió de largo,passed by
+SUMMARY_YES,sí,yes
+SUMMARY_NO,no,no
+SUMMARY_ZONE_TERRACES,terrazas,terraces
+SUMMARY_ZONE_HOUSES,casas,houses
+SUMMARY_ZONE_PASS,paso,pass
+SUMMARY_COPY,C / Y: copiar el resumen para la encuesta,C / Y: copy the summary for the survey
+SUMMARY_COPIED,Resumen copiado: pégalo en la encuesta,Summary copied: paste it into the survey
+SUMMARY_ACT_OPENING,apertura,opening
+SUMMARY_ACT_EXPLORATION,exploración,exploration
+SUMMARY_ACT_SUPPORT,apoyo,support
+SUMMARY_ACT_COMBAT,combate,combat
+SUMMARY_ACT_ENDING,cierre,ending
