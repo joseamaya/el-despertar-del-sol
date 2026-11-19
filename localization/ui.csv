@@ -103,3 +103,4 @@ SUMMARY_ACT_EXPLORATION,exploración,exploration
 SUMMARY_ACT_SUPPORT,apoyo,support
 SUMMARY_ACT_COMBAT,combate,combat
 SUMMARY_ACT_ENDING,cierre,ending
+PAUSE_VERSION,Versión {version},Version {version}

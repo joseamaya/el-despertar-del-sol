@@ -5,6 +5,7 @@ extends RefCounted
 
 const TEXT := Color(0.96, 0.93, 0.88)
 const TITLE := Color(0.95, 0.75, 0.35)
+const DIM := Color(0.7, 0.65, 0.58)
 
 
 static func build(parent: Node) -> Control:
@@ -39,6 +40,14 @@ static func _main() -> VBoxContainer:
 	main.add_child(_label(&"PAUSE_TITLE", 34, TITLE))
 	for key: StringName in [&"PAUSE_RESUME", &"PAUSE_SETTINGS", &"PAUSE_RESTART", &"PAUSE_QUIT"]:
 		main.add_child(_button(key))
+	# Which build this is, for testers' reports (F5 task 5).
+	var version := _label(&"", 18, DIM)
+	version.name = "Version"
+	version.text = TranslationServer.translate(&"PAUSE_VERSION").format(
+		{"version": GameVersion.current()}
+	)
+	version.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	main.add_child(version)
 	return main
 
 

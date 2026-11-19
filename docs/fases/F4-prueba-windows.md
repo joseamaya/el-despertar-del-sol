@@ -1,5 +1,9 @@
 # F4 · Prueba en Windows (y con mando, en F5)
 
+> **F5:** esta guía queda sustituida por `F5-guia-prueba.md`. La build se descarga de la
+> release `v0.1-slice`, y la prueba de Windows es la prueba piloto (tarea 6 de F5). Los
+> resultados se apuntan abajo.
+
 Tarea 11 del backlog de F4. La build de Windows se exporta en la CI desde F1, pero nunca se ha
 ejecutado en Windows. El desarrollador no tiene Windows ni mando: un amigo prueba la build
 de Windows siguiendo esta guía, y la prueba con mando físico pasa a F5.

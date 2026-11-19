@@ -72,7 +72,7 @@ func is_finished() -> bool:
 ## The summary as it stands (the current act counts up to now).
 func text() -> String:
 	var snapshot: SessionStats = _snapshot()
-	return snapshot.render(_version(), ACT_KEYS, zone_keys)
+	return snapshot.render(GameVersion.current(), ACT_KEYS, zone_keys)
 
 
 func copy() -> void:
@@ -116,8 +116,3 @@ func _snapshot() -> SessionStats:
 	if _act >= 0:
 		copy_stats.add_act_time(_act, slice.play_time - _act_started)
 	return copy_stats
-
-
-func _version() -> String:
-	var version: String = str(ProjectSettings.get_setting("application/config/version", ""))
-	return version if version != "" else "dev"
