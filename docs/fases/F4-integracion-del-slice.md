@@ -1,6 +1,8 @@
 # F4 · Integración del slice — nota de cierre
 
-**Fechas:** 2026-11-17 – 2026-11-19 · **Estado:** pendiente de confirmación del desarrollador
+**Fechas:** 2026-11-17 – 2026-11-19 · **Estado:** cerrada
+
+Criterio de salida confirmado por el desarrollador el 2026-11-19.
 
 ## Criterio de salida (GDD §15)
 

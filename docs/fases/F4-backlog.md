@@ -25,7 +25,7 @@ del §14.3.
 | 12a | Tutorial con Vicaquirao en el mirador: bloquear, parry, esquivar y golpear (GDD §5.2) | Hecha: 4 ejercicios con objetivos, Vicaquirao no hace daño ni cae; flag `skip_training` |
 | 12b | Refuerzos en el paso: 3 chancas más tras los 3 primeros, anunciados con el pututu | Hecha: bajan desde lo alto tras el pututu y el cartel; los comuneros libres los entretienen; una derrota reinicia el paso; nunca más de 3 chancas a la vez |
 | 12c | Carmenca recién abandonada: más casas, señales de huida, pocas personas (familias bajando, ancianos, leales) | Hecha: 10 casas en una sola malla, fogones humeantes y objetos tirados, una familia de 4 que baja por el mirador y se va, 2 ancianos y 2 leales; licencia histórica propuesta, la registra el desarrollador |
-| 13 | Cierre de F4 con `phase-gate` | En curso: `docs/fases/F4-integracion-del-slice.md` |
+| 13 | Cierre de F4 con `phase-gate` | Hecha: `docs/fases/F4-integracion-del-slice.md`; criterio confirmado el 2026-11-19 |
 
 **Qué se recorta primero** si se pasa de 4,5 semanas:
 1. La visión de la huaca se reduce a un destello y un texto.
