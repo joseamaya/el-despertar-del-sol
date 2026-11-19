@@ -28,6 +28,8 @@ const ACT_KEYS: Array[StringName] = [
 @export var arena: ArenaController
 ## Optional: the slice's acts and its end.
 @export var slice: SliceDirector
+## Optional: the playthrough summary shown at the end (F5 task 3).
+@export var summary: SessionSummary
 
 @export_group("Nodos")
 @export var root: Control
@@ -67,6 +69,8 @@ func _ready() -> void:
 		slice.slice_finished.connect(_show_end)
 		slice.notice_shown.connect(_show_notice)
 		slice.step_started.connect(_on_step_started)
+	if summary != null:
+		summary.summary_copied.connect(_show_end.bind(true))
 
 
 func _process(delta: float) -> void:
@@ -196,11 +200,15 @@ func _show_notice(key: StringName) -> void:
 	_banner_left = BANNER_TIME
 
 
-func _show_end() -> void:
+func _show_end(copied: bool = false) -> void:
 	_banner_left = 0.0
 	message_label.text = tr(&"SLICE_THE_END")
 	# Credits that a licence asks for (docs/ASSET_SOURCES.md: the CC BY conch).
 	var seconds: int = roundi(slice.play_time)
 	var time: String = tr(&"SLICE_TIME").format({"min": floori(seconds / 60.0), "s": seconds % 60})
-	hint_label.text = "%s\n%s\n\n%s" % [time, tr(&"SLICE_PLAY_AGAIN"), tr(&"CREDITS_CONCH")]
+	var text: String = "%s\n%s" % [time, tr(&"SLICE_PLAY_AGAIN")]
+	if summary != null:
+		var copy_hint: StringName = &"SUMMARY_COPIED" if copied else &"SUMMARY_COPY"
+		text += "\n\n%s\n%s" % [summary.text(), tr(copy_hint)]
+	hint_label.text = "%s\n\n%s" % [text, tr(&"CREDITS_CONCH")]
 	message_panel.visible = true
