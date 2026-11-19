@@ -18,3 +18,4 @@ que la cite.
 | 0010 | Producción del escenario de Carmenca en F3 | Aceptada |
 | 0011 | Color de vértices en sRGB para el escenario cercano | Aceptada |
 | 0012 | Integración del vertical slice en F4 | Aceptada |
+| 0013 | Protocolo de la prueba externa del slice (F5) | Aceptada |
