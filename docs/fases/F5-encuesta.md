@@ -1,6 +1,6 @@
 # F5 · Encuesta de la prueba externa (tarea 4)
 
-**Estado:** borrador del agente, pendiente de aprobación del desarrollador · Protocolo:
+**Estado:** aprobada por el desarrollador el 2026-11-19 · Protocolo:
 `DECISIONS/0013`
 
 Preguntas para copiar en Google Forms. Las dos marcadas con ★ son las del criterio 8 del
