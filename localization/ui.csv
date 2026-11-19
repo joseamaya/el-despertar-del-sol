@@ -18,6 +18,7 @@ DLG_OPENING_3,"Esos humos son los chancas. Uscovilca viene desde Andahuaylas.","
 DLG_OPENING_4,Entonces nos quedamos nosotros.,Then we are the ones who stay.
 DLG_OPENING_5,"Sube por las terrazas. Si sus exploradores ya están aquí, que nos encuentren de pie.","Climb the terraces. If their scouts are already here, let them find us standing."
 DLG_OPENING_6,"Y al subir, detente en la huaca de la ladera. Déjale coca: hoy vamos a necesitar su fuerza.","And on the way up, stop at the huaca on the slope. Leave it coca: today we will need its strength."
+DLG_OPENING_7,"Mis guerreros y yo guardaremos el mirador: por aquí no bajarán al Cusco. Las terrazas son tuyas.","My warriors and I will hold the lookout: they will not come down to Cusco this way. The terraces are yours."
 PROMPT_OFFERING,E / A: ofrendar hojas de coca,E / A: offer coca leaves
 DLG_HUACA_1,"Por un momento, las piedras de la ladera parecían guerreros de pie…","For a moment, the stones on the slope looked like warriors standing…"
 DLG_HUACA_2,¿Fue la huaca quien me lo mostró? ¿Qué quiere decirme?,Was it the huaca that showed me? What is it trying to tell me?
@@ -33,6 +34,7 @@ CODEX_HUACA_SOURCE,"Bernabé Cobo, Historia del Nuevo Mundo (1653)","Bernabé Co
 CODEX_HUACA_BODY,"Para los pueblos andinos, una huaca era cualquier lugar o cosa donde habitaba lo sagrado: un manantial, una cumbre, una roca de forma extraña. Se le dejaban hojas de coca, chicha o maíz, y se le pedía fuerza y consejo. Más de un siglo después de la guerra, Cobo describió cientos de huacas alrededor del Cusco, ordenadas en líneas que partían del templo del Sol.","For the Andean peoples, a huaca was any place or thing where the sacred dwelt: a spring, a peak, a strangely shaped rock. People left it coca leaves, chicha or maize, and asked it for strength and counsel. More than a century after the war, Cobo described hundreds of huacas around Cusco, laid out in lines that ran from the temple of the Sun."
 CODEX_HUACA_NOTE,La forma de la huaca de Carmenca es licencia del juego.,The shape of the Carmenca huaca is a creative licence.
 NAME_COMUNERO,Comunero,Villager
+NAME_COMUNERA,Comunera,Villager
 DLG_FAMILY_1,¡Señor! Los chancas pasaron al alba y se llevaron nuestras llamas.,My lord! The Chancas came through at dawn and took our llamas.
 DLG_FAMILY_2,"Las tienen atadas más abajo, pasadas las casas. Sin ellas no pasaremos el invierno.","They have them tied up further on, past the houses. Without them we will not last the winter."
 CHOICE_FAMILY_ACCEPT,Recuperaré tus llamas.,I will bring your llamas back.
@@ -80,3 +82,6 @@ OBJ_TRAIN_BLOCK,Bloquea los golpes de Vicaquirao (F / LB) ({count}),Block Vicaqu
 OBJ_TRAIN_PARRY,Bloquea justo antes del golpe para hacer un parry (F / LB),Block just before the blow lands to parry (F / LB)
 OBJ_TRAIN_EVADE,Esquiva sus golpes (Espacio / B) ({count}),Dodge his blows (Space / B) ({count})
 OBJ_TRAIN_HIT,Golpéalo (clic izquierdo / RB) ({count}),Strike him (left click / RB) ({count})
+BARK_FLEE_1,"¡Hay chancas en las terrazas de arriba! Bajamos al valle mientras podamos.","There are Chancas on the terraces above! We are going down to the valley while we can."
+BARK_FLEE_2,"El Inca se fue y nos dejó solos. Que el Sol te guarde, joven señor.","The Inca left and abandoned us. May the Sun keep you, young lord."
+PASSING_LINE,{speaker}: «{line}»,{speaker}: “{line}”

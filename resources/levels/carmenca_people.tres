@@ -12,12 +12,16 @@
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_refugee_man")
+speaker = &"NAME_COMUNERO"
+line = &"BARK_FLEE_1"
 route = PackedVector2Array(3, 109.5, 3, 115.5, -3, 117.5, -3, 123.5, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
 
 [sub_resource type="Resource" id="Person_1"]
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_refugee_woman")
+speaker = &"NAME_COMUNERA"
+line = &"BARK_FLEE_2"
 route = PackedVector2Array(3, 109.5, 3, 115.5, -3, 117.5, -3, 123.5, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
 delay = 2.2
 

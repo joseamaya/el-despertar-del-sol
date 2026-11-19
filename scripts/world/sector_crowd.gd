@@ -5,9 +5,12 @@ extends Node3D
 ## with a looping clip and nothing else: no collision, no lock-on, no AI, no shadows. The
 ## ones who walk follow the ground along their route and, once at its end, vanish the
 ## first time the camera does not see them. Beyond the draw distance a person is hidden
-## and their animation stops, so the ones far away cost nothing.
+## and their animation stops, so the ones far away cost nothing. Someone with a line says
+## it once, in passing, the first time they come near Cusi (F4: the family tells him what
+## is happening); a subtitle shows it without stopping the game.
 
 signal person_left(index: int)
+signal person_spoke(speaker: StringName, line: StringName)
 
 const RAY_UP: float = 3.0
 const RAY_DOWN: float = 6.0
@@ -26,6 +29,7 @@ var _next: PackedInt32Array = PackedInt32Array()
 var _wait: PackedFloat32Array = PackedFloat32Array()
 var _anims: Array[AnimationPlayer] = []
 var _cull_left: float = 0.0
+var _spoken: Array[bool] = []
 
 
 func _ready() -> void:
@@ -39,6 +43,7 @@ func _physics_process(delta: float) -> void:
 	if _cull_left <= 0.0:
 		_cull_left = CULL_INTERVAL
 		_cull()
+		_talk()
 	for i: int in _bodies.size():
 		var body: Node3D = _bodies[i]
 		if body == null or _next[i] < 0:
@@ -89,6 +94,7 @@ func _spawn_all() -> void:
 		model.global_rotation.y = level.sector.global_rotation.y + deg_to_rad(person.yaw_deg)
 		_bodies.append(model)
 		_anims.append(model.find_child("AnimationPlayer", true, false) as AnimationPlayer)
+		_spoken.append(person.line == &"")
 		_next.append(1 if walks else -1)
 		_wait.append(person.delay if walks else 0.0)
 		if walks:
@@ -111,6 +117,20 @@ func _cull() -> void:
 		body.visible = near
 		if _anims[i] != null:
 			_anims[i].active = near
+
+
+## Whoever has a line and comes near Cusi for the first time says it.
+func _talk() -> void:
+	if level.player == null:
+		return
+	var cusi: Vector3 = level.player.global_position
+	for i: int in _bodies.size():
+		if _spoken[i] or _bodies[i] == null:
+			continue
+		if _bodies[i].global_position.distance_to(cusi) <= people.talk_radius:
+			_spoken[i] = true
+			var person: SectorPerson = people.people[i]
+			person_spoke.emit(person.speaker, person.line)
 
 
 func _walk(i: int, delta: float) -> void:

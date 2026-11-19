@@ -19,3 +19,6 @@ extends Resource
 @export_range(0.0, 30.0, 0.1, "suffix:s") var delay: float = 0.0
 ## Height above the ground (a seat).
 @export_range(0.0, 1.0, 0.01, "suffix:m") var lift: float = 0.0
+## What they say once, in passing, when they first come near Cusi (translation keys).
+@export var speaker: StringName = &""
+@export var line: StringName = &""
