@@ -1,6 +1,6 @@
 # F5 · Prueba externa — backlog
 
-**Estado:** propuesta del agente, pendiente de aprobación del desarrollador.
+**Estado:** aprobado por el desarrollador el 2026-11-19.
 
 - **Criterio de salida (GDD §15):** decidir si se continúa, se ajusta o se recorta.
 - **Estimación:** 2 semanas. Si se pasa de 3, se recorta alcance.
