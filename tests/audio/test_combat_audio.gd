@@ -122,7 +122,13 @@ func test_parry_freezes_longer_and_flashes() -> void:
 	var flashes: Array[int] = [0]
 	var stops: Array[float] = []
 	var max_shake: Array[float] = [0.0]
-	feedback.parry_flashed.connect(func(_at: Vector3) -> void: flashes[0] += 1)
+	# The shake is added just before the flash: read it there, not on a later frame where
+	# a slow runner may already have let it decay.
+	feedback.parry_flashed.connect(
+		func(_at: Vector3) -> void:
+			flashes[0] += 1
+			max_shake[0] = maxf(max_shake[0], _rig.get_shake())
+	)
 	var defense := _player.get_node("Defense") as DefenseComponent
 	Input.action_press(&"block")
 	_w.combat.start(_golpe())
