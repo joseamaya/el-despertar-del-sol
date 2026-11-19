@@ -47,6 +47,7 @@
 [ext_resource type="Resource" path="res://resources/tuning/training_drill.tres" id="45_drill"]
 [ext_resource type="Script" path="res://scripts/world/sector_crowd.gd" id="46_crowd"]
 [ext_resource type="Resource" path="res://resources/levels/carmenca_people.tres" id="47_people"]
+[ext_resource type="Script" path="res://scripts/ui/passing_line.gd" id="48_passing"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -237,11 +238,16 @@ look = ExtResource("42_comunero")
 
 [node name="Model" parent="Comunero" unique_id=1544120744 instance=ExtResource("20_model")]
 
-[node name="Crowd" type="Node3D" parent="." unique_id=1544120801 node_paths=PackedStringArray("level")]
+[node name="Crowd" type="Node3D" parent="." unique_id=1544120801 node_paths=PackedStringArray("level", "slice")]
 script = ExtResource("46_crowd")
 people = ExtResource("47_people")
 level = NodePath("../SectorLevel")
+slice = NodePath("../SliceDirector")
 model_scene = ExtResource("20_model")
+
+[node name="PassingLine" type="CanvasLayer" parent="." unique_id=1544120802 node_paths=PackedStringArray("crowd")]
+script = ExtResource("48_passing")
+crowd = NodePath("../Crowd")
 
 [node name="ViewFocus" type="Node" parent="." unique_id=1544120747 node_paths=PackedStringArray("slice", "level", "camera_rig", "player", "frozen")]
 script = ExtResource("34_focus")
