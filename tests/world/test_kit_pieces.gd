@@ -110,3 +110,13 @@ func test_catalog_has_a_review_camera_that_moves() -> void:
 	await runner.simulate_frames(20)
 	Input.action_release(&"move_right")
 	assert_float(catalog.camera.position.x).is_greater(before.x)
+
+
+## F4 task 12c: what the people who fled left behind is small and lies on the ground.
+func test_traces_are_small_and_on_the_ground() -> void:
+	for kind: int in KitProps.Kind.size():
+		var aabb: AABB = KitProps.piece(kind as KitProps.Kind, 3, _p).get_aabb()
+		var label: String = KitProps.Kind.keys()[kind]
+		assert_float(aabb.position.y).override_failure_message(label).is_between(-0.1, 0.05)
+		assert_float(aabb.end.y).override_failure_message(label).is_between(0.05, 0.6)
+		assert_float(maxf(aabb.size.x, aabb.size.z)).override_failure_message(label).is_less(1.2)

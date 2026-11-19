@@ -45,6 +45,8 @@
 [ext_resource type="Script" path="res://scripts/ui/fps_overlay.gd" id="43_fps"]
 [ext_resource type="Script" path="res://scripts/training/training_drill.gd" id="44_drill"]
 [ext_resource type="Resource" path="res://resources/tuning/training_drill.tres" id="45_drill"]
+[ext_resource type="Script" path="res://scripts/world/sector_crowd.gd" id="46_crowd"]
+[ext_resource type="Resource" path="res://resources/levels/carmenca_people.tres" id="47_people"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -234,6 +236,12 @@ idle_clip = &"Idle"
 look = ExtResource("42_comunero")
 
 [node name="Model" parent="Comunero" unique_id=1544120744 instance=ExtResource("20_model")]
+
+[node name="Crowd" type="Node3D" parent="." unique_id=1544120801 node_paths=PackedStringArray("level")]
+script = ExtResource("46_crowd")
+people = ExtResource("47_people")
+level = NodePath("../SectorLevel")
+model_scene = ExtResource("20_model")
 
 [node name="ViewFocus" type="Node" parent="." unique_id=1544120747 node_paths=PackedStringArray("slice", "level", "camera_rig", "player", "frozen")]
 script = ExtResource("34_focus")

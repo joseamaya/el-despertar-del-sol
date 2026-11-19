@@ -85,6 +85,11 @@ static func pieces(p: PaletteTuning) -> Array[Array]:
 		["Peña", KitBuildings.crag(5.0, 9, p), Vector3.ZERO],
 		["Borde de camino", _edge(p), Vector3(-2, 0, 0)],
 		["Acequia", KitWalls.channel(4.0, 10, p), Vector3(-2, 0, 0)],
+		["Fogón", KitProps.piece(KitProps.Kind.HEARTH, 11, p), Vector3.ZERO],
+		["Vasija volcada", KitProps.piece(KitProps.Kind.POT, 12, p), Vector3.ZERO],
+		["Bulto", KitProps.piece(KitProps.Kind.BUNDLE, 13, p), Vector3.ZERO],
+		["Cesto de maíz", KitProps.piece(KitProps.Kind.BASKET, 14, p), Vector3.ZERO],
+		["Piedra de asiento", KitProps.piece(KitProps.Kind.SEAT, 15, p), Vector3.ZERO],
 	]
 
 

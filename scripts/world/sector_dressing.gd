@@ -2,7 +2,8 @@ class_name SectorDressing
 extends RefCounted
 ## Dresses a built sector with kit pieces that are not structure (F3 task 5): corrals,
 ## the irrigation channel, crags at the pass, scattered rocks and the stones edging the
-## path. Repeated pieces go through MultiMesh (one draw call per kind of rock).
+## path. Repeated pieces go through MultiMesh (one draw call per kind of rock). The
+## traces of the people who fled are merged into one mesh (F4 task 12c).
 
 const EDGE_SPACING: float = 0.9
 ## Keep scatter this far from the path, walls, houses and the huaca (m).
@@ -24,8 +25,30 @@ static func dress(root: Node3D, layout: SectorLayout, palette: PaletteTuning) ->
 		i += 1
 	if layout.channel.size() >= 2:
 		_channel(root, layout, palette)
+	_traces(root, layout, palette)
 	_scatter_rocks(root, layout, palette)
 	_edge_path(root, layout, palette)
+
+
+## Hearths, jars, bundles and baskets left behind, in one mesh; each hearth still smokes.
+static func _traces(root: Node3D, layout: SectorLayout, p: PaletteTuning) -> void:
+	if layout.props.is_empty():
+		return
+	var parts: Array[Array] = []
+	var k: int = 0
+	for prop: Vector4 in layout.props:
+		var kind := int(prop.w) as KitProps.Kind
+		var at := Vector3(prop.x, layout.height_at(prop.x, prop.y), prop.y)
+		var xf := Transform3D(Basis(Vector3.UP, deg_to_rad(prop.z)), at)
+		parts.append([KitProps.piece(kind, 90 + k, p), xf])
+		if kind == KitProps.Kind.HEARTH and layout.hearth_smoke_height > 0.0:
+			var h: float = layout.hearth_smoke_height
+			var smoke := BackdropBuilder.smoke_column(h, p.smoke, 3.0 + k, 0.15, 0.4)
+			smoke.name = "HearthSmoke%d" % k
+			smoke.position = at + Vector3.UP * h * 0.5
+			root.add_child(smoke)
+		k += 1
+	SectorBuilder.add_mesh(root, "Traces", KitWalls.merge(parts), p, Vector3.ZERO)
 
 
 static func _corral(
@@ -144,6 +167,9 @@ static func _clear(layout: SectorLayout, steps: PackedVector3Array, xz: Vector2,
 			return false
 	if xz.distance_to(layout.huaca) < CLEAR_HUACA:
 		return false
+	for prop: Vector4 in layout.props:
+		if xz.distance_to(Vector2(prop.x, prop.y)) < 1.5 + size:
+			return false
 	if size > 0:
 		for e: Vector3 in layout.encounters:
 			if xz.distance_to(Vector2(e.x, e.y)) < e.z + 1.0:

@@ -1,0 +1,69 @@
+[gd_resource type="Resource" script_class="SectorPeople" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/sector_people.gd" id="1_people"]
+[ext_resource type="Script" path="res://scripts/world/sector_person.gd" id="2_person"]
+[ext_resource type="Resource" path="res://resources/characters/comunero.tres" id="look_comunero"]
+[ext_resource type="Resource" path="res://resources/characters/elder.tres" id="look_elder"]
+[ext_resource type="Resource" path="res://resources/characters/loyal_warrior.tres" id="look_loyal_warrior"]
+[ext_resource type="Resource" path="res://resources/characters/refugee_man.tres" id="look_refugee_man"]
+[ext_resource type="Resource" path="res://resources/characters/refugee_woman.tres" id="look_refugee_woman"]
+
+[sub_resource type="Resource" id="Person_0"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_refugee_man")
+route = PackedVector2Array(3, 109.5, 3, 115.5, -3, 117.5, -3, 123.5, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
+
+[sub_resource type="Resource" id="Person_1"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_refugee_woman")
+route = PackedVector2Array(3, 109.5, 3, 115.5, -3, 117.5, -3, 123.5, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
+delay = 2.2
+
+[sub_resource type="Resource" id="Person_2"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_comunero")
+scale = 0.65
+route = PackedVector2Array(3, 109.5, 3, 115.5, -3, 117.5, -3, 123.5, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
+delay = 4.0
+
+[sub_resource type="Resource" id="Person_3"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_refugee_woman")
+route = PackedVector2Array(3, 109.5, 3, 115.5, -3, 117.5, -3, 123.5, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
+delay = 5.6
+
+[sub_resource type="Resource" id="Person_4"]
+script = ExtResource("2_person")
+at = Vector2(9.4, 9.6)
+yaw_deg = -90.0
+clip = &"Sitting_Idle"
+look = ExtResource("look_elder")
+
+[sub_resource type="Resource" id="Person_5"]
+script = ExtResource("2_person")
+at = Vector2(9.75, 5.8)
+yaw_deg = -90.0
+clip = &"Fixing_Kneeling"
+look = ExtResource("look_elder")
+
+[sub_resource type="Resource" id="Person_6"]
+script = ExtResource("2_person")
+at = Vector2(16, 143)
+yaw_deg = -90.0
+clip = &"Idle"
+look = ExtResource("look_loyal_warrior")
+
+[sub_resource type="Resource" id="Person_7"]
+script = ExtResource("2_person")
+at = Vector2(17.2, 146)
+yaw_deg = -100.0
+clip = &"Idle"
+look = ExtResource("look_loyal_warrior")
+
+[resource]
+script = ExtResource("1_people")
+people = Array[ExtResource("2_person")]([SubResource("Person_0"), SubResource("Person_1"), SubResource("Person_2"), SubResource("Person_3"), SubResource("Person_4"), SubResource("Person_5"), SubResource("Person_6"), SubResource("Person_7")])
