@@ -71,9 +71,16 @@ func test_real_blocks_count_and_his_blows_do_no_harm() -> void:
 		await _frames(1)
 	assert_int(hits[0]).is_greater(0)
 	assert_float(health.current).is_equal(health.get_maximum())
-	# Then guarded, facing him: two blocks end the drill.
+	# Then guarded, facing him: two blocks end the drill. Lock-on only picks what the
+	# camera sees, so turn the view to him first (blocks count from the front only).
+	var rig := _runner.find_child("CameraRig") as CameraController
+	var to: Vector3 = _drill.trainer().global_position - _player.global_position
+	rig.yaw = atan2(-to.x, -to.z)
+	rig.snap_to_target()
+	await _frames(2)
 	if not lock.is_locked():
 		lock.toggle_lock()
+	assert_bool(lock.is_locked()).is_true()
 	Input.action_press(&"block")
 	for i: int in 1500:
 		if _slice.flow.current().kind != SliceStep.Kind.DRILL:
