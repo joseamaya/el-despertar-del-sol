@@ -92,11 +92,15 @@ func test_chases_and_circles_at_engage_distance() -> void:
 	_place_player(Vector3(-8, 0.05, 6))
 	await _until_state(_w1, "strafe", 360)
 	assert_str(_state(_w1)).is_equal("strafe")
+	# It keeps moving around the player: the fastest it went, not one instant, which on a
+	# slow runner can fall right when it turns back.
+	var fastest: float = 0.0
 	for i: int in 120:
 		await get_tree().physics_frame
 		var d: float = _w1.distance_to(_player.global_position)
 		assert_float(d).is_between(_w1.data.engage_distance - 0.9, _w1.data.engage_distance + 0.9)
-	assert_float(_w1.get_horizontal_speed()).is_greater(0.5)
+		fastest = maxf(fastest, _w1.get_horizontal_speed())
+	assert_float(fastest).is_greater(0.5)
 
 
 func test_loses_track_and_goes_home() -> void:
