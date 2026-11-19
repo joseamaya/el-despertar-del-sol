@@ -27,6 +27,8 @@ func before_test() -> void:
 	(_runner.find_child("CameraRig") as CameraController).capture_mouse = false
 	await _frames(20)
 	var talk := _runner.find_child("DialoguePlayer") as DialoguePlayer
+	# Past the opening, without Vicaquirao's training (F4 task 12a).
+	(_runner.find_child("SliceDirector") as SliceDirector).flow.set_flag(&"skip_training")
 	while talk.is_playing():
 		talk.advance()
 	await _frames(2)

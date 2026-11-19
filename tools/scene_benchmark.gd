@@ -221,6 +221,7 @@ func _prepare_arena(scene: Node) -> void:
 		_player_bot.interaction = (
 			scene.find_child("InteractionPoint", true, false) as InteractionPoint
 		)
+		_player_bot.drill = scene.find_child("TrainingDrill", true, false) as TrainingDrill
 		_player_bot.stuck.connect(func(reason: String) -> void: _stuck = reason)
 		scene.add_child(_player_bot)
 	if _walk and level != null:

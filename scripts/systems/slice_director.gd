@@ -27,6 +27,8 @@ const LOCKED_PROMPT: StringName = &"PROMPT_ENEMIES_NEAR"
 @export var rite: HuacaRite
 ## CHOICE steps (F4 task 6). Needed only if the sequence has any.
 @export var choice: ChoiceBox
+## DRILL steps (F4 task 12a). Needed only if the sequence has any.
+@export var drill: TrainingDrill
 ## Off for tools that drive the zones themselves (benchmark, captures).
 @export var autostart: bool = true
 
@@ -50,6 +52,8 @@ func _ready() -> void:
 		rite.rite_finished.connect(_on_kind_done.bind(SliceStep.Kind.RITE))
 	if choice != null:
 		choice.chosen.connect(_on_chosen)
+	if drill != null:
+		drill.drill_done.connect(_on_kind_done.bind(SliceStep.Kind.DRILL))
 	# After the level and the arena have set up the sector and the first respawn.
 	if autostart:
 		_begin.call_deferred()
@@ -83,6 +87,16 @@ func is_finished() -> bool:
 ## Shows a banner from elsewhere in the slice (the comuneros arriving, F4 task 6).
 func announce(key: StringName) -> void:
 	notice_shown.emit(key)
+
+
+## The number an objective shows: warriors left in a fight, repetitions left in a drill.
+func objective_count() -> int:
+	var step: SliceStep = flow.current() if flow != null else null
+	if step == null:
+		return 0
+	if step.kind == SliceStep.Kind.DRILL and drill != null:
+		return drill.remaining()
+	return arena.alive_enemies().size()
 
 
 ## Whether a choice or a step has set `flag` (false before the slice starts).
@@ -146,6 +160,9 @@ func _start(step: SliceStep) -> void:
 		SliceStep.Kind.CHOICE:
 			assert(choice != null, "SliceDirector: a CHOICE step needs the box.")
 			choice.ask(step.choice)
+		SliceStep.Kind.DRILL:
+			# TrainingDrill starts it from step_started and says when it is done.
+			assert(drill != null, "SliceDirector: a DRILL step needs the training.")
 
 
 ## What comes after a skirmish (the huaca, the llamas) says it must wait meanwhile.
