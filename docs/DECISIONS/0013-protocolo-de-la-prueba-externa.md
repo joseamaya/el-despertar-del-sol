@@ -60,7 +60,20 @@ Backlog: `docs/fases/F5-backlog.md`.
    - Excepción: un fallo que impida terminar. En ese caso se publica `0.1.1-slice` y se
      anota quién jugó cada versión.
 
-## Consecuencias
+## Enmienda (2026-11-19): ampliar a quién se invita
+Tras la primera ronda de invitaciones solo había 2 personas dispuestas. El desarrollador
+decide **ampliar el punto 1** de la siguiente manera:
+- **Quién se invita:** amigos, conocidos y **personas de grupos o redes** que se apunten
+  después de ver el tráiler o el flyer de la prueba (`docs/fases/F5-difusion.md`).
+- **Material de difusión:** solo imágenes reales de la build `0.1-slice`, sin mostrar nada
+  que el juego no tenga todavía.
+- **Lo que no cambia:** el número de personas (de 5 a 7, o más si se apuntan), el anonimato
+  y la regla de decisión. La encuesta tampoco cambia: no pregunta de dónde viene cada
+  persona.
+- Una muestra con desconocidos es menos amable. Si el resultado queda en un umbral, la
+  consecuencia de abajo («ampliar con 2 o 3 personas ajenas») ya está cubierta.
+
+
 - **Tareas que dependen de esta decisión:**
   - la encuesta (tarea 4) tiene las dos preguntas del criterio 8 con esa redacción y
     escala;
