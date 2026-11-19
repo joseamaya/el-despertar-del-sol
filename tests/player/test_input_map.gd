@@ -51,6 +51,12 @@ func test_slice_buttons() -> void:
 	_assert_action(_button(JOY_BUTTON_BACK), &"codex")
 	_assert_action(_button(JOY_BUTTON_START), &"pause")
 	_assert_action(_button(JOY_BUTTON_START), &"restart")
+	# F5 task 3: copy the playthrough summary at the end.
+	_assert_action(_button(JOY_BUTTON_Y), &"copy_summary")
+	var key := InputEventKey.new()
+	key.physical_keycode = KEY_C
+	key.pressed = true
+	_assert_action(key, &"copy_summary")
 
 
 func test_menus_answer_to_the_pad() -> void:

@@ -4,6 +4,8 @@ extends CanvasLayer
 ## chosen one on the right, with its label, source and text. The `codex` action opens and
 ## closes it; the game pauses meanwhile. Builds its own UI.
 
+signal opened
+
 const ACTION_CODEX: StringName = &"codex"
 const ACTION_CLOSE: StringName = &"ui_cancel"
 ## Badge colour of each CodexEntry.Tag, in order.
@@ -61,6 +63,7 @@ func open() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_fill()
 	_root.visible = true
+	opened.emit()
 
 
 func close() -> void:
