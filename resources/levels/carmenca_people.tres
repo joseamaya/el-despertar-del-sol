@@ -14,7 +14,7 @@ clip = &"Idle"
 look = ExtResource("look_refugee_man")
 speaker = &"NAME_COMUNERO"
 line = &"BARK_FLEE_1"
-route = PackedVector2Array(3, 109.5, 3, 115.5, -3, 117.5, -3, 123.5, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
+route = PackedVector2Array(-35, 124, -4, 124, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
 
 [sub_resource type="Resource" id="Person_1"]
 script = ExtResource("2_person")
@@ -22,7 +22,7 @@ clip = &"Idle"
 look = ExtResource("look_refugee_woman")
 speaker = &"NAME_COMUNERA"
 line = &"BARK_FLEE_2"
-route = PackedVector2Array(3, 109.5, 3, 115.5, -3, 117.5, -3, 123.5, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
+route = PackedVector2Array(-35, 124, -4, 124, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
 delay = 2.2
 
 [sub_resource type="Resource" id="Person_2"]
@@ -30,14 +30,14 @@ script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_comunero")
 scale = 0.65
-route = PackedVector2Array(3, 109.5, 3, 115.5, -3, 117.5, -3, 123.5, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
+route = PackedVector2Array(-35, 124, -4, 124, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
 delay = 4.0
 
 [sub_resource type="Resource" id="Person_3"]
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_refugee_woman")
-route = PackedVector2Array(3, 109.5, 3, 115.5, -3, 117.5, -3, 123.5, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
+route = PackedVector2Array(-35, 124, -4, 124, 3, 125.5, 3, 131.5, 12, 137, 40, 137)
 delay = 5.6
 
 [sub_resource type="Resource" id="Person_4"]
@@ -70,4 +70,5 @@ look = ExtResource("look_loyal_warrior")
 
 [resource]
 script = ExtResource("1_people")
+start_zone = 1
 people = Array[ExtResource("2_person")]([SubResource("Person_0"), SubResource("Person_1"), SubResource("Person_2"), SubResource("Person_3"), SubResource("Person_4"), SubResource("Person_5"), SubResource("Person_6"), SubResource("Person_7")])

@@ -1,8 +1,8 @@
 extends GdUnitTestSuite
-## Integration: voices at the lookout (F4). As the family goes down past Cusi, two of
-## them tell him what is happening, once each, as a subtitle that never stops the game
-## (Vicaquirao is still talking meanwhile); and Vicaquirao says he and his warriors hold
-## the lookout, so Cusi climbs alone.
+## Integration: voices at the lookout (F4). As the family goes down past Cusi (once the
+## training is over), two of them tell him what is happening, once each, as a subtitle
+## that never stops the game; and Vicaquirao says he and his warriors hold the lookout,
+## so Cusi climbs alone.
 
 const SCENE: String = "res://scenes/levels/carmenca.tscn"
 const OPENING: String = "res://resources/dialogue/carmenca_opening.tres"
@@ -35,6 +35,13 @@ func test_the_family_tells_cusi_in_passing_without_stopping_the_game() -> void:
 	var shown: Array[String] = []
 	_crowd.person_spoke.connect(func(_s: StringName, line: StringName) -> void: said.append(line))
 	var talk := _runner.find_child("DialoguePlayer") as DialoguePlayer
+	# Past the opening, without the training: the first skirmish starts and they set off.
+	var slice := _runner.find_child("SliceDirector") as SliceDirector
+	slice.flow.set_flag(&"skip_training")
+	while talk.is_playing():
+		talk.advance()
+	await _frames(2)
+	assert_bool(_crowd.is_held()).is_false()
 	Engine.time_scale = TIME_SCALE
 	for i: int in int(80.0 * 60.0 / TIME_SCALE):
 		if _line.is_showing() and not shown.has(_line.shown_text()):
@@ -46,8 +53,8 @@ func test_the_family_tells_cusi_in_passing_without_stopping_the_game() -> void:
 	assert_int(shown.size()).is_equal(2)
 	assert_str(shown[0]).contains(tr(&"BARK_FLEE_1")).contains(tr(&"NAME_COMUNERO"))
 	assert_str(shown[1]).contains(tr(&"BARK_FLEE_2")).contains(tr(&"NAME_COMUNERA"))
-	# Nobody waited for them: the opening is still on its first line.
-	assert_bool(talk.is_playing()).is_true()
+	# Nobody waited for them: the player was never stopped.
+	assert_bool(talk.is_playing()).is_false()
 	# Once each, and the subtitle goes away on its own.
 	await _frames(int((_crowd.people.line_time + 2.0) * 60.0 / TIME_SCALE))
 	assert_int(said.size()).is_equal(2)

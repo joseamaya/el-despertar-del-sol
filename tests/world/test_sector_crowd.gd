@@ -1,7 +1,8 @@
 extends GdUnitTestSuite
 ## Integration: the people of Carmenca (F4 task 12c). Everyone is placed on the ground
 ## with their look and clip, nobody collides, casts shadows or can be locked on; the
-## family walks its route down past the lookout and leaves once out of sight, while the
+## family is not there until the first skirmish (after the training), then walks its route
+## down past the lookout and leaves once out of sight, while the
 ## ones who stayed are still there; only those near the camera are drawn and animated.
 
 const SCENE: String = "res://scenes/levels/carmenca.tscn"
@@ -64,6 +65,7 @@ func test_the_family_walks_down_and_leaves_once_out_of_sight() -> void:
 	var start: Vector3 = _crowd.body(first).global_position
 	var left: Array[int] = []
 	_crowd.person_left.connect(func(i: int) -> void: left.append(i))
+	_crowd.set_off()
 	Engine.time_scale = 8.0
 	await _frames(int(4.0 * 60.0 / 8.0))
 	# Under way: moved, and walking.
@@ -105,6 +107,8 @@ func test_only_the_people_near_the_camera_are_drawn_and_animated() -> void:
 	for i: int in _crowd.count():
 		var body: Node3D = _crowd.body(i)
 		var close: bool = body.global_position.distance_to(eye) <= _crowd.people.draw_distance
+		# The family is not there yet.
+		close = close and not (_crowd.is_held() and i in _walkers())
 		assert_bool(_crowd.is_active(i)).override_failure_message("person %d" % i).is_equal(close)
 		var anim := body.find_child("AnimationPlayer", true, false) as AnimationPlayer
 		assert_bool(anim.active).is_equal(close)
@@ -113,3 +117,27 @@ func test_only_the_people_near_the_camera_are_drawn_and_animated() -> void:
 	# At the lookout: the loyal warriors are close, the elders down in the houses are not.
 	assert_int(near).is_greater(0)
 	assert_int(far).is_greater(0)
+
+
+func test_the_family_comes_only_when_the_first_skirmish_starts() -> void:
+	var slice := _runner.find_child("SliceDirector") as SliceDirector
+	var talk := _runner.find_child("DialoguePlayer") as DialoguePlayer
+	Engine.time_scale = 8.0
+	await _frames(int(20.0 * 60.0 / 8.0))
+	# Opening (and training): nobody walks, nobody is seen.
+	assert_bool(_crowd.is_held()).is_true()
+	for i: int in _walkers():
+		assert_bool(_crowd.is_active(i)).is_false()
+		var start: Vector3 = _level.to_global_point(_crowd.people.people[i].route[0])
+		assert_float(_crowd.body(i).global_position.distance_to(start)).is_less(1.0)
+	slice.flow.set_flag(&"skip_training")
+	while talk.is_playing():
+		talk.advance()
+	await _frames(2)
+	assert_int(slice.flow.current().kind).is_equal(SliceStep.Kind.ENCOUNTER)
+	assert_int(slice.flow.current().zone).is_equal(_crowd.people.start_zone)
+	assert_bool(_crowd.is_held()).is_false()
+	var first: int = _walkers()[0]
+	var start: Vector3 = _crowd.body(first).global_position
+	await _frames(int(3.0 * 60.0 / 8.0))
+	assert_float(_crowd.body(first).global_position.distance_to(start)).is_greater(1.0)

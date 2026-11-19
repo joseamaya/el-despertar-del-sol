@@ -1,7 +1,8 @@
 class_name SectorCrowd
 extends Node3D
 ## Puts the people of a sector in it (F4 task 12c): the few who stayed in Carmenca, still
-## at their doors, and a family leaving down the path as the slice begins. They are models
+## at their doors, and a family leaving down to the valley once Vicaquirao's training is
+## over (`SectorPeople.start_zone`; before that they are not there). They are models
 ## with a looping clip and nothing else: no collision, no lock-on, no AI, no shadows. The
 ## ones who walk follow the ground along their route and, once at its end, vanish the
 ## first time the camera does not see them. Beyond the draw distance a person is hidden
@@ -22,6 +23,9 @@ const CULL_INTERVAL: float = 0.25
 @export var level: SectorLevel
 ## The mannequin every character of the slice shares.
 @export var model_scene: PackedScene
+## Optional: says when the walkers set off (`SectorPeople.start_zone`). Without it they
+## set off at once.
+@export var slice: SliceDirector
 
 var _bodies: Array[Node3D] = []
 ## Per person: index of the route point they walk to (-1: not walking), seconds to wait.
@@ -30,10 +34,15 @@ var _wait: PackedFloat32Array = PackedFloat32Array()
 var _anims: Array[AnimationPlayer] = []
 var _cull_left: float = 0.0
 var _spoken: Array[bool] = []
+## The walkers wait, hidden, until they set off.
+var _held: bool = false
 
 
 func _ready() -> void:
 	assert(people != null and level != null and model_scene != null, "SectorCrowd: parts.")
+	_held = people.start_zone > 0 and slice != null
+	if _held:
+		slice.step_started.connect(_on_step_started)
 	# After the level has built the sector and its collision.
 	_spawn_all.call_deferred()
 
@@ -46,7 +55,7 @@ func _physics_process(delta: float) -> void:
 		_talk()
 	for i: int in _bodies.size():
 		var body: Node3D = _bodies[i]
-		if body == null or _next[i] < 0:
+		if body == null or _next[i] < 0 or _held:
 			continue
 		if _wait[i] > 0.0:
 			_wait[i] -= delta
@@ -58,6 +67,20 @@ func _physics_process(delta: float) -> void:
 			_leave_if_unseen(i)
 			continue
 		_walk(i, delta)
+
+
+## The walkers appear at the start of their routes and set off (their delays count from
+## now). Public for tools and tests.
+func set_off() -> void:
+	_held = false
+	for i: int in _bodies.size():
+		if _bodies[i] != null and _walks(i):
+			_play(_bodies[i], people.walk_clip if _wait[i] <= 0.0 else people.people[i].clip)
+	_cull()
+
+
+func is_held() -> bool:
+	return _held
 
 
 ## Whether person `index` is close enough to be drawn and animated.
@@ -99,7 +122,12 @@ func _spawn_all() -> void:
 		_wait.append(person.delay if walks else 0.0)
 		if walks:
 			_face(model, level.to_global_point(person.route[1]))
-		_play(model, people.walk_clip if walks and person.delay <= 0.0 else person.clip)
+		var walking: bool = walks and not _held and person.delay <= 0.0
+		_play(model, people.walk_clip if walking else person.clip)
+		if walks and _held:
+			model.visible = false
+			if _anims[i] != null:
+				_anims[i].active = false
 
 
 ## Hides and stills whoever is beyond the draw distance from the camera.
@@ -114,6 +142,7 @@ func _cull() -> void:
 		if body == null:
 			continue
 		var near: bool = body.global_position.distance_squared_to(eye) <= reach
+		near = near and not (_held and _walks(i))
 		body.visible = near
 		if _anims[i] != null:
 			_anims[i].active = near
@@ -131,6 +160,15 @@ func _talk() -> void:
 			_spoken[i] = true
 			var person: SectorPerson = people.people[i]
 			person_spoke.emit(person.speaker, person.line)
+
+
+func _walks(i: int) -> bool:
+	return people.people[i].route.size() >= 2
+
+
+func _on_step_started(step: SliceStep) -> void:
+	if _held and step.kind == SliceStep.Kind.ENCOUNTER and step.zone == people.start_zone:
+		set_off()
 
 
 func _walk(i: int, delta: float) -> void:

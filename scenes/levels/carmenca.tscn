@@ -238,10 +238,11 @@ look = ExtResource("42_comunero")
 
 [node name="Model" parent="Comunero" unique_id=1544120744 instance=ExtResource("20_model")]
 
-[node name="Crowd" type="Node3D" parent="." unique_id=1544120801 node_paths=PackedStringArray("level")]
+[node name="Crowd" type="Node3D" parent="." unique_id=1544120801 node_paths=PackedStringArray("level", "slice")]
 script = ExtResource("46_crowd")
 people = ExtResource("47_people")
 level = NodePath("../SectorLevel")
+slice = NodePath("../SliceDirector")
 model_scene = ExtResource("20_model")
 
 [node name="PassingLine" type="CanvasLayer" parent="." unique_id=1544120802 node_paths=PackedStringArray("crowd")]
