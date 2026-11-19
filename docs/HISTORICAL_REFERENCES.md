@@ -38,10 +38,18 @@ Columna vertebral: Juan de Betanzos, *Suma y narración de los incas* (1551).
 | Quipucamayoc narrador (nombre por definir) | Personaje inventado | GDD §5.2 |
 | Pintura facial chanca | Inventada pero coherente | GDD §5.3 |
 | Arquitectura de 1438 modesta (pirca, adobe, ichu) frente a la cantería posterior | Interpretación de diseño; revisar con especialista | GDD §10.2 |
-| Disposición del sector de Carmenca (terrazas, camino, casas) | Licencia del juego: no reproduce un trazado real; revisar con especialista | F3, `DECISIONS/0010` |
+| Disposición del sector de Carmenca (terrazas, camino, casas) | Licencia del juego: no reproduce un trazado real; el mirador y el desnivel hasta el paso (unos 52 m) están exagerados respecto al Santa Ana real; revisar con especialista | F3, `DECISIONS/0010` |
 | Forma de la huaca del slice: roca natural destacada con pirca baja y ofrendas | Licencia del juego hasta consultarlo; revisar con especialista | F3, `DECISIONS/0010` |
 | Carmenca en la ladera noroeste sobre el Cusco (actual Santa Ana), con el valle hacia el sureste | Documentado, **a verificar con mapa** antes de fijar el blockout; revisar con especialista | F3, `DECISIONS/0010` |
 | Sin la fortaleza de Sacsayhuamán en 1438 (obra posterior) | Interpretación de diseño; revisar con especialista | F3, GDD §10.2 |
+| Exploradores chancas en las terrazas de Carmenca antes del asalto; el ejército de Uscovilca llega después (pututus del final del slice) | Licencia del juego apoyada en el asalto por Carmenca (Betanzos); revisar con especialista | F4, GDD §14.1 |
+| Ofrenda de hojas de coca a la huaca antes de combatir | Práctica andina documentada; su uso en este momento concreto es licencia del juego | F4, tarea 4 |
+| Visión en la huaca: siluetas de piedra en la niebla que anticipan los Pururaucas | Licencia del juego | GDD §14.1, F4 tarea 4 |
+| Ayllu de Carmenca al que los chancas roban las llamas al alba; si Cusi las recupera, sus hombres le ayudan a defender el paso | Licencia del juego (base del sistema de Apoyo, inspirado en los curacas que esperan a ver quién gana) | F4, tarea 6, `DECISIONS/0012` |
+| Pututus como señal de ataque chanca | Instrumento documentado en los Andes; su uso como llamada de ataque chanca es licencia del juego | GDD §11.2, F4 tareas 9 y 12b |
+| Entrenamiento de Cusi con Vicaquirao en el mirador antes de subir | Licencia del juego (la personalidad de Vicaquirao ya figura como inventada en «Aliados») | F4, tarea 12a |
+| Carmenca a medio vaciar: parte de la gente huye con la corte de Viracocha; se quedan algunos ancianos y unos pocos leales con Cusi y Vicaquirao | Licencia del juego apoyada en la huida del Inca y en que Cusi se queda «con pocos leales» (Betanzos) | F4, tarea 12c y voces del mirador |
+| Ropa de la familia que huye (anacu, lliclla, chumpi, q'epi) y de los guerreros leales | Interpretación de diseño con prendas documentadas; formas y colores provisionales; revisar con especialista | F4, tarea 12c |
 
 ## Lo que no se cambia (GDD §3.5)
 
@@ -53,3 +61,8 @@ Columna vertebral: Juan de Betanzos, *Suma y narración de los incas* (1551).
 ## Pendiente antes de publicar
 
 Revisión por un historiador o arqueólogo peruano y por un quechuahablante (GDD §3.6).
+
+Por verificar:
+
+- Confirmar en Betanzos (ed. Martín Rubio) dónde acampa el grueso chanca antes del asalto; una traducción del siglo XIX (Markham) lo sitúa en la colina de Carmenca.
+- Medir con mapa topográfico el desnivel real de Santa Ana sobre la plaza y decidir si se baja el mirador.
