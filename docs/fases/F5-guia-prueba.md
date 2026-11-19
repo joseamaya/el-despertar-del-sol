@@ -5,7 +5,8 @@ Cómo repartir la build `0.1-slice` y qué decir a quien la prueba. Protocolo:
 
 - **Descarga:** <https://github.com/joseamaya/el-despertar-del-sol/releases/tag/v0.1-slice>
   (pre-release pública; no hace falta cuenta de GitHub).
-- **Encuesta:** _pendiente: el enlace de Google Forms cuando el desarrollador lo cree_.
+- **Encuesta:** <https://docs.google.com/forms/d/e/1FAIpQLSfPkpQ09ub_1GC0BEbkq5vzGU4dXjLb4tn4lIXpbk_5yw0u3g/viewform>
+  (Google Forms en la cuenta del desarrollador; no recopila correos ni pide iniciar sesión).
 
 ## 1. Lo que hace el desarrollador
 
@@ -59,7 +60,8 @@ Cómo repartir la build `0.1-slice` y qué decir a quien la prueba. Protocolo:
 >    sin prisa ni ayuda: arriba a la izquierda verás siempre el objetivo.
 > 2. En la pantalla de «Fin» pulsa **C** (o **Y** en el mando): se copia un resumen de tu
 >    partida.
-> 3. Abre la encuesta y pega ese resumen donde lo pide (Ctrl+V): _enlace de la encuesta_.
+> 3. Abre la encuesta y pega ese resumen donde lo pide (Ctrl+V):
+>    <https://docs.google.com/forms/d/e/1FAIpQLSfPkpQ09ub_1GC0BEbkq5vzGU4dXjLb4tn4lIXpbk_5yw0u3g/viewform>.
 >    Son unos 5 minutos y no pide tu nombre ni tu correo.
 >
 > Si el juego falla o no arranca, cuéntamelo igualmente: también sirve.
