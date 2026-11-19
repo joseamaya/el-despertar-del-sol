@@ -2,7 +2,7 @@ extends GdUnitTestSuite
 ## Integration: the people of Carmenca (F4 task 12c). Everyone is placed on the ground
 ## with their look and clip, nobody collides, casts shadows or can be locked on; the
 ## family walks its route down past the lookout and leaves once out of sight, while the
-## ones who stayed are still there.
+## ones who stayed are still there; only those near the camera are drawn and animated.
 
 const SCENE: String = "res://scenes/levels/carmenca.tscn"
 
@@ -95,3 +95,21 @@ func test_people_cannot_be_locked_on() -> void:
 	for i: int in _crowd.count():
 		var areas: Array[Node] = _crowd.body(i).find_children("*", "Area3D", true, false)
 		assert_array(areas).is_empty()
+
+
+func test_only_the_people_near_the_camera_are_drawn_and_animated() -> void:
+	await _frames(int(SectorCrowd.CULL_INTERVAL * 60.0) + 5)
+	var eye: Vector3 = get_viewport().get_camera_3d().global_position
+	var near: int = 0
+	var far: int = 0
+	for i: int in _crowd.count():
+		var body: Node3D = _crowd.body(i)
+		var close: bool = body.global_position.distance_to(eye) <= _crowd.people.draw_distance
+		assert_bool(_crowd.is_active(i)).override_failure_message("person %d" % i).is_equal(close)
+		var anim := body.find_child("AnimationPlayer", true, false) as AnimationPlayer
+		assert_bool(anim.active).is_equal(close)
+		near += 1 if close else 0
+		far += 0 if close else 1
+	# At the lookout: the loyal warriors are close, the elders down in the houses are not.
+	assert_int(near).is_greater(0)
+	assert_int(far).is_greater(0)
