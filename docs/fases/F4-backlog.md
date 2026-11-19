@@ -23,7 +23,8 @@ del §14.3.
 | 11 | Mando físico y build de Windows (deuda de F3) | En curso: mapa de mando probado (A/B arreglados en menús) y F3 con FPS; build de Windows con un tester (`F4-prueba-windows.md`); mando físico pasa a F5 |
 | 12 | Partida completa: 8–12 min en la build exportada, rendimiento con todo integrado, partida de bot de principio a fin | En curso: bot de principio a fin (2 min 54 s, 109 FPS, 0,6 % lentos); tiempo en el «Fin»; partida del desarrollador: 4 min 28 s, por debajo del criterio; se añaden 12a y 12b; falta repetir la medida en reposo |
 | 12a | Tutorial con Vicaquirao en el mirador: bloquear, parry, esquivar y golpear (GDD §5.2) | Hecha: 4 ejercicios con objetivos, Vicaquirao no hace daño ni cae; flag `skip_training` |
-| 12b | Refuerzos en el paso: 2 chancas más tras los 3 primeros, anunciados con el pututu | Pendiente |
+| 12b | Refuerzos en el paso: 3 chancas más tras los 3 primeros, anunciados con el pututu | Hecha: bajan desde lo alto tras el pututu y el cartel; los comuneros libres los entretienen; una derrota reinicia el paso; nunca más de 3 chancas a la vez |
+| 12c | Carmenca recién abandonada: más casas, señales de huida, pocas personas (familias bajando, ancianos, leales) | Pendiente; licencia histórica a registrar |
 | 13 | Cierre de F4 con `phase-gate` | Pendiente |
 
 **Qué se recorta primero** si se pasa de 4,5 semanas:

@@ -39,10 +39,16 @@ func _frames(count: int) -> void:
 		await get_tree().physics_frame
 
 
+## Kills the zone's warriors, and its reinforcements once they come (F4 task 12b).
 func _kill_zone() -> void:
-	for enemy: EnemyController in _arena.alive_enemies():
-		enemy.health.apply_damage(enemy.health.get_maximum())
-	await _frames(3)
+	for wave: int in 2:
+		for enemy: EnemyController in _arena.alive_enemies():
+			enemy.health.apply_damage(enemy.health.get_maximum())
+		await _frames(3)
+		for i: int in int(_arena.wave_delay * 60.0) + 30:
+			if not _arena.is_wave_pending():
+				break
+			await _frames(1)
 
 
 func _go_to(marker: StringName) -> void:
@@ -128,6 +134,8 @@ func _play_to_end() -> void:
 func test_whole_slice_reaches_the_end() -> void:
 	var acts: Array[int] = []
 	var finished: Array[bool] = [false]
+	var notices: Array[StringName] = []
+	_slice.notice_shown.connect(func(key: StringName) -> void: notices.append(key))
 	_slice.act_changed.connect(func(act: SliceStep.Act) -> void: acts.append(act))
 	_slice.slice_finished.connect(func() -> void: finished[0] = true)
 	await _play_to_end()
@@ -137,6 +145,8 @@ func test_whole_slice_reaches_the_end() -> void:
 	for zone: int in [1, 2, 3]:
 		assert_bool(_arena.is_zone_won(zone)).is_true()
 	assert_int(_arena.alive_enemies().size()).is_equal(0)
+	# The pass called its reinforcements (F4 task 12b).
+	assert_array(notices).contains([&"NOTICE_REINFORCEMENTS"])
 
 
 func test_defeat_in_the_second_skirmish_respawns_at_its_checkpoint() -> void:

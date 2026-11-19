@@ -51,3 +51,5 @@ enum Drill { BLOCK, PARRY, EVADE, HIT }
 @export var unless: StringName = &""
 ## Shown as a banner when the step completes (translation key).
 @export var notice: StringName = &""
+## ENCOUNTER: shown as a banner when the zone calls its reinforcements (F4 task 12b).
+@export var wave_notice: StringName = &""

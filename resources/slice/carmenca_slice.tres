@@ -207,6 +207,7 @@ act = 3
 kind = 1
 radius = 4.0
 zone = 3
+wave_notice = &"NOTICE_REINFORCEMENTS"
 checkpoint = &"Checkpoint4"
 
 [sub_resource type="Resource" id="Step_13"]

@@ -2,8 +2,9 @@ class_name SliceAudio
 extends Node
 ## Plays the slice's ambience, music and calls (F4 task 9) from the signals of the slice,
 ## the arena and the huaca rite: wind all along; music in the acts that have it; the
-## pututu when the pass first sees the player and whatever sound a step carries; the
-## vision heard through a low-pass filter. Owns its players; no system calls it.
+## pututu when the pass first sees the player, again when it calls its reinforcements
+## (F4 task 12b), and whatever sound a step carries; the vision heard through a low-pass
+## filter. Owns its players; no system calls it.
 
 const MASTER: StringName = &"Master"
 const SILENT_DB: float = -60.0
@@ -35,6 +36,7 @@ func _ready() -> void:
 	slice.step_started.connect(_on_step_started)
 	if arena != null:
 		arena.encounter_started.connect(func() -> void: _engaged = false)
+		arena.reinforcements_called.connect(_on_reinforcements_called)
 	if rite != null:
 		rite.offering_made.connect(_muffle.bind(true).unbind(1))
 		rite.rite_finished.connect(_muffle.bind(false))
@@ -73,6 +75,11 @@ func play_call(stream: AudioStream, db: float) -> void:
 	_calls.stream = stream
 	_calls.volume_db = db
 	_calls.play()
+
+
+func _on_reinforcements_called(_zone: int) -> void:
+	if tuning.pututu != null:
+		play_call(tuning.pututu, tuning.pututu_db)
 
 
 func _on_act_changed(act: SliceStep.Act) -> void:

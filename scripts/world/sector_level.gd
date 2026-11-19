@@ -41,6 +41,9 @@ func rebuild() -> void:
 		arena.spawn_points = spawn_markers()
 		# One zone per encounter, started by the slice (F4 task 2).
 		arena.zone_sizes = layout.encounter_enemies
+		# And the warriors who come when a zone's first ones fall (F4 task 12b).
+		arena.wave_points = spawn_markers("Wave")
+		arena.wave_sizes = wave_sizes()
 	if backdrop != null:
 		var eye := Vector3(
 			layout.start.x, layout.height_at(layout.start.x, layout.start.y) + 1.6, layout.start.y
@@ -55,12 +58,25 @@ func rebuild() -> void:
 		place_player_at.call_deferred(&"Start", Vector3(0, 0, 1), START_PITCH)
 
 
-## The spawn markers of every encounter zone, in order.
-func spawn_markers() -> Array[Node3D]:
+## The spawn markers of every encounter zone, in order ("Wave": the reinforcements').
+func spawn_markers(prefix: String = "Spawn") -> Array[Node3D]:
 	var out: Array[Node3D] = []
 	for node: Node in sector.get_children():
-		if String(node.name).begins_with("Spawn"):
+		if String(node.name).begins_with(prefix):
 			out.append(node as Node3D)
+	return out
+
+
+## Reinforcements of each encounter zone, in order (0 where none come).
+func wave_sizes() -> PackedInt32Array:
+	var out := PackedInt32Array()
+	for i: int in layout.encounters.size():
+		var wave: int = (
+			int(layout.encounter_reinforcements[i].z)
+			if i < layout.encounter_reinforcements.size()
+			else 0
+		)
+		out.append(wave)
 	return out
 
 

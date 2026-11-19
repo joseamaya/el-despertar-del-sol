@@ -59,6 +59,9 @@ const STEP_MAX_RUN: float = 1.5
 @export var encounters: PackedVector3Array = PackedVector3Array()
 ## Enemies waiting in each encounter zone (same order as `encounters`).
 @export var encounter_enemies: PackedInt32Array = PackedInt32Array()
+## Reinforcements of each encounter zone (same order): (x, z, count). They come from
+## (x, z), uphill, once the zone's first warriors have fallen (F4 task 12b).
+@export var encounter_reinforcements: PackedVector3Array = PackedVector3Array()
 ## Houses: (x, z, yaw in degrees).
 @export var houses: PackedVector3Array = PackedVector3Array()
 ## Corrals: (x, z, radius); opening downhill (+Z).

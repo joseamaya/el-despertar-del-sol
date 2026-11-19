@@ -5,6 +5,8 @@ extends Node3D
 ## each draws one chanca away. They are chanca warriors on the player's side with their
 ## own data: their blows only wear posture down, so the player still finishes every
 ## fight. When no free chanca is left facing the player, the nearest drawn one comes back.
+## When the pass's reinforcements arrive, the comuneros left idle draw them away too, but
+## the nearest one still comes for the player (F4 task 12b).
 
 signal allies_arrived
 
@@ -29,6 +31,7 @@ func _ready() -> void:
 	assert(tuning != null and ally_scene != null, "SupportAllies: tuning and scene.")
 	assert(arena != null and slice != null and level != null, "SupportAllies: parts.")
 	arena.encounter_started.connect(_on_encounter_started)
+	arena.reinforcements_arrived.connect(_on_reinforcements_arrived)
 
 
 func _physics_process(_delta: float) -> void:
@@ -63,19 +66,32 @@ func _should_come() -> bool:
 
 func _arrive() -> void:
 	_arrived = true
-	# The one nearest the player stays theirs; the farthest ones are drawn away.
-	var chancas: Array[EnemyController] = arena.alive_enemies()
+	for i: int in tuning.count:
+		_spawn(i)
+	_pair_idle()
+	slice.announce(tuning.notice)
+	allies_arrived.emit()
+
+
+## Each idle comunero draws away an unpaired chanca, farthest from the player first; the
+## nearest one always stays the player's.
+func _pair_idle() -> void:
+	var chancas: Array[EnemyController] = []
+	for chanca: EnemyController in arena.alive_enemies():
+		if not _pairs.has(chanca):
+			chancas.append(chanca)
 	var player_at: Vector3 = arena.player.global_position
 	chancas.sort_custom(
 		func(a: EnemyController, b: EnemyController) -> bool:
 			return a.distance_to(player_at) > b.distance_to(player_at)
 	)
-	for i: int in tuning.count:
-		var ally: EnemyController = _spawn(i)
-		if i < chancas.size() - 1:
-			_pair(ally, chancas[i])
-	slice.announce(tuning.notice)
-	allies_arrived.emit()
+	var next: int = 0
+	for ally: EnemyController in _allies:
+		if next >= chancas.size() - 1:
+			return
+		if is_instance_valid(ally) and not ally.is_dead() and not _pairs.values().has(ally):
+			_pair(ally, chancas[next])
+			next += 1
 
 
 func _spawn(index: int) -> EnemyController:
@@ -169,6 +185,11 @@ func _on_ally_died(ally: EnemyController) -> void:
 	for chanca: EnemyController in _pairs.keys():
 		if _pairs[chanca] == ally:
 			_release(chanca)
+
+
+func _on_reinforcements_arrived(zone: int) -> void:
+	if _arrived and zone == tuning.zone:
+		_pair_idle()
 
 
 ## A zone starts or restarts after a defeat: the comuneros go, and come again when the
