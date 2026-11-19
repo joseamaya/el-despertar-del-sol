@@ -367,9 +367,8 @@ func test_the_end_shows_saves_and_copies_the_summary() -> void:
 	assert_str(FileAccess.get_file_as_string(SessionSummary.FILE_PATH)).contains(text)
 	var hud := _runner.find_child("Hud") as Hud
 	assert_str(hud.hint_label.text).contains(text).contains(tr(&"SUMMARY_COPY"))
-	var key := InputEventKey.new()
-	key.physical_keycode = KEY_C
-	key.pressed = true
-	Input.parse_input_event(key)
-	await _frames(3)
+	# What C / Y does (the binding itself: test_input_map). A simulated key press does not
+	# reach the game on the headless CI runner.
+	summary.copy()
+	await _frames(2)
 	assert_str(hud.hint_label.text).contains(tr(&"SUMMARY_COPIED"))
