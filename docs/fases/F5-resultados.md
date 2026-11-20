@@ -46,9 +46,10 @@ Escalas de 1 a 5. Dificultad: 1 = demasiado fácil, 3 = justo, 5 = demasiado dif
 
 ## Observaciones para el análisis (tarea 8)
 
-- **P1:**
-  - Primera partida completa en Windows sin fallos y con fluidez 5. Es una evidencia para el
-    criterio 1 de §14.4, que estaba pendiente en Windows (`F5-revision-slice.md`).
+- **P1** (la prueba piloto, tarea 6):
+  - Primera partida completa en Windows sin fallos y con fluidez 5. Cierra el criterio 1 de
+    §14.4 en Windows, que estaba pendiente (`F5-revision-slice.md`). El mando sigue sin
+    probarse.
   - El 3 del combate coincide con lo que cambiaría: la respuesta al esquivar y atacar.
   - Señales de que respondió con prisa:
     - la partida duró 4:11, frente a los 8–12 minutos previstos;
