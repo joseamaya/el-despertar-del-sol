@@ -12,8 +12,6 @@ extends Node
 ## Nodes that read combat input, paused while focused.
 @export var frozen: Array[Node] = []
 @export_range(0.1, 6.0, 0.1, "suffix:s") var turn_time: float = 2.0
-## Camera pitch while looking (negative looks down).
-@export_range(-1.2, 0.6, 0.01, "suffix:rad") var pitch: float = -0.06
 
 var _focused: bool = false
 var _tween: Tween
@@ -30,8 +28,9 @@ func is_focused() -> bool:
 	return _focused
 
 
-## Turns towards `point` over turn_time and holds the player.
-func focus(point: Vector3) -> void:
+## Turns towards `point` over turn_time, with the camera at `pitch` (negative looks
+## down), and holds the player.
+func focus(point: Vector3, pitch: float = -0.06) -> void:
 	# Again on every step: a conversation lets the player go when it ends.
 	PlayerHold.set_held(player, frozen, true)
 	camera_rig.set_process_unhandled_input(false)
@@ -62,6 +61,6 @@ func release() -> void:
 
 func _on_step_started(step: SliceStep) -> void:
 	if step.look_at != &"":
-		focus(level.marker_position(step.look_at))
+		focus(level.marker_position(step.look_at), step.look_pitch)
 	else:
 		release()

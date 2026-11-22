@@ -67,6 +67,14 @@ func skip_optional() -> SliceStep:
 	return current()
 
 
+## Sets `flag` and moves past the steps it turns off, from the current one (skipping the
+## opening). Returns the step reached.
+func skip_with(flag: StringName) -> SliceStep:
+	set_flag(flag)
+	_settle()
+	return current()
+
+
 func set_flag(flag: StringName) -> void:
 	if flag != &"" and not _flags.has(flag):
 		_flags.append(flag)

@@ -38,6 +38,7 @@ func _skip_opening() -> void:
 	var talk := _runner.find_child("DialoguePlayer") as DialoguePlayer
 	# Past the opening, without Vicaquirao's training (F4 task 12a).
 	(_runner.find_child("SliceDirector") as SliceDirector).flow.set_flag(&"skip_training")
+	(_runner.find_child("SliceDirector") as SliceDirector).skip_intro()
 	while talk.is_playing():
 		talk.advance()
 	await _frames(2)

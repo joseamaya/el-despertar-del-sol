@@ -28,6 +28,7 @@ func before_test() -> void:
 	await _frames(5)
 	# Vicaquirao's training has its own suite (tests/training).
 	_slice.flow.set_flag(&"skip_training")
+	_slice.skip_intro()
 
 
 func after_test() -> void:
@@ -103,8 +104,7 @@ func test_opening_dialogue_holds_the_first_zone_and_the_player() -> void:
 	var box := _runner.find_child("DialogueBox") as DialogueBox
 	assert_bool(talk.is_playing()).is_true()
 	assert_bool(box.is_showing()).is_true()
-	# F5 (build 0.1.1): it opens with who, where and when, before anyone speaks.
-	assert_str(box.shown_text()).is_equal(tr(&"CTX_INTRO_1"))
+	assert_str(box.shown_text()).is_equal(tr(&"DLG_OPENING_1"))
 	# Nobody comes while Vicaquirao speaks, and Cusi cannot fight.
 	await _frames(300)
 	assert_int(_arena.alive_enemies().size()).is_equal(0)
@@ -116,7 +116,8 @@ func test_opening_dialogue_holds_the_first_zone_and_the_player() -> void:
 
 
 func test_opening_leads_to_the_first_zone_only() -> void:
-	assert_int(_slice.flow.index()).is_equal(0)
+	# The opening shots are skipped (before_test): the first conversation is on.
+	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.DIALOGUE)
 	assert_int(_arena.alive_enemies().size()).is_equal(0)
 	await _finish_step()
 	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.ENCOUNTER)

@@ -133,9 +133,12 @@ func test_carmenca_slice_visits_every_act_and_zone() -> void:
 	assert_array(acts).is_equal([0, 1, 2, 3, 4])
 	assert_array(zones).is_equal([1, 2, 3])
 	assert_str(seq.steps[0].checkpoint).is_equal("Start")
-	# Vicaquirao opens the slice (F4 task 3).
-	assert_int(seq.steps[0].kind).is_equal(SliceStep.Kind.DIALOGUE)
-	assert_object(seq.steps[0].dialogue).is_not_null()
+	# Three opening shots (F5, build 0.1.1), then Vicaquirao speaks (F4 task 3).
+	for i: int in 3:
+		assert_int(seq.steps[i].kind).is_equal(SliceStep.Kind.WAIT)
+		assert_str(String(seq.steps[i].caption)).is_not_empty()
+	assert_int(seq.steps[3].kind).is_equal(SliceStep.Kind.DIALOGUE)
+	assert_object(seq.steps[3].dialogue).is_not_null()
 
 
 ## Places with nothing to see yet (the family, the ending) must trigger from the path
@@ -153,8 +156,9 @@ func test_carmenca_unmarked_places_are_reached_from_the_path() -> void:
 ## and the Apoyo choice can set it (F4 task 6).
 func test_carmenca_conditions_read_flags_set_earlier() -> void:
 	var seq := load(CARMENCA) as SliceSequence
-	# skip_training comes from the training choice, or from outside (tests).
-	var set_so_far: Array[StringName] = [&"skip_training"]
+	# skip_training comes from the training choice, or from outside (tests); skip_intro
+	# from the skip button.
+	var set_so_far: Array[StringName] = [&"skip_training", &"skip_intro"]
 	var choices: int = 0
 	for s: SliceStep in seq.steps:
 		for flag: StringName in [s.only_if, s.unless]:
@@ -217,3 +221,16 @@ func test_carmenca_ends_looking_at_cusco() -> void:
 		assert_str(steps[i].look_at).is_equal("CuscoView")
 		assert_int(steps[i].act).is_equal(SliceStep.Act.ENDING)
 	assert_int(steps[-1].kind).is_equal(SliceStep.Kind.WAIT)
+
+
+## The opening is skipped by setting its flag mid-way (F5, build 0.1.1).
+func test_skip_with_leaves_the_steps_it_turns_off() -> void:
+	var seq := SliceSequence.new()
+	for unless: StringName in [&"skip_intro", &"skip_intro", &""]:
+		var step := SliceStep.new()
+		step.unless = unless
+		seq.steps.append(step)
+	var flow := SliceFlow.new(seq)
+	assert_int(flow.index()).is_equal(0)
+	assert_object(flow.skip_with(&"skip_intro")).is_same(seq.steps[2])
+	assert_int(flow.index()).is_equal(2)

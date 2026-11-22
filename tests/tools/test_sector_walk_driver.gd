@@ -42,6 +42,15 @@ func test_walk_clears_enemies_follows_the_path_and_names_stretches() -> void:
 	var walker := SectorWalkDriver.new()
 	_load(walker)
 	await _frames(5)
+	# The opening shots, the first talk and the training hold the player (F5, build
+	# 0.1.1): skip them, as a player in a hurry would.
+	var slice := _scene.find_child("SliceDirector", true, false) as SliceDirector
+	var talk := _scene.find_child("DialoguePlayer", true, false) as DialoguePlayer
+	slice.skip_intro()
+	slice.flow.set_flag(&"skip_training")
+	while talk.is_playing():
+		talk.advance()
+	await _frames(2)
 	assert_int(_arena.alive_enemies().size()).is_equal(0)
 	assert_str(walker.stretch()).is_equal("mirador")
 	Engine.time_scale = 3.0

@@ -81,9 +81,10 @@ DLG_TRAIN_END,Suficiente. Los chancas no serán tan pacientes.,Enough. The Chanc
 DLG_TRAIN_OFFER,"Antes de subir, ¿entrenas conmigo? Son golpes de práctica: no te haré daño.","Before we climb, will you train with me? Practice blows: I will not hurt you."
 CHOICE_TRAIN_YES,Entrenar con Vicaquirao (recomendado la primera vez),Train with Vicaquirao (recommended the first time)
 CHOICE_TRAIN_SKIP,Saltar el entrenamiento e ir a las terrazas,Skip the training and go to the terraces
-CTX_INTRO_1,"Cusco, hacia 1438. Los chancas, dirigidos por Uscovilca, avanzan desde Andahuaylas para tomar la ciudad.","Cusco, around 1438. The Chancas, led by Uscovilca, are marching from Andahuaylas to take the city."
-CTX_INTRO_2,"El inca Viracocha y su hijo Urco se han retirado a Xaquixaguana. Tú eres Cusi Yupanqui, otro de sus hijos, y te quedas a defender el Cusco con unos pocos leales.","The Inca Viracocha and his son Urco have withdrawn to Xaquixaguana. You are Cusi Yupanqui, another of his sons, and you stay to defend Cusco with a few loyal followers."
-CTX_INTRO_3,"Empiezas en Carmenca, en la ladera sobre la ciudad, junto a Vicaquirao, uno de esos leales.","You begin in Carmenca, on the slope above the city, beside Vicaquirao, one of those loyal few."
+CTX_SHOT_1,"Cusco, hacia 1438","Cusco, around 1438"
+CTX_SHOT_2,Los chancas de Uscovilca han llegado para tomar la ciudad,The Chancas of Uscovilca have come to take the city
+CTX_SHOT_3,"Tú eres Cusi Yupanqui. Tu padre, el Inca, se ha ido. Tú te quedas.","You are Cusi Yupanqui. Your father, the Inca, has gone. You stay."
+INTRO_SKIP,E / A: saltar,E / A: skip
 OBJ_TRAIN_BLOCK,"Entrenamiento: de cara a Vicaquirao, mantén F / LB para bloquear sus golpes ({count})","Training: facing Vicaquirao, hold F / LB to block his blows ({count})"
 OBJ_TRAIN_PARRY,Entrenamiento: suelta F / LB y vuelve a pulsarlo justo antes de que llegue el golpe (parry),Training: let go of F / LB and press it again just before the blow lands (parry)
 OBJ_TRAIN_EVADE,Entrenamiento: esquiva sus golpes (Espacio / B) ({count}),Training: dodge his blows (Space / B) ({count})

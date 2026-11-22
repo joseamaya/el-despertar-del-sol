@@ -49,6 +49,8 @@
 [ext_resource type="Resource" path="res://resources/levels/carmenca_people.tres" id="47_people"]
 [ext_resource type="Script" path="res://scripts/ui/passing_line.gd" id="48_passing"]
 [ext_resource type="Script" path="res://scripts/systems/session_summary.gd" id="49_summary"]
+[ext_resource type="Script" path="res://scripts/systems/slice_staging.gd" id="50_staging"]
+[ext_resource type="Script" path="res://scripts/ui/slice_caption.gd" id="51_caption"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -331,6 +333,17 @@ slice = NodePath("../SliceDirector")
 
 [node name="FpsOverlay" type="CanvasLayer" parent="." unique_id=1544120770]
 script = ExtResource("43_fps")
+
+[node name="SliceStaging" type="Node" parent="." unique_id=1544120790 node_paths=PackedStringArray("slice", "level", "player")]
+script = ExtResource("50_staging")
+slice = NodePath("../SliceDirector")
+level = NodePath("../SectorLevel")
+player = NodePath("../Player")
+enemy_scene = ExtResource("12_27mym")
+
+[node name="SliceCaption" type="CanvasLayer" parent="." unique_id=1544120791 node_paths=PackedStringArray("slice")]
+script = ExtResource("51_caption")
+slice = NodePath("../SliceDirector")
 
 [connection signal="hit_landed" from="Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox" to="HitStop" method="on_hit_landed"]
 [connection signal="target_locked" from="Player/LockOn" to="CameraRig" method="set_lock_target"]
