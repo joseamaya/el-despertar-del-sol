@@ -62,6 +62,13 @@ después rellenan el formulario, pasan a tener su número P.
   - **Orientación:** pide flechas que indiquen adónde ir; hay gente que se queda parada sin
     saber hacia dónde avanzar.
   - **Llamas:** al liberarlas no tienen animación de caminar.
+- **Varios (2026-11-21, contado por el desarrollador):**
+  - **Contexto:** uno no entiende de qué trata el juego. No hay suficiente explicación: no
+    saben dónde están, quiénes son los chancas ni quién es el jugador.
+  - **Entrenamiento:** algunos creyeron que el entrenamiento ya era el combate. Preguntaban
+    con cuántos golpes muere Vicaquirao porque no lograban matarlo.
+  - **Orientación:** otros no sabían adónde ir. El desarrollador cree que no leyeron bien
+    las instrucciones.
 
 ## Observaciones para el análisis (tarea 8)
 
