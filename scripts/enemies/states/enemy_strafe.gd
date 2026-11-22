@@ -18,6 +18,10 @@ func exit() -> void:
 	_enemy().clear_face()
 
 
+func seed_rng(value: int) -> void:
+	_rng.seed = value
+
+
 func physics_update(delta: float) -> StringName:
 	var enemy: EnemyController = _enemy()
 	if not enemy.perception.has_target():

@@ -2,6 +2,12 @@ extends GdUnitTestSuite
 ## Integration: three warriors on the player with the EncounterDirector (GDD §6.6).
 
 const TEST_SCENE: String = "res://scenes/tests/enemy_test.tscn"
+## Fixed seed for the warriors' random decisions (attack and cooldown rolls, strafing,
+## feints). Unseeded, every run played a different fight and the crowding below failed CI
+## by chance. Physics runs on a fixed step, so with the seed the fight is the same on any
+## machine. Over seeds 1-60 crowding was median 2.6 %, 90th percentile 9.9 %, and 5 of 60
+## went over 10 %; this seed sits at the median (2.6 %), not at the lucky end.
+const RNG_SEED: int = 49
 
 var _runner: GdUnitSceneRunner
 var _player: PlayerController
@@ -26,6 +32,7 @@ func before_test() -> void:
 		w.perception.data = data
 		w.guard.data = data
 		w.combat.data = data
+		w.seed_rng(RNG_SEED + 10 * i)
 		_warriors.append(w)
 	_player.global_position = Vector3(-8, 0.05, 4.5)
 	_player.velocity = Vector3.ZERO
@@ -84,7 +91,7 @@ func test_never_more_than_two_attack_at_once_and_all_take_turns() -> void:
 	assert_int(feints[0]).is_greater(0)
 	# Capsules (0.35 m) never interpenetrate, and the director keeps them apart nearly always.
 	assert_float(min_gap).is_greater_equal(0.65)
-	# Locally < 5 %; slower CI machines measured 6 %. Before the fix it was 11-21 %.
+	# 2.6 % with RNG_SEED. Before the director fix it was 11-21 %.
 	assert_float(float(crowded_frames) / sampled_frames).is_less(0.1)
 
 

@@ -141,6 +141,15 @@ func is_dead() -> bool:
 	return health != null and health.is_dead()
 
 
+## Reseeds every random decision of this enemy (guard, attacks, strafing) from `value`,
+## so tests and replays can reproduce a fight exactly.
+func seed_rng(value: int) -> void:
+	_rng.seed = value
+	if combat != null:
+		combat.seed_rng(value + 1)
+	state_machine.seed_rng(value + 2)
+
+
 func _flat_distance(point: Vector3) -> float:
 	return Vector2(point.x - global_position.x, point.z - global_position.z).length()
 

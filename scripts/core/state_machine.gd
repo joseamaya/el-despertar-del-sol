@@ -54,3 +54,11 @@ func current_name() -> StringName:
 
 func has_state(state_name: StringName) -> bool:
 	return _states.has(state_name)
+
+
+## Reseeds every state, each with its own seed derived from `value`.
+func seed_rng(value: int) -> void:
+	var offset: int = 0
+	for state: State in _states.values():
+		state.seed_rng(value + offset)
+		offset += 1

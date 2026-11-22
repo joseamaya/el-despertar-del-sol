@@ -16,3 +16,8 @@ func exit() -> void:
 
 func physics_update(_delta: float) -> StringName:
 	return &""
+
+
+## Reseeds whatever randomness the state uses (reproducible tests). Override if any.
+func seed_rng(_value: int) -> void:
+	pass
