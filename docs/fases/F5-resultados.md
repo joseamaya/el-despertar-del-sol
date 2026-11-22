@@ -1,7 +1,7 @@
 # F5 · Resultados de la prueba externa
 
-**Estado:** en curso, con 1 respuesta (mínimo: 5) · Protocolo: `DECISIONS/0013` · Encuesta:
-`F5-encuesta.md` · Build: `0.1-slice`
+**Estado:** en curso, con 2 respuestas (mínimo: 5) · Protocolo: `DECISIONS/0013` · Encuesta:
+`F5-encuesta.md` · Builds: `0.1-slice` (P1–P2) y `0.1.1-slice` (enmienda de `0013`)
 
 Cada persona aparece como P1, P2… en el orden en que llega su respuesta. Aquí solo hay
 puntuaciones, el resumen de partida y citas textuales, sin nada que identifique a nadie. La
@@ -17,21 +17,25 @@ terminaron el slice.
 | ★7 El combate se siente bien | 0 | 1 | 0 % | ≥ 70 % |
 | ★12 El escenario no parece medieval genérico | 0 | 1 | 0 % | ≥ 70 % |
 
-Con menos de 5 respuestas todavía no se aplica la regla de decisión.
+Con menos de 5 respuestas todavía no se aplica la regla de decisión. P2 no terminó, así que
+no cuenta aquí: puntuó 3 en las dos preguntas.
 
 ## Puntuaciones
 
 Escalas de 1 a 5. Dificultad: 1 = demasiado fácil, 3 = justo, 5 = demasiado difícil.
 
-| | Sistema | Control | Fin | Fluidez | ★Combate | Dificultad | Entrenamiento | ★Escenario | Historia | ¿Capítulo completo? |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| P1 | Windows | Teclado y ratón | Sí | 5 | 3 | 1 | 5 | 3 | 1 | Sí |
+| | Build | Sistema | Control | Fin | Fluidez | ★Combate | Dificultad | Entrenamiento | ★Escenario | Historia | ¿Capítulo completo? |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| P1 | 0.1 | Windows | Teclado y ratón | Sí | 5 | 3 | 1 | 5 | 3 | 1 | Sí |
+| P2 | 0.1 | Linux | Teclado y ratón | No: ayllu o casas | 4 | 3 | 3 | 4 | 3 | 2 | Quizás |
 
 ## Resúmenes de partida
 
 | | Total | Apertura | Exploración | Apoyo | Combate | Cierre | Derrotas (terrazas · casas · paso) | Ayllu | Ofrenda | Códice | Tutorial | Mando |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | P1 | 4:11 | 0:45 | 0:54 | 0:07 | 2:08 | 0:16 | 0 · 0 · 1 | Ayudó | Sí | No | Sí | No |
+
+P2 no llegó al «Fin», así que no hay resumen.
 
 ## Respuestas abiertas
 
@@ -43,6 +47,19 @@ Escalas de 1 a 5. Dificultad: 1 = demasiado fácil, 3 = justo, 5 = demasiado dif
 - **Algo que no se entendiera (15):** «No».
 - **Lo que más le gustó (17):** «La fluidez y la mecánica».
 - **Lo que cambiaría (18):** «La respuesta de los controles (Esquivar y atacar)».
+
+### P2
+- **Errores o cosas raras (6):** «no detecta los bloqueos a veces».
+- **Combate, lo mejor y lo peor (8):** «pocos recursos para causar daño y pocos movimientos,
+  no hay saltos».
+- **Frustración (10):** «Los graficos».
+- **Qué le hizo sentir los Andes (13):** «el paisaje te hace sentir en los andes, pero el
+  armamento se siente mediaval aunque es correcto en forma, quizá agregar algun detalle mas
+  realista».
+- **Algo que no se entendiera (15):** «se entiende, pero poco contexto».
+- **Lo que más le gustó (17):** «las graficas incaicas».
+- **Lo que cambiaría (18):** «la dinamica de las peleas, mas recursos, armas, movimientos,
+  combo».
 
 ## Comentarios fuera del formulario
 
@@ -85,3 +102,18 @@ después rellenan el formulario, pasan a tener su número P.
 
     Las notas de historia y dificultad se toman con cautela. Las dos del criterio 8 cuentan
     tal cual.
+- **P2** (enviada el 2026-11-21 a las 21:00, build `0.1-slice`):
+  - Lo dejó en el ayllu o las casas, sin errores técnicos graves (fluidez 4 en Linux).
+  - **Bloqueo:** «no detecta los bloqueos a veces». Coincide con O1 y con la queja general.
+    Encaja con el arco frontal de 120°: un golpe de lado entra aunque bloquees. La 0.1.1
+    explica el bloqueo, pero no cambia el arco.
+  - **Combate escaso:** pide más movimientos, armas, combos y saltos. Es la segunda
+    persona, después de P1, que apunta al combate como lo que cambiaría.
+  - **Contexto:** historia 2 y «poco contexto». Va en la línea de los comentarios fuera del
+    formulario, que llevaron a la apertura de la 0.1.1.
+  - **Escenario:** el paisaje se siente andino, pero el armamento le parece medieval. Es la
+    primera crítica concreta a la ★12; conviene contrastarla con `HISTORICAL_REFERENCES.md`
+    antes de decidir nada.
+  - Contradicción a vigilar: puso «Los graficos» como frustración y «las graficas
+    incaicas» como lo que más le gustó. Puede referirse a cosas distintas (calidad técnica
+    frente a estilo).
