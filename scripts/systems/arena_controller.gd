@@ -103,6 +103,8 @@ func reset_encounter() -> void:
 	_clear_enemies()
 	_new_attempt()
 	player.respawn(player_spawn.global_position, player_spawn.global_rotation.y)
+	# Up again from the fall, which stays held until now.
+	(player.get_node("Animator") as CharacterAnimator).stop_attack()
 	_player_health.reset()
 	_player_stamina.reset()
 	_set_player_controls(true)
@@ -258,7 +260,7 @@ func _on_player_died() -> void:
 	_set_player_controls(false)
 	player.begin_action(Vector3.ZERO, false)
 	var animator := player.get_node("Animator") as CharacterAnimator
-	animator.play_attack(death_clip, 1.0)
+	animator.play_and_hold(death_clip, 1.0)
 	for enemy: EnemyController in alive_enemies():
 		enemy.perception.target = null
 	await get_tree().create_timer(defeat_delay, false).timeout

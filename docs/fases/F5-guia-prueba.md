@@ -1,9 +1,9 @@
 # F5 · Guía de la prueba externa (tarea 5)
 
-Cómo repartir la build `0.1-slice` y qué decir a quien la prueba. Protocolo:
+Cómo repartir la build `0.1.1-slice` y qué decir a quien la prueba. Protocolo:
 `DECISIONS/0013`; encuesta: `F5-encuesta.md`.
 
-- **Descarga:** <https://github.com/joseamaya/el-despertar-del-sol/releases/tag/v0.1-slice>
+- **Descarga:** <https://github.com/joseamaya/el-despertar-del-sol/releases/tag/v0.1.1-slice>
   (pre-release pública; no hace falta cuenta de GitHub).
 - **Encuesta:** <https://docs.google.com/forms/d/e/1FAIpQLSfPkpQ09ub_1GC0BEbkq5vzGU4dXjLb4tn4lIXpbk_5yw0u3g/viewform>
   (Google Forms en la cuenta del desarrollador; no recopila correos ni pide iniciar sesión).
@@ -26,10 +26,10 @@ Cómo repartir la build `0.1-slice` y qué decir a quien la prueba. Protocolo:
 > minutos. Te pido unos 20 minutos en total: jugar y responder una encuesta corta.
 >
 > **Descargar**
-> 1. Entra en <https://github.com/joseamaya/el-despertar-del-sol/releases/tag/v0.1-slice>.
+> 1. Entra en <https://github.com/joseamaya/el-despertar-del-sol/releases/tag/v0.1.1-slice>.
 > 2. En «Assets», descarga el `.zip` de tu sistema:
->    - Windows: `el-despertar-del-sol-0.1-slice-windows.zip`.
->    - Linux: `el-despertar-del-sol-0.1-slice-linux.zip`.
+>    - Windows: `el-despertar-del-sol-0.1.1-slice-windows.zip`.
+>    - Linux: `el-despertar-del-sol-0.1.1-slice-linux.zip`.
 > 3. Descomprímelo.
 >
 > **Arrancar**
@@ -76,7 +76,7 @@ Cómo repartir la build `0.1-slice` y qué decir a quien la prueba. Protocolo:
 >    - en la pelea del paso, la última.
 > 2. En **Esc → Ajustes**, mueve el volumen y la calidad gráfica. Cierra el juego, vuelve a
 >    abrirlo y comprueba que los ajustes se mantienen.
-> 3. En **Esc** debe aparecer abajo a la derecha «Versión 0.1-slice».
+> 3. En **Esc** debe aparecer abajo a la derecha «Versión 0.1.1-slice».
 >
 > Y cuéntame:
 > 1. Tu Windows (10 u 11), procesador, tarjeta gráfica y memoria. Lo ves en *Configuración →

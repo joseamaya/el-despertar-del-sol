@@ -60,6 +60,28 @@ Backlog: `docs/fases/F5-backlog.md`.
    - Excepción: un fallo que impida terminar. En ese caso se publica `0.1.1-slice` y se
      anota quién jugó cada versión.
 
+## Enmienda (2026-11-21): build `0.1.1-slice` a mitad de la prueba
+
+Varias personas jugaron la `0.1-slice` sin rellenar la encuesta. Contaron que se atascaban
+en el entrenamiento, que no sabían de qué trataba el juego y que el personaje «resucitaba»
+al caer (`docs/fases/F5-resultados.md`, comentarios fuera del formulario). Esos problemas
+tapan lo que la prueba quiere medir: quien no llega al combate real no cuenta para el
+criterio 8. El desarrollador decide **cambiar la build una sola vez**, solo con lo que
+impide entender o avanzar:
+
+- **Muerte:** el cuerpo queda en el suelo hasta el reintento; antes se levantaba al acabar
+  la animación mientras esperaba el mensaje «Has caído».
+- **Entrenamiento:** Vicaquirao lo ofrece y se puede saltar; los objetivos dicen
+  «Entrenamiento» y explican cómo bloquear y hacer el parry; el paso del parry se da por
+  bueno tras 3 bloqueos normales (`training_drill.tres`).
+- **Contexto:** la apertura empieza con tres rótulos (cuándo, quién eres, dónde estás),
+  escritos solo con entradas que ya están en `HISTORICAL_REFERENCES.md`.
+
+**Lo que no cambia:** el combate, la dificultad, los escenarios, la encuesta y la regla de
+decisión. Las respuestas se marcan con la build que se jugó; P1 jugó la `0.1-slice`. Las
+flechas de orientación, los aliados del Apoyo y la animación de las llamas quedan para el
+análisis (tarea 8).
+
 ## Enmienda (2026-11-19): ampliar a quién se invita
 Tras la primera ronda de invitaciones solo había 2 personas dispuestas. El desarrollador
 decide **ampliar el punto 1** de la siguiente manera:

@@ -73,15 +73,21 @@ SETTINGS_BACK,Volver,Back
 CREDITS_CONCH,"Sonido de caracola: David Bolton, CC BY 2.5 (Wikimedia Commons)","Conch shell sound: David Bolton, CC BY 2.5 (Wikimedia Commons)"
 HUD_FPS,{fps} FPS · {ms} ms,{fps} FPS · {ms} ms
 SLICE_TIME,Tiempo: {min} min {s} s,Time: {min} min {s} s
-DLG_TRAIN_START,"Antes de subir, enséñame tu guardia. Para mis golpes.","Before we climb, show me your guard. Stop my blows."
+DLG_TRAIN_START,Enséñame tu guardia: para mis golpes.,Show me your guard: stop my blows.
 DLG_TRAIN_PARRY,Bien. Ahora páralo justo antes de que llegue: así se rompe la guardia del enemigo.,Good. Now stop it just before it lands: that is how you break an enemy's guard.
 DLG_TRAIN_EVADE,"Si no puedes pararlo, apártate.","If you cannot stop it, get out of its way."
 DLG_TRAIN_ATTACK,Ahora golpéame tú. No te contengas.,Now strike me. Do not hold back.
 DLG_TRAIN_END,Suficiente. Los chancas no serán tan pacientes.,Enough. The Chancas will not be so patient.
-OBJ_TRAIN_BLOCK,Bloquea los golpes de Vicaquirao (F / LB) ({count}),Block Vicaquirao's blows (F / LB) ({count})
-OBJ_TRAIN_PARRY,Bloquea justo antes del golpe para hacer un parry (F / LB),Block just before the blow lands to parry (F / LB)
-OBJ_TRAIN_EVADE,Esquiva sus golpes (Espacio / B) ({count}),Dodge his blows (Space / B) ({count})
-OBJ_TRAIN_HIT,Golpéalo (clic izquierdo / RB) ({count}),Strike him (left click / RB) ({count})
+DLG_TRAIN_OFFER,"Antes de subir, ¿entrenas conmigo? Son golpes de práctica: no te haré daño.","Before we climb, will you train with me? Practice blows: I will not hurt you."
+CHOICE_TRAIN_YES,Entrenar con Vicaquirao (recomendado la primera vez),Train with Vicaquirao (recommended the first time)
+CHOICE_TRAIN_SKIP,Saltar el entrenamiento e ir a las terrazas,Skip the training and go to the terraces
+CTX_INTRO_1,"Cusco, hacia 1438. Los chancas, dirigidos por Uscovilca, avanzan desde Andahuaylas para tomar la ciudad.","Cusco, around 1438. The Chancas, led by Uscovilca, are marching from Andahuaylas to take the city."
+CTX_INTRO_2,"El inca Viracocha y su hijo Urco se han retirado a Xaquixaguana. Tú eres Cusi Yupanqui, otro de sus hijos, y te quedas a defender el Cusco con unos pocos leales.","The Inca Viracocha and his son Urco have withdrawn to Xaquixaguana. You are Cusi Yupanqui, another of his sons, and you stay to defend Cusco with a few loyal followers."
+CTX_INTRO_3,"Empiezas en Carmenca, en la ladera sobre la ciudad, junto a Vicaquirao, uno de esos leales.","You begin in Carmenca, on the slope above the city, beside Vicaquirao, one of those loyal few."
+OBJ_TRAIN_BLOCK,"Entrenamiento: de cara a Vicaquirao, mantén F / LB para bloquear sus golpes ({count})","Training: facing Vicaquirao, hold F / LB to block his blows ({count})"
+OBJ_TRAIN_PARRY,Entrenamiento: suelta F / LB y vuelve a pulsarlo justo antes de que llegue el golpe (parry),Training: let go of F / LB and press it again just before the blow lands (parry)
+OBJ_TRAIN_EVADE,Entrenamiento: esquiva sus golpes (Espacio / B) ({count}),Training: dodge his blows (Space / B) ({count})
+OBJ_TRAIN_HIT,"Entrenamiento: golpea a Vicaquirao, que no puede caer (clic izquierdo / RB) ({count})","Training: strike Vicaquirao, who cannot fall (left click / RB) ({count})"
 BARK_FLEE_1,"¡Hay chancas en las terrazas de arriba! Bajamos al valle mientras podamos.","There are Chancas on the terraces above! We are going down to the valley while we can."
 BARK_FLEE_2,"El Inca se fue y nos dejó solos. Que el Sol te guarde, joven señor.","The Inca left and abandoned us. May the Sun keep you, young lord."
 PASSING_LINE,{speaker}: «{line}»,{speaker}: “{line}”

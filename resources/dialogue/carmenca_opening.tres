@@ -3,6 +3,18 @@
 [ext_resource type="Script" path="res://scripts/dialogue/dialogue_script.gd" id="1_script"]
 [ext_resource type="Script" path="res://scripts/dialogue/dialogue_line.gd" id="2_line"]
 
+[sub_resource type="Resource" id="Intro_1"]
+script = ExtResource("2_line")
+text = &"CTX_INTRO_1"
+
+[sub_resource type="Resource" id="Intro_2"]
+script = ExtResource("2_line")
+text = &"CTX_INTRO_2"
+
+[sub_resource type="Resource" id="Intro_3"]
+script = ExtResource("2_line")
+text = &"CTX_INTRO_3"
+
 [sub_resource type="Resource" id="Line_0"]
 script = ExtResource("2_line")
 speaker = &"NAME_VICAQUIRAO"
@@ -40,4 +52,4 @@ text = &"DLG_OPENING_7"
 
 [resource]
 script = ExtResource("1_script")
-lines = Array[ExtResource("2_line")]([SubResource("Line_0"), SubResource("Line_1"), SubResource("Line_2"), SubResource("Line_3"), SubResource("Line_4"), SubResource("Line_5"), SubResource("Line_6")])
+lines = Array[ExtResource("2_line")]([SubResource("Intro_1"), SubResource("Intro_2"), SubResource("Intro_3"), SubResource("Line_0"), SubResource("Line_1"), SubResource("Line_2"), SubResource("Line_3"), SubResource("Line_4"), SubResource("Line_5"), SubResource("Line_6")])

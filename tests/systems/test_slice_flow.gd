@@ -153,7 +153,7 @@ func test_carmenca_unmarked_places_are_reached_from_the_path() -> void:
 ## and the Apoyo choice can set it (F4 task 6).
 func test_carmenca_conditions_read_flags_set_earlier() -> void:
 	var seq := load(CARMENCA) as SliceSequence
-	# skip_training comes from outside the slice (tests; a menu option later).
+	# skip_training comes from the training choice, or from outside (tests).
 	var set_so_far: Array[StringName] = [&"skip_training"]
 	var choices: int = 0
 	for s: SliceStep in seq.steps:
@@ -168,7 +168,8 @@ func test_carmenca_conditions_read_flags_set_earlier() -> void:
 			for option: DialogueOption in s.choice.options:
 				if option.flag != &"":
 					set_so_far.append(option.flag)
-	assert_int(choices).is_equal(1)
+	# The training offer (F5, build 0.1.1) and the Apoyo.
+	assert_int(choices).is_equal(2)
 	# The huaca can be passed by; nothing else can.
 	var optional: Array[StringName] = []
 	for s: SliceStep in seq.steps:

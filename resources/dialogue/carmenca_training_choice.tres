@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="DialogueChoice" format=3]
+
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_choice.gd" id="1_choice"]
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_option.gd" id="2_option"]
+
+[sub_resource type="Resource" id="Option_0"]
+script = ExtResource("2_option")
+text = &"CHOICE_TRAIN_YES"
+
+[sub_resource type="Resource" id="Option_1"]
+script = ExtResource("2_option")
+text = &"CHOICE_TRAIN_SKIP"
+flag = &"skip_training"
+
+[resource]
+script = ExtResource("1_choice")
+speaker = &"NAME_CUSI"
+options = Array[ExtResource("2_option")]([SubResource("Option_0"), SubResource("Option_1")])

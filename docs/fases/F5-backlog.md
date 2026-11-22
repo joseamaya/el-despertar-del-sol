@@ -38,6 +38,10 @@
 
 ## Notas
 
+- **Build `0.1.1-slice` (2026-11-21):** enmienda de `DECISIONS/0013`. Arregla la caída
+  del jugador, el entrenamiento (opcional, sin atascos en el parry) y añade el contexto
+  inicial. La prueba sigue con esta build; P1 jugó la `0.1-slice`.
+
 - **Dificultad del paso:** no se toca antes de la prueba. Si en el análisis se confirma que la
   segunda oleada frustra, el primer ajuste es que los refuerzos tarden más en llegar
   (`wave_delay`, hoy 2 s); el segundo, bajar a 2 refuerzos.
