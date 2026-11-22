@@ -25,6 +25,8 @@ func before_test() -> void:
 	_npc = _runner.find_child("Vicaquirao") as Node3D
 	(_runner.find_child("CameraRig") as CameraController).capture_mouse = false
 	await _frames(10)
+	_slice.skip_intro()
+	await _frames(2)
 
 
 func after_test() -> void:

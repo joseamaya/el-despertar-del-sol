@@ -18,6 +18,41 @@
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_training_offer.tres" id="16_train_offer"]
 [ext_resource type="Resource" path="res://resources/dialogue/carmenca_training_choice.tres" id="17_train_choice"]
 
+[sub_resource type="Resource" id="Shot_1"]
+script = ExtResource("2_step")
+act = 0
+kind = 2
+radius = 4.0
+seconds = 6.0
+look_at = &"CuscoView"
+look_pitch = -0.06
+caption = &"CTX_SHOT_1"
+checkpoint = &"Start"
+unless = &"skip_intro"
+
+[sub_resource type="Resource" id="Shot_2"]
+script = ExtResource("2_step")
+act = 0
+kind = 2
+radius = 4.0
+seconds = 6.0
+look_at = &"Encounter1"
+look_pitch = 0.08
+caption = &"CTX_SHOT_2"
+stage_zone = 1
+unless = &"skip_intro"
+
+[sub_resource type="Resource" id="Shot_3"]
+script = ExtResource("2_step")
+act = 0
+kind = 2
+radius = 4.0
+seconds = 6.0
+look_at = &"Mentor"
+look_pitch = -0.12
+caption = &"CTX_SHOT_3"
+unless = &"skip_intro"
+
 [sub_resource type="Resource" id="Step_0"]
 script = ExtResource("2_step")
 act = 0
@@ -255,4 +290,4 @@ look_at = &"CuscoView"
 
 [resource]
 script = ExtResource("1_seq")
-steps = Array[ExtResource("2_step")]([SubResource("Step_0"), SubResource("Step_TO"), SubResource("Step_TC"), SubResource("Step_T0"), SubResource("Step_T1"), SubResource("Step_T2"), SubResource("Step_T3"), SubResource("Step_T4"), SubResource("Step_T5"), SubResource("Step_T6"), SubResource("Step_T7"), SubResource("Step_T8"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_13"), SubResource("Step_14"), SubResource("Step_15")])
+steps = Array[ExtResource("2_step")]([SubResource("Shot_1"), SubResource("Shot_2"), SubResource("Shot_3"), SubResource("Step_0"), SubResource("Step_TO"), SubResource("Step_TC"), SubResource("Step_T0"), SubResource("Step_T1"), SubResource("Step_T2"), SubResource("Step_T3"), SubResource("Step_T4"), SubResource("Step_T5"), SubResource("Step_T6"), SubResource("Step_T7"), SubResource("Step_T8"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_13"), SubResource("Step_14"), SubResource("Step_15")])

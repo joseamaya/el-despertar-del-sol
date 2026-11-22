@@ -35,6 +35,14 @@ enum Drill { BLOCK, PARRY, EVADE, HIT }
 ## Marker the player and the camera turn to while the step lasts, the player held still
 ## (the ending looks at Cusco, F4 task 7). Empty: free camera.
 @export var look_at: StringName = &""
+## Camera pitch while looking (negative looks down).
+@export_range(-1.2, 0.6, 0.01, "suffix:rad") var look_pitch: float = -0.06
+## Shown large on screen while the step lasts (translation key): the opening shots
+## (F5, build 0.1.1). Empty: none.
+@export var caption: StringName = &""
+## Warriors of this zone (1-based) stand idle at their spawn points while the step lasts,
+## so the opening can show the Chancas before the fight. 0: none.
+@export_range(0, 10, 1) var stage_zone: int = 0
 ## Played when the step starts (the far pututus of the ending, F4 task 9).
 @export var sound: AudioStream
 ## Respawn marker from the moment this step starts (empty: keep the previous one).

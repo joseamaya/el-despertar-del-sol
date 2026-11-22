@@ -35,6 +35,7 @@ func test_walking_takes_steps() -> void:
 	var talk := runner.find_child("DialoguePlayer") as DialoguePlayer
 	# Past the opening, without Vicaquirao's training (F4 task 12a).
 	(runner.find_child("SliceDirector") as SliceDirector).flow.set_flag(&"skip_training")
+	(runner.find_child("SliceDirector") as SliceDirector).skip_intro()
 	while talk.is_playing():
 		talk.advance()
 	var steps := runner.find_child("FootstepAudio") as FootstepAudio

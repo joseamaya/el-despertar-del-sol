@@ -74,8 +74,13 @@ impide entender o avanzar:
 - **Entrenamiento:** Vicaquirao lo ofrece y se puede saltar; los objetivos dicen
   «Entrenamiento» y explican cómo bloquear y hacer el parry; el paso del parry se da por
   bueno tras 3 bloqueos normales (`training_drill.tres`).
-- **Contexto:** la apertura empieza con tres rótulos (cuándo, quién eres, dónde estás),
-  escritos solo con entradas que ya están en `HISTORICAL_REFERENCES.md`.
+- **Contexto:** la apertura empieza con tres planos de cámara de 6 s, cada uno con un
+  rótulo grande de una línea (`docs/img/apertura/`): el valle hacia el Cusco, un grupo
+  de guerreros chancas ya a la vista y Cusi junto a Vicaquirao. Se pueden saltar con
+  E / A. El desarrollador vio que nadie lee los rótulos del cuadro de diálogo, así que los
+  chancas se **muestran** antes de la pelea. Solo usa entradas que ya están en
+  `HISTORICAL_REFERENCES.md`. La versión espectacular (cámara en movimiento, ejército,
+  música) queda para después de F5.
 
 **Lo que no cambia:** el combate, la dificultad, los escenarios, la encuesta y la regla de
 decisión. Las respuestas se marcan con la build que se jugó; P1 jugó la `0.1-slice`. Las

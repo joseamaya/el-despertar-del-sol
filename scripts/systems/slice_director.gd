@@ -14,6 +14,10 @@ signal slice_finished
 signal notice_shown(key: StringName)
 
 const ACTION_RESTART: StringName = &"restart"
+## Skips the opening shots (same button as the dialogue).
+const ACTION_SKIP: StringName = &"interact"
+## Steps with `unless` set to this are the opening shots (F5, build 0.1.1).
+const SKIP_INTRO: StringName = &"skip_intro"
 ## Shown dimmed at the next interaction while a skirmish is still on.
 const LOCKED_PROMPT: StringName = &"PROMPT_ENEMIES_NEAR"
 
@@ -79,6 +83,25 @@ func _physics_process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if flow != null and flow.is_finished() and event.is_action_pressed(ACTION_RESTART):
 		get_tree().reload_current_scene()
+	elif is_in_intro() and event.is_action_pressed(ACTION_SKIP):
+		get_viewport().set_input_as_handled()
+		skip_intro()
+
+
+## Whether the opening shots are playing.
+func is_in_intro() -> bool:
+	var step: SliceStep = flow.current() if flow != null else null
+	return step != null and step.unless == SKIP_INTRO
+
+
+## Leaves the opening shots and goes on with the slice (the player's button; tests).
+func skip_intro() -> void:
+	if flow == null:
+		return
+	var was_in_intro: bool = is_in_intro()
+	var step: SliceStep = flow.skip_with(SKIP_INTRO)
+	if was_in_intro:
+		_start(step)
 
 
 func is_finished() -> bool:

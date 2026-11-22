@@ -38,6 +38,7 @@ func test_the_family_tells_cusi_in_passing_without_stopping_the_game() -> void:
 	# Past the opening, without the training: the first skirmish starts and they set off.
 	var slice := _runner.find_child("SliceDirector") as SliceDirector
 	slice.flow.set_flag(&"skip_training")
+	slice.skip_intro()
 	while talk.is_playing():
 		talk.advance()
 	await _frames(2)

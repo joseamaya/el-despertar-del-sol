@@ -131,6 +131,7 @@ func test_the_family_comes_only_when_the_first_skirmish_starts() -> void:
 		var start: Vector3 = _level.to_global_point(_crowd.people.people[i].route[0])
 		assert_float(_crowd.body(i).global_position.distance_to(start)).is_less(1.0)
 	slice.flow.set_flag(&"skip_training")
+	slice.skip_intro()
 	while talk.is_playing():
 		talk.advance()
 	await _frames(2)
