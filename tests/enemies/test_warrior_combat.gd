@@ -262,3 +262,18 @@ func test_lock_and_target_hud_drop_the_moment_the_target_dies() -> void:
 	await get_tree().process_frame
 	assert_bool(hud.target_panel.visible).is_false()
 	assert_bool(hud.reticle.visible).is_false()
+
+
+func test_same_seed_replays_the_same_attacks() -> void:
+	var first: Array[StringName] = _attack_sequence(7)
+	assert_array(_attack_sequence(7)).is_equal(first)
+
+
+func _attack_sequence(rng_seed: int) -> Array[StringName]:
+	_w.seed_rng(rng_seed)
+	var ids: Array[StringName] = []
+	for i: int in 8:
+		_w.combat.start()
+		ids.append(_w.combat.get_current().id)
+		_w.combat.cancel()
+	return ids

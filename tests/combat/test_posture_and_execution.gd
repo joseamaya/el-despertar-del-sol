@@ -59,7 +59,15 @@ func test_hits_fill_posture_and_five_lights_break_it() -> void:
 	assert_float(_dummy.posture.current).is_equal(_combat.light_chain[0].posture_damage)
 	await _break_posture_with_lights()
 	assert_bool(_dummy.posture.is_broken()).is_true()
-	await _frames(12)  # the hit's red flash (0.12 s) gives way to the broken colour
+	# The last hit's red flash (0.12 s of game time, after a 0.06 s real-time hitstop at
+	# 5 % speed) gives way to the broken colour. Wait for the flash to end instead of a
+	# fixed frame count: 12 frames left no margin and failed on CI. Posture stays broken
+	# for 2 s, so the 60-frame bound cannot hide a recovery.
+	for i: int in 60:
+		if not _dummy.is_flashing():
+			break
+		await get_tree().physics_frame
+	assert_bool(_dummy.is_flashing()).is_false()
 	assert_bool(_dummy.shows_broken()).is_true()
 	assert_float(_dummy.health.current).is_greater(0.0)
 

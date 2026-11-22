@@ -7,6 +7,10 @@ class Counter:
 	var entered: int = 0
 	var exited: int = 0
 	var next: StringName = &""
+	var last_seed: int = -1
+
+	func seed_rng(value: int) -> void:
+		last_seed = value
 
 	func enter(_previous: StringName) -> void:
 		entered += 1
@@ -63,3 +67,9 @@ func test_transition_to_same_state_does_nothing() -> void:
 func test_has_state() -> void:
 	assert_bool(_machine.has_state(&"b")).is_true()
 	assert_bool(_machine.has_state(&"zzz")).is_false()
+
+
+func test_seed_rng_gives_every_state_its_own_seed() -> void:
+	_machine.seed_rng(40)
+	assert_int(_a.last_seed).is_equal(40)
+	assert_int(_b.last_seed).is_equal(41)

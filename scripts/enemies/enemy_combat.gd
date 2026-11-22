@@ -92,6 +92,14 @@ func set_cooldown(seconds: float) -> void:
 	_cooldown_left = seconds
 
 
+## Reseeds the attack and cooldown rolls. Re-rolls a pending cooldown so the whole
+## sequence depends on the seed, not on the roll made in _ready().
+func seed_rng(value: int) -> void:
+	_rng.seed = value
+	if _current == null:
+		_cooldown_left = _next_cooldown()
+
+
 func _on_phase_entered() -> void:
 	match _phase:
 		AttackRules.Phase.ACTIVE:
