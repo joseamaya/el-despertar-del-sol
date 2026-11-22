@@ -92,10 +92,10 @@ func test_not_on_the_defeat_screen() -> void:
 
 ## F5 task 5: the menu says which build this is, for testers' reports.
 func test_shows_the_build_version() -> void:
-	assert_str(GameVersion.current()).is_equal("0.1-slice")
+	assert_str(GameVersion.current()).is_equal("0.1.1-slice")
 	_pause.open()
 	var version := _pause.find_child("Version", true, false) as Label
 	assert_object(version).is_not_null()
-	assert_str(version.text).contains("0.1-slice")
+	assert_str(version.text).contains("0.1.1-slice")
 	assert_bool(version.text.contains("PAUSE_")).is_false()
 	_pause.close()

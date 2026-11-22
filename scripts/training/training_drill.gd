@@ -5,7 +5,8 @@ extends Node
 ## and counts what the step asks for: blocks, parries, dodges, hits on him. A dodge
 ## started while his blow is coming counts, whether the roll takes Cusi through the blow
 ## or out of its reach. Between drills he stands still; when the training is over he goes
-## back to being the standing Vicaquirao.
+## back to being the standing Vicaquirao. In the parry drill, enough plain blocks also
+## end it (`parry_grace_blocks`), so nobody gets stuck on the timing.
 
 signal progressed(done: int, needed: int)
 signal drill_done
@@ -25,6 +26,8 @@ var _step: SliceStep
 var _done: int = 0
 ## Each of his blows counts for one dodge at most.
 var _blow_dodged: bool = false
+## Plain blocks made during the current parry drill.
+var _parry_blocks: int = 0
 
 
 func _ready() -> void:
@@ -69,7 +72,17 @@ func _on_event(drill: SliceStep.Drill) -> void:
 	if drill == SliceStep.Drill.PARRY and _step != null and _step.drill == SliceStep.Drill.BLOCK:
 		count(SliceStep.Drill.BLOCK)
 		return
+	if drill == SliceStep.Drill.BLOCK and _step != null and _step.drill == SliceStep.Drill.PARRY:
+		_on_parry_missed()
+		return
 	count(drill)
+
+
+## A plain block in the parry drill: enough of them end it all the same.
+func _on_parry_missed() -> void:
+	_parry_blocks += 1
+	if tuning.parry_grace_blocks > 0 and _parry_blocks >= tuning.parry_grace_blocks:
+		count(SliceStep.Drill.PARRY)
 
 
 func _on_dodge_started() -> void:
@@ -90,6 +103,7 @@ func _on_step_started(step: SliceStep) -> void:
 			_spawn()
 		_step = step
 		_done = 0
+		_parry_blocks = 0
 		_set_sparring(true)
 		progressed.emit(0, step.count)
 	elif step.kind != SliceStep.Kind.DIALOGUE and _trainer != null:

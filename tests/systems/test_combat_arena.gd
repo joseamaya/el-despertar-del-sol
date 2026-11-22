@@ -52,6 +52,20 @@ func test_defeat_stops_the_player_and_shows_the_message() -> void:
 		assert_object(enemy.perception.target).is_null()
 
 
+## F5 (build 0.1.1): after the fall the body stays down until the retry; it used to
+## stand up again once the death clip ended, while the defeat message waited.
+func test_the_fallen_player_stays_down_until_the_retry() -> void:
+	var animator := _player.get_node("Animator") as CharacterAnimator
+	_health.apply_damage(_health.get_maximum())
+	# The death clip lasts 2.4 s; wait well past it.
+	await _frames(240)
+	assert_bool(animator.is_holding()).is_true()
+	assert_bool(animator.is_attack_playing()).is_true()
+	_arena.reset_encounter()
+	await _frames(2)
+	assert_bool(animator.is_holding()).is_false()
+
+
 func test_restart_restores_player_and_spawns_fresh_warriors() -> void:
 	var old: Array[EnemyController] = _arena.alive_enemies()
 	old[0].health.apply_damage(30.0)

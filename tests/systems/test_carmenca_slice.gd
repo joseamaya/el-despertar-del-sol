@@ -103,7 +103,8 @@ func test_opening_dialogue_holds_the_first_zone_and_the_player() -> void:
 	var box := _runner.find_child("DialogueBox") as DialogueBox
 	assert_bool(talk.is_playing()).is_true()
 	assert_bool(box.is_showing()).is_true()
-	assert_str(box.shown_text()).is_equal(tr(&"DLG_OPENING_1"))
+	# F5 (build 0.1.1): it opens with who, where and when, before anyone speaks.
+	assert_str(box.shown_text()).is_equal(tr(&"CTX_INTRO_1"))
 	# Nobody comes while Vicaquirao speaks, and Cusi cannot fight.
 	await _frames(300)
 	assert_int(_arena.alive_enemies().size()).is_equal(0)

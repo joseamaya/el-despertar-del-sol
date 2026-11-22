@@ -8,3 +8,4 @@
 script = ExtResource("1_tuning")
 data = ExtResource("2_data")
 look = ExtResource("3_look")
+parry_grace_blocks = 3

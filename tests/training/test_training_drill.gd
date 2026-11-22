@@ -10,6 +10,7 @@ var _runner: GdUnitSceneRunner
 var _slice: SliceDirector
 var _drill: TrainingDrill
 var _talk: DialoguePlayer
+var _choice: ChoiceBox
 var _player: PlayerController
 var _npc: Node3D
 
@@ -19,6 +20,7 @@ func before_test() -> void:
 	_slice = _runner.find_child("SliceDirector") as SliceDirector
 	_drill = _runner.find_child("TrainingDrill") as TrainingDrill
 	_talk = _runner.find_child("DialoguePlayer") as DialoguePlayer
+	_choice = _runner.find_child("ChoiceBox") as ChoiceBox
 	_player = _runner.find_child("Player") as PlayerController
 	_npc = _runner.find_child("Vicaquirao") as Node3D
 	(_runner.find_child("CameraRig") as CameraController).capture_mouse = false
@@ -35,11 +37,14 @@ func _frames(count: int) -> void:
 		await get_tree().physics_frame
 
 
-## Plays the talk until the next drill starts.
+## Plays the talk until the next drill starts, taking the training when offered.
 func _to_drill() -> void:
 	for i: int in 20:
 		while _talk.is_playing():
 			_talk.advance()
+		if _choice.is_asking():
+			_choice.select(0)
+			_choice.confirm()
 		await _frames(2)
 		if _slice.flow.current().kind == SliceStep.Kind.DRILL:
 			return
@@ -126,3 +131,45 @@ func test_after_the_four_drills_he_stands_again_and_the_slice_goes_on() -> void:
 	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.ENCOUNTER)
 	assert_bool(_drill.is_training()).is_false()
 	assert_bool(_npc.visible).is_true()
+
+
+## F5 (build 0.1.1): the training is offered, and the player may skip it.
+func test_the_training_can_be_skipped() -> void:
+	for i: int in 20:
+		if _choice.is_asking():
+			break
+		while _talk.is_playing():
+			_talk.advance()
+		await _frames(2)
+	assert_bool(_choice.is_asking()).is_true()
+	assert_str(_choice.option_text(1)).contains(tr(&"CHOICE_TRAIN_SKIP"))
+	_choice.select(1)
+	_choice.confirm()
+	await _frames(3)
+	assert_bool(_slice.has_flag(&"skip_training")).is_true()
+	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.ENCOUNTER)
+	assert_bool(_drill.is_training()).is_false()
+
+
+## F5 (build 0.1.1): a player who cannot time the parry is not stuck: enough plain
+## blocks end the drill, and fewer do not.
+func test_plain_blocks_end_the_parry_drill() -> void:
+	while (
+		_slice.flow.current().kind != SliceStep.Kind.DRILL
+		or (_slice.flow.current().drill != SliceStep.Drill.PARRY)
+	):
+		var step: SliceStep = _slice.flow.current()
+		if step.kind == SliceStep.Kind.DRILL:
+			for k: int in step.count:
+				_drill.count(step.drill)
+		await _to_drill()
+	var defense := _player.get_node(^"Defense") as DefenseComponent
+	var grace: int = _drill.tuning.parry_grace_blocks
+	assert_int(grace).is_greater(0)
+	for i: int in grace - 1:
+		defense.blocked.emit(HitInfo.new())
+	assert_int(_slice.flow.current().drill).is_equal(SliceStep.Drill.PARRY)
+	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.DRILL)
+	defense.blocked.emit(HitInfo.new())
+	await _frames(2)
+	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.DIALOGUE)
