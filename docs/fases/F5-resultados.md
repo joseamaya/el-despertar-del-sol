@@ -44,6 +44,25 @@ Escalas de 1 a 5. Dificultad: 1 = demasiado fácil, 3 = justo, 5 = demasiado dif
 - **Lo que más le gustó (17):** «La fluidez y la mecánica».
 - **Lo que cambiaría (18):** «La respuesta de los controles (Esquivar y atacar)».
 
+## Comentarios fuera del formulario
+
+Personas que jugaron pero no rellenaron la encuesta. Aparecen como O1, O2… No cuentan para el
+criterio 8 ni para las puntuaciones, pero sí para el análisis cualitativo (tarea 8). Si
+después rellenan el formulario, pasan a tener su número P.
+
+- **Varios (2026-11-21, contado por el desarrollador):** la mayoría se queja de la primera
+  parte por problemas con el bloqueo, en el entrenamiento con Vicaquirao. Falta saber si se
+  atascan al bloquear o al hacer el parry.
+- **O1 (2026-11-21, nota de voz, transcrita y resumida):**
+  - **Morir:** la caída está bien, pero no entiende que el personaje se levante después.
+    Dice que «se buguea el resto del juego».
+  - **Apoyo:** al terminar con tu enemigo, otro que peleaba con un aliado va a por ti y ese
+    aliado deja de ayudar. Pide que los aliados vengan a ayudarte cuando acaban con el suyo.
+  - **Bloqueo:** «está medio raro».
+  - **Orientación:** pide flechas que indiquen adónde ir; hay gente que se queda parada sin
+    saber hacia dónde avanzar.
+  - **Llamas:** al liberarlas no tienen animación de caminar.
+
 ## Observaciones para el análisis (tarea 8)
 
 - **P1** (la prueba piloto, tarea 6):
