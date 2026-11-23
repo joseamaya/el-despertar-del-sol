@@ -103,6 +103,11 @@ func get_phase() -> AttackRules.Phase:
 	return _phase
 
 
+## Seconds since the current attack started (0 when idle).
+func get_elapsed() -> float:
+	return _elapsed if _current != null else 0.0
+
+
 func get_chain_index() -> int:
 	return _chain_index
 
