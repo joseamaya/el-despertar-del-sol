@@ -37,6 +37,7 @@ Columna vertebral: Juan de Betanzos, *Suma y narración de los incas* (1551).
 | --- | --- | --- |
 | Quipucamayoc narrador (nombre por definir) | Personaje inventado | GDD §5.2 |
 | Pintura facial chanca | Inventada pero coherente | GDD §5.3 |
+| Huallcanca, el escudo de Cusi: rodela redonda de unos 50 cm, sujeta al antebrazo izquierdo, con borde oscuro y una banda de cuadros rojos y negros | **Según los cronistas:** los incas usaban escudos, «rodelas o paveses», que llamaban *huallcanca* (Garcilaso, *Comentarios Reales*). **Licencia del juego:** la forma redonda, el tamaño, los colores y la banda de cuadros (inspirada en los tocapus); revisar con las láminas de los capitanes de Guamán Poma (ff. 145–183) | F6, tarea 4, `DECISIONS/0015` |
 | Arquitectura de 1438 modesta (pirca, adobe, ichu) frente a la cantería posterior | Interpretación de diseño; revisar con especialista | GDD §10.2 |
 | Disposición del sector de Carmenca (terrazas, camino, casas) | Licencia del juego: no reproduce un trazado real; el mirador y el desnivel hasta el paso (unos 52 m) están exagerados respecto al Santa Ana real; revisar con especialista | F3, `DECISIONS/0010` |
 | Forma de la huaca del slice: roca natural destacada con pirca baja y ofrendas | Licencia del juego hasta consultarlo; revisar con especialista | F3, `DECISIONS/0010` |

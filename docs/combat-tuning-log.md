@@ -5,6 +5,7 @@ motivo. Más reciente arriba.
 
 | Fecha | Archivo | Cambio | Motivo |
 | --- | --- | --- | --- |
+| 2026-11-23 | `tuning/player_guard_pose.tres` | Pose con escudo: antebrazo izquierdo alzado en vertical delante y a la izquierda de la cara, con la huallcanca centrada en él; torso inclinado 8°; los brazos cruzados se retiran | F6, tarea 4: el desarrollador pidió un escudo porque bloquear con la mano no es creíble (`DECISIONS/0015`). El destello sale ahora del escudo |
 | 2026-11-23 | `tuning/combat_feel.tres` | Destello de bloqueo nuevo: color (0,78; 0,88; 1), 0,9 m, 0,12 s, 7 chispas a 0,9 m, sacudida 0,08 | F6, tarea 4: los jugadores no notaban que bloqueaban. Sale en la cabeza de la maza y se dibuja por encima del cuerpo, que lo tapaba desde la cámara |
 | 2026-11-23 | `tuning/player_guard_pose.tres` | Pose de guardia nueva: brazos cruzados delante de la cara, maza junto al hombro izquierdo, torso inclinado 12° | F6, tarea 4: la guardia con `Sword_Idle` casi no se distinguía de estar quieto. Elegida con capturas desde la cámara del juego |
 | 2026-11-23 | `tuning/player_defense.tres` | `block_face_range` nuevo: 4,0 m | F6, tarea 3: sin objetivo fijado, la guardia encara al guerrero que golpea a menos de 4 m. El diagnóstico (`F6-diagnostico-bloqueo.md`) mostró que la mayoría de los golpes entraban por fuera del arco de 120°. Arco sin cambios |
