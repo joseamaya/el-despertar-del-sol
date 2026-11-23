@@ -112,3 +112,39 @@ La opción 2 queda como plan B si la 1 no convence al probarla: se puede combina
 - **El efecto real de la opción 1** se mide al implementarla (tarea 3).
 - **La sensación** (si el giro automático se siente natural o «mágico») solo la puede
   juzgar el desarrollador jugando.
+
+## Resultado de la tarea 3 (opciones 1 + 3, elegidas por el desarrollador)
+
+- **Opción 1, el giro:** el componente `BlockFacing`, en el jugador. Mientras se bloquea sin
+  objetivo fijado, Cusi encara al guerrero más cercano que esté lanzando un golpe (en
+  anticipación o activo) a menos de `DefenseTuning.block_face_range` (4 m). Usa el mismo
+  giro que el objetivo fijado.
+- **Opción 3, fijar objetivo:** un paso nuevo al principio del entrenamiento, «fija a
+  Vicaquirao con Q o clic central (R3)». Él espera sin atacar hasta que lo fijas.
+- **El arco sigue en 120°.**
+
+Misma herramienta y mismos escenarios, 120 s cada uno:
+
+| Escenario | Antes: entran | Ahora: entran |
+| --- | --- | --- |
+| Arena, 1 guerrero, quieto | 11 de 23 (48 %) | **0 de 23** |
+| Arena, 1 guerrero, objetivo fijado | 0 de 23 | 0 de 23 |
+| Arena, 1 guerrero, peleando | 1 de 6 | 0 de 5 |
+| Arena, 3 guerreros, quieto | 53 de 67 (79 %) | **0 de 67** |
+| Arena, 3 guerreros, objetivo fijado | 31 de 64 (48 %) | 33 de 66 (50 %) |
+| Arena, 3 guerreros, peleando | 14 de 28 (50 %) | 9 de 21 (43 %) |
+| Entrenamiento, sin fijar | 17 de 25 (68 %) | **0 de 25** |
+| Entrenamiento, objetivo fijado | 0 de 25 | 0 de 25 |
+
+**Dos cosas que decide el desarrollador al probarlo:**
+1. **Fijar objetivo sale peor que no fijarlo con 3 guerreros** (50 % frente a 0 %).
+   - Con objetivo fijado, el giro no actúa y los golpes por el flanco siguen entrando.
+   - Arreglo posible: que el giro actúe también con objetivo fijado mientras se mantiene F,
+     y que vuelva a mirar al objetivo al soltar.
+2. **Con 3 guerreros, mantener F lo bloquea todo,** porque los guerreros se turnan para
+   atacar (`EncounterDirector`).
+   - Puede quitar la presión de que te rodeen.
+   - Arreglo posible: limitar la velocidad del giro de guardia con un valor propio en
+     `DefenseTuning`, para que dos golpes casi simultáneos desde lados distintos puedan
+     entrar.
+

@@ -129,7 +129,11 @@ func _to_block_drill() -> void:
 			choice.select(0)
 			choice.confirm()
 		var step: SliceStep = slice.flow.current()
-		if step.kind == SliceStep.Kind.DRILL:
+		var drill := _scene.find_child("TrainingDrill", true, false) as TrainingDrill
+		if step.kind == SliceStep.Kind.DRILL and step.drill == SliceStep.Drill.LOCK:
+			# The lock drill (F6 task 3) comes first: done, so the block drill is measured.
+			drill.count(SliceStep.Drill.LOCK)
+		elif step.kind == SliceStep.Kind.DRILL:
 			# Two blocks would end it: let him keep striking for the whole measure.
 			step.count = 100000
 			return
