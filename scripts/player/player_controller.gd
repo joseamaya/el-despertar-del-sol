@@ -109,6 +109,11 @@ func end_action() -> void:
 
 
 ## Caps horizontal speed (e.g. 2 m/s while blocking). Negative removes the cap.
+## Whether something holds the player still (a talk, a rite, the opening; PlayerHold).
+func is_held() -> bool:
+	return is_zero_approx(_speed_limit)
+
+
 func set_speed_limit(value: float) -> void:
 	_speed_limit = value
 
