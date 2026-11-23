@@ -5,6 +5,8 @@ motivo. Más reciente arriba.
 
 | Fecha | Archivo | Cambio | Motivo |
 | --- | --- | --- | --- |
+| 2026-11-23 | `tuning/player_stamina.tres` | `regen_delay` 0,6 → 0,3 s | F6, tarea 7: con 0,6 s, quien ataca a un ritmo normal no recupera nunca la resistencia y pierde el 81–87 % de las esquivas. Con 0,3 s, el bot de `response_diagnosis.gd` pierde el 0 % con 1 guerrero y el 26 % con 3. La esquiva sigue exigiendo sus 20 completos (`DECISIONS/0007`) |
+| 2026-11-23 | `tuning/player_response.tres` (nuevo) | Búfer de esquiva 0,3 s, búfer de ataque 0,3 s, la esquiva corta la anticipación | F6, tarea 7: las pulsaciones a destiempo se perdían sin aviso (`F6-diagnostico-respuesta.md`) |
 | 2026-11-23 | `tuning/player_guard_pose.tres` | Pose con escudo: antebrazo izquierdo alzado en vertical delante y a la izquierda de la cara, con la huallcanca centrada en él; torso inclinado 8°; los brazos cruzados se retiran | F6, tarea 4: el desarrollador pidió un escudo porque bloquear con la mano no es creíble (`DECISIONS/0015`). El destello sale ahora del escudo |
 | 2026-11-23 | `tuning/combat_feel.tres` | Destello de bloqueo nuevo: color (0,78; 0,88; 1), 0,9 m, 0,12 s, 7 chispas a 0,9 m, sacudida 0,08 | F6, tarea 4: los jugadores no notaban que bloqueaban. Sale en la cabeza de la maza y se dibuja por encima del cuerpo, que lo tapaba desde la cámara |
 | 2026-11-23 | `tuning/player_guard_pose.tres` | Pose de guardia nueva: brazos cruzados delante de la cara, maza junto al hombro izquierdo, torso inclinado 12° | F6, tarea 4: la guardia con `Sword_Idle` casi no se distinguía de estar quieto. Elegida con capturas desde la cámara del juego |

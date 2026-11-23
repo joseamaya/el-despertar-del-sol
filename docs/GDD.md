@@ -260,7 +260,7 @@ Valores de partida para el prototipo a 60 FPS; se ajustan con pruebas.
 | Parámetro | Valor inicial |
 | --- | --- |
 | Salud del jugador | 100 |
-| Resistencia del jugador | 100; recupera 30/s tras 0,6 s sin gastar |
+| Resistencia del jugador | 100; recupera 30/s tras 0,3 s sin gastar (0,6 s hasta F6: con esa espera no se podía esquivar atacando; `combat-tuning-log.md`) |
 | Coste ataque ligero / pesado | 12 / 25 |
 | Coste esquiva / bloqueo por golpe | 20 / 15 |
 | Invulnerabilidad de la esquiva | 0,25 s (15 frames) |

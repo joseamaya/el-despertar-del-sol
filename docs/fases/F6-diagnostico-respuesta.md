@@ -118,3 +118,39 @@ Las opciones 2 y 3 cambian la sensación del combate: se prueban jugando.
 - **Es un bot:** pulsa a ritmo fijo y esquiva siempre 0,2 s antes. Una persona no es tan
   regular, pero los dos motivos de rechazo son los mismos.
 - **El efecto de cada opción** se mide al implementarla, con esta misma herramienta.
+
+## Resultado de la tarea 7 (1 + 2 + aviso, elegidas por el desarrollador)
+
+**Qué se implementó:**
+- **Búfer** (`ResponseTuning`, en `player_response.tres`):
+  - una esquiva pulsada durante un golpe o durante otra esquiva se guarda 0,3 s;
+  - un ataque pulsado durante una esquiva o un aturdimiento se guarda 0,3 s.
+- **La esquiva corta la anticipación** de un ataque, además de la recuperación.
+- **Aviso:** si la esquiva no sale por falta de resistencia, `DefenseComponent` lo avisa
+  con la señal `dodge_refused` y el HUD hace parpadear en rojo la barra de resistencia.
+
+Para medir con justicia, el bot deja ahora de atacar 0,4 s antes de cada esquiva, como
+haría una persona que ve venir el golpe, y `--old-rules` mide el mismo bot con las reglas
+antiguas.
+
+**Primera medición:** con la resistencia de entonces, las reglas nuevas casi no mejoraban
+nada. Las esquivas guardadas caducaban porque, al llegar su momento, no había
+resistencia: solo empezaba a recuperarse tras 0,6 s sin gastar. Ataque cada 0,7 s:
+
+| Resistencia (reglas nuevas) | 1 guerrero: esquivas perdidas / golpes | 3 guerreros |
+| --- | --- | --- |
+| Esquiva de 20, espera de 0,6 s (antes) | 87 % / 15 | 81 % / 44 |
+| Esquiva de 12, espera de 0,6 s | 52 % / 8 | 49 % / 25 |
+| **Esquiva de 20, espera de 0,3 s (elegida)** | **0 % / 1** | **26 % / 15** |
+| Esquiva de 12, espera de 0,3 s | 0 % / 0 | 4 % / 9 |
+
+Con la espera en 0,3 s, las reglas nuevas frente a las antiguas, con 3 guerreros: los
+golpes recibidos bajan de 27 a 15, y ya no se pierde ninguna esquiva por estar atacando.
+
+**Decisión del desarrollador:** espera de recuperación de 0,3 s; la esquiva sigue costando
+20 (`DECISIONS/0007` sin cambios). GDD §6.5 y `combat-tuning-log.md` actualizados.
+
+**No verificado:**
+- cómo se siente jugando (más agresivo, ¿demasiado fácil?);
+- el aviso de resistencia sin sonido (falta un efecto CC0).
+

@@ -292,7 +292,7 @@ tuning = ExtResource("31_pen")
 level = NodePath("../SectorLevel")
 interaction = NodePath("../InteractionPoint")
 
-[node name="Hud" parent="." unique_id=1068922280 node_paths=PackedStringArray("health", "stamina", "lock_on", "camera", "arena", "slice", "summary") instance=ExtResource("13_i2j4s")]
+[node name="Hud" parent="." unique_id=1068922280 node_paths=PackedStringArray("health", "stamina", "lock_on", "camera", "arena", "slice", "summary", "defense") instance=ExtResource("13_i2j4s")]
 health = NodePath("../Player/Health")
 stamina = NodePath("../Player/Stamina")
 lock_on = NodePath("../Player/LockOn")
@@ -300,6 +300,7 @@ camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
 arena = NodePath("../ArenaController")
 slice = NodePath("../SliceDirector")
 summary = NodePath("../SessionSummary")
+defense = NodePath("../Player/Defense")
 
 [node name="CombatFeedback" type="Node3D" parent="." unique_id=1494172289 node_paths=PackedStringArray("hit_stop", "camera_rig", "player_hurtbox", "player_hitbox", "player_defense", "player_combat", "player_guard_point")]
 script = ExtResource("14_2bif6")
