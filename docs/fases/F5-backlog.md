@@ -34,7 +34,7 @@
 | 6 | **Prueba piloto** con tu amigo de Windows: confirma la build de Windows, la guía y la encuesta antes de enviarla al resto (deuda de F4) | Hecha: P1 en `F5-resultados.md`; la build de Windows llega al «Fin» sin fallos (fluidez 5), con la guía y la encuesta (resumen pegado). El mando sigue sin probarse |
 | 7 | **Prueba externa:** envío a 5–10 personas y registro de respuestas en `docs/fases/F5-resultados.md`. Tú envías y recibes; el agente consolida | Cerrada sin llegar al mínimo: 2 respuestas (P1 y P2, las dos de la 0.1; solo P1 terminó), más los comentarios fuera del formulario. No hubo más probadores (2026-11-23). Publicada la pre-release [`v0.1.1-slice`](https://github.com/joseamaya/el-despertar-del-sol/releases/tag/v0.1.1-slice) |
 | 8 | **Análisis:** criterio 8 (≥ 7/10 en cada pregunta), dificultad de la segunda oleada del paso (derrotas por zona), duración real frente a los 8–12 min y fallos por plataforma o mando. Con eso, una propuesta de continuar, ajustar o recortar, con sus motivos | Hecha: `F5-analisis.md`; propuesta del agente: **ajustar** (bloqueo, respuesta de los controles, orientación y volver a probar) |
-| 9 | **Decisión** (`DECISIONS/0014`) y **cierre de F5** con `phase-gate` | Pendiente |
+| 9 | **Decisión** (`DECISIONS/0014`) y **cierre de F5** con `phase-gate` | Decisión hecha: **ajustar** (`DECISIONS/0014`), con F6 · Ajuste del combate de 2 semanas y el GDD §6.1 sin cambios; enmienda de `0013` por cerrar con 2 respuestas. Cierre con `phase-gate`: pendiente |
 
 ## Notas
 
