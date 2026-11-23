@@ -3,7 +3,7 @@
 Action-RPG histórico en tercera persona ambientado en el Cusco de c. 1438.
 Diseño completo en [`docs/GDD.md`](docs/GDD.md). Reglas de trabajo en [`AGENTS.md`](AGENTS.md).
 
-**Estado:** Fase 5 · Prueba externa. Fases 0–4 cerradas; el vertical slice se juega de principio a fin en 8–12 min.
+**Estado:** Fase 6 · Ajuste del combate. Fases 0–5 cerradas; el vertical slice se juega de principio a fin y la prueba externa decidió ajustar el combate antes de seguir (`docs/DECISIONS/0014`).
 
 ## Requisitos
 
