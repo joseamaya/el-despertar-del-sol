@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ShieldLook" format=3]
+
+[ext_resource type="Script" path="res://scripts/characters/shield_look.gd" id="1_look"]
+
+[resource]
+script = ExtResource("1_look")
+shape = 0
+width = 0.5
+height = 0.5
+mount_position = Vector3(-0.02, 0.165, -0.054)
+mount_rotation_deg = Vector3(-0.9, -161.0, -0.3)

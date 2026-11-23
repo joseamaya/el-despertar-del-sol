@@ -239,6 +239,8 @@ Todos los controles son reasignables. El mando se soporta desde el vertical slic
 
 **Champi (maza de cabeza estrellada).** Arma principal. Golpes contundentes, buen daño de postura, interrumpe ataques ligeros enemigos. En el juego puede llamarse «macana» en diálogos para el público general, pero el nombre del objeto es *champi*.
 
+**Huallcanca (escudo).** Rodela que Cusi lleva sujeta al antebrazo izquierdo. Al bloquear, la alza delante de la cabeza, y los golpes bloqueados destellan en ella. Garcilaso llama *huallcanca* a las «rodelas o paveses» incas; la forma y la decoración son licencia del juego (`DECISIONS/0015`).
+
 **Huaraca (honda).** Posterior al slice. Ataque a distancia que aturde a honderos y rompe escudos ligeros; precisión dependiente de la carga; piedras recogidas del suelo.
 
 ### 6.4. Atributos
@@ -546,7 +548,7 @@ Una experiencia de 8–12 minutos en las laderas de Carmenca que prueba dos cosa
 | --- | --- |
 | Escenario | Un sector de Carmenca con terrazas, camino y huaca |
 | Personajes | Cusi Yupanqui, Vicaquirao, un comunero |
-| Arma | Champi |
+| Arma | Champi, y la huallcanca (escudo) para bloquear |
 | Enemigos | Guerrero chanca (hasta 3 a la vez) |
 | Mecánicas | Movimiento, cámara, lock-on, ataque ligero y pesado, bloqueo, parry, esquiva, resistencia, postura enemiga |
 | Sistemas | Una huaca, una decisión de Apoyo, una entrada del códice |
