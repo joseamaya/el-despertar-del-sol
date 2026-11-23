@@ -51,6 +51,8 @@
 [ext_resource type="Script" path="res://scripts/systems/session_summary.gd" id="49_summary"]
 [ext_resource type="Script" path="res://scripts/systems/slice_staging.gd" id="50_staging"]
 [ext_resource type="Script" path="res://scripts/ui/slice_caption.gd" id="51_caption"]
+[ext_resource type="Script" path="res://scripts/ui/objective_marker.gd" id="52_marker"]
+[ext_resource type="Resource" path="res://resources/tuning/objective_marker.tres" id="53_marker"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -346,6 +348,15 @@ enemy_scene = ExtResource("12_27mym")
 [node name="SliceCaption" type="CanvasLayer" parent="." unique_id=1544120791 node_paths=PackedStringArray("slice")]
 script = ExtResource("51_caption")
 slice = NodePath("../SliceDirector")
+
+[node name="ObjectiveMarker" type="CanvasLayer" parent="." unique_id=1544120792 node_paths=PackedStringArray("slice", "level", "arena", "player", "camera")]
+script = ExtResource("52_marker")
+tuning = ExtResource("53_marker")
+slice = NodePath("../SliceDirector")
+level = NodePath("../SectorLevel")
+arena = NodePath("../ArenaController")
+player = NodePath("../Player")
+camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
 
 [connection signal="hit_landed" from="Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox" to="HitStop" method="on_hit_landed"]
 [connection signal="target_locked" from="Player/LockOn" to="CameraRig" method="set_lock_target"]

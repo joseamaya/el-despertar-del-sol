@@ -2,6 +2,7 @@ keys,es,en
 HUD_DEFEAT,Has caído,You have fallen
 HUD_VICTORY,Victoria,Victory
 HUD_RETRY,Pulsa R o Start para reintentar,Press R or Start to retry
+HUD_DISTANCE,{m} m,{m} m
 SLICE_ACT_OPENING,Amanecer en Carmenca,Dawn at Carmenca
 SLICE_ACT_EXPLORATION,Las terrazas,The terraces
 SLICE_ACT_SUPPORT,El ayllu,The ayllu
