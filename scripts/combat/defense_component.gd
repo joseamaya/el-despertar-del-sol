@@ -125,6 +125,19 @@ func resolve_hit(info: HitInfo) -> DefenseRules.Outcome:
 	return outcome
 
 
+## Ends a dodge or a stun at once (something holds the player: a talk, a rite). Without it
+## a dodge frozen halfway kept pushing the player.
+func interrupt() -> void:
+	var busy: bool = _dodging or _stun_left > 0.0
+	_dodging = false
+	_stun_left = 0.0
+	_block_held = false
+	if busy:
+		player.end_action()
+		if animator != null:
+			animator.stop_attack()
+
+
 func is_blocking() -> bool:
 	if not _block_held or _dodging or is_stunned():
 		return false
