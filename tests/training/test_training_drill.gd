@@ -190,6 +190,67 @@ func test_plain_blocks_end_the_parry_drill() -> void:
 	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.DIALOGUE)
 
 
+## Bug (F6): a dodge cut short by the next talk kept pushing the player forward, out of
+## control, until a wall stopped them.
+func test_a_dodge_cut_by_the_talk_does_not_keep_moving_the_player() -> void:
+	while (
+		_slice.flow.current().kind != SliceStep.Kind.DRILL
+		or (_slice.flow.current().drill != SliceStep.Drill.EVADE)
+	):
+		var step: SliceStep = _slice.flow.current()
+		if step.kind == SliceStep.Kind.DRILL:
+			for k: int in step.count:
+				_drill.count(step.drill)
+		await _to_drill()
+	var defense := _player.get_node(^"Defense") as DefenseComponent
+	for k: int in _slice.flow.current().count - 1:
+		_drill.count(SliceStep.Drill.EVADE)
+	assert_bool(defense.request_dodge(-_player.global_basis.z)).is_true()
+	await _frames(2)
+	# The last dodge ends the drill mid-roll: the next talk starts and holds the player.
+	_drill.count(SliceStep.Drill.EVADE)
+	await _frames(5)
+	assert_bool(_talk.is_playing()).is_true()
+	var start: Vector3 = _player.global_position
+	await _frames(90)
+	var moved: float = (
+		Vector2(_player.global_position.x - start.x, _player.global_position.z - start.z).length()
+	)
+	assert_float(moved).is_less(0.3)
+	assert_bool(_player.is_in_action()).is_false()
+
+
+## Same bug with an attack: the training's last hit ends the drill mid-swing, and the
+## talk that follows must not leave the player lunging.
+func test_an_attack_cut_by_the_talk_does_not_keep_moving_the_player() -> void:
+	while (
+		_slice.flow.current().kind != SliceStep.Kind.DRILL
+		or (_slice.flow.current().drill != SliceStep.Drill.HIT)
+	):
+		var step: SliceStep = _slice.flow.current()
+		if step.kind == SliceStep.Kind.DRILL:
+			for k: int in step.count:
+				_drill.count(step.drill)
+		await _to_drill()
+	var combat := _player.get_node(^"Combat") as CombatComponent
+	for k: int in _slice.flow.current().count - 1:
+		_drill.count(SliceStep.Drill.HIT)
+	combat.request(CombatComponent.Kind.HEAVY)
+	await _frames(2)
+	assert_bool(combat.is_attacking()).is_true()
+	_drill.count(SliceStep.Drill.HIT)
+	await _frames(5)
+	assert_bool(_talk.is_playing()).is_true()
+	assert_bool(combat.is_attacking()).is_false()
+	var start: Vector3 = _player.global_position
+	await _frames(90)
+	var moved: float = (
+		Vector2(_player.global_position.x - start.x, _player.global_position.z - start.z).length()
+	)
+	assert_float(moved).is_less(0.3)
+	assert_bool(_player.is_in_action()).is_false()
+
+
 ## F6 task 3: first he asks for a lock on him and waits; a real lock ends the drill.
 func test_the_lock_drill_waits_and_a_lock_on_him_ends_it() -> void:
 	await _to_drill(true)
