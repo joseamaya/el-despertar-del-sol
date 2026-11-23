@@ -26,6 +26,8 @@
 [ext_resource type="Resource" path="res://resources/audio/player_combat_sounds.tres" id="24_007i1"]
 [ext_resource type="Script" path="res://scripts/characters/character_outfit.gd" id="25_outfit"]
 [ext_resource type="Resource" path="res://resources/characters/cusi_yupanqui.tres" id="26_look"]
+[ext_resource type="Script" path="res://scripts/combat/guard_pose.gd" id="28_guard"]
+[ext_resource type="Resource" path="res://resources/tuning/player_guard_pose.tres" id="29_guard"]
 [ext_resource type="Script" path="res://scripts/combat/block_facing.gd" id="27_facing"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lvxji"]
@@ -143,6 +145,11 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 
 [node name="RightHandSocket" type="BoneAttachment3D" parent="Visual/Model/Armature/GeneralSkeleton" parent_id_path=PackedInt32Array(748187978, 2140898141) index="1" unique_id=2034673395]
 bone_name = "RightHand"
+
+[node name="GuardPose" type="SkeletonModifier3D" parent="Visual/Model/Armature/GeneralSkeleton" parent_id_path=PackedInt32Array(748187978, 2140898141) index="2" unique_id=2034673460 node_paths=PackedStringArray("animator")]
+script = ExtResource("28_guard")
+tuning = ExtResource("29_guard")
+animator = NodePath("../../../../../Animator")
 
 [node name="Champi" type="Node3D" parent="Visual/Model/Armature/GeneralSkeleton/RightHandSocket" unique_id=1102359388]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
