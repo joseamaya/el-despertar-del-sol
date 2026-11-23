@@ -39,8 +39,9 @@ func _frames(count: int) -> void:
 		await get_tree().physics_frame
 
 
-## Plays the talk until the next drill starts, taking the training when offered.
-func _to_drill() -> void:
+## Plays the talk until the next drill starts, taking the training when offered. The
+## lock drill (F6 task 3) is done on the spot unless `stop_at_lock`.
+func _to_drill(stop_at_lock: bool = false) -> void:
 	for i: int in 20:
 		while _talk.is_playing():
 			_talk.advance()
@@ -48,8 +49,11 @@ func _to_drill() -> void:
 			_choice.select(0)
 			_choice.confirm()
 		await _frames(2)
-		if _slice.flow.current().kind == SliceStep.Kind.DRILL:
-			return
+		var step: SliceStep = _slice.flow.current()
+		if step.kind == SliceStep.Kind.DRILL:
+			if step.drill != SliceStep.Drill.LOCK or stop_at_lock:
+				return
+			_drill.count(SliceStep.Drill.LOCK)
 
 
 func test_training_follows_the_opening_and_he_spars() -> void:
@@ -117,8 +121,8 @@ func test_hits_count_and_he_never_falls() -> void:
 
 func test_after_the_four_drills_he_stands_again_and_the_slice_goes_on() -> void:
 	var drills: Array[int] = []
-	for i: int in 4:
-		await _to_drill()
+	for i: int in 5:
+		await _to_drill(true)
 		var step: SliceStep = _slice.flow.current()
 		drills.append(step.drill)
 		for k: int in step.count:
@@ -127,8 +131,17 @@ func test_after_the_four_drills_he_stands_again_and_the_slice_goes_on() -> void:
 	while _talk.is_playing():
 		_talk.advance()
 	await _frames(3)
-	assert_array(drills).is_equal(
-		[SliceStep.Drill.BLOCK, SliceStep.Drill.PARRY, SliceStep.Drill.EVADE, SliceStep.Drill.HIT]
+	(
+		assert_array(drills)
+		. is_equal(
+			[
+				SliceStep.Drill.LOCK,
+				SliceStep.Drill.BLOCK,
+				SliceStep.Drill.PARRY,
+				SliceStep.Drill.EVADE,
+				SliceStep.Drill.HIT,
+			]
+		)
 	)
 	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.ENCOUNTER)
 	assert_bool(_drill.is_training()).is_false()
@@ -175,3 +188,21 @@ func test_plain_blocks_end_the_parry_drill() -> void:
 	defense.blocked.emit(HitInfo.new())
 	await _frames(2)
 	assert_int(_slice.flow.current().kind).is_equal(SliceStep.Kind.DIALOGUE)
+
+
+## F6 task 3: first he asks for a lock on him and waits; a real lock ends the drill.
+func test_the_lock_drill_waits_and_a_lock_on_him_ends_it() -> void:
+	await _to_drill(true)
+	var step: SliceStep = _slice.flow.current()
+	assert_int(step.drill).is_equal(SliceStep.Drill.LOCK)
+	assert_object(_drill.trainer().perception.target).is_null()
+	var rig := _runner.find_child("CameraRig") as CameraController
+	var to: Vector3 = _drill.trainer().global_position - _player.global_position
+	rig.yaw = atan2(-to.x, -to.z)
+	rig.snap_to_target()
+	await _frames(2)
+	(_player.get_node(^"LockOn") as LockOnController).toggle_lock()
+	await _frames(2)
+	# Straight on to the block drill, and now he strikes.
+	assert_int(_slice.flow.current().drill).is_equal(SliceStep.Drill.BLOCK)
+	assert_object(_drill.trainer().perception.target).is_same(_player)

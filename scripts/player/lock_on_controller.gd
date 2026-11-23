@@ -65,6 +65,11 @@ func is_locked() -> bool:
 	return _target != null
 
 
+## Lockable targets in range right now (the guard looks among them, F6 task 3).
+func nearby_targets() -> Array[LockOnTarget]:
+	return _candidates()
+
+
 func get_target() -> LockOnTarget:
 	return _target
 

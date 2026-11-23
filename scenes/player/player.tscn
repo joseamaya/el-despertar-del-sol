@@ -26,6 +26,7 @@
 [ext_resource type="Resource" path="res://resources/audio/player_combat_sounds.tres" id="24_007i1"]
 [ext_resource type="Script" path="res://scripts/characters/character_outfit.gd" id="25_outfit"]
 [ext_resource type="Resource" path="res://resources/characters/cusi_yupanqui.tres" id="26_look"]
+[ext_resource type="Script" path="res://scripts/combat/block_facing.gd" id="27_facing"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lvxji"]
 radius = 0.35
@@ -249,6 +250,13 @@ player = NodePath("..")
 stamina = NodePath("../Stamina")
 combat = NodePath("../Combat")
 animator = NodePath("../Animator")
+
+[node name="BlockFacing" type="Node" parent="." unique_id=2144964590 node_paths=PackedStringArray("player", "defense", "lock_on")]
+script = ExtResource("27_facing")
+tuning = ExtResource("21_yj68g")
+player = NodePath("..")
+defense = NodePath("../Defense")
+lock_on = NodePath("../LockOn")
 
 [node name="CombatAudio" type="Node3D" parent="." unique_id=869809535 node_paths=PackedStringArray("hurtbox", "health", "player_defense")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)

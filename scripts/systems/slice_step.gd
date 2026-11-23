@@ -7,8 +7,9 @@ extends Resource
 
 enum Act { OPENING, EXPLORATION, SUPPORT, COMBAT, ENDING }
 enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE, DRILL }
-## DRILL: what Vicaquirao asks the player to do (F4 task 12a).
-enum Drill { BLOCK, PARRY, EVADE, HIT }
+## DRILL: what Vicaquirao asks the player to do (F4 task 12a; LOCK, F6 task 3: lock onto
+## him). New values go last: the slice stores them as numbers.
+enum Drill { BLOCK, PARRY, EVADE, HIT, LOCK }
 
 @export var act: Act = Act.OPENING
 @export var kind: Kind = Kind.REACH

@@ -85,6 +85,16 @@ radius = 4.0
 dialogue = ExtResource("11_train_start")
 unless = &"skip_training"
 
+[sub_resource type="Resource" id="Step_TL"]
+script = ExtResource("2_step")
+act = 0
+kind = 7
+radius = 4.0
+drill = 4
+count = 1
+objective = &"OBJ_TRAIN_LOCK"
+unless = &"skip_training"
+
 [sub_resource type="Resource" id="Step_T1"]
 script = ExtResource("2_step")
 act = 0
@@ -290,4 +300,4 @@ look_at = &"CuscoView"
 
 [resource]
 script = ExtResource("1_seq")
-steps = Array[ExtResource("2_step")]([SubResource("Shot_1"), SubResource("Shot_2"), SubResource("Shot_3"), SubResource("Step_0"), SubResource("Step_TO"), SubResource("Step_TC"), SubResource("Step_T0"), SubResource("Step_T1"), SubResource("Step_T2"), SubResource("Step_T3"), SubResource("Step_T4"), SubResource("Step_T5"), SubResource("Step_T6"), SubResource("Step_T7"), SubResource("Step_T8"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_13"), SubResource("Step_14"), SubResource("Step_15")])
+steps = Array[ExtResource("2_step")]([SubResource("Shot_1"), SubResource("Shot_2"), SubResource("Shot_3"), SubResource("Step_0"), SubResource("Step_TO"), SubResource("Step_TC"), SubResource("Step_T0"), SubResource("Step_TL"), SubResource("Step_T1"), SubResource("Step_T2"), SubResource("Step_T3"), SubResource("Step_T4"), SubResource("Step_T5"), SubResource("Step_T6"), SubResource("Step_T7"), SubResource("Step_T8"), SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_13"), SubResource("Step_14"), SubResource("Step_15")])

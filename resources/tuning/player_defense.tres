@@ -4,3 +4,4 @@
 
 [resource]
 script = ExtResource("1_sp4eb")
+block_face_range = 4.0
