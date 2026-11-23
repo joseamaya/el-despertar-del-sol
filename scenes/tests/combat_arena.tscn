@@ -396,7 +396,7 @@ lock_on = NodePath("../Player/LockOn")
 camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
 arena = NodePath("../ArenaController")
 
-[node name="CombatFeedback" type="Node3D" parent="." unique_id=1494172289 node_paths=PackedStringArray("hit_stop", "camera_rig", "player_hurtbox", "player_hitbox", "player_defense", "player_combat")]
+[node name="CombatFeedback" type="Node3D" parent="." unique_id=1494172289 node_paths=PackedStringArray("hit_stop", "camera_rig", "player_hurtbox", "player_hitbox", "player_defense", "player_combat", "player_guard_point")]
 script = ExtResource("10_7rqch")
 feel = ExtResource("4_78lyk")
 hit_stop = NodePath("../HitStop")
@@ -404,6 +404,7 @@ camera_rig = NodePath("../CameraRig")
 player_hurtbox = NodePath("../Player/Hurtbox")
 player_hitbox = NodePath("../Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox")
 player_defense = NodePath("../Player/Defense")
+player_guard_point = NodePath("../Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Head")
 player_combat = NodePath("../Player/Combat")
 
 [connection signal="hit_landed" from="Player/Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox" to="HitStop" method="on_hit_landed"]

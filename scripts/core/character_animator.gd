@@ -104,5 +104,10 @@ func is_attack_playing() -> bool:
 	return animation_tree.get(&"parameters/attack/active")
 
 
+## How far the guard pose is blended in (0..1), smoothed.
+func get_guard() -> float:
+	return _guard
+
+
 func get_blend() -> float:
 	return _blend
