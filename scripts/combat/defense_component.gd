@@ -8,6 +8,9 @@ signal parried(info: HitInfo)
 signal evaded(info: HitInfo)
 signal guard_broken
 signal dodge_started
+## A dodge press could not start (`reason`: dodging, stunned, attacking, stamina). The
+## HUD warns about stamina (F6 task 7).
+signal dodge_refused(reason: StringName)
 
 const ACTION_BLOCK: StringName = &"block"
 const ACTION_DODGE: StringName = &"dodge"
@@ -18,6 +21,8 @@ const ACTION_DODGE: StringName = &"dodge"
 ## Optional: attacks suspend the block; dodge cancels an attack's recovery.
 @export var combat: CombatComponent
 @export var animator: CharacterAnimator
+## Optional: keeps dodge presses and lets a dodge cut an attack's windup (F6 task 7).
+@export var response: ResponseTuning
 
 var _block_held: bool = false
 var _since_block_press: float = INF
@@ -25,6 +30,9 @@ var _dodging: bool = false
 var _dodge_elapsed: float = 0.0
 var _dodge_direction: Vector3 = Vector3.ZERO
 var _stun_left: float = 0.0
+## Seconds a buffered dodge press still waits (0: none), and its direction.
+var _dodge_wait: float = 0.0
+var _dodge_wait_direction: Vector3 = Vector3.ZERO
 
 
 func _ready() -> void:
@@ -36,7 +44,7 @@ func _physics_process(delta: float) -> void:
 		press_block()
 	set_block_held(Input.is_action_pressed(ACTION_BLOCK))
 	if Input.is_action_just_pressed(ACTION_DODGE):
-		request_dodge()
+		press_dodge()
 	tick(delta)
 
 
@@ -46,6 +54,48 @@ func press_block() -> void:
 	_block_held = true
 
 
+## The player pressed dodge: dodge now, or keep the press for a moment if it only has to
+## wait (an attack, a dodge), or say why not. Returns true if it started or was kept.
+func press_dodge(direction: Vector3 = Vector3.ZERO) -> bool:
+	var reason: StringName = dodge_refusal()
+	if reason == &"":
+		return request_dodge(direction)
+	var can_wait: bool = reason in [&"attacking", &"dodging"]
+	if can_wait and response != null and response.dodge_buffer > 0.0:
+		_dodge_wait = response.dodge_buffer
+		_dodge_wait_direction = direction
+		return true
+	dodge_refused.emit(reason)
+	return false
+
+
+## Why a dodge cannot start right now; empty if it can.
+func dodge_refusal() -> StringName:
+	if _dodging:
+		return &"dodging"
+	if is_stunned():
+		return &"stunned"
+	if combat != null and combat.is_attacking():
+		var phase: AttackRules.Phase = combat.get_phase()
+		var cut_windup: bool = response != null and response.dodge_cancels_windup
+		if (
+			phase != AttackRules.Phase.RECOVERY
+			and not (cut_windup and phase == AttackRules.Phase.WINDUP)
+		):
+			return &"attacking"
+	if (
+		stamina != null
+		and not StaminaRules.can_spend_full(stamina.current, tuning.dodge_stamina_cost)
+	):
+		return &"stamina"
+	return &""
+
+
+## Whether a dodge press is waiting to start.
+func is_dodge_waiting() -> bool:
+	return _dodge_wait > 0.0
+
+
 func set_block_held(held: bool) -> void:
 	_block_held = held
 
@@ -53,6 +103,7 @@ func set_block_held(held: bool) -> void:
 ## Advances dodge, stun, parry window and block posture. Public so tests can drive time.
 func tick(delta: float) -> void:
 	_since_block_press += delta
+	_tick_dodge_wait(delta)
 	if _stun_left > 0.0:
 		_stun_left -= delta
 		if _stun_left <= 0.0:
@@ -70,15 +121,14 @@ func tick(delta: float) -> void:
 
 
 ## Dodge toward the stick (camera-relative), or backwards without input. Needs the whole
-## stamina cost; cancels an attack only in its recovery. Returns true if it started.
+## stamina cost; cancels an attack in its recovery, and in its windup if `response` lets
+## it. Returns true if it started.
 func request_dodge(direction: Vector3 = Vector3.ZERO) -> bool:
-	if _dodging or is_stunned():
+	if dodge_refusal() != &"":
 		return false
-	if combat != null and combat.is_attacking():
-		if combat.get_phase() != AttackRules.Phase.RECOVERY:
-			return false
 	if stamina != null and not stamina.try_spend_full(tuning.dodge_stamina_cost):
 		return false
+	_dodge_wait = 0.0
 	if combat != null and combat.is_attacking():
 		combat.cancel()
 	var dir: Vector3 = direction if not direction.is_zero_approx() else player.get_move_direction()
@@ -132,6 +182,7 @@ func interrupt() -> void:
 	_dodging = false
 	_stun_left = 0.0
 	_block_held = false
+	_dodge_wait = 0.0
 	if busy:
 		player.end_action()
 		if animator != null:
@@ -154,6 +205,20 @@ func is_invulnerable() -> bool:
 
 func is_stunned() -> bool:
 	return _stun_left > 0.0
+
+
+func _tick_dodge_wait(delta: float) -> void:
+	if _dodge_wait <= 0.0:
+		return
+	var reason: StringName = dodge_refusal()
+	if reason == &"":
+		request_dodge(_dodge_wait_direction)
+		return
+	if reason == &"stamina":
+		_dodge_wait = 0.0
+		dodge_refused.emit(reason)
+		return
+	_dodge_wait -= delta
 
 
 func _break_guard() -> void:

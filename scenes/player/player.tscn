@@ -30,6 +30,7 @@
 [ext_resource type="Resource" path="res://resources/tuning/player_guard_pose.tres" id="29_guard"]
 [ext_resource type="Script" path="res://scripts/characters/shield.gd" id="30_shield"]
 [ext_resource type="Resource" path="res://resources/equipment/huallcanca_rodela.tres" id="31_shield"]
+[ext_resource type="Resource" path="res://resources/tuning/player_response.tres" id="32_response"]
 [ext_resource type="Script" path="res://scripts/combat/block_facing.gd" id="27_facing"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lvxji"]
@@ -258,6 +259,7 @@ stamina = NodePath("../Stamina")
 hitbox = NodePath("../Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Champi/Hitbox")
 animator = NodePath("../Animator")
 execution = ExtResource("20_yj68g")
+response = ExtResource("32_response")
 
 [node name="Defense" type="Node" parent="." unique_id=2144964536 node_paths=PackedStringArray("player", "stamina", "combat", "animator")]
 script = ExtResource("20_3j4b4")
@@ -266,6 +268,7 @@ player = NodePath("..")
 stamina = NodePath("../Stamina")
 combat = NodePath("../Combat")
 animator = NodePath("../Animator")
+response = ExtResource("32_response")
 
 [node name="BlockFacing" type="Node" parent="." unique_id=2144964590 node_paths=PackedStringArray("player", "defense", "lock_on")]
 script = ExtResource("27_facing")

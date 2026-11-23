@@ -22,6 +22,8 @@ const ACTION_HEAVY: StringName = &"attack_heavy"
 @export var animator: CharacterAnimator
 ## Optional: a light attack next to an enemy with broken posture executes it (GDD §6.4).
 @export var execution: AttackData
+## Optional: keeps an attack pressed during a dodge or a stun (F6 task 7).
+@export var response: ResponseTuning
 
 var _current: AttackData
 var _elapsed: float = 0.0
@@ -29,6 +31,9 @@ var _chain_index: int = -1
 var _buffered: Kind = Kind.NONE
 var _phase: AttackRules.Phase = AttackRules.Phase.DONE
 var _execution_target: Hurtbox
+## An attack pressed while the player was busy, and how long it still waits.
+var _waiting: Kind = Kind.NONE
+var _wait_left: float = 0.0
 
 
 func _ready() -> void:
@@ -41,6 +46,7 @@ func _physics_process(delta: float) -> void:
 		request(Kind.LIGHT)
 	elif Input.is_action_just_pressed(ACTION_HEAVY):
 		request(Kind.HEAVY)
+	tick_waiting(delta)
 	tick(delta)
 
 
@@ -50,7 +56,11 @@ func request(kind: Kind) -> void:
 		return
 	if _current == null:
 		if player.is_in_action():
-			return  # dodging or stunned
+			# Dodging or stunned: keep the press for a moment (F6 task 7).
+			if response != null and response.attack_buffer > 0.0:
+				_waiting = kind
+				_wait_left = response.attack_buffer
+			return
 		if kind == Kind.LIGHT and execution != null:
 			var target: Hurtbox = find_executable()
 			if target != null:
@@ -85,8 +95,29 @@ func tick(delta: float) -> void:
 		_finish()
 
 
+## Starts a kept attack as soon as the player is free, or forgets it when it has waited
+## too long. Public so tests can drive time.
+func tick_waiting(delta: float) -> void:
+	if _waiting == Kind.NONE:
+		return
+	if _current == null and not player.is_in_action():
+		var kind: Kind = _waiting
+		_waiting = Kind.NONE
+		request(kind)
+		return
+	_wait_left -= delta
+	if _wait_left <= 0.0:
+		_waiting = Kind.NONE
+
+
+## Whether an attack press is waiting to start.
+func is_attack_waiting() -> bool:
+	return _waiting != Kind.NONE
+
+
 ## Stops the current attack at once (e.g. a dodge cancelling the recovery).
 func cancel() -> void:
+	_waiting = Kind.NONE
 	if _current != null:
 		_finish()
 

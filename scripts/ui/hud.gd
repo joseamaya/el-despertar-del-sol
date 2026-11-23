@@ -9,6 +9,11 @@ const FADE_SPEED: float = 2.0
 const HIDE_DELAY: float = 3.0
 ## How long an act banner stays up.
 const BANNER_TIME: float = 3.0
+## A dodge refused for stamina makes the bar blink this colour, this many times, this
+## fast (F6 task 7: half the dropped dodges were for stamina, with no warning).
+const STAMINA_WARN_COLOR: Color = Color(1.0, 0.25, 0.2)
+const STAMINA_WARN_BLINKS: int = 3
+const STAMINA_WARN_BLINK_TIME: float = 0.08
 ## How long a new objective stays up out of combat (in combat it stays).
 const OBJECTIVE_TIME: float = 7.0
 ## Banner text of each SliceStep.Act, in order.
@@ -30,6 +35,8 @@ const ACT_KEYS: Array[StringName] = [
 @export var slice: SliceDirector
 ## Optional: the playthrough summary shown at the end (F5 task 3).
 @export var summary: SessionSummary
+## Optional: warns on the stamina bar when a dodge is refused for stamina (F6 task 7).
+@export var defense: DefenseComponent
 
 @export_group("Nodos")
 @export var root: Control
@@ -43,6 +50,8 @@ const ACT_KEYS: Array[StringName] = [
 @export var message_label: Label
 @export var hint_label: Label
 
+## Stamina warnings shown so far (for tests).
+var stamina_warnings: int = 0
 var _calm_time: float = 0.0
 ## The current objective of the slice (GDD §12.1, F4 task 6), built here: shown for a
 ## while when it changes and all through a fight, with the warriors left.
@@ -52,6 +61,7 @@ var _objective_step: SliceStep
 var _objective_left: float = 0.0
 ## Seconds left for the act banner; 0 when no banner is up.
 var _banner_left: float = 0.0
+var _warn_tween: Tween
 
 
 func _ready() -> void:
@@ -71,6 +81,8 @@ func _ready() -> void:
 		slice.step_started.connect(_on_step_started)
 	if summary != null:
 		summary.summary_copied.connect(_show_end.bind(true))
+	if defense != null:
+		defense.dodge_refused.connect(_on_dodge_refused)
 
 
 func _process(delta: float) -> void:
@@ -174,6 +186,26 @@ func _update_fade(delta: float) -> void:
 	_calm_time = 0.0 if busy else _calm_time + delta
 	var target_alpha: float = 1.0 if _calm_time < HIDE_DELAY else 0.0
 	root.modulate.a = move_toward(root.modulate.a, target_alpha, FADE_SPEED * delta)
+
+
+func _on_dodge_refused(reason: StringName) -> void:
+	if reason == &"stamina":
+		warn_stamina()
+
+
+## Blinks the stamina bar: the dodge did not happen for lack of stamina.
+func warn_stamina() -> void:
+	stamina_warnings += 1
+	root.modulate.a = 1.0
+	_calm_time = 0.0
+	if _warn_tween != null:
+		_warn_tween.kill()
+	_warn_tween = create_tween()
+	for i: int in STAMINA_WARN_BLINKS:
+		_warn_tween.tween_property(
+			stamina_bar, ^"modulate", STAMINA_WARN_COLOR, STAMINA_WARN_BLINK_TIME
+		)
+		_warn_tween.tween_property(stamina_bar, ^"modulate", Color.WHITE, STAMINA_WARN_BLINK_TIME)
 
 
 func _show_message(key: StringName) -> void:

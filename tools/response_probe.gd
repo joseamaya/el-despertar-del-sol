@@ -1,13 +1,22 @@
 class_name ResponseProbe
 extends Node
-## Diagnostic helper (F6 task 6): presses attack and dodge for a bot and, for every press,
-## records whether the game started it at once, buffered it for later, or dropped it,
-## and why (dodging, attacking, too early in the chain, out of stamina, stunned). Also
-## counts the blows that land shortly after a dodge was dropped. Not part of the game:
-## tools/response_diagnosis.gd adds it.
+## Diagnostic helper (F6 tasks 6–7): presses attack and dodge for a bot and, for every
+## press, records whether the game started it at once, kept it for later, or dropped it,
+## and why (dodging, attacking, too early in the chain, out of stamina, stunned). A kept
+## press that never starts counts as expired. Also counts the blows that land shortly
+## after a dodge was lost. Not part of the game: tools/response_diagnosis.gd adds it.
 
 const STARTED: String = "inmediata"
 const BUFFERED: String = "guardada"
+## A kept press that ran out of time without starting.
+const EXPIRED: String = "guardada_caducada"
+## The game's refusal reasons, as the report names them.
+const REASONS: Dictionary = {
+	&"attacking": "atacando",
+	&"dodging": "durante_esquiva",
+	&"stamina": "sin_resistencia",
+	&"stunned": "aturdido",
+}
 ## How soon after a dropped dodge a landed blow counts as its cost.
 const COST_WINDOW: float = 0.6
 
@@ -24,6 +33,8 @@ var _defense: DefenseComponent
 var _stamina: StaminaComponent
 var _clock: float = 0.0
 var _last_dropped_dodge: float = -INF
+var _dodge_kept: bool = false
+var _attack_kept: bool = false
 
 
 func _ready() -> void:
@@ -36,26 +47,39 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_clock += delta
+	if _dodge_kept and not _defense.is_dodge_waiting():
+		_dodge_kept = false
+		if not _defense.is_dodging():
+			_count("esquiva", EXPIRED)
+			_last_dropped_dodge = _clock
+	if _attack_kept and not _combat.is_attack_waiting():
+		_attack_kept = false
+		if not _combat.is_attacking():
+			_count("ataque", EXPIRED)
 
 
 ## Presses an attack of `kind` and records what became of it.
 func press_attack(kind: CombatComponent.Kind) -> String:
 	var outcome: String = attack_outcome()
-	if outcome == BUFFERED:
+	if outcome == BUFFERED and _combat.is_attacking():
 		var data: AttackData = _combat.get_current()
 		buffer_waits.append(maxf(0.0, AttackRules.real(data.chain_from, data) - _combat_elapsed()))
 	_count("ataque", outcome)
 	_combat.request(kind)
+	if outcome == BUFFERED and not _combat.is_attacking():
+		_attack_kept = _combat.is_attack_waiting()
 	return outcome
 
 
-## Presses dodge and records what became of it.
+## Presses dodge, the way the game does, and records what became of it.
 func press_dodge() -> String:
 	var outcome: String = dodge_outcome()
-	var started: bool = _defense.request_dodge()
-	if outcome == STARTED and not started:
+	var kept: bool = _defense.press_dodge()
+	if outcome == STARTED and not kept:
 		outcome = "otro"
-	if outcome != STARTED:
+	if outcome == BUFFERED:
+		_dodge_kept = true
+	elif outcome != STARTED:
 		_last_dropped_dodge = _clock
 	_count("esquiva", outcome)
 	return outcome
@@ -65,6 +89,8 @@ func press_dodge() -> String:
 func attack_outcome() -> String:
 	if not _combat.is_attacking():
 		if player.is_in_action():
+			if _combat.response != null and _combat.response.attack_buffer > 0.0:
+				return BUFFERED
 			return "durante_esquiva" if _defense.is_dodging() else "aturdido"
 		if _stamina.current <= 0.0:
 			return "sin_resistencia"
@@ -75,17 +101,15 @@ func attack_outcome() -> String:
 	return "demasiado_pronto"
 
 
-## What a dodge pressed now would do.
+## What a dodge pressed now would do, by the game's own rule.
 func dodge_outcome() -> String:
-	if _defense.is_dodging():
-		return "durante_esquiva"
-	if _defense.is_stunned():
-		return "aturdido"
-	if _combat.is_attacking() and _combat.get_phase() != AttackRules.Phase.RECOVERY:
-		return "atacando_" + ("anticipacion" if _combat.get_phase() == 0 else "golpe")
-	if _stamina.current < _defense.tuning.dodge_stamina_cost:
-		return "sin_resistencia"
-	return STARTED
+	var reason: StringName = _defense.dodge_refusal()
+	if reason == &"":
+		return STARTED
+	var keeps: bool = _defense.response != null and _defense.response.dodge_buffer > 0.0
+	if keeps and reason in [&"attacking", &"dodging"]:
+		return BUFFERED
+	return REASONS.get(reason, String(reason)) as String
 
 
 func report() -> Dictionary:

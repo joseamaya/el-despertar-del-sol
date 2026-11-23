@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
-## The response probe of the F6 diagnosis (task 6): an attack pressed while idle starts;
-## a dodge pressed in an attack's windup is dropped for that; an attack pressed during a
-## dodge is dropped for that; a dodge without enough stamina is dropped for that.
+## The response probe of the F6 diagnosis (tasks 6–7): with the player's response tuning,
+## a dodge in an attack's windup starts, one in its strike is kept; an attack pressed
+## during a dodge is kept; a dodge without enough stamina is dropped for that.
 
 const SCENE: String = "res://scenes/tests/combat_arena.tscn"
 
@@ -28,17 +28,26 @@ func _frames(count: int) -> void:
 		await get_tree().physics_frame
 
 
-func test_a_dodge_in_the_windup_is_dropped_for_it() -> void:
+func test_a_dodge_in_the_windup_starts_and_in_the_strike_is_kept() -> void:
 	assert_str(_probe.press_attack(CombatComponent.Kind.HEAVY)).is_equal(ResponseProbe.STARTED)
 	await _frames(2)
-	assert_str(_probe.press_dodge()).is_equal("atacando_anticipacion")
-	assert_dict(_probe.presses["esquiva"]).is_equal({"atacando_anticipacion": 1})
+	# F6 task 7: a dodge cuts the windup.
+	assert_str(_probe.press_dodge()).is_equal(ResponseProbe.STARTED)
+	await _frames(60)
+	(_player.get_node(^"Stamina") as StaminaComponent).reset()
+	_probe.press_attack(CombatComponent.Kind.HEAVY)
+	var combat := _player.get_node(^"Combat") as CombatComponent
+	for i: int in 60:
+		if combat.get_phase() == AttackRules.Phase.ACTIVE:
+			break
+		await get_tree().physics_frame
+	assert_str(_probe.press_dodge()).is_equal(ResponseProbe.BUFFERED)
 
 
-func test_an_attack_during_a_dodge_is_dropped_for_it() -> void:
+func test_an_attack_during_a_dodge_is_kept() -> void:
 	assert_str(_probe.press_dodge()).is_equal(ResponseProbe.STARTED)
 	await _frames(2)
-	assert_str(_probe.press_attack(CombatComponent.Kind.LIGHT)).is_equal("durante_esquiva")
+	assert_str(_probe.press_attack(CombatComponent.Kind.LIGHT)).is_equal(ResponseProbe.BUFFERED)
 
 
 func test_a_dodge_without_stamina_is_dropped_for_it() -> void:
