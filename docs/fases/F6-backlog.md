@@ -1,6 +1,6 @@
 # F6 · Ajuste del combate — backlog
 
-**Estado:** propuesta del agente, pendiente de aprobación del desarrollador.
+**Estado:** aprobado por el desarrollador el 2026-11-23.
 
 - **Criterio de salida (GDD §15, `DECISIONS/0014`):** bloqueo fiable y legible, controles que
   responden, orientación, y una build lista para una nueva prueba con jugadores.
