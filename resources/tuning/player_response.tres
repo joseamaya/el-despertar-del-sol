@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ResponseTuning" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/response_tuning.gd" id="1_resp"]
+
+[resource]
+script = ExtResource("1_resp")
+dodge_buffer = 0.3
+attack_buffer = 0.3
+dodge_cancels_windup = true

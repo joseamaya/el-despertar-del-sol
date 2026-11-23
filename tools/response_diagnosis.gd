@@ -7,7 +7,11 @@ extends SceneTree
 ##       --enemies=3 --attack-every=0.45 --seconds=120 --out=/tmp/response.json
 ##
 ## --attack-every: seconds between attack presses (a player mashing: 0.3; calm: 0.7).
-## Every fourth attack press is heavy. The player cannot die; stamina is real.
+## Every fourth attack press is heavy. Like a player who sees a blow coming, the bot holds
+## its attacks for HOLD_BEFORE_DODGE before each dodge. --old-rules takes the player's
+## ResponseTuning away (no kept presses, dodge cuts only the recovery), to compare.
+## --dodge-cost=N and --regen-delay=S try other stamina values (copies; nothing saved).
+## The player cannot die; stamina is real.
 
 const ARENA: String = "res://scenes/tests/combat_arena.tscn"
 const SETTLE_FRAMES: int = 30
@@ -15,11 +19,16 @@ const SETTLE_FRAMES: int = 30
 const REACT_BEFORE: float = 0.2
 ## Only blows from this close are worth a dodge.
 const DODGE_RANGE: float = 3.5
+## The bot stops pressing attack this long before a planned dodge.
+const HOLD_BEFORE_DODGE: float = 0.4
 
 var _enemies: int = 3
 var _attack_every: float = 0.45
 var _seconds: float = 120.0
 var _out: String = "user://response_diagnosis.json"
+var _old_rules: bool = false
+var _dodge_cost: float = -1.0
+var _regen_delay: float = -1.0
 var _scene: Node
 var _player: PlayerController
 var _probe: ResponseProbe
@@ -38,6 +47,12 @@ func _initialize() -> void:
 			_seconds = float(arg.trim_prefix("--seconds="))
 		elif arg.begins_with("--out="):
 			_out = arg.trim_prefix("--out=")
+		elif arg == "--old-rules":
+			_old_rules = true
+		elif arg.begins_with("--dodge-cost="):
+			_dodge_cost = float(arg.trim_prefix("--dodge-cost="))
+		elif arg.begins_with("--regen-delay="):
+			_regen_delay = float(arg.trim_prefix("--regen-delay="))
 	_scene = (load(ARENA) as PackedScene).instantiate()
 	root.add_child(_scene)
 	_run.call_deferred()
@@ -55,6 +70,17 @@ func _run() -> void:
 	for i: int in mini(_enemies, alive.size()):
 		alive[i].perception.alert_to(_player.global_position)
 		alive[i].combat.attack_started.connect(_on_enemy_attack.bind(alive[i]))
+	var defense := _player.get_node(^"Defense") as DefenseComponent
+	if _dodge_cost >= 0.0:
+		defense.tuning = defense.tuning.duplicate() as DefenseTuning
+		defense.tuning.dodge_stamina_cost = _dodge_cost
+	var stamina := _player.get_node(^"Stamina") as StaminaComponent
+	if _regen_delay >= 0.0:
+		stamina.tuning = stamina.tuning.duplicate() as StaminaTuning
+		stamina.tuning.regen_delay = _regen_delay
+	if _old_rules:
+		(_player.get_node(^"Defense") as DefenseComponent).response = null
+		(_player.get_node(^"Combat") as CombatComponent).response = null
 	_probe = ResponseProbe.new()
 	_probe.player = _player
 	_scene.add_child(_probe)
@@ -74,7 +100,10 @@ func _run() -> void:
 			_dodge_at.remove_at(0)
 			_probe.press_dodge()
 		until_attack -= step
-		if until_attack <= 0.0:
+		var dodge_soon: bool = (
+			not _dodge_at.is_empty() and _dodge_at[0] - _clock < HOLD_BEFORE_DODGE
+		)
+		if until_attack <= 0.0 and not dodge_soon:
 			until_attack = _attack_every
 			attacks += 1
 			var kind := (
@@ -87,6 +116,9 @@ func _run() -> void:
 	result["enemies"] = _enemies
 	result["attack_every"] = _attack_every
 	result["seconds"] = _seconds
+	result["old_rules"] = _old_rules
+	result["dodge_cost"] = _dodge_cost
+	result["regen_delay"] = _regen_delay
 	var text: String = JSON.stringify(result)
 	print("RESPONSE_DIAGNOSIS ", text)
 	var file := FileAccess.open(_out, FileAccess.WRITE)

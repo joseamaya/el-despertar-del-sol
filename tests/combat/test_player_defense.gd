@@ -126,16 +126,53 @@ func test_hit_from_behind_gets_through_the_block() -> void:
 	assert_float(_health.current).is_equal(_health.get_maximum() - _enemy.damage)
 
 
-func test_dodge_cancels_recovery_but_not_windup() -> void:
+## F6 task 7: a dodge cuts an attack in its windup (and recovery), not while it strikes;
+## pressed while it strikes, the dodge is kept and comes out as soon as it can.
+func test_dodge_cuts_windup_and_waits_out_the_strike() -> void:
+	assert_bool(_defense.response.dodge_cancels_windup).is_true()
 	_combat.request(CombatComponent.Kind.LIGHT)
 	await _frames(2)
-	assert_bool(_defense.request_dodge()).is_false()
-	for i: int in 90:
-		if _combat.get_phase() == AttackRules.Phase.RECOVERY:
-			break
-		await get_tree().physics_frame
+	assert_int(_combat.get_phase()).is_equal(AttackRules.Phase.WINDUP)
 	assert_bool(_defense.request_dodge()).is_true()
 	assert_bool(_combat.is_attacking()).is_false()
+	await _frames(60)
+	_stamina.reset()
+	_combat.request(CombatComponent.Kind.LIGHT)
+	for i: int in 60:
+		if _combat.get_phase() == AttackRules.Phase.ACTIVE:
+			break
+		await get_tree().physics_frame
+	assert_bool(_defense.request_dodge()).is_false()
+	assert_bool(_defense.press_dodge()).is_true()
+	assert_bool(_defense.is_dodge_waiting()).is_true()
+	for i: int in 60:
+		if _defense.is_dodging():
+			break
+		await get_tree().physics_frame
+	assert_bool(_defense.is_dodging()).is_true()
+	assert_bool(_combat.is_attacking()).is_false()
+
+
+## F6 task 7: an attack pressed during a dodge comes out when the dodge ends, if the dodge
+## ends within the buffer; otherwise it is forgotten.
+func test_an_attack_pressed_late_in_a_dodge_comes_out_after_it() -> void:
+	assert_bool(_defense.request_dodge()).is_true()
+	await _frames(int((_defense.tuning.dodge_duration - 0.15) * 60.0))
+	_combat.request(CombatComponent.Kind.LIGHT)
+	assert_bool(_combat.is_attack_waiting()).is_true()
+	assert_bool(_combat.is_attacking()).is_false()
+	await _frames(20)
+	assert_bool(_combat.is_attacking()).is_true()
+
+
+## F6 task 7: a dodge refused for stamina says so, and is not kept.
+func test_a_dodge_without_stamina_is_refused_and_says_why() -> void:
+	var reasons: Array[StringName] = []
+	_defense.dodge_refused.connect(func(r: StringName) -> void: reasons.append(r))
+	_stamina.drain(_stamina.current - 5.0)
+	assert_bool(_defense.press_dodge()).is_false()
+	assert_bool(_defense.is_dodge_waiting()).is_false()
+	assert_array(reasons).is_equal([&"stamina"])
 
 
 func test_no_attack_while_dodging_and_slow_while_blocking() -> void:
