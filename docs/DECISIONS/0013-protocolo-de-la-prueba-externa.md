@@ -60,6 +60,18 @@ Backlog: `docs/fases/F5-backlog.md`.
    - Excepción: un fallo que impida terminar. En ese caso se publica `0.1.1-slice` y se
      anota quién jugó cada versión.
 
+## Enmienda (2026-11-23): cierre con 2 respuestas
+
+No se consiguieron más probadores. La prueba se cierra con 2 respuestas al formulario (P1 y
+P2, las dos de la `0.1-slice`; solo P1 terminó), más los comentarios de quien jugó sin
+rellenarlo (`docs/fases/F5-resultados.md`).
+
+- **La regla de decisión del punto 7 no se aplica:** exige al menos 5 respuestas. Con una
+  sola persona que cuenta, un porcentaje no significa nada.
+- **El desarrollador decide con el análisis cualitativo** (`docs/fases/F5-analisis.md`):
+  **ajustar** (`0014`).
+- **El criterio 8 de §14.4 queda pendiente** para la próxima prueba.
+
 ## Enmienda (2026-11-21): build `0.1.1-slice` a mitad de la prueba
 
 Varias personas jugaron la `0.1-slice` sin rellenar la encuesta. Contaron que se atascaban

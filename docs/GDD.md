@@ -582,6 +582,7 @@ Con unas 20 horas por semana, el vertical slice estaba estimado en unas 23 seman
 | F3 · Escenario de Carmenca | 3 sem | Recorrible a 60 FPS y reconocible andino |
 | F4 · Integración del slice | 3 sem | 8–12 min completos en build exportada |
 | F5 · Prueba externa | 2 sem | Decidir: continuar, ajustar o recortar |
+| F6 · Ajuste del combate | 2 sem | Bloqueo fiable y legible, controles que responden, orientación y build lista para una nueva prueba (`DECISIONS/0014`) |
 
 Si el combate no convence al cerrar la Fase 2, se itera ahí antes de producir escenario; nunca se avanza a la Fase 3 con un combate dudoso.
 
