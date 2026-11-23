@@ -245,10 +245,11 @@ posture = NodePath("../Posture")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_ha7m0")
 
-[node name="LockOnTarget" type="Area3D" parent="." unique_id=1368472587 node_paths=PackedStringArray("health", "posture")]
+[node name="LockOnTarget" type="Area3D" parent="." unique_id=1368472587 node_paths=PackedStringArray("health", "posture", "combat")]
 script = ExtResource("12_6y8sg")
 health = NodePath("../Health")
 posture = NodePath("../Posture")
+combat = NodePath("../Combat")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LockOnTarget" unique_id=369626546]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)

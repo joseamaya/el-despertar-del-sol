@@ -73,7 +73,7 @@ SETTINGS_BACK,Volver,Back
 CREDITS_CONCH,"Sonido de caracola: David Bolton, CC BY 2.5 (Wikimedia Commons)","Conch shell sound: David Bolton, CC BY 2.5 (Wikimedia Commons)"
 HUD_FPS,{fps} FPS · {ms} ms,{fps} FPS · {ms} ms
 SLICE_TIME,Tiempo: {min} min {s} s,Time: {min} min {s} s
-DLG_TRAIN_START,Enséñame tu guardia: para mis golpes.,Show me your guard: stop my blows.
+DLG_TRAIN_START,"Primero, no me pierdas de vista. Luego, para mis golpes.","First, keep your eyes on me. Then stop my blows."
 DLG_TRAIN_PARRY,Bien. Ahora páralo justo antes de que llegue: así se rompe la guardia del enemigo.,Good. Now stop it just before it lands: that is how you break an enemy's guard.
 DLG_TRAIN_EVADE,"Si no puedes pararlo, apártate.","If you cannot stop it, get out of its way."
 DLG_TRAIN_ATTACK,Ahora golpéame tú. No te contengas.,Now strike me. Do not hold back.
@@ -85,6 +85,7 @@ CTX_SHOT_1,"Cusco, hacia 1438","Cusco, around 1438"
 CTX_SHOT_2,Los chancas de Uscovilca han llegado para tomar la ciudad,The Chancas of Uscovilca have come to take the city
 CTX_SHOT_3,"Tú eres Cusi Yupanqui. Tu padre, el Inca, se ha ido. Tú te quedas.","You are Cusi Yupanqui. Your father, the Inca, has gone. You stay."
 INTRO_SKIP,E / A: saltar,E / A: skip
+OBJ_TRAIN_LOCK,"Entrenamiento: fija a Vicaquirao con Q o clic central (R3 en el mando)","Training: lock onto Vicaquirao with Q or middle click (R3 on a gamepad)"
 OBJ_TRAIN_BLOCK,"Entrenamiento: de cara a Vicaquirao, mantén F / LB para bloquear sus golpes ({count})","Training: facing Vicaquirao, hold F / LB to block his blows ({count})"
 OBJ_TRAIN_PARRY,Entrenamiento: suelta F / LB y vuelve a pulsarlo justo antes de que llegue el golpe (parry),Training: let go of F / LB and press it again just before the blow lands (parry)
 OBJ_TRAIN_EVADE,Entrenamiento: esquiva sus golpes (Espacio / B) ({count}),Training: dodge his blows (Space / B) ({count})

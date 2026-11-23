@@ -9,6 +9,9 @@ extends Resource
 @export_range(10.0, 360.0, 1.0, "suffix:°") var block_arc_deg: float = 120.0
 ## Max move speed while blocking.
 @export_range(0.0, 10.0, 0.1, "suffix:m/s") var block_move_speed: float = 2.0
+## Without a lock, the guard turns toward a warrior swinging within this distance
+## (F6 task 3: most unblocked blows came from outside the arc). 0: never turns.
+@export_range(0.0, 10.0, 0.1, "suffix:m") var block_face_range: float = 4.0
 ## Stun after a broken guard: no actions, vulnerable.
 @export_range(0.0, 3.0, 0.05, "suffix:s") var guard_break_stun: float = 0.8
 

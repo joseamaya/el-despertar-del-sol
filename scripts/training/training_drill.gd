@@ -2,7 +2,8 @@ class_name TrainingDrill
 extends Node
 ## Vicaquirao's training at the lookout (F4 task 12a, GDD §5.2): while the slice is on a
 ## DRILL step he spars with Cusi (a warrior on his own side: slow blows that do no harm)
-## and counts what the step asks for: blocks, parries, dodges, hits on him. A dodge
+## and counts what the step asks for: a lock on him (he waits meanwhile, F6 task 3),
+## blocks, parries, dodges, hits on him. A dodge
 ## started while his blow is coming counts, whether the roll takes Cusi through the blow
 ## or out of its reach. Between drills he stands still; when the training is over he goes
 ## back to being the standing Vicaquirao. In the parry drill, enough plain blocks also
@@ -26,6 +27,7 @@ var _step: SliceStep
 var _done: int = 0
 ## Each of his blows counts for one dodge at most.
 var _blow_dodged: bool = false
+var _lock_on: LockOnController
 ## Plain blocks made during the current parry drill.
 var _parry_blocks: int = 0
 
@@ -39,6 +41,8 @@ func _ready() -> void:
 	defense.parried.connect(_on_event.bind(SliceStep.Drill.PARRY).unbind(1))
 	defense.evaded.connect(_on_dodged.unbind(1))
 	defense.dodge_started.connect(_on_dodge_started)
+	_lock_on = player.get_node(^"LockOn") as LockOnController
+	_lock_on.target_locked.connect(_on_locked)
 
 
 func trainer() -> EnemyController:
@@ -104,8 +108,11 @@ func _on_step_started(step: SliceStep) -> void:
 		_step = step
 		_done = 0
 		_parry_blocks = 0
-		_set_sparring(true)
+		# He waits while the player learns to lock onto him.
+		_set_sparring(step.drill != SliceStep.Drill.LOCK)
 		progressed.emit(0, step.count)
+		if step.drill == SliceStep.Drill.LOCK and _lock_on.is_locked():
+			_on_locked(_lock_on.get_target())
 	elif step.kind != SliceStep.Kind.DIALOGUE and _trainer != null:
 		_dismiss()
 
@@ -145,6 +152,11 @@ func _dismiss() -> void:
 	_trainer = null
 	_step = null
 	npc.visible = true
+
+
+func _on_locked(target: LockOnTarget) -> void:
+	if _trainer != null and target != null and target.get_parent() == _trainer:
+		count(SliceStep.Drill.LOCK)
 
 
 func _on_trainer_hit(_info: HitInfo) -> void:
