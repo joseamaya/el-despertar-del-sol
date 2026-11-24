@@ -6,14 +6,15 @@ manda el GDD y se avisa al desarrollador.
 
 ## Fase actual
 
-**F6 · Ajuste del combate** (2 semanas). Criterio de salida: bloqueo fiable y legible,
-controles que responden, orientación, y una build lista para una nueva prueba con jugadores
-(GDD §15, `docs/DECISIONS/0014`). Si se pasa un 50 % de la estimación, se recorta alcance.
+**F7 · Segunda prueba externa** (2 semanas). Criterio de salida: la `0.2-slice` probada por
+5–10 personas, el criterio 8 de GDD §14.4 medido y la decisión tomada: continuar, ajustar o
+recortar (GDD §15). Si se pasa un 50 % de la estimación, se recorta alcance.
 Solo se trabaja en el alcance de la fase actual. Nada de la fase siguiente se adelanta.
-Deudas heredadas de F5: sección «Pasa a F6» de `docs/fases/F5-prueba-externa.md`.
+Deudas heredadas de F6: sección «Pasa a F7» de `docs/fases/F6-ajuste-del-combate.md`.
 Fases cerradas: F0 (`docs/fases/F0-preproduccion.md`), F1 (`docs/fases/F1-movimiento-y-camara.md`),
 F2 (`docs/fases/F2-combate.md`), F3 (`docs/fases/F3-escenario-carmenca.md`),
-F4 (`docs/fases/F4-integracion-del-slice.md`), F5 (`docs/fases/F5-prueba-externa.md`).
+F4 (`docs/fases/F4-integracion-del-slice.md`), F5 (`docs/fases/F5-prueba-externa.md`),
+F6 (`docs/fases/F6-ajuste-del-combate.md`).
 Al cambiar de fase, el desarrollador actualiza esta sección.
 
 ## Stack fijado
