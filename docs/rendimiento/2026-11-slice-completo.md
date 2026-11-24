@@ -74,3 +74,41 @@ Carmenca habitada (12c).
   2026-11-19): **10 min** hasta el «Fin».
 - **Reintentos:** incluye derrotas en la segunda oleada del paso.
 - **Criterio de salida de F4:** 8–12 min.
+
+## Referencia de F6: build `0.2-slice` en reposo (F6, tarea 1)
+
+**Fecha:** 2026-11-23 · **Código:** `chore/trailer-0-2` 21ac041 (`0.2-slice` con todo F6) ·
+mismo comando que arriba (`--playthrough --scale3d=0.833`) · 3 pasadas seguidas, con la
+máquina en reposo (carga media 1,0–1,9 al empezar cada una).
+
+Incluye todo lo nuevo desde F4: la apertura de tres planos con los chancas a la vista, el
+entrenamiento con fijar objetivo, la huallcanca con la pose de guardia y el destello, los
+búferes de respuesta y el marcador de objetivo.
+
+| Tramo (acto) | Tiempo del bot | Mediana: FPS / 1 % bajo / lentos | Pasada 2 (atípica) |
+| --- | --- | --- | --- |
+| Apertura (con presentación y tutorial) | 72 s | 130,0 / 49,2 / 0,0 % | 124,3 / 49,2 / 0,0 % |
+| Exploración | 46 s | 103,1 / 43,1 / 0,2 % | 81,8 / 22,2 / 13,2 % |
+| Apoyo | 16 s | 111,4 / 56,8 / 0,4 % | 78,1 / 23,6 / 22,6 % |
+| Combate (con refuerzos) | 88 s | 124,4 / 50,9 / 0,1 % | 105,9 / 23,8 / 4,5 % |
+| Cierre | 16 s | 127,6 / 54,7 / 0,1 % | 127,6 / 42,6 / 0,7 % |
+| **Partida completa** | **4 min 30 s** | **121,3 / 46,2 / 0,1 %** | **105,7 / 23,7 / 5,0 %** |
+
+Las tres pasadas, partida completa (FPS / 1 % bajo / lentos): 129,7 / 55,8 / 0,0 %;
+105,7 / 23,7 / 5,0 %; 121,3 / 46,2 / 0,1 %.
+
+- **Primitivas máximas:** 1,12 M en las tres, en la apertura (antes 1,05 M).
+- **Draw calls máximas:** 201 (antes 200). **Física media:** 6,5 ms.
+- **La pasada 2 es atípica:** sus frames lentos se concentran en la exploración y el
+  apoyo, sin cambio de escena que lo explique, y la carga de la máquina subió durante
+  ella. Se toma la mediana de las tres, que es lo que pedía la tarea.
+
+**Conclusión:**
+- Frente al cierre de F4 en reposo (124,6 / 53,8 / 0,1 %), la `0.2-slice` queda
+  **prácticamente igual: 121,3 / 46,2 / 0,1 %**. Los cambios de F6 no tienen un coste de
+  rendimiento apreciable.
+- Cumple el criterio de F3 (más de 60 FPS de media, menos de 1 % de frames lentos y menos
+  de 1,2 M primitivas).
+- **Margen en primitivas:** la apertura, con los guerreros chancas a la vista, sube el
+  máximo a 1,12 M, cerca del límite de 1,2 M. Si se añaden más figuras a la apertura,
+  conviene medir antes.
