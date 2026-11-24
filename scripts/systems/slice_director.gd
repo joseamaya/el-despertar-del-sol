@@ -12,6 +12,9 @@ signal checkpoint_reached(marker: StringName)
 signal slice_finished
 ## A step with a notice completed: show it (translation key).
 signal notice_shown(key: StringName)
+## Hosted only (F8 task 3): the player pressed retry on the end screen; the game shell
+## restarts the level instead of reloading the scene.
+signal restart_requested
 
 const ACTION_RESTART: StringName = &"restart"
 ## Skips the opening shots (same button as the dialogue).
@@ -35,6 +38,8 @@ const LOCKED_PROMPT: StringName = &"PROMPT_ENEMIES_NEAR"
 @export var drill: TrainingDrill
 ## Off for tools that drive the zones themselves (benchmark, captures).
 @export var autostart: bool = true
+## Inside the game shell (F8 task 3; set by LevelEntry): retry asks the shell.
+var hosted: bool = false
 
 var flow: SliceFlow
 ## Seconds of play since the slice began, frozen at its end; pauses do not count
@@ -82,7 +87,10 @@ func _physics_process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if flow != null and flow.is_finished() and event.is_action_pressed(ACTION_RESTART):
-		get_tree().reload_current_scene()
+		if hosted:
+			restart_requested.emit()
+		else:
+			get_tree().reload_current_scene()
 	elif is_in_intro() and event.is_action_pressed(ACTION_SKIP):
 		get_viewport().set_input_as_handled()
 		skip_intro()

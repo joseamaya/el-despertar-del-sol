@@ -100,3 +100,21 @@ func test_shows_the_build_version() -> void:
 	assert_str(version.text).contains("0.2-slice")
 	assert_bool(version.text.contains("PAUSE_")).is_false()
 	_pause.close()
+
+
+## F8 task 2: outside the game shell there is no "back to title"; hosted, restarting asks
+## the shell instead of reloading the scene.
+func test_hosted_mode_asks_the_shell() -> void:
+	var to_title := _pause.find_child("ToTitle", true, false) as Button
+	assert_bool(to_title.visible).is_false()
+	_pause.set_hosted(true)
+	assert_bool(to_title.visible).is_true()
+	var asked: Array[StringName] = []
+	_pause.restart_requested.connect(func() -> void: asked.append(&"restart"))
+	_pause.title_requested.connect(func() -> void: asked.append(&"title"))
+	_pause.open()
+	(_pause.find_child("Restart", true, false) as Button).pressed.emit()
+	_pause.open()
+	to_title.pressed.emit()
+	assert_array(asked).contains_exactly([&"restart", &"title"])
+	assert_bool(get_tree().paused).is_false()
