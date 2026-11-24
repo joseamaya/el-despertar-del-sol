@@ -203,3 +203,77 @@ Una tarea es lo que cabe en una tarde (AGENTS.md).
   zonas nuevas (tarea 5).
 - **El presupuesto de rendimiento** se mide en cada zona nueva, como en F3. La apertura del
   slice ya está en 1,12 M primitivas, cerca del límite de 1,2 M.
+
+## 7. Arte y audio que pide la estructura B (F7, tarea 5)
+
+Lo que hay hoy (`docs/ASSET_SOURCES.md`):
+- un maniquí con 43 animaciones gratuitas (UAL1 Standard, CC0);
+- personajes hechos con piezas (`CharacterOutfit`): Cusi, Vicaquirao, comunero, anciano,
+  guerrero leal y refugiados;
+- el kit de escenario propio, generado en código: pirca, casas, terrazas, plantas y
+  animales;
+- sonido provisional CC0: Kenney, viento, pasos, la música *Peru Style 3* y el pututu
+  (CC BY).
+
+### 7.1. Personajes
+
+| Qué | Cómo | Coste |
+| --- | --- | --- |
+| Apo Mayta | Variante de `CharacterOutfit`, como Vicaquirao | S |
+| 3 curacas o jefes de ayllu | Variantes de ropa y tocado (GDD §10.5: variaciones por facción, no solo color) | S cada uno |
+| Prisioneros y gente que vuelve | Reutilizan refugiados y comuneros | S |
+| Quipucamayoc | Variante con quipus colgados | S |
+| **Lancero chanca** | Ropa chanca y lanza larga (prop nuevo). **Faltan las animaciones**, ver 7.2 | M + animación |
+| Figura de luz de Susurpuquio | Silueta humana luminosa, sin rasgos (ambigua, `0017`). Material emisivo, sin modelo nuevo | S |
+
+### 7.2. Animaciones: el lancero
+
+- **Lo que hay:** el pack gratuito solo trae `Sword_Attack`, un tajo de espada, sin estocada.
+- **Lo que se ha comprobado en las páginas de Quaternius:**
+  - Ninguna lista de clips de UAL1 (Pro, 9,99 USD) ni de UAL2 menciona lanza, estocada o
+    *polearm*. Los nombres de la Pro no se pueden leer sin comprarla o sin el visor, que
+    funciona con canvas.
+  - UAL2 Standard (gratis, CC0, 42 clips) trae `IDLE_SHIELD` (guardia con escudo),
+    `OVERHAND_THROW` (lanzamiento, útil para la huaraca), combos de espada
+    (`SWORD_REGULAR_A*`) y `MELEE_HOOK`.
+- **Opciones para la estocada:**
+  1. **Procedural** (recomendada para empezar). Una estocada hecha como la pose de guardia de
+     F6 (`GuardPose`, un `SkeletonModifier3D`): brazos al frente sobre `Sword_Attack` o sobre
+     la locomoción. Sin compras, y ya se hizo algo parecido en F6.
+  2. **Mirar el visor** (<https://quaternius.com/animviewer.html>) en tu navegador antes de
+     comprar la Pro (9,99 USD). Si trae una estocada, la compra decides tú (`0008`).
+  3. **Descargar UAL2 Standard** (gratis, CC0). Sirve para `IDLE_SHIELD` y el lanzamiento,
+     pero no resuelve la estocada.
+- **Mixamo no:** sus condiciones no permiten publicar los archivos en un repositorio público.
+
+### 7.3. Escenarios
+
+| Zona | Base | Coste de arte |
+| --- | --- | --- |
+| Prólogo y centro del Cusco | **Nuevo:** plaza y calles de pirca y adobe con techos de ichu (GDD §10.2), y un fondo del valle con la ciudad. Es la zona más grande | L |
+| Misión A · llamas o provisiones | Variante del kit de Carmenca: ladera y corrales | S |
+| Misión B · prisioneros | Variante del kit: quebrada con un campamento de exploradores | M |
+| Misión C · disputa del curaca | Pueblo de un ayllu: casas del kit en otra disposición | M |
+| Combate visible ante los curacas | Ladera de Carmenca u otra del kit | S |
+| Susurpuquio, de noche | **Nuevo:** fuente o manantial, agua, iluminación nocturna en el renderer Mobile y el cristal | M |
+
+Cada zona se mide en el equipo de referencia antes de darla por buena (F3): 60 FPS y menos
+de 1,2 M primitivas.
+
+### 7.4. Audio
+
+| Qué | Estado y propuesta |
+| --- | --- |
+| **Música** | La de hoy (*Peru Style 3*) lleva arpa y bajo, anacrónicos en 1438 (GDD §11). Para la demo hacen falta 3–4 piezas: el centro, el combate, la tensión y Susurpuquio. Lo más sensato es **buscar piezas CC0 con instrumentos prehispánicos** (quena, antara, tinya, wankar). Si no aparecen, decides tú si se encargan, y a qué precio |
+| Ambientes | Murmullo del Cusco, noche (insectos y agua) y quebrada. Packs CC0 de OpenGameArt o Freesound (solo CC0) |
+| Efectos nuevos | Estocada de lanza, cristal en el agua, la figura de luz, gente que vuelve y el aviso de resistencia, que es deuda de F6 |
+| Voces | Fuera del alcance (GDD §14.3); siguen siendo subtítulos |
+
+### 7.5. Decisiones que se te piden
+
+1. **Animación del lancero:** empezar con la estocada procedural, o mirar antes el visor de
+   Quaternius por si compensa la Pro (9,99 USD).
+2. **Música:** buscar CC0 prehispánica primero (recomendado), o encargarla desde el
+   principio.
+3. **UAL2 Standard:** si se descarga (gratis, CC0) en F8 para la guardia con escudo y el
+   lanzamiento.
