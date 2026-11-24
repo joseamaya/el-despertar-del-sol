@@ -6,7 +6,7 @@
 script = ExtResource("1_layout")
 size = Vector2(80, 170)
 profile = PackedVector2Array(-85, 4, 85, 0)
-corridor = PackedVector2Array(-85, 9, 85, 9)
+corridor = PackedVector2Array(-85, 20, 85, 20)
 side_max_rise = 6.0
 path = PackedVector2Array(0, 75, 0, -75)
 path_width = 3.0
