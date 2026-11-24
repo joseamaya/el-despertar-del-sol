@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="ChapterData" format=3]
+
+[ext_resource type="Script" path="res://scripts/chapter/chapter_data.gd" id="1_chapter"]
+[ext_resource type="Script" path="res://scripts/chapter/mission_data.gd" id="2_mission"]
+
+[sub_resource type="Resource" id="Mission_1"]
+script = ExtResource("2_mission")
+id = &"prologo"
+title = &"MISSION_PROLOGUE"
+level = &"prologo"
+
+[sub_resource type="Resource" id="Mission_2"]
+script = ExtResource("2_mission")
+id = &"carmenca"
+title = &"MISSION_CARMENCA"
+level = &"carmenca"
+ayllu = &"ayllu_carmenca"
+requires = Array[StringName]([&"prologo"])
+
+[sub_resource type="Resource" id="Mission_3"]
+script = ExtResource("2_mission")
+id = &"llamas"
+title = &"MISSION_LLAMAS"
+level = &"mision_llamas"
+ayllu = &"ayllu_a"
+requires = Array[StringName]([&"carmenca"])
+
+[sub_resource type="Resource" id="Mission_4"]
+script = ExtResource("2_mission")
+id = &"prisioneros"
+title = &"MISSION_PRISONERS"
+level = &"mision_prisioneros"
+ayllu = &"ayllu_b"
+requires = Array[StringName]([&"carmenca"])
+
+[sub_resource type="Resource" id="Mission_5"]
+script = ExtResource("2_mission")
+id = &"disputa"
+title = &"MISSION_DISPUTE"
+level = &"mision_disputa"
+ayllu = &"curaca_c"
+requires = Array[StringName]([&"carmenca"])
+
+[sub_resource type="Resource" id="Mission_6"]
+script = ExtResource("2_mission")
+id = &"combate_visible"
+title = &"MISSION_SHOW_OF_FORCE"
+level = &"combate_visible"
+requires = Array[StringName]([&"llamas", &"prisioneros", &"disputa"])
+requires_count = 2
+
+[sub_resource type="Resource" id="Mission_7"]
+script = ExtResource("2_mission")
+id = &"susurpuquio"
+title = &"MISSION_SUSURPUQUIO"
+level = &"susurpuquio"
+requires = Array[StringName]([&"combate_visible"])
+
+[resource]
+script = ExtResource("1_chapter")
+id = &"capitulo_1"
+missions = Array[ExtResource("2_mission")]([SubResource("Mission_1"), SubResource("Mission_2"), SubResource("Mission_3"), SubResource("Mission_4"), SubResource("Mission_5"), SubResource("Mission_6"), SubResource("Mission_7")])

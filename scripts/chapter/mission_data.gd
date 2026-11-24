@@ -1,0 +1,24 @@
+class_name MissionData
+extends Resource
+## One mission of a chapter (F8 task 4, `docs/capitulo-1.md` §3): where it is played, which
+## ayllu it wins over, and which missions open it. "2 of 3" is `requires` with
+## `requires_count` = 2.
+
+@export var id: StringName = &""
+## Shown in the hub and the pause menu (translation key).
+@export var title: StringName = &""
+## The level it is played in (LevelCatalog id).
+@export var level: StringName = &""
+## The ayllu whose Apoyo it raises (F8 task 6). Empty: none.
+@export var ayllu: StringName = &""
+## Missions that open this one.
+@export var requires: Array[StringName] = []
+## How many of `requires` must be done. 0: all of them.
+@export_range(0, 10, 1) var requires_count: int = 0
+## Level flag that marks it done when the level ends. Empty: ending the level is enough.
+@export var complete_flag: StringName = &""
+
+
+## How many of `requires` have to be done for it to open.
+func needed() -> int:
+	return requires.size() if requires_count <= 0 else mini(requires_count, requires.size())

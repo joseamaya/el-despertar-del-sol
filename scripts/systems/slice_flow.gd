@@ -84,6 +84,11 @@ func has_flag(flag: StringName) -> bool:
 	return _flags.has(flag)
 
 
+## Every flag set so far (a copy), for the chapter when the level ends (F8 task 4).
+func flags() -> Array[StringName]:
+	return _flags.duplicate()
+
+
 ## Whether a step's condition holds with the flags set so far.
 func applies(step: SliceStep) -> bool:
 	if step.only_if != &"" and not has_flag(step.only_if):

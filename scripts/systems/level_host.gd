@@ -10,8 +10,8 @@ signal level_loaded(id: StringName)
 signal level_unloaded
 ## The level asked to go back to the title menu.
 signal title_requested
-## The current level's sequence is over.
-signal level_finished(id: StringName)
+## The current level's sequence is over, with the flags it set (F8 task 4).
+signal level_finished(id: StringName, flags: Array[StringName])
 
 @export var catalog: LevelCatalog
 @export var loading: LoadingScreen
@@ -110,7 +110,7 @@ func _swap_in(scene: PackedScene) -> void:
 		entry.host()
 		entry.restart_requested.connect(restart, CONNECT_DEFERRED)
 		entry.title_requested.connect(title_requested.emit, CONNECT_DEFERRED)
-		entry.level_finished.connect(level_finished.emit.bind(_current_id))
+		entry.level_finished.connect(_on_level_finished)
 		if _current_entry != &"":
 			# After the level has placed the player at its own start (deferred too).
 			entry.enter.call_deferred(_current_entry)
@@ -125,3 +125,7 @@ func _find_entry(level: Node) -> LevelEntry:
 		if child is LevelEntry:
 			return child as LevelEntry
 	return null
+
+
+func _on_level_finished(flags: Array[StringName]) -> void:
+	level_finished.emit(_current_id, flags)

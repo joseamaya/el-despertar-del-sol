@@ -6,11 +6,13 @@
 [ext_resource type="Script" path="res://scripts/ui/title_menu.gd" id="4_title"]
 [ext_resource type="Script" path="res://scripts/ui/loading_screen.gd" id="5_loading"]
 [ext_resource type="Texture2D" path="res://assets/ui/title_background.jpg" id="6_bg"]
+[ext_resource type="Resource" path="res://resources/chapters/capitulo_1.tres" id="7_chapter"]
 
 [node name="Game" type="Node" node_paths=PackedStringArray("host", "title")]
 script = ExtResource("1_shell")
 host = NodePath("LevelHost")
 title = NodePath("TitleMenu")
+chapter = ExtResource("7_chapter")
 
 [node name="LevelHost" type="Node" parent="." node_paths=PackedStringArray("loading")]
 script = ExtResource("2_host")
