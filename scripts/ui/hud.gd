@@ -62,6 +62,10 @@ var _objective_left: float = 0.0
 ## Seconds left for the act banner; 0 when no banner is up.
 var _banner_left: float = 0.0
 var _warn_tween: Tween
+## Inside the chapter (F8 task 7; set by LevelEntry): the end screen says the mission is
+## done and asks to go on, instead of the slice's ending, time and survey summary.
+var _chapter_end: bool = false
+var _ended: bool = false
 
 
 func _ready() -> void:
@@ -224,8 +228,17 @@ func _show_banner(act: SliceStep.Act) -> void:
 	_show_notice(ACT_KEYS[act])
 
 
-## A slice notice (F4 task 6), shown like an act banner.
+## Inside the chapter, the end screen announces the mission done and "go on" (F8 task 7).
+func set_chapter_end(enabled: bool) -> void:
+	_chapter_end = enabled
+
+
+## A slice notice (F4 task 6), shown like an act banner. Once the level is over (the
+## Apoyo won, F8 task 6) it is added to the end screen instead of replacing it.
 func _show_notice(key: StringName) -> void:
+	if _ended:
+		hint_label.text = "%s\n\n%s" % [tr(key), hint_label.text]
+		return
 	message_label.text = tr(key)
 	hint_label.text = ""
 	message_panel.visible = true
@@ -234,6 +247,12 @@ func _show_notice(key: StringName) -> void:
 
 func _show_end(copied: bool = false) -> void:
 	_banner_left = 0.0
+	_ended = true
+	if _chapter_end:
+		message_label.text = tr(&"MISSION_DONE")
+		hint_label.text = "%s\n\n%s" % [tr(&"MISSION_GO_ON"), tr(&"CREDITS_CONCH")]
+		message_panel.visible = true
+		return
 	message_label.text = tr(&"SLICE_THE_END")
 	# Credits that a licence asks for (docs/ASSET_SOURCES.md: the CC BY conch).
 	var seconds: int = roundi(slice.play_time)

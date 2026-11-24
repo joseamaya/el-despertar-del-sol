@@ -16,6 +16,8 @@ signal title_requested
 signal level_finished(flags: Array[StringName])
 ## A checkpoint was reached: a good moment to save (F8 task 5).
 signal checkpoint_reached(marker: StringName)
+## The level is over and the player chose to go on (F8 task 7).
+signal continue_requested
 
 @export var level: SectorLevel
 @export var pause_menu: PauseMenu
@@ -25,6 +27,8 @@ signal checkpoint_reached(marker: StringName)
 @export var rite: HuacaRite
 ## Optional: they read the chapter's Apoyo (F8 task 6).
 @export var support_allies: SupportAllies
+## Optional: its end screen turns into "mission done, go on" (F8 task 7).
+@export var hud: Hud
 
 var _hosted: bool = false
 var _offerings: Array[StringName] = []
@@ -74,6 +78,9 @@ func host() -> void:
 		slice.restart_requested.connect(restart_requested.emit)
 		slice.slice_finished.connect(_on_slice_finished)
 		slice.checkpoint_reached.connect(checkpoint_reached.emit)
+		slice.continue_requested.connect(continue_requested.emit)
+	if hud != null:
+		hud.set_chapter_end(true)
 
 
 func is_hosted() -> bool:

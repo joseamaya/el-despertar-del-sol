@@ -14,6 +14,8 @@ signal title_requested
 signal level_finished(id: StringName, flags: Array[StringName])
 ## The current level reached a checkpoint (F8 task 5).
 signal checkpoint_reached(id: StringName, marker: StringName)
+## The current level is over and the player chose to go on (F8 task 7).
+signal continue_requested(id: StringName)
 
 @export var catalog: LevelCatalog
 @export var loading: LoadingScreen
@@ -134,6 +136,7 @@ func _swap_in(scene: PackedScene) -> void:
 	if entry != null:
 		entry.host()
 		entry.checkpoint_reached.connect(_on_checkpoint_reached)
+		entry.continue_requested.connect(_on_continue_requested, CONNECT_DEFERRED)
 		entry.restart_requested.connect(restart, CONNECT_DEFERRED)
 		entry.title_requested.connect(title_requested.emit, CONNECT_DEFERRED)
 		entry.level_finished.connect(_on_level_finished)
@@ -155,6 +158,10 @@ func _find_entry(level: Node) -> LevelEntry:
 
 func _on_level_finished(flags: Array[StringName]) -> void:
 	level_finished.emit(_current_id, flags)
+
+
+func _on_continue_requested() -> void:
+	continue_requested.emit(_current_id)
 
 
 func _on_checkpoint_reached(marker: StringName) -> void:

@@ -115,3 +115,25 @@ func test_finishing_carmenca_with_the_llamas_wins_its_ayllu() -> void:
 	assert_int(shell.support.level(&"ayllu_carmenca")).is_equal(SupportLedger.Level.SYMPATHIZER)
 	var data: Dictionary = _save.read()
 	assert_int(int((data["support"] as Dictionary)["ayllu_carmenca"])).is_equal(1)
+
+
+## F8 task 7: inside the chapter the end screen says the mission is done, keeps the Apoyo
+## notice, and going on leaves Carmenca (the hub does not exist yet: back to the title).
+func test_the_end_screen_goes_on() -> void:
+	var runner := scene_runner(SCENE)
+	var shell := runner.scene() as GameShell
+	shell.new_game()
+	var host := runner.find_child("LevelHost") as LevelHost
+	await _wait_loaded(host)
+	var level: Node = host.current_level()
+	var slice := level.get_node(^"SliceDirector") as SliceDirector
+	slice.flow.set_flag(&"llamas_freed")
+	slice.slice_finished.emit()
+	var hud := level.get_node(^"Hud") as Hud
+	assert_str(hud.message_label.text).is_equal(tr(&"MISSION_DONE"))
+	assert_str(hud.hint_label.text).contains(tr(&"NOTICE_SUPPORT_SYMPATHIZER"))
+	assert_str(hud.hint_label.text).contains(tr(&"MISSION_GO_ON"))
+	slice.continue_requested.emit()
+	for i: int in 30:
+		await get_tree().process_frame
+	assert_bool(host.current_id() != &"carmenca" or host.is_loading()).is_true()
