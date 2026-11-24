@@ -41,7 +41,7 @@
 | 9 | **Probadores apalabrados** (en paralelo desde el inicio): conseguir 5–10 personas que se comprometan a jugar la `0.2-slice` y rellenar el formulario. Tú decides el canal. Si quieres usar publicaciones, ahora toca proponer la skill `devlog` (GDD §16.5). El agente prepara los textos y el material con imágenes reales | Pendiente |
 | 10 | **Prueba del desarrollador:** juegas la build con los cambios y confirmas que el bloqueo es fiable y legible, que los controles responden y que te orientas. Es la evidencia del criterio de salida; si algo no convence, se itera en las tareas 3–8 | Hecha: el desarrollador jugó la `0.2-slice` completa (2026-11-23): «está excelente» |
 | 11 | **Build `0.2-slice`:** versión en el menú, pre-release pública con los zips de Windows y Linux, y guía y encuesta actualizadas. La encuesta se pide también a quien no termine. Se comprueba en Windows y, si hay uno disponible, con mando | En curso: versión `0.2-slice` y guía `F6-guia-prueba.md`. Tráiler y flyer de la 0.2 en `F6-difusion.md`. Pre-release `v0.2-slice` publicada el 2026-11-23 desde `main` (`4484c6b`). Falta: comprobarla en Windows (y con mando) y el enlace de la encuesta 0.2 |
-| 12 | **Cierre de F6** con `phase-gate` | Pendiente |
+| 12 | **Cierre de F6** con `phase-gate` | Hecha: `F6-ajuste-del-combate.md`, confirmado por el desarrollador el 2026-11-23 |
 
 ## Orden propuesto
 

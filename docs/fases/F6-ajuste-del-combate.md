@@ -1,6 +1,9 @@
 # F6 · Ajuste del combate — nota de cierre
 
-**Fechas:** 2026-11-23 – 2026-11-23 · **Estado:** pendiente de confirmación del desarrollador
+**Fechas:** 2026-11-23 – 2026-11-23 · **Estado:** cerrada
+
+Criterio de salida confirmado por el desarrollador el 2026-11-23. Siguiente fase:
+F7 · Segunda prueba externa.
 
 ## Criterio de salida (GDD §15)
 
@@ -111,7 +114,7 @@ Desde entonces solo han cambiado documentos, así que no se repite. Slice comple
 - **Con 3 guerreros,** el 26 % de las esquivas se siguen perdiendo y un golpe por la espalda
   puede entrar sin una señal distinta (la tarea 5 se recortó).
 
-## Pasa a la siguiente fase
+## Pasa a F7 · Segunda prueba externa
 
 1. **La prueba con jugadores de la `0.2-slice`:**
    - encuesta 0.2: duplicar el formulario de F5 y poner el enlace en `F6-guia-prueba.md`;
