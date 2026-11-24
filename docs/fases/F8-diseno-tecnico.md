@@ -1,6 +1,6 @@
 # F8 · Diseño técnico de la base del capítulo (tarea 1)
 
-**Estado:** propuesta del agente, pendiente de aprobación del desarrollador.
+**Estado:** aprobado por el desarrollador el 2026-11-24.
 
 Cómo se construyen el cambio de escena, la partida guardada, el estado del capítulo y el
 Apoyo, sin reescribir lo que funciona (AGENTS.md, regla 5).
