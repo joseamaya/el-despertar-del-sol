@@ -277,3 +277,52 @@ de 1,2 M primitivas.
    se decide si se encarga.
 3. **UAL2 Standard** (gratis, CC0) se descarga en F8 cuando haga falta, y se registra en
    `ASSET_SOURCES.md`.
+
+## 8. Plan de producción (F7, tarea 6)
+
+**Estado:** propuesta del agente, pendiente de aprobación. Al aprobarse pasa a GDD §15.
+
+**Cómo está estimado:**
+- Unas 20 horas por semana (GDD §15), con los tamaños de §6 y §7.
+- F6 cupo en un día gracias a los agentes. Pero lo que no se acelera, el arte, las pruebas en
+  el juego y las decisiones, manda en estas fases. Por eso se mantienen estimaciones
+  prudentes.
+- Si una fase se pasa un 50 %, se recorta alcance (§15).
+
+| Fase | Duración | Contenido | Criterio de salida |
+| --- | --- | --- | --- |
+| **F8 · Base del capítulo** | 3 sem | Cambio de escena, partida guardada, estado del capítulo y misiones, y Apoyo por ayllu. El slice pasa a ser el nivel de Carmenca dentro del capítulo. Prólogo en bruto. Skill `canon-check`. Descarga de UAL2 Standard | Desde el menú: «Nueva partida» → prólogo → Carmenca → centro (en bruto); «Continuar» recupera la partida. Build exportada |
+| **F9 · El centro y el lancero** | 3 sem | El Cusco como centro (arte, gente, curacas, Vicaquirao y Apo Mayta). El lancero chanca: estocada procedural, IA de distancia y tuning. Exploradores que patrullan | El centro se recorre a 60 FPS y se reconoce andino; pelear contra lanceros se siente bien (lo pruebas tú) |
+| **F10 · Las misiones de Apoyo** | 3 sem | Misiones A (llamas o provisiones), B (prisioneros, con escolta) y C (la disputa del curaca). El combate visible ante los curacas. El Apoyo se ve en el centro | Las 3 misiones se juegan en cualquier orden, y el Apoyo cambia el centro y el combate visible |
+| **F11 · Susurpuquio y cierre** | 2 sem | La noche, la fuente, el cristal y la figura de luz. Huacas y códice nuevos. Música y ambientes CC0. Pulido del ritmo | El capítulo se juega de principio a fin (90–100 min) en build exportada, Windows y Linux |
+| **F12 · Prueba de la demo** | 2 sem | Prueba con jugadores del capítulo completo, con el criterio 8 incluido. Arreglos y decisión de publicarla (itch.io o Steam, GDD §20) | Probado por 5–10 personas y decidido: publicar, ajustar o recortar |
+
+**Total: unas 13 semanas** (F8–F12), más F7.
+
+### 8.1. La prueba de la 0.2 y la cláusula de `0016`
+
+- **En cada cierre de fase,** `phase-gate` revisa las respuestas que hayan llegado.
+- **Si salta la cláusula** (al menos 3 personas que terminen, y menos del 50 % de 4–5), se
+  para y se ajusta el combate antes de seguir.
+- **El mejor momento** para que llegue la prueba es antes de F9, porque F9 es la fase que
+  toca el combate (el lancero).
+
+### 8.2. Qué se recorta primero
+
+Si el capítulo no cabe, en este orden:
+
+1. **La misión C** (la disputa): quedan 2 misiones, y el combate visible pide las 2.
+2. **Susurpuquio interactivo:** la visión pasa a ser una escena breve sin control.
+3. **El centro se reduce a la plaza,** sin calles que recorrer.
+4. **El lancero:** los chancas siguen con porra en el capítulo, y la lanza pasa al Capítulo
+   II.
+
+**Lo que no se recorta:** el guardado, el Apoyo por ayllu y la prueba de la demo. Son lo que
+hace del capítulo una demo publicable que mide interés (GDD §20).
+
+### 8.3. Dependencias
+
+- **F8 va primero:** todo depende del cambio de escena, el guardado y el estado del
+  capítulo.
+- **F9 y F10** podrían solaparse en parte: el arte del centro con las misiones del kit.
+  Pero AGENTS.md pide una fase activa a la vez, así que se mantienen en serie.
