@@ -11,8 +11,8 @@ extends Node
 signal restart_requested
 ## Leave the level for the title menu.
 signal title_requested
-## The level's sequence is over.
-signal level_finished
+## The level's sequence is over, with the flags it set (F8 task 4).
+signal level_finished(flags: Array[StringName])
 
 @export var level: SectorLevel
 @export var pause_menu: PauseMenu
@@ -33,7 +33,7 @@ func host() -> void:
 	if slice != null:
 		slice.hosted = true
 		slice.restart_requested.connect(restart_requested.emit)
-		slice.slice_finished.connect(level_finished.emit)
+		slice.slice_finished.connect(_on_slice_finished)
 
 
 func is_hosted() -> bool:
@@ -46,3 +46,7 @@ func enter(entry: StringName) -> void:
 	if entry == &"" or level == null:
 		return
 	level.place_player_at(entry, Vector3(0.0, 0.0, 1.0))
+
+
+func _on_slice_finished() -> void:
+	level_finished.emit(slice.flow.flags())
