@@ -4,9 +4,8 @@ Cómo repartir la build `0.2-slice` y qué decir a quien la prueba. Protocolo: e
 `DECISIONS/0013`, con sus enmiendas. Esta guía cambia solo lo necesario para esta prueba.
 
 - **Descarga:** <https://github.com/joseamaya/el-despertar-del-sol/releases/tag/v0.2-slice>
-  (pre-release pública; no hace falta cuenta de GitHub). **Todavía no está publicada:** se
-  publica tras la prueba del desarrollador (tarea 10) y la medición de rendimiento
-  (tarea 1).
+  (pre-release pública; no hace falta cuenta de GitHub). Publicada el 2026-11-23 desde
+  `main` (`4484c6b`); falta comprobarla en Windows y con mando.
 - **Encuesta:** `<ENLACE DE LA ENCUESTA 0.2>`, pendiente; ver la sección 1.
 
 ## 1. Lo que hace el desarrollador
