@@ -1,6 +1,6 @@
 # F8 · Base del capítulo — backlog
 
-**Estado:** propuesta del agente, pendiente de aprobación del desarrollador.
+**Estado:** aprobado por el desarrollador el 2026-11-24.
 
 - **Criterio de salida (GDD §15, `docs/capitulo-1.md` §8):** desde el menú, «Nueva partida»
   → prólogo → Carmenca → centro del Cusco (en bruto), y «Continuar» recupera la partida. En
