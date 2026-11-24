@@ -126,3 +126,13 @@ MISSION_PRISONERS,Los prisioneros,The prisoners
 MISSION_DISPUTE,La disputa del curaca,The curaca's dispute
 MISSION_SHOW_OF_FORCE,Ante los curacas,Before the curacas
 MISSION_SUSURPUQUIO,Susurpuquio,Susurpuquio
+AYLLU_CARMENCA,Ayllu de Carmenca,Ayllu of Carmenca
+AYLLU_A,Ayllu del valle,Ayllu of the valley
+AYLLU_B,Ayllu de la quebrada,Ayllu of the ravine
+CURACA_C,Curaca del pueblo,Curaca of the village
+SUPPORT_NEUTRAL,Neutral,Neutral
+SUPPORT_SYMPATHIZER,Simpatizante,Sympathizer
+SUPPORT_ALLY,Aliado,Ally
+PAUSE_SUPPORT,Apoyo: {total},Support: {total}
+NOTICE_SUPPORT_SYMPATHIZER,Un ayllu simpatiza con Cusi,An ayllu sympathizes with Cusi
+NOTICE_SUPPORT_ALLY,Un ayllu se alía con Cusi,An ayllu allies with Cusi

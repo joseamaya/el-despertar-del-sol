@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="SupportTuning" format=3]
+
+[ext_resource type="Script" path="res://scripts/support/support_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" path="res://scripts/support/ayllu_data.gd" id="2_ayllu"]
+
+[sub_resource type="Resource" id="Ayllu_1"]
+script = ExtResource("2_ayllu")
+id = &"ayllu_carmenca"
+title = &"AYLLU_CARMENCA"
+
+[sub_resource type="Resource" id="Ayllu_2"]
+script = ExtResource("2_ayllu")
+id = &"ayllu_a"
+title = &"AYLLU_A"
+
+[sub_resource type="Resource" id="Ayllu_3"]
+script = ExtResource("2_ayllu")
+id = &"ayllu_b"
+title = &"AYLLU_B"
+
+[sub_resource type="Resource" id="Ayllu_4"]
+script = ExtResource("2_ayllu")
+id = &"curaca_c"
+title = &"CURACA_C"
+
+[resource]
+script = ExtResource("1_tuning")
+ayllus = Array[ExtResource("2_ayllu")]([SubResource("Ayllu_1"), SubResource("Ayllu_2"), SubResource("Ayllu_3"), SubResource("Ayllu_4")])

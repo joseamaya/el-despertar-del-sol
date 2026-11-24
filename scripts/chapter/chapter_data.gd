@@ -4,6 +4,8 @@ extends Resource
 
 @export var id: StringName = &""
 @export var missions: Array[MissionData] = []
+## Its ayllus and the Apoyo thresholds (F8 task 6).
+@export var support: SupportTuning
 
 
 ## The mission with `mission_id`, or null.

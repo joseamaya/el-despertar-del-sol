@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/chapter/chapter_data.gd" id="1_chapter"]
 [ext_resource type="Script" path="res://scripts/chapter/mission_data.gd" id="2_mission"]
+[ext_resource type="Resource" path="res://resources/support/capitulo_1_apoyo.tres" id="3_support"]
 
 [sub_resource type="Resource" id="Mission_1"]
 script = ExtResource("2_mission")
@@ -16,6 +17,7 @@ title = &"MISSION_CARMENCA"
 level = &"carmenca"
 ayllu = &"ayllu_carmenca"
 requires = Array[StringName]([&"prologo"])
+support_flag = &"llamas_freed"
 
 [sub_resource type="Resource" id="Mission_3"]
 script = ExtResource("2_mission")
@@ -48,6 +50,7 @@ title = &"MISSION_SHOW_OF_FORCE"
 level = &"combate_visible"
 requires = Array[StringName]([&"llamas", &"prisioneros", &"disputa"])
 requires_count = 2
+support_all_won = true
 
 [sub_resource type="Resource" id="Mission_7"]
 script = ExtResource("2_mission")
@@ -59,4 +62,5 @@ requires = Array[StringName]([&"combate_visible"])
 [resource]
 script = ExtResource("1_chapter")
 id = &"capitulo_1"
+support = ExtResource("3_support")
 missions = Array[ExtResource("2_mission")]([SubResource("Mission_1"), SubResource("Mission_2"), SubResource("Mission_3"), SubResource("Mission_4"), SubResource("Mission_5"), SubResource("Mission_6"), SubResource("Mission_7")])

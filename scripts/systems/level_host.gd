@@ -55,8 +55,8 @@ func _process(_delta: float) -> void:
 
 
 ## Starts loading level `id`, to enter at marker `entry` (empty: the level's start).
-## `resume` continues a saved game (F8 task 5): {state, codex, offerings}, see
-## `LevelEntry.prepare()`. Returns false if the id is unknown or a load is already running.
+## `resume` continues a saved game (F8 tasks 5–6): {state, codex, offerings, support},
+## see `LevelEntry.prepare()`. Returns false if the id is unknown or a load is already running.
 func load_level(id: StringName, entry: StringName = &"", resume: Dictionary = {}) -> bool:
 	if not catalog.has_level(id) or is_loading():
 		return false
@@ -81,7 +81,10 @@ func restart() -> bool:
 	var entry: LevelEntry = current_entry()
 	var keep: Dictionary = {}
 	if entry != null:
-		keep = {"codex": entry.codex_ids(), "offerings": entry.offerings()}
+		keep = _pending_resume.duplicate()
+		keep.erase("state")
+		keep["codex"] = entry.codex_ids()
+		keep["offerings"] = entry.offerings()
 	return load_level(_current_id, _current_entry, keep)
 
 
@@ -124,7 +127,8 @@ func _swap_in(scene: PackedScene) -> void:
 		entry.prepare(
 			_pending_resume.get("state", {}) as Dictionary,
 			_names(_pending_resume.get("codex", []) as Array),
-			_names(_pending_resume.get("offerings", []) as Array)
+			_names(_pending_resume.get("offerings", []) as Array),
+			_pending_resume.get("support", null) as SupportLedger
 		)
 	add_child(_current)
 	if entry != null:

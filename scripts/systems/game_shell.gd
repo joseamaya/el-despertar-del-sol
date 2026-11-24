@@ -2,7 +2,7 @@ class_name GameShell
 extends Node
 ## The game's main scene (F8 tasks 2–5, `docs/fases/F8-diseno-tecnico.md`): opens on the
 ## title menu, starts a new game in the chapter's first mission or continues the saved
-## one, keeps the chapter's progress, and saves when a new game starts, at every
+## one, keeps the chapter's progress and Apoyo, and saves when a new game starts, at every
 ## checkpoint and when a level ends. Comes back to the title when a level asks; the saved
 ## game stays at the last checkpoint.
 
@@ -12,6 +12,8 @@ extends Node
 
 ## Null on the title menu, before a game starts.
 var progress: ChapterProgress
+## The chapter's Apoyo per ayllu (F8 task 6); null before a game starts.
+var support: SupportLedger
 ## The saved game service; the `Save` autoload unless a test sets another first.
 var saves: SaveGame
 
@@ -35,7 +37,7 @@ func _ready() -> void:
 ## Starts a new game: fresh progress, into the first mission that is open. The saved game
 ## is replaced as soon as the first level loads.
 func new_game() -> void:
-	progress = ChapterProgress.new(chapter)
+	_begin_game()
 	_save_on_load = true
 	play_next()
 
@@ -47,8 +49,9 @@ func continue_game() -> bool:
 	if data.is_empty():
 		title.set_can_continue(false)
 		return false
-	progress = ChapterProgress.new(chapter)
+	_begin_game()
 	progress.from_dict(data.get("chapter", {}) as Dictionary)
+	support.from_dict(data.get("support", {}) as Dictionary)
 	var level := StringName(str(data.get("level", "")))
 	var mission: MissionData = chapter.mission(progress.active())
 	_save_on_load = false
@@ -57,6 +60,7 @@ func continue_game() -> bool:
 			"state": data.get("level_state", {}),
 			"codex": data.get("codex", []),
 			"offerings": data.get("offerings", []),
+			"support": support,
 		}
 		if host.load_level(level, &"", resume):
 			title.hide_menu()
@@ -74,7 +78,7 @@ func play_next() -> bool:
 			return false
 		for mission_id: StringName in open:
 			var level: StringName = chapter.mission(mission_id).level
-			if host.catalog.has_level(level) and host.load_level(level):
+			if host.catalog.has_level(level) and host.load_level(level, &"", _carry()):
 				progress.start(mission_id)
 				title.hide_menu()
 				return true
@@ -101,6 +105,7 @@ func save_now() -> void:
 		"level_state": entry.snapshot() if entry != null else {},
 		"codex": _strings(entry.codex_ids()) if entry != null else [],
 		"offerings": _strings(entry.offerings()) if entry != null else [],
+		"support": support.to_dict(),
 	}
 	if saves.write(data) == OK:
 		title.set_can_continue(true)
@@ -117,9 +122,38 @@ func _on_checkpoint_reached(_id: StringName, _marker: StringName) -> void:
 
 
 func _on_level_finished(level_id: StringName, flags: Array[StringName]) -> void:
-	if progress != null:
-		progress.finish_level(level_id, flags)
-		save_now()
+	if progress == null:
+		return
+	var done: StringName = progress.finish_level(level_id, flags)
+	if done != &"":
+		support.apply_mission(chapter.mission(done), flags)
+	save_now()
+
+
+func _begin_game() -> void:
+	progress = ChapterProgress.new(chapter)
+	support = SupportLedger.new(chapter.support)
+	support.level_raised.connect(_on_support_raised)
+
+
+## What a level carries from the game into the next: codex, offerings, Apoyo.
+func _carry() -> Dictionary:
+	var entry: LevelEntry = host.current_entry()
+	var out: Dictionary = {"support": support}
+	if entry != null:
+		out["codex"] = entry.codex_ids()
+		out["offerings"] = entry.offerings()
+	return out
+
+
+func _on_support_raised(_ayllu: StringName, level: SupportLedger.Level) -> void:
+	var entry: LevelEntry = host.current_entry()
+	if entry == null:
+		return
+	var tuning: SupportTuning = chapter.support
+	entry.announce(
+		tuning.ally_notice if level == SupportLedger.Level.ALLY else tuning.sympathizer_notice
+	)
 
 
 static func _strings(names: Array[StringName]) -> Array:
