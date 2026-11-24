@@ -58,7 +58,7 @@ jobs:
           - group: Carmenca
             paths: "res://tests/world,res://tests/systems"
           - group: Sistemas
-            paths: "res://tests/allies,res://tests/audio,res://tests/chapter,res://tests/characters,res://tests/codex,res://tests/combat,res://tests/core,res://tests/dialogue,res://tests/enemies,res://tests/interaction,res://tests/physics,res://tests/player,res://tests/tools,res://tests/training,res://tests/ui"
+            paths: "res://tests/allies,res://tests/audio,res://tests/chapter,res://tests/characters,res://tests/codex,res://tests/combat,res://tests/core,res://tests/dialogue,res://tests/enemies,res://tests/interaction,res://tests/physics,res://tests/player,res://tests/support,res://tests/tools,res://tests/training,res://tests/ui"
     steps:
       - uses: actions/checkout@v7
         with:

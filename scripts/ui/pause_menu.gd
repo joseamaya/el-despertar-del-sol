@@ -27,6 +27,7 @@ var _root: Control
 var _main: VBoxContainer
 var _options: SettingsPage
 var _resume: Button
+var _support: SupportLedger
 
 
 func _ready() -> void:
@@ -73,6 +74,7 @@ func open() -> void:
 	_mouse_before = Input.mouse_mode
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	_root.visible = true
+	_refresh_support()
 	show_main()
 
 
@@ -99,6 +101,12 @@ func is_hosted() -> bool:
 	return _hosted
 
 
+## Shows the chapter's Apoyo on the main page (F8 task 6).
+func set_support(support: SupportLedger) -> void:
+	_support = support
+	_refresh_support()
+
+
 func show_main() -> void:
 	_options.visible = false
 	_main.visible = true
@@ -123,6 +131,13 @@ func _connect() -> void:
 	(_main.get_node(^"ToTitle") as Button).pressed.connect(_to_title)
 	(_main.get_node(^"Quit") as Button).pressed.connect(_quit)
 	_options.back_pressed.connect(show_main)
+
+
+func _refresh_support() -> void:
+	var label := _main.get_node(^"Support") as Label
+	label.visible = _support != null
+	if _support != null:
+		label.text = SupportText.summary(_support)
 
 
 func _restart() -> void:

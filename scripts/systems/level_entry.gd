@@ -23,6 +23,8 @@ signal checkpoint_reached(marker: StringName)
 ## Optional: what the saved game keeps of the level (F8 task 5).
 @export var codex: Codex
 @export var rite: HuacaRite
+## Optional: they read the chapter's Apoyo (F8 task 6).
+@export var support_allies: SupportAllies
 
 var _hosted: bool = false
 var _offerings: Array[StringName] = []
@@ -42,9 +44,18 @@ func _ready() -> void:
 
 ## Called by the LevelHost before the level enters the tree: continue from `state` (what
 ## `snapshot()` gave), with the codex entries and offerings the game already has.
-func prepare(state: Dictionary, codex_ids: Array[StringName], offerings: Array[StringName]) -> void:
+func prepare(
+	state: Dictionary,
+	codex_ids: Array[StringName],
+	offerings: Array[StringName],
+	support: SupportLedger = null
+) -> void:
 	if slice != null:
 		slice.resume = state.duplicate()
+	if pause_menu != null and support != null:
+		pause_menu.set_support.call_deferred(support)
+	if support_allies != null:
+		support_allies.support = support
 	_saved_codex = codex_ids.duplicate()
 	_saved_offerings = offerings.duplicate()
 
@@ -87,6 +98,12 @@ func snapshot() -> Dictionary:
 		"flags": slice.flow.flags().map(func(f: StringName) -> String: return String(f)),
 		"checkpoint": String(slice.flow.checkpoint()),
 	}
+
+
+## Shows a banner in the level (the Apoyo going up, F8 task 6).
+func announce(key: StringName) -> void:
+	if slice != null:
+		slice.announce(key)
 
 
 ## Codex entries unlocked in the game so far (the saved ones and this level's).

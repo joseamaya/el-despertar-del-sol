@@ -9,6 +9,8 @@ extends Resource
 ## Encounter zone they come to (1-based) and the slice flag that sends them.
 @export_range(1, 10, 1) var zone: int = 3
 @export var flag: StringName = &"llamas_freed"
+## In the chapter (F8 task 6): they also come if this ayllu already supports Cusi.
+@export var ayllu: StringName = &"ayllu_carmenca"
 ## They appear this far behind the player (downhill, where the player came from).
 @export_range(4.0, 40.0, 0.5, "suffix:m") var spawn_behind: float = 12.0
 @export_range(0.5, 5.0, 0.1, "suffix:m") var spawn_spread: float = 1.6

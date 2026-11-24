@@ -18,6 +18,15 @@ extends Resource
 ## Level flag that marks it done when the level ends. Empty: ending the level is enough.
 @export var complete_flag: StringName = &""
 
+@export_group("Apoyo")
+## Points of Apoyo it gives its ayllu when done (F8 task 6).
+@export_range(0, 5, 1) var support_gain: int = 1
+## The Apoyo comes only if this level flag was set (Carmenca: the llamas freed). Empty:
+## always.
+@export var support_flag: StringName = &""
+## Gives the points to every ayllu already won instead (the show of force).
+@export var support_all_won: bool = false
+
 
 ## How many of `requires` have to be done for it to open.
 func needed() -> int:

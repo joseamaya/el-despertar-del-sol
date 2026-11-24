@@ -20,6 +20,10 @@ const BODY_PATH: NodePath = ^"Visual/Model/Armature/GeneralSkeleton/Mannequin"
 @export var slice: SliceDirector
 @export var level: SectorLevel
 
+## The chapter's Apoyo, set by LevelEntry inside the game shell (F8 task 6). Null: only
+## this level's flag counts, as in the slice.
+var support: SupportLedger
+
 var _allies: Array[EnemyController] = []
 ## Chanca drawn away -> the comunero holding it, and the director it had.
 var _pairs: Dictionary[EnemyController, EnemyController] = {}
@@ -60,8 +64,12 @@ func _should_come() -> bool:
 		tuning.count > 0
 		and arena.active_zone == tuning.zone
 		and arena.is_zone_engaged()
-		and slice.has_flag(tuning.flag)
+		and (slice.has_flag(tuning.flag) or _ayllu_supports())
 	)
+
+
+func _ayllu_supports() -> bool:
+	return support != null and support.level(tuning.ayllu) != SupportLedger.Level.NEUTRAL
 
 
 func _arrive() -> void:
