@@ -234,3 +234,21 @@ func test_skip_with_leaves_the_steps_it_turns_off() -> void:
 	assert_int(flow.index()).is_equal(0)
 	assert_object(flow.skip_with(&"skip_intro")).is_same(seq.steps[2])
 	assert_int(flow.index()).is_equal(2)
+
+
+## F8 task 5: a saved game puts the flow back at its step, flags and checkpoint.
+func test_restore_puts_the_flow_back() -> void:
+	var steps: Array[SliceStep] = [
+		_step(SliceStep.Act.OPENING, &"Start"),
+		_step(SliceStep.Act.EXPLORATION),
+		_step(SliceStep.Act.COMBAT, &"Checkpoint2"),
+		_step(SliceStep.Act.ENDING),
+	]
+	var flow := SliceFlow.new(_sequence(steps))
+	flow.restore(3, [&"llamas_freed"] as Array[StringName], &"Checkpoint2")
+	assert_int(flow.index()).is_equal(3)
+	assert_bool(flow.has_flag(&"llamas_freed")).is_true()
+	assert_str(String(flow.checkpoint())).is_equal("Checkpoint2")
+	assert_array(flow.flags()).contains_exactly([&"llamas_freed"])
+	flow.restore(99, [] as Array[StringName], &"")
+	assert_bool(flow.is_finished()).is_true()

@@ -12,6 +12,8 @@ signal level_unloaded
 signal title_requested
 ## The current level's sequence is over, with the flags it set (F8 task 4).
 signal level_finished(id: StringName, flags: Array[StringName])
+## The current level reached a checkpoint (F8 task 5).
+signal checkpoint_reached(id: StringName, marker: StringName)
 
 @export var catalog: LevelCatalog
 @export var loading: LoadingScreen
@@ -25,6 +27,7 @@ var _current_entry: StringName = &""
 var _pending_path: String = ""
 var _pending_id: StringName = &""
 var _pending_entry: StringName = &""
+var _pending_resume: Dictionary = {}
 var _started_usec: int = 0
 var _progress: Array = []
 
@@ -52,13 +55,15 @@ func _process(_delta: float) -> void:
 
 
 ## Starts loading level `id`, to enter at marker `entry` (empty: the level's start).
-## Returns false if the id is unknown or a load is already running.
-func load_level(id: StringName, entry: StringName = &"") -> bool:
+## `resume` continues a saved game (F8 task 5): {state, codex, offerings}, see
+## `LevelEntry.prepare()`. Returns false if the id is unknown or a load is already running.
+func load_level(id: StringName, entry: StringName = &"", resume: Dictionary = {}) -> bool:
 	if not catalog.has_level(id) or is_loading():
 		return false
 	unload()
 	_pending_id = id
 	_pending_entry = entry
+	_pending_resume = resume
 	_pending_path = catalog.path_of(id)
 	_started_usec = Time.get_ticks_usec()
 	if loading != null:
@@ -68,11 +73,16 @@ func load_level(id: StringName, entry: StringName = &"") -> bool:
 	return true
 
 
-## Loads the current level again from its entry.
+## Loads the current level again from its entry, keeping the codex entries and offerings
+## the game already has.
 func restart() -> bool:
 	if _current_id == &"":
 		return false
-	return load_level(_current_id, _current_entry)
+	var entry: LevelEntry = current_entry()
+	var keep: Dictionary = {}
+	if entry != null:
+		keep = {"codex": entry.codex_ids(), "offerings": entry.offerings()}
+	return load_level(_current_id, _current_entry, keep)
 
 
 ## Removes the current level, if any.
@@ -99,15 +109,27 @@ func current_id() -> StringName:
 	return _current_id
 
 
+## The current level's LevelEntry, or null.
+func current_entry() -> LevelEntry:
+	return _find_entry(_current) if _current != null else null
+
+
 func _swap_in(scene: PackedScene) -> void:
 	_current = scene.instantiate()
 	_current_id = _pending_id
 	_current_entry = _pending_entry
 	_pending_path = ""
-	add_child(_current)
 	var entry: LevelEntry = _find_entry(_current)
 	if entry != null:
+		entry.prepare(
+			_pending_resume.get("state", {}) as Dictionary,
+			_names(_pending_resume.get("codex", []) as Array),
+			_names(_pending_resume.get("offerings", []) as Array)
+		)
+	add_child(_current)
+	if entry != null:
 		entry.host()
+		entry.checkpoint_reached.connect(_on_checkpoint_reached)
 		entry.restart_requested.connect(restart, CONNECT_DEFERRED)
 		entry.title_requested.connect(title_requested.emit, CONNECT_DEFERRED)
 		entry.level_finished.connect(_on_level_finished)
@@ -129,3 +151,14 @@ func _find_entry(level: Node) -> LevelEntry:
 
 func _on_level_finished(flags: Array[StringName]) -> void:
 	level_finished.emit(_current_id, flags)
+
+
+func _on_checkpoint_reached(marker: StringName) -> void:
+	checkpoint_reached.emit(_current_id, marker)
+
+
+static func _names(values: Array) -> Array[StringName]:
+	var out: Array[StringName] = []
+	for value: Variant in values:
+		out.append(StringName(str(value)))
+	return out

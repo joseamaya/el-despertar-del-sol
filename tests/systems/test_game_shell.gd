@@ -4,16 +4,27 @@ extends GdUnitTestSuite
 
 const SCENE: String = "res://scenes/game.tscn"
 
+const TEST_PATH: String = "user://test_shell_flow_partida.json"
+
 var _runner: GdUnitSceneRunner
+var _save: SaveGame
+var _saved_path: String
 
 
 func before_test() -> void:
+	# Never the player's own saved game.
+	_save = get_node(^"/root/Save") as SaveGame
+	_saved_path = _save.path
+	_save.path = TEST_PATH
+	_save.erase()
 	_runner = scene_runner(SCENE)
 	await get_tree().process_frame
 
 
 func after_test() -> void:
 	get_tree().paused = false
+	_save.erase()
+	_save.path = _saved_path
 
 
 func test_new_game_loads_carmenca_and_back_to_title() -> void:
@@ -43,7 +54,8 @@ func test_new_game_loads_carmenca_and_back_to_title() -> void:
 	assert_object(host.current_level()).is_null()
 	assert_bool(title.is_showing()).is_true()
 	assert_bool(get_tree().paused).is_false()
-	assert_str(String(shell.progress.active())).is_empty()
+	# The saved game stays at the last checkpoint: the mission is still under way.
+	assert_str(String(shell.progress.active())).is_equal("carmenca")
 
 
 func test_the_level_flags_reach_the_chapter() -> void:

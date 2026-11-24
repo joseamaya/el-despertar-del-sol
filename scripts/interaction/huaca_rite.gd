@@ -31,6 +31,15 @@ func is_playing() -> bool:
 	return _playing
 
 
+## Offerings made in an earlier session (F8 task 5): gives their stamina again, without
+## the rite or the vision.
+func restore_offerings(markers: Array[StringName]) -> void:
+	if stamina == null:
+		return
+	for marker: StringName in markers:
+		stamina.add_bonus(tuning.stamina_bonus)
+
+
 func perform(marker: StringName) -> void:
 	assert(not _playing, "HuacaRite: already playing.")
 	_playing = true
