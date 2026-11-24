@@ -1,6 +1,7 @@
 # Capítulo I — El Cusco abandonado
 
-**Estado:** propuestas de estructura (F7, tarea 3), pendientes de que el desarrollador elija.
+**Estado:** estructura **B · Cusco como centro**, elegida por el desarrollador el
+2026-11-24 (F7, tarea 3). A y C se conservan abajo como alternativas descartadas.
 Canon: `HISTORICAL_REFERENCES.md` y `DECISIONS/0017`. Base: GDD §8, §9 y §20.
 
 ## 1. Lo que el capítulo tiene que contar
@@ -62,7 +63,7 @@ flowchart LR
   - el jugador no elige el orden;
   - el Apoyo se siente menos «político».
 
-### B · Cusco como centro: «Ganarse a los curacas» (equilibrio; recomendada)
+### B · Cusco como centro: «Ganarse a los curacas» (**elegida**)
 
 Tras el prólogo, el Cusco medio vacío es un **centro** desde el que se sale a 3 misiones de
 Apoyo **en el orden que el jugador quiera**. Carmenca (el slice) es la primera, obligatoria.
