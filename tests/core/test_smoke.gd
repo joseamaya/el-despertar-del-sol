@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 ## Smoke test: validates the toolchain (Godot + gdUnit4 + CI), not gameplay.
 
-const MAIN_SCENE_PATH: String = "res://scenes/main.tscn"
+const MAIN_SCENE_PATH: String = "res://scenes/game.tscn"
 
 
 func test_main_scene_is_configured() -> void:
@@ -13,7 +13,7 @@ func test_main_scene_instantiates() -> void:
 	var packed: PackedScene = load(MAIN_SCENE_PATH) as PackedScene
 	assert_object(packed).is_not_null()
 	var main: Node = auto_free(packed.instantiate())
-	assert_object(main).is_instanceof(Node3D)
+	assert_object(main).is_instanceof(GameShell)
 
 
 func test_engine_version_is_pinned() -> void:

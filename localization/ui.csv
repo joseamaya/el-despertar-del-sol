@@ -113,3 +113,9 @@ SUMMARY_ACT_SUPPORT,apoyo,support
 SUMMARY_ACT_COMBAT,combate,combat
 SUMMARY_ACT_ENDING,cierre,ending
 PAUSE_VERSION,Versión {version},Version {version}
+TITLE_NAME,PACHACÚTEC,PACHACÚTEC
+TITLE_SUBTITLE,El Despertar del Sol,The Awakening of the Sun
+TITLE_NEW_GAME,Nueva partida,New game
+TITLE_CONTINUE,Continuar,Continue
+PAUSE_TO_TITLE,Volver al título,Back to title
+LOADING,Cargando…,Loading…

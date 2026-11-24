@@ -1,7 +1,15 @@
 extends GdUnitTestSuite
 ## Every visible HUD text exists in Spanish and English (GDD §12.5).
 
-const KEYS: Array[StringName] = [&"HUD_DEFEAT", &"HUD_VICTORY", &"HUD_RETRY"]
+const KEYS: Array[StringName] = [
+	&"HUD_DEFEAT",
+	&"HUD_VICTORY",
+	&"HUD_RETRY",
+	&"TITLE_NEW_GAME",
+	&"TITLE_CONTINUE",
+	&"PAUSE_TO_TITLE",
+	&"LOADING",
+]
 
 
 func after_test() -> void:
