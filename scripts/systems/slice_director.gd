@@ -40,6 +40,9 @@ const LOCKED_PROMPT: StringName = &"PROMPT_ENEMIES_NEAR"
 @export var autostart: bool = true
 ## Inside the game shell (F8 task 3; set by LevelEntry): retry asks the shell.
 var hosted: bool = false
+## A saved game to continue (F8 task 5; set by LevelEntry before the slice begins):
+## {step, flags, checkpoint}. Empty: from the start.
+var resume: Dictionary = {}
 
 var flow: SliceFlow
 ## Seconds of play since the slice began, frozen at its end; pauses do not count
@@ -138,6 +141,16 @@ func has_flag(flag: StringName) -> bool:
 
 func _begin() -> void:
 	flow = SliceFlow.new(sequence)
+	if not resume.is_empty():
+		var marker := StringName(str(resume.get("checkpoint", "")))
+		var saved: Array[StringName] = []
+		for flag: Variant in resume.get("flags", []) as Array:
+			saved.append(StringName(str(flag)))
+		flow.restore(int(resume.get("step", 0)), saved, marker)
+		if marker != &"":
+			_checkpoint = marker
+			arena.player_spawn = level.marker_node(marker)
+			level.place_player_at(marker, Vector3(0.0, 0.0, 1.0))
 	_start(flow.current())
 
 

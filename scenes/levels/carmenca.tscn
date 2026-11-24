@@ -367,8 +367,10 @@ camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
 [editable path="Player"]
 [editable path="Player/Visual/Model"]
 
-[node name="LevelEntry" type="Node" parent="." node_paths=PackedStringArray("level", "pause_menu", "slice")]
+[node name="LevelEntry" type="Node" parent="." node_paths=PackedStringArray("level", "pause_menu", "slice", "codex", "rite")]
 script = ExtResource("60_entry")
 level = NodePath("../SectorLevel")
 pause_menu = NodePath("../PauseMenu")
 slice = NodePath("../SliceDirector")
+codex = NodePath("../Codex")
+rite = NodePath("../HuacaRite")

@@ -1,7 +1,7 @@
 class_name Codex
 extends Node
 ## Which codex entries the player has unlocked (F4 task 5, GDD §12.6). Lives in the
-## level: unlocks last until the scene reloads (saving comes later).
+## level; the saved game keeps them (F8 task 5).
 
 signal entry_unlocked(entry: CodexEntry)
 
@@ -23,6 +23,19 @@ func unlock(id: StringName) -> bool:
 	_unlocked.append(id)
 	entry_unlocked.emit(entry)
 	return true
+
+
+## Unlocks entries from a saved game without announcing them (F8 task 5). Unknown ids
+## are ignored.
+func restore(ids: Array[StringName]) -> void:
+	for id: StringName in ids:
+		if book.find(id) != null and not is_unlocked(id):
+			_unlocked.append(id)
+
+
+## The ids unlocked so far, for the saved game.
+func unlocked_ids() -> Array[StringName]:
+	return _unlocked.duplicate()
 
 
 func is_unlocked(id: StringName) -> bool:
