@@ -269,11 +269,11 @@ de 1,2 M primitivas.
 | Efectos nuevos | Estocada de lanza, cristal en el agua, la figura de luz, gente que vuelve y el aviso de resistencia, que es deuda de F6 |
 | Voces | Fuera del alcance (GDD §14.3); siguen siendo subtítulos |
 
-### 7.5. Decisiones que se te piden
+### 7.5. Decisiones (desarrollador, 2026-11-24)
 
-1. **Animación del lancero:** empezar con la estocada procedural, o mirar antes el visor de
-   Quaternius por si compensa la Pro (9,99 USD).
-2. **Música:** buscar CC0 prehispánica primero (recomendado), o encargarla desde el
-   principio.
-3. **UAL2 Standard:** si se descarga (gratis, CC0) en F8 para la guardia con escudo y el
-   lanzamiento.
+1. **Animación del lancero: estocada procedural,** como la pose de guardia de F6. Sin
+   compras.
+2. **Música:** primero se buscan piezas CC0 con instrumentos prehispánicos; si no las hay,
+   se decide si se encarga.
+3. **UAL2 Standard** (gratis, CC0) se descarga en F8 cuando haga falta, y se registra en
+   `ASSET_SOURCES.md`.
