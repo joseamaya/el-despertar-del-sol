@@ -1,63 +1,56 @@
-# F7 · Segunda prueba externa — backlog
+# F7 · Preproducción del Capítulo I — backlog
 
 **Estado:** propuesta del agente, pendiente de aprobación del desarrollador.
 
-- **Criterio de salida (GDD §15):** la `0.2-slice` probada por 5–10 personas, el criterio 8
-  de GDD §14.4 medido y la decisión tomada: continuar, ajustar o recortar.
-- **Estimación:** 2 semanas (2026-11-24 – 2026-12-08). Si se pasa de 3, se recorta alcance
-  (ver «Qué se recorta primero»).
+- **Criterio de salida (GDD §15, `DECISIONS/0016`):** el Capítulo I diseñado y planificado.
+  Eso significa: estructura, misiones y escenarios aprobados; canon y armamento documentados;
+  y las fases de producción con su estimación. Además, la prueba de la `0.2-slice` corriendo
+  en paralelo, con sus resultados registrados.
+- **Estimación:** 2 semanas (2026-11-24 – 2026-12-08). Si se pasa de 3, se recorta alcance.
 
-**Base:** el protocolo de `DECISIONS/0013` y sus enmiendas, con la build `0.2-slice` ya
-publicada, y la guía `F6-guia-prueba.md`. Lo que se quiere saber es si el ajuste de F6
-lleva el combate y el escenario al 4–5 del criterio 8:
-
-> Prueba con jugadores (5–10 personas): al menos 7 de cada 10 dicen que el combate se siente
-> bien y que el escenario no parece un juego medieval genérico.
+**Por qué preproducción y no producción** (`0016`): el combate solo lo ha validado el
+desarrollador. Diseñar primero permite cambiar el plan si la prueba dice que algo no
+convence, sin tirar escenarios ni animaciones.
 
 **Alcance:**
-- lanzar la prueba;
-- conseguir probadores;
-- recoger lo que dicen y lo que pasa en sus partidas;
-- analizar y decidir.
+- el documento del Capítulo I;
+- el canon y las referencias que necesita;
+- el plan de producción;
+- la prueba de la 0.2, que corre sola.
 
 **Fuera del alcance:**
-- cambiar el combate, el contenido o el arte mientras dura la prueba: la build no cambia
-  hasta que terminan todos (`0013`, punto 8). La única excepción es un fallo que impida
-  terminar;
-- las deudas de F6 y anteriores que no estorban a quien prueba (ver «Pasa a F7» de
-  `F6-ajuste-del-combate.md`): se ordenan después de la decisión;
-- el Capítulo I.
-
-**Lección de F5 que manda en este plan:** el cuello de botella no es la build, son los
-probadores. En F5 salieron 2 respuestas. Por eso la difusión empieza el primer día, y la
-prueba tiene una fecha de corte y un plan para cuando no se llegue a 5.
+- producir escenarios, personajes o misiones del Capítulo I (eso es F8 en adelante);
+- cambiar la build `0.2-slice` mientras dura la prueba;
+- los Capítulos II–IV;
+- el arte final.
 
 | # | Tarea | Estado |
 | --- | --- | --- |
-| 1 | **Encuesta 0.2:** duplicas el formulario de F5 como «prueba 0.2», sin tocar las preguntas, para poder comparar. El agente añade, si lo apruebas, una pregunta opcional al final: «¿Jugaste la versión anterior (0.1)?». Pegas el enlace y el agente lo pone en `F6-guia-prueba.md` y te deja el mensaje final listo para enviar | Pendiente · **tú** |
-| 2 | **Comprobar Windows y mando** con la `0.2-slice`: alguien con Windows abre el zip y juega unos minutos, con mando si lo tiene. Puede ser el primer probador (como la piloto de F5). Si falla algo que impida jugar, se arregla y se publica una `0.2.1-slice` antes de seguir repartiendo | Pendiente · **tú** busca a la persona |
-| 3 | **Difusión y probadores** (desde el día 1): envías el tráiler, el flyer y los textos de `F6-difusion.md` a grupos, redes y a quien ya jugó la 0.1. Objetivo: 8–10 personas apalabradas para que terminen al menos 5. Si quieres publicar avances con regularidad, es el momento de proponer la skill `devlog` (GDD §16.5) | Pendiente · **tú** envías; el agente adapta textos si hace falta |
-| 4 | **Seguimiento de la prueba:** a mitad de plazo, un recordatorio a quien dijo que jugaría (el agente lo redacta). Registro en `docs/fases/F7-resultados.md` de las respuestas del formulario y de los comentarios fuera de él (mensajes, notas de voz), marcando quién jugó la 0.1 | Pendiente · tú pasas las respuestas; el agente las consolida |
-| 5 | **Fecha de corte y regla con pocas respuestas:** la prueba se cierra el **2026-12-04**, o antes si hay 10 respuestas. Si al corte hay menos de 5 de personas que terminaron, decides entre: alargar una semana (dentro del margen de §15), o decidir con lo que haya como en F5 (análisis cualitativo, sin aplicar el umbral). Se registra como enmienda de `0013` | Pendiente · **tú** decides al corte |
-| 6 | **Análisis** (`F7-analisis.md`): criterio 8 con la regla de `0013`, comparación con la 0.1 (bloqueo, respuesta y orientación), duración real frente a 8–12 min, derrotas por zona (dificultad del paso), fallos por plataforma y mando, y qué dicen de lo que cambió en F6. Con una propuesta de continuar, ajustar o recortar | Pendiente |
-| 7 | **Decisión** (`DECISIONS/0016`) y **cierre de F7** con `phase-gate`. Si la decisión es continuar, se propone la siguiente fase del GDD §15 | Pendiente |
+| 1 | **Prueba de la 0.2 en paralelo** (`0016`, punto 1). Lo que te toca a ti: <br>– duplicar la encuesta como «prueba 0.2» y pasarme el enlace (lo pongo en la guía); <br>– difundir el tráiler y el flyer; <br>– si puedes, que alguien la pruebe en Windows y con mando. <br>Lo que hago yo: registrar respuestas y comentarios en `F7-resultados.md` y avisarte si salta la cláusula del punto 3 de `0016` | Pendiente · **tú** difundes; el agente registra |
+| 2 | **Canon del Capítulo I** (`HISTORICAL_REFERENCES.md`), con la skill `canon-check` si apruebas crearla (GDD §16.5): <br>– la retirada de Viracocha y Urco; <br>– quiénes se quedan; <br>– los ayllus del Cusco y los exploradores chancas; <br>– Susurpuquio y la visión; <br>– el **armamento y la vestimenta** inca y chanca (deuda de F5). <br>Cada licencia, con su etiqueta. Tú decides las licencias | Pendiente |
+| 3 | **Estructura del capítulo** (`docs/capitulo-1.md`): <br>– secuencia de escenas y misiones para 1–2 horas; <br>– qué se reutiliza del slice (Carmenca, tutorial, huaca, Apoyo); <br>– qué escenarios nuevos hacen falta (calles del Cusco, Susurpuquio); <br>– el ritmo combate / exploración / Apoyo. <br>2–3 propuestas de estructura, con un diagrama; tú eliges | Pendiente |
+| 4 | **Sistemas que pide el capítulo:** <br>– Apoyo con varias misiones (convencer a ayllus); <br>– exploradores chancas; <br>– la visión jugable de Susurpuquio; <br>– guardado entre escenas; <br>– más entradas del códice. <br>Para cada uno: qué existe ya, qué falta y cuánto cuesta. Sin implementar | Pendiente |
+| 5 | **Arte y audio:** qué personajes, escenarios, animaciones y música nuevos hacen falta. Qué sale de packs CC0 y qué no. Si hace falta comprar algo (animaciones Pro, por ejemplo), se te presenta con precio | Pendiente |
+| 6 | **Plan de producción:** las fases F8+ con criterio de salida y estimación, para el GDD §15. Qué se recorta primero si el capítulo no cabe. Dónde encaja la próxima prueba con jugadores (la demo del Capítulo I, GDD §20) | Pendiente |
+| 7 | **Cierre de F7** con `phase-gate`. Revisa el criterio 8 con lo que haya llegado de la prueba (`0016`, punto 4) | Pendiente |
 
 ## Orden propuesto
 
-- **Semana 1 (24–30 nov):** 1 y 2 el primer día o dos; 3 desde el primer día; 4 en marcha.
-- **Semana 2 (1–8 dic):** recordatorio (4) hacia el día 1; corte el 4 (5); 6 y 7.
+- **Semana 1:** 1 desde el día 1 (en paralelo todo el tiempo); 2 → 3.
+- **Semana 2:** 4 y 5; 6 → 7.
 
 ## Decisiones que se te piden por el camino
 
-- **Tarea 1:** si se añade la pregunta «¿Jugaste la 0.1?».
-- **Tarea 3:** canales y, si quieres, la skill `devlog`.
-- **Tarea 5:** qué hacer si al corte no hay 5 respuestas.
-- **Tarea 7:** continuar, ajustar o recortar.
+- **Tarea 2:** las licencias de canon y si se crea la skill `canon-check`.
+- **Tarea 3:** qué estructura del capítulo.
+- **Tarea 5:** compras de recursos, si las hay.
+- **Tarea 6:** las fases y el orden de producción.
+- **En cualquier momento:** si salta la cláusula de `0016`, parar o seguir.
 
 ## Qué se recorta primero
 
 Si F7 se pasa de 3 semanas, en este orden:
 
-1. **El recordatorio y el registro detallado** (tarea 4): solo las respuestas del formulario.
-2. **La comparación con la 0.1** (tarea 6): solo el criterio 8 y los fallos.
-3. **Se decide con las respuestas que haya**, como en F5.
+1. El detalle de arte y audio (tarea 5) pasa a cada fase de producción.
+2. Los sistemas (tarea 4) se estiman por encima, sin desglose.
+3. Una sola propuesta de estructura (tarea 3) en lugar de 2–3.
