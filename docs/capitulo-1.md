@@ -280,7 +280,7 @@ de 1,2 M primitivas.
 
 ## 8. Plan de producción (F7, tarea 6)
 
-**Estado:** propuesta del agente, pendiente de aprobación. Al aprobarse pasa a GDD §15.
+**Estado:** aprobado por el desarrollador el 2026-11-24; recogido en GDD §15.
 
 **Cómo está estimado:**
 - Unas 20 horas por semana (GDD §15), con los tamaños de §6 y §7.
