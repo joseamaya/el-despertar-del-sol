@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="SectorLayout" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/sector_layout.gd" id="1_layout"]
+
+[resource]
+script = ExtResource("1_layout")
+size = Vector2(120, 120)
+profile = PackedVector2Array(-60, 0, 60, 0)
+corridor = PackedVector2Array(-60, 34, 60, 34)
+side_max_rise = 6.0
+path = PackedVector2Array(0, 40, 0, -40)
+path_width = 3.0
+start = Vector2(0, 30)
+mentor = Vector2(5, 26)
+ending = Vector2(0, -40)
+cusco_view = Vector2(30, 620)
+points = Dictionary[StringName, Vector2]({
+&"Door_llamas": Vector2(-14, 4),
+&"Door_prisioneros": Vector2(14, 4),
+&"Door_disputa": Vector2(0, -14),
+&"Door_combate_visible": Vector2(-7, -28),
+&"Door_susurpuquio": Vector2(7, -28)
+})
+houses = PackedVector3Array(-22, -8, 90, 22, -8, -90, -22, 12, 90, 22, 12, -90, -10, -40, 0, 10, -40, 0)
+rock_count = 30

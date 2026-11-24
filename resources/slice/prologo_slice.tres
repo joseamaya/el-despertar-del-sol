@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="SliceSequence" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/slice_sequence.gd" id="1_seq"]
+[ext_resource type="Script" path="res://scripts/systems/slice_step.gd" id="2_step"]
+
+[sub_resource type="Resource" id="Shot_1"]
+script = ExtResource("2_step")
+act = 0
+kind = 2
+seconds = 6.0
+look_at = &"Ending"
+look_pitch = -0.04
+caption = &"CTX_PROLOGUE_1"
+checkpoint = &"Start"
+
+[sub_resource type="Resource" id="Shot_2"]
+script = ExtResource("2_step")
+act = 0
+kind = 2
+seconds = 6.0
+look_at = &"Ending"
+look_pitch = -0.04
+caption = &"CTX_PROLOGUE_2"
+
+[sub_resource type="Resource" id="Shot_3"]
+script = ExtResource("2_step")
+act = 0
+kind = 2
+seconds = 6.0
+look_at = &"Mentor"
+look_pitch = -0.04
+caption = &"CTX_PROLOGUE_3"
+
+[sub_resource type="Resource" id="Step_Meet"]
+script = ExtResource("2_step")
+act = 1
+kind = 0
+marker = &"Mentor"
+radius = 4.0
+objective = &"OBJ_PROLOGUE"
+
+[resource]
+script = ExtResource("1_seq")
+steps = Array[ExtResource("2_step")]([SubResource("Shot_1"), SubResource("Shot_2"), SubResource("Shot_3"), SubResource("Step_Meet")])

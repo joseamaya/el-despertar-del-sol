@@ -16,6 +16,8 @@ signal level_finished(id: StringName, flags: Array[StringName])
 signal checkpoint_reached(id: StringName, marker: StringName)
 ## The current level is over and the player chose to go on (F8 task 7).
 signal continue_requested(id: StringName)
+## The hub: the player chose a mission's door (F8 task 8).
+signal mission_chosen(mission_id: StringName)
 
 @export var catalog: LevelCatalog
 @export var loading: LoadingScreen
@@ -57,8 +59,8 @@ func _process(_delta: float) -> void:
 
 
 ## Starts loading level `id`, to enter at marker `entry` (empty: the level's start).
-## `resume` continues a saved game (F8 tasks 5–6): {state, codex, offerings, support},
-## see `LevelEntry.prepare()`. Returns false if the id is unknown or a load is already running.
+## `resume` is what the game carries into the level (F8 tasks 5–8): see
+## `LevelEntry.prepare()`. Returns false if the id is unknown or a load is already running.
 func load_level(id: StringName, entry: StringName = &"", resume: Dictionary = {}) -> bool:
 	if not catalog.has_level(id) or is_loading():
 		return false
@@ -126,17 +128,13 @@ func _swap_in(scene: PackedScene) -> void:
 	_pending_path = ""
 	var entry: LevelEntry = _find_entry(_current)
 	if entry != null:
-		entry.prepare(
-			_pending_resume.get("state", {}) as Dictionary,
-			_names(_pending_resume.get("codex", []) as Array),
-			_names(_pending_resume.get("offerings", []) as Array),
-			_pending_resume.get("support", null) as SupportLedger
-		)
+		entry.prepare(_pending_resume)
 	add_child(_current)
 	if entry != null:
 		entry.host()
 		entry.checkpoint_reached.connect(_on_checkpoint_reached)
 		entry.continue_requested.connect(_on_continue_requested, CONNECT_DEFERRED)
+		entry.mission_chosen.connect(mission_chosen.emit, CONNECT_DEFERRED)
 		entry.restart_requested.connect(restart, CONNECT_DEFERRED)
 		entry.title_requested.connect(title_requested.emit, CONNECT_DEFERRED)
 		entry.level_finished.connect(_on_level_finished)
@@ -166,10 +164,3 @@ func _on_continue_requested() -> void:
 
 func _on_checkpoint_reached(marker: StringName) -> void:
 	checkpoint_reached.emit(_current_id, marker)
-
-
-static func _names(values: Array) -> Array[StringName]:
-	var out: Array[StringName] = []
-	for value: Variant in values:
-		out.append(StringName(str(value)))
-	return out

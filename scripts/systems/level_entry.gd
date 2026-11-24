@@ -18,6 +18,8 @@ signal level_finished(flags: Array[StringName])
 signal checkpoint_reached(marker: StringName)
 ## The level is over and the player chose to go on (F8 task 7).
 signal continue_requested
+## The hub: the player chose a mission's door (F8 task 8).
+signal mission_chosen(mission_id: StringName)
 
 @export var level: SectorLevel
 @export var pause_menu: PauseMenu
@@ -29,6 +31,8 @@ signal continue_requested
 @export var support_allies: SupportAllies
 ## Optional: its end screen turns into "mission done, go on" (F8 task 7).
 @export var hud: Hud
+## Optional, the hub only: the mission doors (F8 task 8).
+@export var hub_doors: HubDoors
 
 var _hosted: bool = false
 var _offerings: Array[StringName] = []
@@ -46,22 +50,22 @@ func _ready() -> void:
 	_offerings.append_array(_saved_offerings)
 
 
-## Called by the LevelHost before the level enters the tree: continue from `state` (what
-## `snapshot()` gave), with the codex entries and offerings the game already has.
-func prepare(
-	state: Dictionary,
-	codex_ids: Array[StringName],
-	offerings: Array[StringName],
-	support: SupportLedger = null
-) -> void:
+## Called by the LevelHost before the level enters the tree, with what the game carries
+## (F8 tasks 5–8): `state` (what `snapshot()` gave, to continue), `codex` and `offerings`
+## (ids so far), `support` (SupportLedger) and `progress` (ChapterProgress). Any may be
+## missing.
+func prepare(game: Dictionary) -> void:
+	var support := game.get("support", null) as SupportLedger
 	if slice != null:
-		slice.resume = state.duplicate()
+		slice.resume = (game.get("state", {}) as Dictionary).duplicate()
 	if pause_menu != null and support != null:
 		pause_menu.set_support.call_deferred(support)
 	if support_allies != null:
 		support_allies.support = support
-	_saved_codex = codex_ids.duplicate()
-	_saved_offerings = offerings.duplicate()
+	if hub_doors != null:
+		hub_doors.progress = game.get("progress", null) as ChapterProgress
+	_saved_codex = _names(game.get("codex", []) as Array)
+	_saved_offerings = _names(game.get("offerings", []) as Array)
 
 
 ## Called by the LevelHost once the level is in the tree.
@@ -79,6 +83,8 @@ func host() -> void:
 		slice.slice_finished.connect(_on_slice_finished)
 		slice.checkpoint_reached.connect(checkpoint_reached.emit)
 		slice.continue_requested.connect(continue_requested.emit)
+	if hub_doors != null:
+		hub_doors.mission_chosen.connect(mission_chosen.emit)
 	if hud != null:
 		hud.set_chapter_end(true)
 
@@ -130,3 +136,10 @@ func _on_slice_finished() -> void:
 func _on_offering_made(marker: StringName) -> void:
 	if not _offerings.has(marker):
 		_offerings.append(marker)
+
+
+static func _names(values: Array) -> Array[StringName]:
+	var out: Array[StringName] = []
+	for value: Variant in values:
+		out.append(StringName(str(value)))
+	return out

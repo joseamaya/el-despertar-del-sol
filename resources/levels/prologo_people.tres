@@ -1,0 +1,68 @@
+[gd_resource type="Resource" script_class="SectorPeople" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/sector_people.gd" id="1_people"]
+[ext_resource type="Script" path="res://scripts/world/sector_person.gd" id="2_person"]
+[ext_resource type="Resource" path="res://resources/characters/elder.tres" id="look_elder"]
+[ext_resource type="Resource" path="res://resources/characters/loyal_warrior.tres" id="look_loyal_warrior"]
+[ext_resource type="Resource" path="res://resources/characters/refugee_man.tres" id="look_refugee_man"]
+[ext_resource type="Resource" path="res://resources/characters/refugee_woman.tres" id="look_refugee_woman"]
+
+[sub_resource type="Resource" id="Person_0"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_refugee_man")
+route = PackedVector2Array(-2.5, -55, -2.5, 0, -2.5, 80)
+delay = 0.0
+
+[sub_resource type="Resource" id="Person_1"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_refugee_woman")
+route = PackedVector2Array(2.5, -55, 2.5, 0, 2.5, 80)
+delay = 2.5
+
+[sub_resource type="Resource" id="Person_2"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_elder")
+route = PackedVector2Array(-2.5, -55, -2.5, 0, -2.5, 80)
+delay = 5.0
+
+[sub_resource type="Resource" id="Person_3"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_refugee_woman")
+route = PackedVector2Array(2.5, -55, 2.5, 0, 2.5, 80)
+delay = 7.5
+
+[sub_resource type="Resource" id="Person_4"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_refugee_man")
+route = PackedVector2Array(-2.5, -55, -2.5, 0, -2.5, 80)
+delay = 10.0
+
+[sub_resource type="Resource" id="Person_5"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_loyal_warrior")
+route = PackedVector2Array(2.5, -55, 2.5, 0, 2.5, 80)
+delay = 12.5
+
+[sub_resource type="Resource" id="Person_6"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_refugee_woman")
+route = PackedVector2Array(-2.5, -55, -2.5, 0, -2.5, 80)
+delay = 15.0
+
+[sub_resource type="Resource" id="Person_7"]
+script = ExtResource("2_person")
+clip = &"Idle"
+look = ExtResource("look_refugee_man")
+route = PackedVector2Array(2.5, -55, 2.5, 0, 2.5, 80)
+delay = 17.5
+
+[resource]
+script = ExtResource("1_people")
+people = Array[ExtResource("2_person")]([SubResource("Person_0"), SubResource("Person_1"), SubResource("Person_2"), SubResource("Person_3"), SubResource("Person_4"), SubResource("Person_5"), SubResource("Person_6"), SubResource("Person_7")])

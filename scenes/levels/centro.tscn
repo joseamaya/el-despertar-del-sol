@@ -1,0 +1,29 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/levels/carmenca.tscn" id="1_carmenca"]
+[ext_resource type="Resource" path="res://resources/levels/centro_layout.tres" id="2_layout"]
+[ext_resource type="Script" path="res://scripts/chapter/hub_doors.gd" id="3_doors"]
+[ext_resource type="Script" path="res://scripts/world/sector_people.gd" id="4_people"]
+
+[sub_resource type="Resource" id="NoPeople"]
+script = ExtResource("4_people")
+
+[node name="Centro" instance=ExtResource("1_carmenca")]
+
+[node name="SectorLevel" parent="."]
+layout = ExtResource("2_layout")
+
+[node name="SliceDirector" parent="."]
+autostart = false
+
+[node name="Crowd" parent="."]
+people = SubResource("NoPeople")
+
+[node name="HubDoors" type="Node" parent="." node_paths=PackedStringArray("level", "player", "prompt")]
+script = ExtResource("3_doors")
+level = NodePath("../SectorLevel")
+player = NodePath("../Player")
+prompt = NodePath("../InteractionPrompt")
+
+[node name="LevelEntry" parent="." node_paths=PackedStringArray("hub_doors")]
+hub_doors = NodePath("../HubDoors")
