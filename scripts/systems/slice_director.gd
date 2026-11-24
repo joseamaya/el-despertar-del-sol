@@ -15,6 +15,8 @@ signal notice_shown(key: StringName)
 ## Hosted only (F8 task 3): the player pressed retry on the end screen; the game shell
 ## restarts the level instead of reloading the scene.
 signal restart_requested
+## Hosted only (F8 task 7): the player chose to go on from the end screen.
+signal continue_requested
 
 const ACTION_RESTART: StringName = &"restart"
 ## Skips the opening shots (same button as the dialogue).
@@ -89,7 +91,10 @@ func _physics_process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if flow != null and flow.is_finished() and event.is_action_pressed(ACTION_RESTART):
+	if hosted and flow != null and flow.is_finished() and event.is_action_pressed(ACTION_SKIP):
+		get_viewport().set_input_as_handled()
+		continue_requested.emit()
+	elif flow != null and flow.is_finished() and event.is_action_pressed(ACTION_RESTART):
 		if hosted:
 			restart_requested.emit()
 		else:

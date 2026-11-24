@@ -30,6 +30,7 @@ func _ready() -> void:
 	host.level_loaded.connect(_on_level_loaded)
 	host.checkpoint_reached.connect(_on_checkpoint_reached)
 	host.level_finished.connect(_on_level_finished)
+	host.continue_requested.connect(_on_continue_requested)
 	title.set_can_continue(saves != null and saves.has_save())
 	title.show_menu()
 
@@ -87,6 +88,18 @@ func play_next() -> bool:
 	return false
 
 
+## After a mission: back to the hub, or on to the next mission while the hub is not built.
+## Back to the title when nothing is left to play.
+func go_on() -> bool:
+	var hub: StringName = chapter.hub_level
+	if hub != &"" and host.catalog.has_level(hub):
+		return host.load_level(hub, &"", _carry())
+	if play_next():
+		return true
+	back_to_title()
+	return false
+
+
 ## Leaves the level and shows the title menu; the saved game stays at the last checkpoint.
 func back_to_title() -> void:
 	host.unload()
@@ -128,6 +141,10 @@ func _on_level_finished(level_id: StringName, flags: Array[StringName]) -> void:
 	if done != &"":
 		support.apply_mission(chapter.mission(done), flags)
 	save_now()
+
+
+func _on_continue_requested(_id: StringName) -> void:
+	go_on()
 
 
 func _begin_game() -> void:

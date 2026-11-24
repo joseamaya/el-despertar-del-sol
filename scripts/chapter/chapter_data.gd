@@ -6,6 +6,8 @@ extends Resource
 @export var missions: Array[MissionData] = []
 ## Its ayllus and the Apoyo thresholds (F8 task 6).
 @export var support: SupportTuning
+## The level the player comes back to between missions (F8 tasks 7–8; LevelCatalog id).
+@export var hub_level: StringName = &"centro"
 
 
 ## The mission with `mission_id`, or null.
