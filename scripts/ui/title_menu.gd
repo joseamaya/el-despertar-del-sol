@@ -12,6 +12,11 @@ const GOLD := Color(0.96, 0.83, 0.54)
 const TEXT := Color(0.96, 0.93, 0.88)
 const DIM := Color(0.7, 0.65, 0.58)
 const BACKGROUND := Color(0.07, 0.05, 0.04)
+## Darkens the picture behind the texts.
+const SHADE := Color(0.05, 0.035, 0.025, 0.6)
+
+## A real frame of the game behind the menu (F8 task 2: the valley at dawn). Null: plain.
+@export var background_image: Texture2D
 
 var _root: Control
 var _main: VBoxContainer
@@ -87,6 +92,18 @@ func _build() -> void:
 	background.color = BACKGROUND
 	background.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.add_child(background)
+	if background_image != null:
+		var picture := TextureRect.new()
+		picture.name = "Picture"
+		picture.texture = background_image
+		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		picture.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_root.add_child(picture)
+		var shade := ColorRect.new()
+		shade.color = SHADE
+		shade.set_anchors_preset(Control.PRESET_FULL_RECT)
+		_root.add_child(shade)
 	var centre := CenterContainer.new()
 	centre.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.add_child(centre)

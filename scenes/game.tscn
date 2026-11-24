@@ -5,6 +5,7 @@
 [ext_resource type="Resource" path="res://resources/levels/level_catalog.tres" id="3_catalog"]
 [ext_resource type="Script" path="res://scripts/ui/title_menu.gd" id="4_title"]
 [ext_resource type="Script" path="res://scripts/ui/loading_screen.gd" id="5_loading"]
+[ext_resource type="Texture2D" path="res://assets/ui/title_background.jpg" id="6_bg"]
 
 [node name="Game" type="Node" node_paths=PackedStringArray("host", "title")]
 script = ExtResource("1_shell")
@@ -18,6 +19,7 @@ loading = NodePath("../LoadingScreen")
 
 [node name="TitleMenu" type="CanvasLayer" parent="."]
 script = ExtResource("4_title")
+background_image = ExtResource("6_bg")
 
 [node name="LoadingScreen" type="CanvasLayer" parent="."]
 script = ExtResource("5_loading")
