@@ -3,7 +3,7 @@
 Action-RPG histórico en tercera persona ambientado en el Cusco de c. 1438.
 Diseño completo en [`docs/GDD.md`](docs/GDD.md). Reglas de trabajo en [`AGENTS.md`](AGENTS.md).
 
-**Estado:** Fase 7 · Preproducción del Capítulo I. Fases 0–6 cerradas; el combate se ajustó tras la primera prueba (`docs/DECISIONS/0014`), y la build `0.2-slice` está publicada y en prueba con jugadores en paralelo (`docs/DECISIONS/0016`).
+**Estado:** Fase 8 · Base del Capítulo I. Fases 0–7 cerradas: el vertical slice está jugable y publicado (`0.2-slice`, en prueba con jugadores en paralelo), y el Capítulo I está diseñado y planificado en `docs/capitulo-1.md`.
 
 ## Requisitos
 
