@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Builds the recruitment trailer and flyer for the external test (F5, docs/fases/F5-difusion.md)
-# from real footage of the 0.1-slice build. Needs ffmpeg and google-chrome.
+# Builds the recruitment trailer and flyer for the player tests (F5 and F6,
+# docs/fases/F6-difusion.md) from real footage of the current build (0.2-slice). Needs ffmpeg and google-chrome.
 #
 # 1. Record a whole playthrough (about 5 min; a game window opens):
 #      godot --path . --resolution 1920x1080 --fixed-fps 30 \
@@ -9,7 +9,7 @@
 # 2. bash tools/trailer/make_trailer.sh
 #      -> build/trailer/trailer.mp4 and build/trailer/flyer.png
 #
-# The shot times below fit the recording of 2026-11-19 (the bot plays the same way each
+# The shot times below fit the recording of 2026-11-23 (0.2-slice) (the bot plays the same way each
 # run, but check them with a contact sheet if the slice changes).
 set -euo pipefail
 export LC_ALL=C
@@ -70,20 +70,20 @@ card() {
 		"${ENC[@]}" "$TMP/$(printf %02d $n).mp4"
 }
 
-clip 4.5 5.5 0 "Cusco, 1438"
-card 3.5 "El inca ha abandonado la ciudad." "Dicen que el Cusco ya está perdido."
-clip 69 4 0.7
-clip 75 4 0.9
-clip 97 4 0.7
+clip 2.8 3.8 0 "Cusco, hacia 1438"
+card 3.5 "El Inca ha abandonado la ciudad." "Dicen que el Cusco ya está perdido."
+clip 7 4.5 0.7
+clip 43.5 4 0.9
+clip 82 4 0.9
+clip 102.5 4 0.7
 card 2.8 "Los chancas avanzan sobre el Cusco."
-clip 129 4 0.7
-clip 136 4 0.9
+clip 135 4 0.7
+clip 141 4 0.9
 card 2.8 "Cusi Yupanqui no huye."
-clip 171 4 0.9
-clip 176 5 0.9
-clip 189 5 1.0
-clip 200 4 0.9
-clip 227 6.5 0 "PACHACÚTEC" "El Despertar del Sol"
+clip 176.5 4 0.9
+clip 199 4 0.9
+clip 205 5 1.0
+clip 228 6.5 0 "PACHACÚTEC" "El Despertar del Sol"
 card 6 "Demo gratuita · 10 minutos · Windows y Linux" "Pruébala y ayúdanos a construirlo" \
 	"Juego en desarrollo · Imágenes reales del juego · Música\: Tozan (CC0) · Pututu\: David Bolton (CC BY 2.5)"
 
@@ -95,9 +95,9 @@ ffmpeg -loglevel error -y -i "$TMP/joined.mp4" -i "$MUSIC" -filter_complex \
 	"[1:a]aresample=48000,volume=0.8,afade=t=in:d=1,afade=t=out:st=$fade_at:d=3[m];[0:a][m]amix=inputs=2:duration=first:normalize=0,loudnorm=I=-16:TP=-1.5[a]" \
 	-map 0:v -map "[a]" -c:v copy -c:a aac -b:a 160k -ar 48000 "$OUT/trailer.mp4"
 
-# Flyer: a real frame (the pass at sunrise) behind the HTML layout.
+# Flyer: a real frame (Cusi guarding with the huallcanca in the pass) behind the HTML layout.
 # The crop leaves out the HUD (objective, enemy bar, health bars).
-ffmpeg -loglevel error -y -ss 176 -i "$SRC" -frames:v 1 -vf "crop=1300:860:310:110" -q:v 2 \
+ffmpeg -loglevel error -y -ss 208.5 -i "$SRC" -frames:v 1 -vf "crop=1300:860:310:110" -q:v 2 \
 	"$OUT/flyer_shot.jpg"
 cp "$ROOT/tools/trailer/flyer.html" "$OUT/flyer.html"
 google-chrome --headless=new --disable-gpu --hide-scrollbars --window-size=1080,1350 \
