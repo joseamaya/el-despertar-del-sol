@@ -1,6 +1,6 @@
 # F7 · Preproducción del Capítulo I — backlog
 
-**Estado:** propuesta del agente, pendiente de aprobación del desarrollador.
+**Estado:** aprobado por el desarrollador el 2026-11-24.
 
 - **Criterio de salida (GDD §15, `DECISIONS/0016`):** el Capítulo I diseñado y planificado.
   Eso significa: estructura, misiones y escenarios aprobados; canon y armamento documentados;
