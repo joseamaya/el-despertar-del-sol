@@ -1,7 +1,13 @@
 # F7 · Canon del Capítulo I (tarea 2)
 
-**Estado:** propuesta del agente, pendiente de las decisiones del desarrollador (sección 4).
-Lo que decidas pasa a `HISTORICAL_REFERENCES.md`, que solo cambia el desarrollador.
+**Estado:** decidido por el desarrollador el 2026-11-24 (`DECISIONS/0017`):
+- **visión** ambigua, con cristal;
+- **chancas** con lanza larga;
+- **Quilescachi Urco Guaranga** solo en el códice;
+- **sin cascos ni corazas**;
+- **`canon-check`** en F8.
+
+Recogido en `HISTORICAL_REFERENCES.md`.
 
 Qué necesita el Capítulo I (GDD §9):
 - la huida de Viracocha;

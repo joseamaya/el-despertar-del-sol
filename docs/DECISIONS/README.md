@@ -22,3 +22,4 @@ que la cite.
 | 0014 | Decisión de la prueba externa: ajustar (F5) | Aceptada |
 | 0015 | Escudo de Cusi: la huallcanca (F6) | Aceptada |
 | 0016 | La prueba de la 0.2 corre en paralelo; preproducción del Capítulo I (F7) | Aceptada |
+| 0017 | Canon del Capítulo I: visión, armas de los chancas y leales (F7) | Aceptada |

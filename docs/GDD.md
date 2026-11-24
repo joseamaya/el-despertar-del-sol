@@ -101,7 +101,7 @@ Cada entrada del códice lleva una de tres etiquetas:
 | Amenaza chanca | Los chancas, dirigidos por Uscovilca, Astoyhuaraca y Tomayhuaraca, avanzan desde Andahuaylas | Betanzos |
 | Huida | Viracocha y Urco se retiran a Caquia Xaquixaguana; Cusi Yupanqui se queda con pocos leales | Betanzos |
 | Aliados | Vicaquirao y Apo Mayta lo acompañan desde el principio | Betanzos / Sarmiento; personalidades inventadas |
-| Visión de Susurpuquio | Ocurre la noche antes de la batalla, no después: es la llamada del héroe | Molina sitúa la visión antes de la guerra; el momento exacto es licencia |
+| Visión de Susurpuquio | Ocurre la noche antes de la batalla, no después: es la llamada del héroe. La figura es ambigua: ni Sol ni Viracocha declarados | Sarmiento y Molina la sitúan en Susurpuquio; Betanzos, la última noche antes de la batalla; la figura difiere entre cronistas (`HISTORICAL_REFERENCES.md`) |
 | Curacas vecinos | Esperan a ver quién gana antes de unirse | Betanzos; base del sistema de Apoyo |
 | Defensa del Cusco | Asalto chanca por Carmenca; combate en las calles y laderas | Betanzos |
 | Chañan Cori Coca | Mujer que dirige la defensa del barrio de Choco-Cachona | Santa Cruz Pachacuti; papel ampliado como licencia |
@@ -292,7 +292,7 @@ Máquina de estados por nodos (un nodo por estado) más un coordinador de encuen
 
 | Enemigo | Rol | Rasgos | Cuándo |
 | --- | --- | --- | --- |
-| Guerrero chanca | Cuerpo a cuerpo básico | Ataques telegrafiados, bloqueo ocasional, retrocede al recibir golpes pesados | Vertical slice |
+| Guerrero chanca | Cuerpo a cuerpo básico; lanza larga desde el Capítulo I (`DECISIONS/0017`) | Ataques telegrafiados, bloqueo ocasional, retrocede al recibir golpes pesados | Vertical slice |
 | Hondero chanca | Distancia | Busca altura, mantiene distancia, recarga visible, huye si te acercas | Capítulo II |
 | Escudero chanca | Defensivo | Escudo frontal; obliga a flanquear o usar pesado | Capítulo II |
 | Capitán chanca | Mini-jefe | Escudo, ataques pesados, dos fases | Tras validar el combate |
@@ -353,7 +353,7 @@ Cuatro capítulos de 1–2 horas cada uno (5–8 horas en total). La visión de 
 - Cusi Yupanqui decide quedarse con Vicaquirao y Apo Mayta.
 - Tutorial de movimiento y combate; primeras escaramuzas con exploradores chancas.
 - Primeras misiones de Apoyo: convencer a ayllus del Cusco de quedarse.
-- **Cierre:** la noche antes del asalto, en la fuente de Susurpuquio, Cusi Yupanqui tiene la visión: una figura solar le anuncia la victoria. Escena contemplativa y jugable.
+- **Cierre:** la noche antes del asalto, en la fuente de Susurpuquio, Cusi Yupanqui tiene la visión: cae un cristal en la fuente y una figura de luz le anuncia la victoria; el juego no dice si es el Sol o Viracocha. Escena contemplativa y jugable.
 
 ### Capítulo II — La defensa del Cusco
 
