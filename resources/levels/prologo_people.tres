@@ -11,57 +11,57 @@
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_refugee_man")
-route = PackedVector2Array(-2.5, -55, -2.5, 0, -2.5, 80)
+route = PackedVector2Array(-2.5, 40, -2.5, 60, -2.5, 85)
 delay = 0.0
 
 [sub_resource type="Resource" id="Person_1"]
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_refugee_woman")
-route = PackedVector2Array(2.5, -55, 2.5, 0, 2.5, 80)
-delay = 2.5
+route = PackedVector2Array(2.5, 40, 2.5, 60, 2.5, 85)
+delay = 1.5
 
 [sub_resource type="Resource" id="Person_2"]
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_elder")
-route = PackedVector2Array(-2.5, -55, -2.5, 0, -2.5, 80)
-delay = 5.0
+route = PackedVector2Array(-2.5, 40, -2.5, 60, -2.5, 85)
+delay = 3.0
 
 [sub_resource type="Resource" id="Person_3"]
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_refugee_woman")
-route = PackedVector2Array(2.5, -55, 2.5, 0, 2.5, 80)
-delay = 7.5
+route = PackedVector2Array(2.5, 40, 2.5, 60, 2.5, 85)
+delay = 4.5
 
 [sub_resource type="Resource" id="Person_4"]
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_refugee_man")
-route = PackedVector2Array(-2.5, -55, -2.5, 0, -2.5, 80)
-delay = 10.0
+route = PackedVector2Array(-2.5, 40, -2.5, 60, -2.5, 85)
+delay = 6.0
 
 [sub_resource type="Resource" id="Person_5"]
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_loyal_warrior")
-route = PackedVector2Array(2.5, -55, 2.5, 0, 2.5, 80)
-delay = 12.5
+route = PackedVector2Array(2.5, 40, 2.5, 60, 2.5, 85)
+delay = 7.5
 
 [sub_resource type="Resource" id="Person_6"]
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_refugee_woman")
-route = PackedVector2Array(-2.5, -55, -2.5, 0, -2.5, 80)
-delay = 15.0
+route = PackedVector2Array(-2.5, 40, -2.5, 60, -2.5, 85)
+delay = 9.0
 
 [sub_resource type="Resource" id="Person_7"]
 script = ExtResource("2_person")
 clip = &"Idle"
 look = ExtResource("look_refugee_man")
-route = PackedVector2Array(2.5, -55, 2.5, 0, 2.5, 80)
-delay = 17.5
+route = PackedVector2Array(2.5, 40, 2.5, 60, 2.5, 85)
+delay = 10.5
 
 [resource]
 script = ExtResource("1_people")

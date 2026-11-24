@@ -41,4 +41,5 @@ objective = &"OBJ_PROLOGUE"
 
 [resource]
 script = ExtResource("1_seq")
+act_titles = Array[StringName]([&"MISSION_PROLOGUE", &"", &"", &"", &""])
 steps = Array[ExtResource("2_step")]([SubResource("Shot_1"), SubResource("Shot_2"), SubResource("Shot_3"), SubResource("Step_Meet")])

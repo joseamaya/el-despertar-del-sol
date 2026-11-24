@@ -225,7 +225,10 @@ func _hide_message() -> void:
 
 
 func _show_banner(act: SliceStep.Act) -> void:
-	_show_notice(ACT_KEYS[act])
+	var titles: Array[StringName] = slice.sequence.act_titles
+	var key: StringName = ACT_KEYS[act] if titles.is_empty() else titles[act]
+	if key != &"":
+		_show_notice(key)
 
 
 ## Inside the chapter, the end screen announces the mission done and "go on" (F8 task 7).
