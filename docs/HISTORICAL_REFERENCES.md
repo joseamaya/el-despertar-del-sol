@@ -17,14 +17,15 @@ Columna vertebral: Juan de Betanzos, *Suma y narración de los incas* (1551).
 | --- | --- | --- | --- |
 | Fecha | c. 1438 | Según los cronistas | Cronología tradicional (Cabello Valboa); discutida por historiadores |
 | Amenaza chanca | Los chancas, dirigidos por Uscovilca, Astoyhuaraca y Tomayhuaraca, avanzan desde Andahuaylas | Según los cronistas | Betanzos |
-| Huida | Viracocha y Urco se retiran a Caquia Xaquixaguana; Cusi Yupanqui se queda con pocos leales | Según los cronistas | Betanzos |
+| Huida | Viracocha y Urco se retiran a Caquia Xaquixaguana; Cusi Yupanqui se queda con pocos leales: Vicaquirao, Apo Mayta y Quilescachi Urco Guaranga, cada uno con un criado (ocho en total) | Según los cronistas | Betanzos, cap. VII; Sarmiento, caps. XXV–XXVI. Quilescachi Urco Guaranga aparece solo en el códice (F7) |
 | Aliados | Vicaquirao y Apo Mayta lo acompañan desde el principio | Según los cronistas + Licencia | Betanzos / Sarmiento; personalidades inventadas |
-| Visión de Susurpuquio | Ocurre la noche antes de la batalla | Según los cronistas + Licencia | Molina la sitúa antes de la guerra; el momento exacto es licencia |
-| Curacas vecinos | Esperan a ver quién gana antes de unirse | Según los cronistas | Betanzos; base del sistema de Apoyo |
-| Defensa del Cusco | Asalto chanca por Carmenca; combate en calles y laderas | Según los cronistas | Betanzos |
+| Visión de Susurpuquio | La noche antes del asalto, en la fuente de Susurpuquio, cae un cristal al agua y aparece una figura de luz con forma humana que le promete la victoria. **Ambigua:** el juego no dice si es el Sol o Viracocha | Según los cronistas + Licencia | Lugar: Sarmiento (cap. XXVII) y Molina. Momento: Betanzos (cap. VIII, «mañana te vernán los enemigos»). Cristal: Molina (Sarmiento dice espejo). Figura: el Sol en Sarmiento y Molina, Viracocha como niño resplandeciente en Betanzos; la ambigüedad es licencia (F7) |
+| Curacas vecinos | Esperan a ver quién gana antes de unirse: ayudarán si Cusi demuestra tener gente | Según los cronistas | Betanzos, cap. VII (los curacas a menos de tres leguas del Cusco); base del sistema de Apoyo |
+| Campamento chanca | El grueso de Uscovilca acampa en Vilcaconga, a siete leguas del Cusco, antes del asalto | Según los cronistas | Betanzos, caps. VI–VII. Sarmiento da Ichupampa y Cusipampa |
+| Defensa del Cusco | Asalto chanca por Carmenca; combate en calles y laderas | Según los cronistas | Betanzos, cap. VIII («descendiendo… por Carminga abajo») |
 | Chañan Cori Coca | Dirige la defensa del barrio de Choco-Cachona | Según los cronistas + Licencia | Santa Cruz Pachacuti; papel ampliado |
 | Pururaucas | Las piedras se alzan como guerreros en el momento crítico | Según los cronistas | Varios cronistas; presentación ambigua (GDD §3.3) |
-| Muerte de Uscovilca | Cae en la defensa del Cusco; su imagen sagrada es capturada | Según los cronistas + Licencia | Betanzos; duelo final como licencia |
+| Muerte de Uscovilca | Cae en la defensa del Cusco; su imagen sagrada es capturada | Según los cronistas + Licencia | Betanzos («preso y muerto», cap. VIII); duelo final como licencia. Variante: en Sarmiento ya había muerto y los chancas llevaban su estatua, *Ancoallo* |
 | Segunda batalla | Yahuarpampa, contra Astoyhuaraca y Tomayhuaraca | Según los cronistas + Licencia | Betanzos la sitúa cerca de Xaquixaguana; el nombre viene de Garcilaso, que atribuye la victoria a Viracocha |
 | Pururaucas como huacas | Tras la guerra, las piedras se guardan y veneran en el Cusco | Según los cronistas | Tradición cronística |
 | Viracocha rechaza el botín | Pide que Urco pise los despojos; Cusi Yupanqui se niega | Según los cronistas | Betanzos |
@@ -37,6 +38,8 @@ Columna vertebral: Juan de Betanzos, *Suma y narración de los incas* (1551).
 | --- | --- | --- |
 | Quipucamayoc narrador (nombre por definir) | Personaje inventado | GDD §5.2 |
 | Pintura facial chanca | Inventada pero coherente | GDD §5.3 |
+| Armas de los chancas: lanza larga como arma principal de sus guerreros | **Según los cronistas:** Sarmiento, cap. XXVIII («los chancas con lanzas largas; los incas con hondas, porras, hachas y flechas»); Betanzos, cap. VI, da a su ejército lanzas, alabardas, hachas, porras, hondas, ayllos y rodelas. Forma y largo de la lanza: licencia del juego. El slice `0.2` mantiene la porra | F7, `DECISIONS/0017` |
+| Sin cascos ni corazas en 1438: la protección es la rodela y la ropa | Interpretación de diseño: las crónicas leídas de la guerra chanca no los mencionan; los cascos de caña y las corazas aparecen en fuentes posteriores (Pedro Pizarro, Velasco). Revisar con especialista | F7, `DECISIONS/0017` |
 | Huallcanca, el escudo de Cusi: rodela redonda de unos 50 cm, sujeta al antebrazo izquierdo, con borde oscuro y una banda de cuadros rojos y negros | **Según los cronistas:** los incas usaban escudos, «rodelas o paveses», que llamaban *huallcanca* (Garcilaso, *Comentarios Reales*). **Licencia del juego:** la forma redonda, el tamaño, los colores y la banda de cuadros (inspirada en los tocapus); revisar con las láminas de los capitanes de Guamán Poma (ff. 145–183) | F6, tarea 4, `DECISIONS/0015` |
 | Arquitectura de 1438 modesta (pirca, adobe, ichu) frente a la cantería posterior | Interpretación de diseño; revisar con especialista | GDD §10.2 |
 | Disposición del sector de Carmenca (terrazas, camino, casas) | Licencia del juego: no reproduce un trazado real; el mirador y el desnivel hasta el paso (unos 52 m) están exagerados respecto al Santa Ana real; revisar con especialista | F3, `DECISIONS/0010` |
@@ -65,5 +68,6 @@ Revisión por un historiador o arqueólogo peruano y por un quechuahablante (GDD
 
 Por verificar:
 
-- Confirmar en Betanzos (ed. Martín Rubio) dónde acampa el grueso chanca antes del asalto; una traducción del siglo XIX (Markham) lo sitúa en la colina de Carmenca.
+- Cotejar las citas de Betanzos (leídas en el OCR de la edición de 1880) con la edición de Martín Rubio. El campamento chanca quedó resuelto en F7: Vilcaconga.
+- Vestimenta y aspecto de los chancas: leer Bauer, Kellett y Aráoz, *The Chanka* (2010).
 - Medir con mapa topográfico el desnivel real de Santa Ana sobre la plaza y decidir si se baja el mirador.

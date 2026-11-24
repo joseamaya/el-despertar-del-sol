@@ -101,7 +101,7 @@ Cada entrada del códice lleva una de tres etiquetas:
 | Amenaza chanca | Los chancas, dirigidos por Uscovilca, Astoyhuaraca y Tomayhuaraca, avanzan desde Andahuaylas | Betanzos |
 | Huida | Viracocha y Urco se retiran a Caquia Xaquixaguana; Cusi Yupanqui se queda con pocos leales | Betanzos |
 | Aliados | Vicaquirao y Apo Mayta lo acompañan desde el principio | Betanzos / Sarmiento; personalidades inventadas |
-| Visión de Susurpuquio | Ocurre la noche antes de la batalla, no después: es la llamada del héroe | Molina sitúa la visión antes de la guerra; el momento exacto es licencia |
+| Visión de Susurpuquio | Ocurre la noche antes de la batalla, no después: es la llamada del héroe. La figura es ambigua: ni Sol ni Viracocha declarados | Sarmiento y Molina la sitúan en Susurpuquio; Betanzos, la última noche antes de la batalla; la figura difiere entre cronistas (`HISTORICAL_REFERENCES.md`) |
 | Curacas vecinos | Esperan a ver quién gana antes de unirse | Betanzos; base del sistema de Apoyo |
 | Defensa del Cusco | Asalto chanca por Carmenca; combate en las calles y laderas | Betanzos |
 | Chañan Cori Coca | Mujer que dirige la defensa del barrio de Choco-Cachona | Santa Cruz Pachacuti; papel ampliado como licencia |
@@ -292,7 +292,7 @@ Máquina de estados por nodos (un nodo por estado) más un coordinador de encuen
 
 | Enemigo | Rol | Rasgos | Cuándo |
 | --- | --- | --- | --- |
-| Guerrero chanca | Cuerpo a cuerpo básico | Ataques telegrafiados, bloqueo ocasional, retrocede al recibir golpes pesados | Vertical slice |
+| Guerrero chanca | Cuerpo a cuerpo básico; lanza larga desde el Capítulo I (`DECISIONS/0017`) | Ataques telegrafiados, bloqueo ocasional, retrocede al recibir golpes pesados | Vertical slice |
 | Hondero chanca | Distancia | Busca altura, mantiene distancia, recarga visible, huye si te acercas | Capítulo II |
 | Escudero chanca | Defensivo | Escudo frontal; obliga a flanquear o usar pesado | Capítulo II |
 | Capitán chanca | Mini-jefe | Escudo, ataques pesados, dos fases | Tras validar el combate |
@@ -353,7 +353,7 @@ Cuatro capítulos de 1–2 horas cada uno (5–8 horas en total). La visión de 
 - Cusi Yupanqui decide quedarse con Vicaquirao y Apo Mayta.
 - Tutorial de movimiento y combate; primeras escaramuzas con exploradores chancas.
 - Primeras misiones de Apoyo: convencer a ayllus del Cusco de quedarse.
-- **Cierre:** la noche antes del asalto, en la fuente de Susurpuquio, Cusi Yupanqui tiene la visión: una figura solar le anuncia la victoria. Escena contemplativa y jugable.
+- **Cierre:** la noche antes del asalto, en la fuente de Susurpuquio, Cusi Yupanqui tiene la visión: cae un cristal en la fuente y una figura de luz le anuncia la victoria; el juego no dice si es el Sol o Viracocha. Escena contemplativa y jugable.
 
 ### Capítulo II — La defensa del Cusco
 
@@ -586,6 +586,11 @@ Con unas 20 horas por semana, el vertical slice estaba estimado en unas 23 seman
 | F5 · Prueba externa | 2 sem | Decidir: continuar, ajustar o recortar |
 | F6 · Ajuste del combate | 2 sem | Bloqueo fiable y legible, controles que responden, orientación y build lista para una nueva prueba (`DECISIONS/0014`) |
 | F7 · Preproducción del Capítulo I | 2 sem | Capítulo I diseñado y planificado (estructura, canon, sistemas, arte y fases de producción), con la prueba de la `0.2-slice` en paralelo (`DECISIONS/0016`) |
+| F8 · Base del capítulo | 3 sem | Nueva partida → prólogo → Carmenca → centro; «Continuar» recupera la partida; build exportada (`docs/capitulo-1.md` §8) |
+| F9 · El centro y el lancero | 3 sem | El centro del Cusco se recorre a 60 FPS y es reconocible andino; pelear contra lanceros se siente bien |
+| F10 · Las misiones de Apoyo | 3 sem | Las 3 misiones se juegan en cualquier orden; el Apoyo cambia el centro y el combate visible |
+| F11 · Susurpuquio y cierre | 2 sem | El Capítulo I completo (90–100 min) en build exportada, Windows y Linux |
+| F12 · Prueba de la demo | 2 sem | Demo probada por 5–10 personas y decidido: publicar, ajustar o recortar |
 
 Si el combate no convence al cerrar la Fase 2, se itera ahí antes de producir escenario; nunca se avanza a la Fase 3 con un combate dudoso.
 
