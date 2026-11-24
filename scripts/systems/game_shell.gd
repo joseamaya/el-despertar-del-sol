@@ -18,6 +18,9 @@ var support: SupportLedger
 var saves: SaveGame
 
 var _save_on_load: bool = false
+## Codex entries and offerings of the game, as of the last save (F8 tasks 5 and 8).
+var _codex: Array = []
+var _offerings: Array = []
 
 
 func _ready() -> void:
@@ -31,6 +34,7 @@ func _ready() -> void:
 	host.checkpoint_reached.connect(_on_checkpoint_reached)
 	host.level_finished.connect(_on_level_finished)
 	host.continue_requested.connect(_on_continue_requested)
+	host.mission_chosen.connect(_on_mission_chosen)
 	title.set_can_continue(saves != null and saves.has_save())
 	title.show_menu()
 
@@ -53,16 +57,18 @@ func continue_game() -> bool:
 	_begin_game()
 	progress.from_dict(data.get("chapter", {}) as Dictionary)
 	support.from_dict(data.get("support", {}) as Dictionary)
+	_codex = data.get("codex", []) as Array
+	_offerings = data.get("offerings", []) as Array
 	var level := StringName(str(data.get("level", "")))
 	var mission: MissionData = chapter.mission(progress.active())
 	_save_on_load = false
+	var resume: Dictionary = _carry()
 	if mission != null and mission.level == level and host.catalog.has_level(level):
-		var resume: Dictionary = {
-			"state": data.get("level_state", {}),
-			"codex": data.get("codex", []),
-			"offerings": data.get("offerings", []),
-			"support": support,
-		}
+		resume["state"] = data.get("level_state", {})
+		if host.load_level(level, &"", resume):
+			title.hide_menu()
+			return true
+	if level == chapter.hub_level and _hub_open():
 		if host.load_level(level, &"", resume):
 			title.hide_menu()
 			return true
@@ -88,12 +94,12 @@ func play_next() -> bool:
 	return false
 
 
-## After a mission: back to the hub, or on to the next mission while the hub is not built.
-## Back to the title when nothing is left to play.
+## After a mission: back to the hub once it is open (after Carmenca), or on to the next
+## mission before that. Back to the title when nothing is left to play.
 func go_on() -> bool:
-	var hub: StringName = chapter.hub_level
-	if hub != &"" and host.catalog.has_level(hub):
-		return host.load_level(hub, &"", _carry())
+	if _hub_open():
+		_save_on_load = true
+		return host.load_level(chapter.hub_level, &"", _carry())
 	if play_next():
 		return true
 	back_to_title()
@@ -112,12 +118,15 @@ func save_now() -> void:
 	if saves == null or progress == null:
 		return
 	var entry: LevelEntry = host.current_entry()
+	if entry != null:
+		_codex = _strings(entry.codex_ids())
+		_offerings = _strings(entry.offerings())
 	var data: Dictionary = {
 		"chapter": progress.to_dict(),
 		"level": String(host.current_id()),
 		"level_state": entry.snapshot() if entry != null else {},
-		"codex": _strings(entry.codex_ids()) if entry != null else [],
-		"offerings": _strings(entry.offerings()) if entry != null else [],
+		"codex": _codex,
+		"offerings": _offerings,
 		"support": support.to_dict(),
 	}
 	if saves.write(data) == OK:
@@ -153,14 +162,42 @@ func _begin_game() -> void:
 	support.level_raised.connect(_on_support_raised)
 
 
-## What a level carries from the game into the next: codex, offerings, Apoyo.
+## What a level carries from the game into the next: codex, offerings, Apoyo, progress.
 func _carry() -> Dictionary:
 	var entry: LevelEntry = host.current_entry()
-	var out: Dictionary = {"support": support}
+	var out: Dictionary = {
+		"support": support, "progress": progress, "codex": _codex, "offerings": _offerings
+	}
 	if entry != null:
-		out["codex"] = entry.codex_ids()
-		out["offerings"] = entry.offerings()
+		out["codex"] = _strings(entry.codex_ids())
+		out["offerings"] = _strings(entry.offerings())
 	return out
+
+
+## The hub opens once the mission before it is done (Carmenca) and its level exists.
+func _hub_open() -> bool:
+	var hub: StringName = chapter.hub_level
+	if hub == &"" or not host.catalog.has_level(hub):
+		return false
+	return chapter.hub_after == &"" or progress.is_done(chapter.hub_after)
+
+
+## A door of the hub: plays the mission's level, or, while it is not built, passes it as
+## done (a test door) and gives its Apoyo.
+func _on_mission_chosen(mission_id: StringName) -> void:
+	var mission: MissionData = chapter.mission(mission_id)
+	if mission == null:
+		return
+	if host.catalog.has_level(mission.level):
+		if host.load_level(mission.level, &"", _carry()):
+			progress.start(mission_id)
+		return
+	if progress.complete(mission_id):
+		support.apply_mission(mission, [])
+		var entry: LevelEntry = host.current_entry()
+		if entry != null:
+			entry.announce(&"NOTICE_TEST_DOOR")
+		save_now()
 
 
 func _on_support_raised(_ayllu: StringName, level: SupportLedger.Level) -> void:

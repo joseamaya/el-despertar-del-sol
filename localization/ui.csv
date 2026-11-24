@@ -138,3 +138,9 @@ NOTICE_SUPPORT_SYMPATHIZER,Un ayllu simpatiza con Cusi,An ayllu sympathizes with
 NOTICE_SUPPORT_ALLY,Un ayllu se alía con Cusi,An ayllu allies with Cusi
 MISSION_DONE,Misión cumplida,Mission complete
 MISSION_GO_ON,E / A: continuar,E / A: go on
+CTX_PROLOGUE_1,"Cusco, hacia 1438. Uscovilca acampa en Vilcaconga, a siete leguas","Cusco, around 1438. Uscovilca is camped at Vilcaconga, seven leagues away"
+CTX_PROLOGUE_2,"El Inca Viracocha deja la ciudad con su hijo Urco, camino de Caquia Xaquixaguana","The Inca Viracocha leaves the city with his son Urco, bound for Caquia Xaquixaguana"
+CTX_PROLOGUE_3,Muchos se van con él. Cusi Yupanqui se queda.,Many go with him. Cusi Yupanqui stays.
+OBJ_PROLOGUE,Reúnete con Vicaquirao al final de la calle,Meet Vicaquirao at the end of the street
+DOOR_PROMPT,E / A: {mission},E / A: {mission}
+NOTICE_TEST_DOOR,"Misión de prueba: se da por cumplida","Test mission: counted as done"

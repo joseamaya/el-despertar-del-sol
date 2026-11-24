@@ -8,6 +8,8 @@ extends Resource
 @export var support: SupportTuning
 ## The level the player comes back to between missions (F8 tasks 7–8; LevelCatalog id).
 @export var hub_level: StringName = &"centro"
+## The hub opens once this mission is done (before it, missions follow each other).
+@export var hub_after: StringName = &"carmenca"
 
 
 ## The mission with `mission_id`, or null.

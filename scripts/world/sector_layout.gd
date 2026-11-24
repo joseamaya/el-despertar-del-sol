@@ -53,6 +53,8 @@ const STEP_MAX_RUN: float = 1.5
 ## Where Cusi looks at the end of the slice: Cusco down in the valley (F4 task 7). Far
 ## outside the sector; only its marker is built.
 @export var cusco_view: Vector2 = Vector2.ZERO
+## More named markers (F8 task 8): the hub's mission doors ("Door_<mission id>"). (x, z).
+@export var points: Dictionary[StringName, Vector2] = {}
 ## Respawn points after a defeat, in the order they are reached; they face uphill.
 @export var checkpoints: PackedVector2Array = PackedVector2Array()
 ## Encounter zones: (x, z, radius). Order: skirmish 1, skirmish 2, the pass.

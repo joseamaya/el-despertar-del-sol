@@ -63,7 +63,8 @@ var _attempt: int = 0
 
 func _ready() -> void:
 	assert(player != null and player_spawn != null and enemy_scene != null, "Arena: parts.")
-	assert(enemies_root != null and not spawn_points.is_empty(), "Arena: enemies.")
+	# A level without fights (the prologue, the hub; F8 task 8) has no spawn points.
+	assert(enemies_root != null, "Arena: enemies.")
 	_player_health = player.get_node("Health") as HealthComponent
 	_player_stamina = player.get_node("Stamina") as StaminaComponent
 	_player_health.died.connect(_on_player_died)

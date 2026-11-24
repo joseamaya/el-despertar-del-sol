@@ -30,6 +30,13 @@ func show_prompt(key: StringName, dimmed: bool = false) -> void:
 	_label.visible = true
 
 
+## Shows a text already translated (the hub's doors, F8 task 8).
+func show_text(text: String) -> void:
+	_label.text = text
+	_label.modulate = Color.WHITE
+	_label.visible = true
+
+
 func is_dimmed() -> bool:
 	return _label.visible and _label.modulate != Color.WHITE
 

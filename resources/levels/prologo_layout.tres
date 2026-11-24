@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="SectorLayout" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/sector_layout.gd" id="1_layout"]
+
+[resource]
+script = ExtResource("1_layout")
+size = Vector2(80, 170)
+profile = PackedVector2Array(-85, 4, 85, 0)
+corridor = PackedVector2Array(-85, 9, 85, 9)
+side_max_rise = 6.0
+path = PackedVector2Array(0, 75, 0, -75)
+path_width = 3.0
+start = Vector2(0, 72)
+mentor = Vector2(3, -62)
+ending = Vector2(0, -75)
+cusco_view = Vector2(30, 620)
+houses = PackedVector3Array(-13, 55, 90, 13, 50, -90, -13, 30, 90, 13, 25, -90, -13, 5, 90, 13, 0, -90, -13, -20, 90, 13, -25, -90, -13, -45, 90, 13, -50, -90)
+rock_count = 20
