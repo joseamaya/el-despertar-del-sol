@@ -46,3 +46,11 @@ func test_only_open_missions_can_be_chosen() -> void:
 	assert_bool(_doors.choose(&"combate_visible")).is_false()
 	assert_bool(_doors.choose(&"llamas")).is_true()
 	assert_array(chosen).contains_exactly([&"llamas"])
+
+
+## F8 task 11: the hub has no huaca, no llamas and no comunero on the path.
+func test_no_huaca_llamas_or_comunero_in_the_hub() -> void:
+	var level := _runner.find_child("SectorLevel") as SectorLevel
+	assert_object(level.sector.get_node_or_null(^"HuacaMesh")).is_null()
+	assert_array((_runner.find_child("LlamaPen") as LlamaPen).llamas()).is_empty()
+	assert_bool((_runner.find_child("Comunero") as Node3D).visible).is_false()

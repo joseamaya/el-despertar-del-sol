@@ -15,3 +15,6 @@ sequence = ExtResource("3_slice")
 
 [node name="Crowd" parent="."]
 people = ExtResource("4_people")
+
+[node name="Comunero" parent="."]
+visible = false

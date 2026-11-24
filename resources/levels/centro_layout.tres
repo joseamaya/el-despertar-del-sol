@@ -4,6 +4,8 @@
 
 [resource]
 script = ExtResource("1_layout")
+has_huaca = false
+has_llamas = false
 size = Vector2(120, 120)
 profile = PackedVector2Array(-60, 0, 60, 0)
 corridor = PackedVector2Array(-60, 34, 60, 34)
