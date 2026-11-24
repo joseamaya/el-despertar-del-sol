@@ -22,3 +22,15 @@ func test_houses_stand_inside_the_corridor() -> void:
 				. override_failure_message("%s: house at (%.0f, %.0f)" % [path, h.x, h.y])
 				. is_less_equal(room)
 			)
+
+
+## F8 task 11: only Carmenca has the huaca and the llamas; elsewhere they are not built.
+func test_huaca_and_llamas_only_where_they_belong() -> void:
+	var palette := load("res://resources/style/palette_amanecer_calido.tres") as PaletteTuning
+	for path: String in LAYOUTS:
+		var layout := load(path) as SectorLayout
+		var sector: Node3D = auto_free(SectorBuilder.build(layout, palette))
+		var built: bool = sector.get_node_or_null(^"HuacaMesh") != null
+		assert_bool(built).override_failure_message(path).is_equal(layout.has_huaca)
+	assert_bool((load(LAYOUTS[1]) as SectorLayout).has_llamas).is_false()
+	assert_bool((load(LAYOUTS[0]) as SectorLayout).has_huaca).is_true()

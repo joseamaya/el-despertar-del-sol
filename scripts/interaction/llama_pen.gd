@@ -64,6 +64,8 @@ func free_llamas() -> void:
 
 func _build() -> void:
 	var layout: SectorLayout = level.layout
+	if not layout.has_llamas:
+		return
 	var centre: Vector2 = layout.llamas
 	var radius: float = 3.0
 	for c: Vector3 in layout.corrals:

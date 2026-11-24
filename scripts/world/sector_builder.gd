@@ -29,7 +29,8 @@ static func build(layout: SectorLayout, palette: PaletteTuning) -> Node3D:
 	for w: Vector4 in layout.boundary_walls:
 		_build_boundary(root, layout, palette, w)
 	_build_houses(root, layout, palette)
-	_build_huaca(root, layout, palette)
+	if layout.has_huaca:
+		_build_huaca(root, layout, palette)
 	SectorDressing.dress(root, layout, palette)
 	SectorVegetation.plant(root, layout, palette)
 	_build_markers(root, layout)

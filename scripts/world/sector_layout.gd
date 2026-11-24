@@ -36,6 +36,10 @@ const STEP_MAX_RUN: float = 1.5
 @export_range(0.5, 2.0, 0.05, "suffix:m") var boundary_height: float = 1.1
 ## Points of interest, all (x, z).
 @export var start: Vector2 = Vector2.ZERO
+## Whether the sector has the huaca and the family's llamas (F8 task 11: the prologue and
+## the hub have neither; before, both were built at the origin, on the path).
+@export var has_huaca: bool = true
+@export var has_llamas: bool = true
 @export var huaca: Vector2 = Vector2.ZERO
 ## A thread of smoke from the offering at the huaca, so it can be found from the path
 ## (F4 task 6): where it rises from (offset from the huaca) and how high. 0: none.

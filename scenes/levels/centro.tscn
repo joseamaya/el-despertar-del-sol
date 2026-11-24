@@ -27,3 +27,6 @@ prompt = NodePath("../InteractionPrompt")
 
 [node name="LevelEntry" parent="." node_paths=PackedStringArray("hub_doors")]
 hub_doors = NodePath("../HubDoors")
+
+[node name="Comunero" parent="."]
+visible = false
