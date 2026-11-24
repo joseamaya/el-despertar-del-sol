@@ -53,6 +53,8 @@ Columna vertebral: Juan de Betanzos, *Suma y narración de los incas* (1551).
 | Pututus como señal de ataque chanca | Instrumento documentado en los Andes; su uso como llamada de ataque chanca es licencia del juego | GDD §11.2, F4 tareas 9 y 12b |
 | Entrenamiento de Cusi con Vicaquirao en el mirador antes de subir | Licencia del juego (la personalidad de Vicaquirao ya figura como inventada en «Aliados») | F4, tarea 12a |
 | Carmenca a medio vaciar: parte de la gente huye con la corte de Viracocha; se quedan algunos ancianos y unos pocos leales con Cusi y Vicaquirao | Licencia del juego apoyada en la huida del Inca y en que Cusi se queda «con pocos leales» (Betanzos) | F4, tarea 12c y voces del mirador |
+| El Cusco se vacía con la corte: mucha gente sale de la ciudad con Viracocha, con sus fardos | **Según los cronistas:** Betanzos, índice del cap. VI («llevando consigo todos los de la ciudad»). **Licencia del juego:** quién y cuántos | F8, tarea 9 (`F8-canon-check-prologo.md`) |
+| Calle del Cusco del prólogo: casas de pirca y adobe con techo de ichu a ambos lados de una calle recta | Licencia del juego: no reproduce un trazado real, igual que la disposición de Carmenca; revisar con especialista | F8, tarea 8 |
 | Ropa de la familia que huye (anacu, lliclla, chumpi, q'epi) y de los guerreros leales | Interpretación de diseño con prendas documentadas; formas y colores provisionales; revisar con especialista | F4, tarea 12c |
 
 ## Lo que no se cambia (GDD §3.5)

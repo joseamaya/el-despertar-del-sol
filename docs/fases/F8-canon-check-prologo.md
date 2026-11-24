@@ -6,7 +6,7 @@ GDD §3 y `DECISIONS/0017`.
 
 **Resultado:**
 - **Sin errores:** ninguna afirmación contradice el registro ni rompe GDD §3.5.
-- **2 entradas propuestas** para el registro, pendientes del desarrollador (sección 2).
+- **2 entradas nuevas en el registro**, aprobadas por el desarrollador (sección 2).
 - **Los nombres de misiones y ayllus son provisionales.**
 
 ## 1. Afirmaciones
@@ -37,7 +37,9 @@ GDD §3 y `DECISIONS/0017`.
 
 **Sin contenido histórico:** `TITLE_*`, `PAUSE_*`, `LOADING`, `DOOR_PROMPT`, `NOTICE_TEST_DOOR`, `MISSION_DONE`, `MISSION_GO_ON` y `SUPPORT_*`.
 
-## 2. Entradas propuestas para `HISTORICAL_REFERENCES.md` (las decide el desarrollador)
+## 2. Entradas para `HISTORICAL_REFERENCES.md`
+
+Aprobadas por el desarrollador el 2026-11-24 y añadidas al registro.
 
 1. **Calle del Cusco del prólogo:** casas de pirca y adobe con techo de ichu a ambos lados de una calle recta. Es **Licencia del juego**: no reproduce un trazado real, igual que la disposición de Carmenca. Revisar con especialista. Se decide en F8, tarea 8.
 2. **El Cusco se vacía con la corte:** mucha gente sale de la ciudad con Viracocha y lleva sus fardos. Es **Según los cronistas + Licencia**: Betanzos, índice del cap. VI, dice «llevando consigo todos los de la ciudad»; quién y cuántos es licencia. Amplía la fila «Carmenca a medio vaciar» al Cusco.
