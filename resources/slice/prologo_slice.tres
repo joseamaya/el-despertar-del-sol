@@ -11,6 +11,7 @@ seconds = 6.0
 look_at = &"Ending"
 look_pitch = -0.04
 caption = &"CTX_PROLOGUE_1"
+unless = &"skip_intro"
 checkpoint = &"Start"
 
 [sub_resource type="Resource" id="Shot_2"]
@@ -21,6 +22,7 @@ seconds = 6.0
 look_at = &"Ending"
 look_pitch = -0.04
 caption = &"CTX_PROLOGUE_2"
+unless = &"skip_intro"
 
 [sub_resource type="Resource" id="Shot_3"]
 script = ExtResource("2_step")
@@ -30,6 +32,7 @@ seconds = 6.0
 look_at = &"Mentor"
 look_pitch = -0.04
 caption = &"CTX_PROLOGUE_3"
+unless = &"skip_intro"
 
 [sub_resource type="Resource" id="Step_Meet"]
 script = ExtResource("2_step")
