@@ -153,3 +153,53 @@ sistemas (tarea 4) y el arte (tarea 5).
 - **Quipucamayoc:** el narrador (GDD §5.2) puede presentar cada jornada y dar la información
   de los quipus (§8.3). Su nombre está por decidir.
 - **Lo sobrenatural:** solo la visión de la huaca y la de Susurpuquio (GDD §3.3).
+
+## 6. Sistemas que pide la estructura B (F7, tarea 4)
+
+Inventario del código actual frente a lo que pide la estructura B. **Nada se implementa en
+F7:** esto sirve para el plan de producción (tarea 6).
+
+**Tamaños:**
+- **S:** 1–2 tareas, con lo que ya existe.
+- **M:** un sistema nuevo pequeño o una ampliación clara; unas 3–5 tareas.
+- **L:** sistema nuevo con varias piezas y pruebas de integración; más de 5 tareas.
+
+Una tarea es lo que cabe en una tarde (AGENTS.md).
+
+### 6.1. Lo que ya existe y basta (con contenido nuevo)
+
+| Necesidad | Sistema actual | Qué falta | Tamaño |
+| --- | --- | --- | --- |
+| Guion de cada misión | `SliceDirector`, `SliceFlow` y `SliceStep` (REACH, ENCOUNTER, DIALOGUE, INTERACT, RITE, CHOICE, DRILL) con *flags* | Un `SliceSequence` por misión; quizá un paso nuevo (`ESCORT`, ver 6.2) | S |
+| Diálogos y decisiones | `DialoguePlayer`, `ChoiceBox` | Textos (con `canon-check` en F8) | S |
+| Escenarios con el kit | `SectorBuilder`, `SectorLayout`, `SectorDressing`, vegetación, fondo y navegación, todo generado | Un `SectorLayout` por zona: Cusco, 3 misiones, Susurpuquio, ladera del combate visible | S por zona (el coste está en el arte, tarea 5) |
+| Gente en el Cusco | `SectorCrowd` y `SectorPeople` (gente con rutas, frases al pasar, distancia de dibujo) | Que la gente que aparece dependa del Apoyo | S |
+| Huacas y mejoras | `HuacaRite` (ofrenda, visión, +resistencia) | 1–2 huacas nuevas y sus visiones | S |
+| Códice | `Codex`, `CodexBook`, `CodexEntry`, pantalla y aviso | Entradas nuevas (Quilescachi Urco Guaranga, curacas, Vilcaconga…) | S |
+| Exploradores chancas | `EnemyController`, `PerceptionComponent` (detectar y perseguir), `EncounterDirector` | Patrullas: hoy esperan y detectan; hay que hacerles caminar una ruta | S |
+| Narrador y rótulos | `SliceCaption` (apertura de tres planos) | El quipucamayoc presenta cada jornada; su nombre está por decidir (GDD §5.2) | S |
+| Aliados en combate | `SupportAllies` (los comuneros del paso, guerreros de nuestro lado) | Generalizarlo: cuántos aliados vienen según el Apoyo | S |
+
+### 6.2. Lo que hay que construir
+
+| Sistema | Por qué hace falta | Qué es | Tamaño |
+| --- | --- | --- | --- |
+| **Cambio de escena** | Hoy hay una sola escena (`main.tscn` → `carmenca.tscn`). La B tiene 6–7 | Cargar un nivel, pantalla de carga, punto de entrada en el nivel y vuelta al centro. Medir el tiempo de carga en el equipo de referencia | M |
+| **Partida guardada** | Una partida de 90–100 min no se juega de una vez. Hoy solo se guardan los ajustes (`GameSettings`) | Un autoload de guardado (AGENTS.md lo permite): capítulo, misiones, Apoyo, mejoras, códice y último punto de control. Formato versionado; «Continuar» en el menú | M |
+| **Estado del capítulo y misiones** | El centro abre 3 misiones en orden libre y el combate visible pide 2 de 3 | Un `ChapterState`: misiones (bloqueada, disponible, en curso, hecha) y condiciones. Los *flags* de cada nivel pasan al estado del capítulo | M |
+| **Apoyo por ayllu** | GDD §8.2: Neutral → Simpatizante → Aliado, y un número visible | Estado por ayllu y total; avisos al subir; se ve en el HUD o en la pausa. Lo leen el centro y el combate visible | M |
+| **El centro del Cusco** | Las misiones se cogen allí, y allí se ve el Apoyo | Puntos donde se habla con cada curaca o ayllu, Vicaquirao y Apo Mayta, y gente que vuelve según el Apoyo. Es sobre todo contenido con 6.1 | M |
+| **Prisioneros que te siguen** | La misión B («rescatar prisioneros», GDD §8.2) | Gente que, liberada, sigue al jugador hasta un sitio; se para en combate; la misión falla o se repite si cae. Paso `ESCORT` en el director | M |
+| **Lancero chanca** (`0017`) | El arma de los chancas pasa a ser la lanza larga | Un `EnemyData` con más alcance y ataques de estocada; la IA mantiene la distancia. **Bloqueado por las animaciones:** el pack gratuito solo trae `Sword_Attack` (tarea 5) | M + arte |
+| **Noche y Susurpuquio** | La visión es de noche, en una fuente | Iluminación nocturna en el renderer Mobile, agua, el cristal y la figura de luz. Escena contemplativa y jugable, sin combate. Medir antes de añadir luces (AGENTS.md) | M |
+
+### 6.3. Resumen
+
+- **Se reutiliza casi todo el slice:** director, diálogos, combate, kit de escenario, gente,
+  huacas y códice.
+- **Hay 8 piezas nuevas, todas de tamaño M.** Las tres de base van primero, porque todo lo
+  demás se apoya en ellas: cambio de escena, partida guardada y estado del capítulo.
+- **El mayor riesgo no es de código:** son las **animaciones del lancero** y el arte de 5–6
+  zonas nuevas (tarea 5).
+- **El presupuesto de rendimiento** se mide en cada zona nueva, como en F3. La apertura del
+  slice ya está en 1,12 M primitivas, cerca del límite de 1,2 M.
