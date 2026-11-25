@@ -1,6 +1,6 @@
 # F9 · El centro y el lancero — backlog
 
-**Estado:** propuesto, pendiente de aprobación del desarrollador.
+**Estado:** aprobado por el desarrollador el 2026-11-25.
 
 - **Criterio de salida (GDD §15, `docs/capitulo-1.md` §8):**
   - el centro del Cusco se recorre a 60 FPS y se reconoce andino;
@@ -67,17 +67,14 @@
 
 ## Decisiones que se te piden
 
-Ya, con el backlog:
+Tomadas con el backlog (2026-11-25):
 
-1. **¿Empieza F9 sin la prueba de la 0.2?** `capitulo-1.md` §8.1 quería las respuestas antes
-   de F9, porque F9 toca el combate. Al decir «inicia» entiendo que sí.
-2. **¿Dónde salen los lanceros en F9?**
-   - **Propuesta:** en la arena de pruebas y mezclados en Carmenca, sustituyendo a parte de
-     los de porra, como pide `0017`.
-   - **La alternativa:** solo en la arena hasta F10.
-3. **¿Carmenca repite su apertura de tres planos** después del prólogo?
-   - **Propuesta:** dentro del capítulo se salta, y el prólogo hace de apertura.
-   - Fuera del capítulo, en el modo slice, sigue igual.
+1. **F9 empieza sin la prueba de la 0.2.** Sigue en paralelo, y la cláusula de `0016` se
+   revisa al cerrar F9.
+2. **Los lanceros salen en la arena y en Carmenca,** donde sustituyen a parte de los de
+   porra (`0017`). Se hace en las tareas 9–11.
+3. **Dentro del capítulo, Carmenca salta su apertura de tres planos:** el prólogo hace de
+   apertura. En el modo slice no cambia nada. Se hace junto a la tarea 6.
 
 Por el camino:
 
