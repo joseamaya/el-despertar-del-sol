@@ -1,6 +1,7 @@
 extends SceneTree
 ## Opens the game shell, saves a shot of the title menu, the pause menu inside Carmenca and
-## the loading screen, and prints how long Carmenca takes to load (F8 tasks 2–3). Needs a
+## the loading screen, and prints how long the first level takes to load (F8 tasks 2–3). It
+## saves to its own file, never the player's partida.json, and erases it at the end. Needs a
 ## window (no --headless): the dummy renderer draws nothing, and the load time only means
 ## something on the reference machine.
 ##
@@ -9,6 +10,8 @@ extends SceneTree
 const SCENE: String = "res://scenes/game.tscn"
 ## Frames to let the menu and the level settle before a capture.
 const SETTLE_FRAMES: int = 30
+## Where the new game of the capture is saved: never the player's own save.
+const SAVE_PATH: String = "user://shell_capture_partida.json"
 
 var _out: String = "user://shell"
 var _shell: GameShell
@@ -19,6 +22,7 @@ func _initialize() -> void:
 		if arg.begins_with("--out="):
 			_out = arg.trim_prefix("--out=")
 	DirAccess.make_dir_recursive_absolute(_out)
+	(root.get_node(^"Save") as SaveGame).path = SAVE_PATH
 	_shell = (load(SCENE) as PackedScene).instantiate() as GameShell
 	root.add_child(_shell)
 	_run.call_deferred()
@@ -31,12 +35,13 @@ func _run() -> void:
 	await _capture("carga")
 	while _shell.host.is_loading():
 		await process_frame
-	print("SHELL_LOAD carmenca %.2f s" % _shell.host.last_load_seconds)
+	print("SHELL_LOAD %s %.2f s" % [_shell.host.current_id(), _shell.host.last_load_seconds])
 	for i: int in 120:
 		await process_frame
 	var pause := _shell.host.current_level().get_node(^"PauseMenu") as PauseMenu
 	pause.open()
 	await _capture("pausa")
+	(root.get_node(^"Save") as SaveGame).erase()
 	quit()
 
 
