@@ -3,7 +3,8 @@ extends Node3D
 ## Puts the people of a sector in it (F4 task 12c): the few who stayed in Carmenca, still
 ## at their doors, and a family leaving down to the valley once Vicaquirao's training is
 ## over (`SectorPeople.start_zone`; before that they are not there). They are models
-## with a looping clip and nothing else: no collision, no lock-on, no AI, no shadows. The
+## with a looping clip, a body Cusi cannot walk through (F8 task 11) and nothing else: no
+## lock-on, no AI, no shadows. A walker stops while Cusi stands in their way. The
 ## ones who walk follow the ground along their route and, once at its end, vanish the
 ## first time the camera does not see them. Beyond the draw distance a person is hidden
 ## and their animation stops, so the ones far away cost nothing. Someone with a line says
@@ -18,6 +19,9 @@ const RAY_DOWN: float = 6.0
 const REACHED: float = 0.15
 ## Seconds between checks of who is close enough to be drawn and animated.
 const CULL_INTERVAL: float = 0.25
+## The characters' physics layer (project.godot): the player and the warriors collide with
+## it; the ground rays (world layer) do not see it.
+const CHARACTER_LAYER: int = 1 << 1
 
 @export var people: SectorPeople
 @export var level: SectorLevel
@@ -115,6 +119,7 @@ func _spawn_all() -> void:
 		var start: Vector2 = person.route[0] if walks else person.at
 		model.global_position = _ground(level.to_global_point(start)) + Vector3.UP * person.lift
 		model.global_rotation.y = level.sector.global_rotation.y + deg_to_rad(person.yaw_deg)
+		_add_body(model)
 		_bodies.append(model)
 		_anims.append(model.find_child("AnimationPlayer", true, false) as AnimationPlayer)
 		_spoken.append(person.line == &"")
@@ -176,6 +181,10 @@ func _walk(i: int, delta: float) -> void:
 	var route: PackedVector2Array = people.people[i].route
 	var goal: Vector3 = level.to_global_point(route[_next[i]])
 	var flat := Vector3(goal.x - body.global_position.x, 0.0, goal.z - body.global_position.z)
+	if _blocked(body, flat):
+		_play(body, people.people[i].clip)
+		return
+	_play(body, people.walk_clip)
 	var step: float = people.walk_speed * delta
 	if flat.length() <= maxf(step, REACHED):
 		_next[i] += 1
@@ -186,6 +195,33 @@ func _walk(i: int, delta: float) -> void:
 		return
 	var at: Vector3 = body.global_position + flat.normalized() * step
 	body.global_position = _ground(at)
+
+
+## Whether Cusi stands close ahead of `body`, walking along `flat`.
+func _blocked(body: Node3D, flat: Vector3) -> bool:
+	if level.player == null or people.yield_distance <= 0.0:
+		return false
+	var to: Vector3 = level.player.global_position - body.global_position
+	to.y = 0.0
+	return to.length() <= people.yield_distance and to.dot(flat) > 0.0
+
+
+## A capsule on the characters' layer, so Cusi (and the warriors) cannot walk through.
+func _add_body(model: Node3D) -> void:
+	if people.body_radius <= 0.0:
+		return
+	var solid := AnimatableBody3D.new()
+	solid.name = "Body"
+	solid.collision_layer = CHARACTER_LAYER
+	solid.collision_mask = 0
+	var shape := CollisionShape3D.new()
+	var capsule := CapsuleShape3D.new()
+	capsule.radius = people.body_radius
+	capsule.height = people.body_height
+	shape.shape = capsule
+	shape.position = Vector3.UP * people.body_height * 0.5
+	solid.add_child(shape)
+	model.add_child(solid)
 
 
 func _leave_if_unseen(i: int) -> void:
@@ -216,7 +252,7 @@ func _ground(at: Vector3) -> Vector3:
 
 func _play(body: Node3D, clip: StringName) -> void:
 	var anim := body.find_child("AnimationPlayer", true, false) as AnimationPlayer
-	if anim == null or not anim.has_animation(clip):
+	if anim == null or not anim.has_animation(clip) or anim.current_animation == clip:
 		return
 	anim.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	anim.play(clip)

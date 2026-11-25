@@ -11,6 +11,13 @@ extends Resource
 @export_range(10.0, 200.0, 5.0, "suffix:m") var draw_distance: float = 70.0
 ## How near Cusi someone must come to say their line.
 @export_range(2.0, 40.0, 0.5, "suffix:m") var talk_radius: float = 12.0
+## Their body (F8 task 11): Cusi cannot walk through them. A capsule on the characters'
+## physics layer; 0 radius: none, as in F4.
+@export_range(0.0, 1.0, 0.05, "suffix:m") var body_radius: float = 0.3
+@export_range(1.0, 2.5, 0.05, "suffix:m") var body_height: float = 1.7
+## A walker stops while Cusi stands this close ahead of them, and goes on once he is out
+## of the way.
+@export_range(0.0, 4.0, 0.1, "suffix:m") var yield_distance: float = 1.3
 ## Seconds a line stays on screen.
 @export_range(1.0, 15.0, 0.5, "suffix:s") var line_time: float = 4.5
 ## The ones who walk set off when the slice starts the encounter of this zone (after

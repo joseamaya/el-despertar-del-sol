@@ -1,6 +1,7 @@
 extends GdUnitTestSuite
 ## Integration: the people of Carmenca (F4 task 12c). Everyone is placed on the ground
-## with their look and clip, nobody collides, casts shadows or can be locked on; the
+## with their look and clip, with a body on the characters' layer (F8 task 11), nobody
+## casts shadows or can be locked on; the
 ## family is not there until the first skirmish (after the training), then walks its route
 ## down past the lookout and leaves once out of sight, while the
 ## ones who stayed are still there; only those near the camera are drawn and animated.
@@ -46,7 +47,11 @@ func test_everyone_is_there_on_the_ground_and_cheap() -> void:
 		var start: Vector2 = people[i].route[0] if i in _walkers() else people[i].at
 		var ground: Vector3 = _level.to_global_point(start)
 		assert_float(absf(body.global_position.y - ground.y)).is_less(0.6)
-		assert_array(body.find_children("*", "CollisionObject3D", true, false)).is_empty()
+		var solids: Array[Node] = body.find_children("*", "CollisionObject3D", true, false)
+		assert_int(solids.size()).is_equal(1)
+		assert_int((solids[0] as CollisionObject3D).collision_layer).is_equal(
+			SectorCrowd.CHARACTER_LAYER
+		)
 		for node: Node in body.find_children("*", "GeometryInstance3D", true, false):
 			var g := node as GeometryInstance3D
 			assert_int(g.cast_shadow).is_equal(GeometryInstance3D.SHADOW_CASTING_SETTING_OFF)
@@ -142,3 +147,22 @@ func test_the_family_comes_only_when_the_first_skirmish_starts() -> void:
 	var start: Vector3 = _crowd.body(first).global_position
 	await _frames(int(3.0 * 60.0 / 8.0))
 	assert_float(_crowd.body(first).global_position.distance_to(start)).is_greater(1.0)
+
+
+## F8 task 11: Cusi cannot walk through them, and a walker waits while he is in the way.
+func test_a_walker_waits_for_cusi_and_goes_on() -> void:
+	var first: int = _walkers()[0]
+	_crowd.set_off()
+	Engine.time_scale = 8.0
+	await _frames(int(3.0 * 60.0 / 8.0))
+	var body: Node3D = _crowd.body(first)
+	var player := _runner.find_child("Player") as PlayerController
+	var ahead: Vector3 = body.global_position + body.global_basis.z * 1.0
+	player.global_position = ahead + Vector3.UP * 0.1
+	await _frames(3)
+	var held: Vector3 = body.global_position
+	await _frames(30)
+	assert_float(body.global_position.distance_to(held)).is_less(0.05)
+	player.global_position = ahead + body.global_basis.x * 6.0 + Vector3.UP * 0.5
+	await _frames(30)
+	assert_float(body.global_position.distance_to(held)).is_greater(0.5)
