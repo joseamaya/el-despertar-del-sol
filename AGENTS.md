@@ -6,17 +6,17 @@ manda el GDD y se avisa al desarrollador.
 
 ## Fase actual
 
-**F8 · Base del capítulo** (3 semanas). Criterio de salida: desde el menú, «Nueva partida» →
-prólogo → Carmenca → centro del Cusco (en bruto), y «Continuar» recupera la partida, en build
-exportada (GDD §15, `docs/capitulo-1.md` §8). Si se pasa un 50 % de la estimación, se recorta
-alcance. La prueba de la `0.2-slice` sigue en paralelo (`docs/DECISIONS/0016`).
+**F9 · El centro y el lancero** (3 semanas). Criterio de salida: el centro del Cusco se
+recorre a 60 FPS y es reconocible andino; pelear contra lanceros se siente bien (lo prueba el
+desarrollador) (GDD §15, `docs/capitulo-1.md` §8). Si se pasa un 50 % de la estimación, se
+recorta alcance. La prueba de la `0.2-slice` sigue en paralelo (`docs/DECISIONS/0016`).
 Solo se trabaja en el alcance de la fase actual. Nada de la fase siguiente se adelanta.
-Deudas heredadas de F7: sección «Pasa a F8» de `docs/fases/F7-preproduccion-capitulo-1.md`.
+Deudas heredadas de F8: sección «Pasa a F9» de `docs/fases/F8-base-del-capitulo.md`.
 Fases cerradas: F0 (`docs/fases/F0-preproduccion.md`), F1 (`docs/fases/F1-movimiento-y-camara.md`),
 F2 (`docs/fases/F2-combate.md`), F3 (`docs/fases/F3-escenario-carmenca.md`),
 F4 (`docs/fases/F4-integracion-del-slice.md`), F5 (`docs/fases/F5-prueba-externa.md`),
 F6 (`docs/fases/F6-ajuste-del-combate.md`),
-F7 (`docs/fases/F7-preproduccion-capitulo-1.md`).
+F7 (`docs/fases/F7-preproduccion-capitulo-1.md`), F8 (`docs/fases/F8-base-del-capitulo.md`).
 Al cambiar de fase, el desarrollador actualiza esta sección.
 
 ## Stack fijado
