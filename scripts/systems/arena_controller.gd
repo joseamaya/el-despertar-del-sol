@@ -49,6 +49,9 @@ const ACTION_RESTART: StringName = &"restart"
 @export var lancer_scene: PackedScene
 @export var lancer_spawns: PackedInt32Array = PackedInt32Array()
 @export var lancer_waves: PackedInt32Array = PackedInt32Array()
+## Scouts (F9 task 12): the warrior of these indices of `spawn_points` walks this route
+## (global points) until it notices the player.
+@export var patrol_routes: Dictionary[int, PackedVector3Array] = {}
 
 var state: EncounterState = EncounterState.FIGHTING
 ## Zone being fought (1-based); 0 before the first one.
@@ -116,7 +119,7 @@ func reset_encounter() -> void:
 	_set_player_controls(true)
 	if not is_zoned():
 		for i: int in spawn_points.size():
-			_spawn_enemy(spawn_points[i], _scene_for(i, lancer_spawns))
+			_spawn_waiting(i)
 	elif active_zone > 0 and not _won_zones.has(active_zone):
 		_spawn_zone(active_zone)
 	_disengage()
@@ -208,7 +211,15 @@ func _spawn_zone(zone: int) -> void:
 	for i: int in zone - 1:
 		first += zone_sizes[i]
 	for i: int in range(first, mini(first + zone_sizes[zone - 1], spawn_points.size())):
-		_spawn_enemy(spawn_points[i], _scene_for(i, lancer_spawns))
+		_spawn_waiting(i)
+
+
+## The warrior waiting at spawn point `index`: a lancer or a club, on patrol if it has a
+## route.
+func _spawn_waiting(index: int) -> void:
+	var enemy: EnemyController = _spawn_enemy(spawn_points[index], _scene_for(index, lancer_spawns))
+	if patrol_routes.has(index):
+		enemy.patrol_points.assign(Array(patrol_routes[index]))
 
 
 ## The scene of the warrior at `index`: a lancer if listed in `lancers`.

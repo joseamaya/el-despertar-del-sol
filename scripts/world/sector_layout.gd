@@ -68,6 +68,10 @@ const STEP_MAX_RUN: float = 1.5
 ## Reinforcements of each encounter zone (same order): (x, z, count). They come from
 ## (x, z), uphill, once the zone's first warriors have fallen (F4 task 12b).
 @export var encounter_reinforcements: PackedVector3Array = PackedVector3Array()
+## Scouts that walk a route instead of waiting (F9 task 12): by spawn index (the waiting
+## warriors of every zone, counted in order), the route's points (x, z). The warrior starts
+## at its spawn point and walks the route in a loop.
+@export var patrols: Dictionary[int, PackedVector2Array] = {}
 ## Houses: (x, z, yaw in degrees).
 @export var houses: PackedVector3Array = PackedVector3Array()
 ## Corrals: (x, z, radius); opening downhill (+Z).
