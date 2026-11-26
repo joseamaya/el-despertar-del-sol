@@ -44,6 +44,8 @@ func rebuild() -> void:
 		# And the warriors who come when a zone's first ones fall (F4 task 12b).
 		arena.wave_points = spawn_markers("Wave")
 		arena.wave_sizes = wave_sizes()
+		# Scouts that walk a route (F9 task 12).
+		arena.patrol_routes = patrol_routes()
 	if backdrop != null:
 		var eye := Vector3(
 			layout.start.x, layout.height_at(layout.start.x, layout.start.y) + 1.6, layout.start.y
@@ -77,6 +79,17 @@ func wave_sizes() -> PackedInt32Array:
 			else 0
 		)
 		out.append(wave)
+	return out
+
+
+## The layout's patrol routes on the ground, by spawn index.
+func patrol_routes() -> Dictionary[int, PackedVector3Array]:
+	var out: Dictionary[int, PackedVector3Array] = {}
+	for index: int in layout.patrols:
+		var route := PackedVector3Array()
+		for xz: Vector2 in layout.patrols[index]:
+			route.append(to_global_point(xz))
+		out[index] = route
 	return out
 
 

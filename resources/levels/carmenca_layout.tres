@@ -24,6 +24,11 @@ checkpoints = PackedVector2Array(3, 115.5, -6, 60, 0, 12, 0, -90)
 encounters = PackedVector3Array(4, 103, 7, 0, -12, 10, 0, -110, 10)
 encounter_enemies = PackedInt32Array(2, 2, 3)
 encounter_reinforcements = PackedVector3Array(0, 0, 0, 0, 0, 0, 0, -142, 3)
+patrols = Dictionary[int, PackedVector2Array]({
+0: PackedVector2Array(1, 100.5, -8, 103, -8, 98),
+2: PackedVector2Array(-4.2, -15.5, -5, -7, 4, -7),
+4: PackedVector2Array(-4.2, -113.5, -13, -108, -5, -101)
+})
 houses = PackedVector3Array(-11, -4, 90, 11, -6, -90, -12, -20, 90, 12, -22, -90, -12, 6, 90, 12, 8, -90, 23, -12, -90, -21, 2, 0, 14, 64, -90, 15, 55, -90)
 props = PackedVector4Array(9, 5.8, 0, 0, 9.4, 9.6, 0, 4, 10.6, 4.4, 40, 1, -7, 27, 0, 0, -6, 31.5, 90, 2, -9.6, 4, 60, 3, -9, -3, 0, 1, 9.4, -22.5, 120, 1, -8.6, -17.4, 0, 0, 1.9, 20, 30, 2, -1.9, 36, 200, 2, 11.8, 61.5, 0, 1, 12.5, 53.5, 45, 3, 6.5, 135, 0, 2)
 hearth_smoke_height = 2.5
