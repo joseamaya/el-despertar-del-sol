@@ -66,6 +66,22 @@ func test_staged_warriors_do_nothing() -> void:
 	assert_int(arena.alive_enemies().size()).is_equal(0)
 
 
+## F9 task 1: they enter the tree where they stand, not at the origin (see the arena).
+func test_staged_warriors_enter_the_tree_where_they_stand() -> void:
+	var at_entry: Array[Vector3] = []
+	var record := func(node: Node) -> void:
+		if node is EnemyController:
+			at_entry.append((node as EnemyController).global_position)
+	_staging.child_entered_tree.connect(record)
+	while _staging.staged().is_empty():
+		await _frames(10)
+	_staging.child_entered_tree.disconnect(record)
+	assert_int(at_entry.size()).is_equal(_staging.staged().size())
+	for i: int in at_entry.size():
+		assert_float(at_entry[i].distance_to(_staging.staged()[i].home_position)).is_less(0.01)
+		assert_float(at_entry[i].length()).is_greater(1.0)
+
+
 func test_the_button_skips_the_shots() -> void:
 	assert_bool(_slice.is_in_intro()).is_true()
 	var press := InputEventAction.new()
