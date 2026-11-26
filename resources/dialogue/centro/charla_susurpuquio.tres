@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="HubTalk" format=3]
+
+[ext_resource type="Script" path="res://scripts/chapter/hub_talk.gd" id="1_talk"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/vicaquirao_noche.tres" id="2_offer"]
+
+[resource]
+script = ExtResource("1_talk")
+marker = &"Mentor"
+speaker = &"NAME_VICAQUIRAO"
+mission = &"susurpuquio"
+offer = ExtResource("2_offer")
+objective = &"HUB_OBJECTIVE_VICAQUIRAO"
+priority = 1

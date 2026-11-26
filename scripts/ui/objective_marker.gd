@@ -10,6 +10,8 @@ extends CanvasLayer
 @export var arena: ArenaController
 @export var player: PlayerController
 @export var camera: Camera3D
+## Optional, the hub only: it leads to who to talk to next (F9 task 6).
+@export var hub: HubTalks
 
 var _canvas: Control
 var _label: Label
@@ -54,6 +56,8 @@ func is_showing() -> bool:
 ## Where the current step sends the player, or null if it sends them nowhere (a talk, a
 ## drill, a fight under way) or the player is held.
 func target_position() -> Variant:
+	if hub != null:
+		return hub.objective_position()
 	var step: SliceStep = slice.flow.current() if slice.flow != null else null
 	if step == null or player.is_held():
 		return null

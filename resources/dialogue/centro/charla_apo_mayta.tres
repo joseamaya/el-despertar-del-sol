@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="HubTalk" format=3]
+
+[ext_resource type="Script" path="res://scripts/chapter/hub_talk.gd" id="1_talk"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/apo_mayta.tres" id="2_offer"]
+
+[resource]
+script = ExtResource("1_talk")
+marker = &"ApoMayta"
+speaker = &"NAME_APO_MAYTA"
+offer = ExtResource("2_offer")

@@ -182,8 +182,8 @@ func _hub_open() -> bool:
 	return chapter.hub_after == &"" or progress.is_done(chapter.hub_after)
 
 
-## A door of the hub: plays the mission's level, or, while it is not built, passes it as
-## done (a test door) and gives its Apoyo.
+## A mission accepted in the hub (F9 task 6: by talking): plays the mission's level, or,
+## while it is not built, passes it as done (a test mission) and gives its Apoyo.
 func _on_mission_chosen(mission_id: StringName) -> void:
 	var mission: MissionData = chapter.mission(mission_id)
 	if mission == null:
@@ -196,8 +196,27 @@ func _on_mission_chosen(mission_id: StringName) -> void:
 		support.apply_mission(mission, [])
 		var entry: LevelEntry = host.current_entry()
 		if entry != null:
-			entry.announce(&"NOTICE_TEST_DOOR")
+			entry.announce(test_mission_notice(mission), test_mission_params(mission))
 		save_now()
+
+
+## What the notice of a test mission says (F9 task 6): that it counts as done and which
+## Apoyo it gives.
+func test_mission_notice(mission: MissionData) -> StringName:
+	if mission.support_gain <= 0:
+		return &"NOTICE_TEST_MISSION_PLAIN"
+	if mission.support_all_won:
+		return &"NOTICE_TEST_MISSION_ALL"
+	return &"NOTICE_TEST_MISSION" if mission.ayllu != &"" else &"NOTICE_TEST_MISSION_PLAIN"
+
+
+func test_mission_params(mission: MissionData) -> Dictionary:
+	var ayllu: AylluData = chapter.support.ayllu(mission.ayllu) if chapter.support != null else null
+	return {
+		"mission": tr(mission.title),
+		"gain": mission.support_gain,
+		"ayllu": tr(ayllu.title) if ayllu != null else "",
+	}
 
 
 func _on_support_raised(_ayllu: StringName, level: SupportLedger.Level) -> void:
