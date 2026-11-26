@@ -5,7 +5,8 @@ extends SkeletonModifier3D
 ## drawn back. Active: out to the thrust in `strike_share` of the window, then held.
 ## Recovery: back to rest. Lives under the Skeleton3D. If `spear` is set, it is placed in
 ## the fist (`grip_offset` from the hand bone) every frame, pointing along `body`'s front
-## (-Z), so turning the arms moves the spear forward and back without tilting it.
+## (-Z), so turning the arms moves the spear forward and back without tilting it. At the
+## thrust it also slides forward through the fist (`thrust_slide`).
 
 @export var tuning: ThrustPoseTuning
 @export var combat: EnemyCombat
@@ -88,6 +89,11 @@ func current_progress() -> float:
 	return progress(combat.get_elapsed(), attack, tuning.strike_share)
 
 
+## How far the spear has slid forward through the fist at `value` of `progress`.
+static func spear_slide(value: float, slide: float) -> float:
+	return slide * clampf(value - 1.0, 0.0, 1.0)
+
+
 ## Pitch of the spear (degrees, tip up) at `value` of `progress`.
 static func spear_pitch(value: float, rest_deg: float, thrust_deg: float) -> float:
 	return lerpf(rest_deg, thrust_deg, clampf(value - 1.0, 0.0, 1.0)) if value > 1.0 else rest_deg
@@ -126,7 +132,8 @@ func _place_spear(value: float) -> void:
 	var side: Vector3 = front.cross(Vector3.UP).normalized()
 	var shaft: Vector3 = front.rotated(side, pitch)
 	var up: Vector3 = side.cross(shaft).normalized()
-	spear.global_transform = Transform3D(Basis(shaft, up, shaft.cross(up)), hand)
+	var slide: float = spear_slide(value, tuning.thrust_slide)
+	spear.global_transform = Transform3D(Basis(shaft, up, shaft.cross(up)), hand + shaft * slide)
 
 
 static func _ease(t: float) -> float:

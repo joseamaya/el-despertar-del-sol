@@ -119,3 +119,10 @@ func test_the_spear_sits_in_the_fist_not_at_the_wrist() -> void:
 	assert_float(pose.tuning.grip_offset.length()).is_greater(0.0)
 	assert_float(pose.spear.global_position.distance_to(fist)).is_less(0.02)
 	assert_float(pose.spear.global_position.distance_to(hand.origin)).is_greater(0.05)
+
+
+func test_the_spear_slides_forward_only_at_the_thrust() -> void:
+	assert_float(ThrustPose.spear_slide(0.0, 0.4)).is_equal_approx(0.0, 0.001)
+	assert_float(ThrustPose.spear_slide(1.0, 0.4)).is_equal_approx(0.0, 0.001)
+	assert_float(ThrustPose.spear_slide(1.5, 0.4)).is_equal_approx(0.2, 0.001)
+	assert_float(ThrustPose.spear_slide(2.0, 0.4)).is_equal_approx(0.4, 0.001)

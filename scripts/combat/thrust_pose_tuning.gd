@@ -17,6 +17,9 @@ extends Resource
 ## Tip up while not thrusting (degrees); the thrust levels it to `thrust_pitch_deg`.
 @export_range(-30.0, 60.0, 1.0, "suffix:°") var rest_pitch_deg: float = 20.0
 @export_range(-30.0, 60.0, 1.0, "suffix:°") var thrust_pitch_deg: float = 0.0
+## How far the spear slides forward through the fist at the thrust (metres), so its butt
+## stays in front of the chest instead of passing through it. It adds to the tip's reach.
+@export_range(0.0, 1.0, 0.05, "suffix:m") var thrust_slide: float = 0.0
 ## Where the fist closes, in the hand bone's own frame (the bone starts at the wrist), so
 ## the shaft runs through the fist instead of past the wrist.
 @export var grip_offset: Vector3 = Vector3(0.0, 0.08, 0.0)

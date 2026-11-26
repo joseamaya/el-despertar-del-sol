@@ -14,4 +14,4 @@ windup_end = 0.75
 active_end = 0.95
 recovery_end = 1.6
 chain_from = 1.6
-lunge_distance = 0.5
+lunge_distance = 0.1
