@@ -74,6 +74,20 @@ const STEP_MAX_RUN: float = 1.5
 @export var patrols: Dictionary[int, PackedVector2Array] = {}
 ## Houses: (x, z, yaw in degrees).
 @export var houses: PackedVector3Array = PackedVector3Array()
+## House sizes (x width, y wall height, z depth): the common one and the bigger one of the
+## houses listed in `big_houses` (F9 task 4: the hub's main houses), by index in `houses`.
+@export var house_size: Vector3 = Vector3(4.5, 2.2, 3.6)
+@export var big_house_size: Vector3 = Vector3(7.0, 2.6, 4.2)
+@export var big_houses: PackedInt32Array = PackedInt32Array()
+## Houses left shut by the families who fled (the door walled up with stones), by index.
+@export var closed_houses: PackedInt32Array = PackedInt32Array()
+## Stone posts at the sides of an opening in a wall, such as a kancha's gate: (x, z, yaw in
+## degrees; yaw 0 runs the post along X).
+@export var gate_posts: PackedVector3Array = PackedVector3Array()
+@export_range(0.5, 3.0, 0.05, "suffix:m") var gate_post_height: float = 1.7
+## Huacas that only stand there, without the slice's offering (F9 task 4: the one in the
+## hub's square): (x, z, yaw in degrees; the opening of the ring faces +Z at yaw 0).
+@export var shrines: PackedVector3Array = PackedVector3Array()
 ## Corrals: (x, z, radius); opening downhill (+Z).
 @export var corrals: PackedVector3Array = PackedVector3Array()
 ## Crags framing the pass: (x, z, height).
@@ -109,6 +123,19 @@ var _profile_src: PackedVector2Array
 var _profile_sorted: PackedVector2Array
 var _corridor_src: PackedVector2Array
 var _corridor_sorted: PackedVector2Array
+
+
+## Size of house `index` in `houses`.
+func house_size_at(index: int) -> Vector3:
+	return big_house_size if big_houses.has(index) else house_size
+
+
+## True if `xz` is within `reach` of one of the `shrines` (to keep scatter out of them).
+func near_shrine(xz: Vector2, reach: float) -> bool:
+	for s: Vector3 in shrines:
+		if xz.distance_to(Vector2(s.x, s.y)) < reach:
+			return true
+	return false
 
 
 ## Ground height at a local point: profile along Z plus the steep sides.
