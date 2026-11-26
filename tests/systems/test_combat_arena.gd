@@ -39,6 +39,24 @@ func test_spawns_three_wired_warriors() -> void:
 		assert_object(enemy.director).is_same(_arena.director)
 
 
+## F9 task 1: a warrior that entered the tree at the origin and was then moved made its
+## first physics query sweep the ground in between (0.1–0.2 s each, a stutter in play).
+func test_warriors_enter_the_tree_at_their_spawn_point() -> void:
+	var at_entry: Array[Vector3] = []
+	var root: Node3D = _arena.enemies_root
+	var record := func(node: Node) -> void:
+		if node is EnemyController:
+			at_entry.append((node as EnemyController).global_position)
+	root.child_entered_tree.connect(record)
+	_arena.reset_encounter()
+	await _frames(3)
+	root.child_entered_tree.disconnect(record)
+	var fresh: Array[EnemyController] = _arena.alive_enemies()
+	assert_int(at_entry.size()).is_equal(fresh.size())
+	for i: int in fresh.size():
+		assert_float(at_entry[i].distance_to(fresh[i].home_position)).is_less(0.01)
+
+
 func test_defeat_stops_the_player_and_shows_the_message() -> void:
 	_health.apply_damage(_health.get_maximum())
 	await _frames(2)
