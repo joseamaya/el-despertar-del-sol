@@ -136,3 +136,25 @@ func test_the_hub_builds_its_town() -> void:
 	var town := level.find_child("Town", true, false) as MeshInstance3D
 	assert_object(town).is_not_null()
 	assert_int(town.mesh.get_surface_count()).is_equal(1)
+
+
+## The city goes on past the hub: the houses beyond stand up on the ground Cusi cannot reach,
+## and the hub keeps about forty houses of its own (the developer found it too small).
+func test_the_city_goes_on_beyond_the_walkable_ground() -> void:
+	assert_int(_layout.houses.size()).is_greater(40)
+	assert_int(_layout.outskirts.size()).is_greater(80)
+	for h: Vector3 in _layout.outskirts:
+		var rise: float = _layout.height_at(h.x, h.y) - _layout.profile_at(h.y)
+		(
+			assert_float(rise)
+			. override_failure_message("outskirt house at (%.0f, %.0f) is reachable" % [h.x, h.y])
+			. is_greater(_layout.side_max_rise - 0.5)
+		)
+
+
+func test_the_outskirts_cast_no_shadow() -> void:
+	var runner: GdUnitSceneRunner = scene_runner(SCENE)
+	var level := runner.find_child("SectorLevel") as SectorLevel
+	var outskirts := level.find_child("Outskirts", true, false) as MeshInstance3D
+	assert_object(outskirts).is_not_null()
+	assert_int(outskirts.cast_shadow).is_equal(GeometryInstance3D.SHADOW_CASTING_SETTING_OFF)

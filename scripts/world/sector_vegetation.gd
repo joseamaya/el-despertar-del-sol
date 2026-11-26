@@ -119,6 +119,8 @@ static func is_clear(layout: SectorLayout, steps: PackedVector3Array, xz: Vector
 			return false
 	if xz.distance_to(layout.huaca) < 3.4 or layout.near_shrine(xz, 3.4):
 		return false
+	if layout.distance_to_stream(xz) < layout.stream_width * 0.5 + 1.0:
+		return false
 	for e: Vector3 in layout.encounters:
 		if xz.distance_to(Vector2(e.x, e.y)) < e.z + CLEAR_ZONE:
 			return false
