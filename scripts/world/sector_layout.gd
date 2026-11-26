@@ -85,6 +85,9 @@ const STEP_MAX_RUN: float = 1.5
 ## degrees; yaw 0 runs the post along X).
 @export var gate_posts: PackedVector3Array = PackedVector3Array()
 @export_range(0.5, 3.0, 0.05, "suffix:m") var gate_post_height: float = 1.7
+## Houses beyond the walkable ground (F9: the city goes on past the hub): (x, z, yaw in
+## degrees). Drawn only, without collider or shadow; they stand where Cusi cannot go.
+@export var outskirts: PackedVector3Array = PackedVector3Array()
 ## Huacas that only stand there, without the slice's offering (F9 task 4: the one in the
 ## hub's square): (x, z, yaw in degrees; the opening of the ring faces +Z at yaw 0).
 @export var shrines: PackedVector3Array = PackedVector3Array()

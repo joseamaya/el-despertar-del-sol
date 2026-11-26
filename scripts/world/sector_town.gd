@@ -2,7 +2,8 @@ class_name SectorTown
 extends RefCounted
 ## The pieces of a town that a hillside sector does not have (F9 task 4): stone posts at
 ## the gates of the kanchas and the huacas that only stand there, without the slice's
-## offering. All in one mesh, each with its collider.
+## offering. All in one mesh, each with its collider. Also the houses beyond the walkable
+## ground, so the city goes on past the hub.
 
 ## Thickness of a gate post (a little more than the boundary wall it ends).
 const POST_THICKNESS: float = 0.75
@@ -29,9 +30,26 @@ static func build(root: Node3D, layout: SectorLayout, palette: PaletteTuning) ->
 		parts.append([KitBuildings.standing_huaca(400 + i, palette), xf])
 		_shrine_colliders(root, xf)
 		i += 1
-	if parts.is_empty():
+	if not parts.is_empty():
+		SectorBuilder.add_mesh(root, "Town", KitWalls.merge(parts), palette, Vector3.ZERO)
+	_build_outskirts(root, layout, palette)
+
+
+## The houses beyond the walkable ground, in one mesh with no shadow: only seen from afar.
+static func _build_outskirts(root: Node3D, layout: SectorLayout, palette: PaletteTuning) -> void:
+	if layout.outskirts.is_empty():
 		return
-	SectorBuilder.add_mesh(root, "Town", KitWalls.merge(parts), palette, Vector3.ZERO)
+	var parts: Array[Array] = []
+	var i: int = 0
+	for house: Vector3 in layout.outskirts:
+		parts.append(
+			[KitBuildings.house(layout.house_size, 500 + i, palette), _place(layout, house)]
+		)
+		i += 1
+	var node: MeshInstance3D = SectorBuilder.add_mesh(
+		root, "Outskirts", KitWalls.merge(parts), palette, Vector3.ZERO
+	)
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 
 ## Where a piece at (x, z, yaw in degrees) stands on the ground.
