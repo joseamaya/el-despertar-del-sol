@@ -44,6 +44,11 @@ const ACTION_RESTART: StringName = &"restart"
 @export var wave_sizes: PackedInt32Array = PackedInt32Array()
 ## Seconds between the call (the pututu) and the reinforcements appearing.
 @export_range(0.0, 10.0, 0.1, "suffix:s") var wave_delay: float = 2.0
+## Lancers among the warriors (F9 task 11): these indices of `spawn_points` and of
+## `wave_points` spawn `lancer_scene` instead of `enemy_scene`.
+@export var lancer_scene: PackedScene
+@export var lancer_spawns: PackedInt32Array = PackedInt32Array()
+@export var lancer_waves: PackedInt32Array = PackedInt32Array()
 
 var state: EncounterState = EncounterState.FIGHTING
 ## Zone being fought (1-based); 0 before the first one.
@@ -110,8 +115,8 @@ func reset_encounter() -> void:
 	_player_stamina.reset()
 	_set_player_controls(true)
 	if not is_zoned():
-		for point: Node3D in spawn_points:
-			_spawn_enemy(point)
+		for i: int in spawn_points.size():
+			_spawn_enemy(spawn_points[i], _scene_for(i, lancer_spawns))
 	elif active_zone > 0 and not _won_zones.has(active_zone):
 		_spawn_zone(active_zone)
 	_disengage()
@@ -203,11 +208,16 @@ func _spawn_zone(zone: int) -> void:
 	for i: int in zone - 1:
 		first += zone_sizes[i]
 	for i: int in range(first, mini(first + zone_sizes[zone - 1], spawn_points.size())):
-		_spawn_enemy(spawn_points[i])
+		_spawn_enemy(spawn_points[i], _scene_for(i, lancer_spawns))
 
 
-func _spawn_enemy(point: Node3D) -> EnemyController:
-	var enemy := enemy_scene.instantiate() as EnemyController
+## The scene of the warrior at `index`: a lancer if listed in `lancers`.
+func _scene_for(index: int, lancers: PackedInt32Array) -> PackedScene:
+	return lancer_scene if lancer_scene != null and lancers.has(index) else enemy_scene
+
+
+func _spawn_enemy(point: Node3D, scene: PackedScene) -> EnemyController:
+	var enemy := scene.instantiate() as EnemyController
 	enemy.director = director
 	(enemy.get_node("Perception") as PerceptionComponent).target = player
 	# Placed before entering the tree: a body created at the origin and moved in the same
@@ -237,7 +247,7 @@ func _call_wave() -> void:
 	for i: int in zone - 1:
 		first += wave_size(i + 1)
 	for i: int in range(first, mini(first + wave_size(zone), wave_points.size())):
-		var enemy: EnemyController = _spawn_enemy(wave_points[i])
+		var enemy: EnemyController = _spawn_enemy(wave_points[i], _scene_for(i, lancer_waves))
 		enemy.perception.alert_to(player.global_position)
 	reinforcements_arrived.emit(zone)
 

@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" path="res://scenes/enemies/chanca_warrior.tscn" id="8_jmtbx"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="9_hdw7c"]
 [ext_resource type="Script" path="res://scripts/combat/combat_feedback.gd" id="10_7rqch"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/chanca_lancer.tscn" id="90_lancer"]
+[ext_resource type="Script" path="res://scripts/core/debug_arena_mix.gd" id="91_mix"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_upy5j"]
 
@@ -388,6 +390,7 @@ enemy_scene = ExtResource("8_jmtbx")
 spawn_points = [NodePath("../Spawns/Enemy1"), NodePath("../Spawns/Enemy2"), NodePath("../Spawns/Enemy3")]
 enemies_root = NodePath("../Enemies")
 director = NodePath("../EncounterDirector")
+lancer_scene = ExtResource("90_lancer")
 
 [node name="Hud" parent="." unique_id=1068922280 node_paths=PackedStringArray("health", "stamina", "lock_on", "camera", "arena", "defense") instance=ExtResource("9_hdw7c")]
 health = NodePath("../Player/Health")
@@ -415,3 +418,7 @@ player_combat = NodePath("../Player/Combat")
 
 [editable path="Player"]
 [editable path="Player/Visual/Model"]
+
+[node name="DebugArenaMix" type="Node" parent="." node_paths=PackedStringArray("arena")]
+script = ExtResource("91_mix")
+arena = NodePath("../ArenaController")

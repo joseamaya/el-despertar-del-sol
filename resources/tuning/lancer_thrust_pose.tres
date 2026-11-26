@@ -7,3 +7,4 @@ script = ExtResource("1_thrust")
 bones = PackedStringArray("RightUpperArm", "RightLowerArm", "Spine")
 drawn_deg = PackedVector3Array(0, 0, 40, 0, 0, 0, 0, -20, 0)
 thrust_deg = PackedVector3Array(0, 0, -75, 0, 0, 0, 0, 20, 0)
+thrust_slide = 0.4
