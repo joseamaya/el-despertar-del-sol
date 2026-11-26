@@ -188,7 +188,13 @@ func _walk(i: int, delta: float) -> void:
 	var step: float = people.walk_speed * delta
 	if flat.length() <= maxf(step, REACHED):
 		_next[i] += 1
-		if _next[i] >= route.size():
+		if _next[i] >= route.size() and people.people[i].loop:
+			_next[i] = 0
+			_wait[i] = people.people[i].rest
+			if _wait[i] > 0.0:
+				_play(body, people.people[i].clip)
+			_face(body, level.to_global_point(route[0]))
+		elif _next[i] >= route.size():
 			_play(body, people.people[i].clip)
 		else:
 			_face(body, level.to_global_point(route[_next[i]]))
