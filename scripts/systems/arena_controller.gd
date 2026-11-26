@@ -210,9 +210,13 @@ func _spawn_enemy(point: Node3D) -> EnemyController:
 	var enemy := enemy_scene.instantiate() as EnemyController
 	enemy.director = director
 	(enemy.get_node("Perception") as PerceptionComponent).target = player
+	# Placed before entering the tree: a body created at the origin and moved in the same
+	# frame makes its first physics query sweep the ground in between (0.1–0.2 s each).
+	var yaw := Basis(Vector3.UP, point.global_rotation.y)
+	enemy.transform = (
+		enemies_root.global_transform.affine_inverse() * Transform3D(yaw, point.global_position)
+	)
 	enemies_root.add_child(enemy)
-	enemy.global_position = point.global_position
-	enemy.rotation.y = point.global_rotation.y
 	enemy.home_position = point.global_position
 	enemy.health.died.connect(_on_enemy_died)
 	_enemies.append(enemy)

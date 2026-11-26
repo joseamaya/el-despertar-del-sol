@@ -50,13 +50,15 @@ func stage(zone: int) -> void:
 		var enemy := enemy_scene.instantiate() as EnemyController
 		enemy.director = null
 		enemy.name = "Staged%d" % k
+		# Placed before entering the tree (this node is not 3D, so it is global): a body
+		# moved in its first frame sweeps the ground in its first physics query.
+		enemy.position = level.to_global_point(Vector2(local.x, local.z))
+		enemy.rotation.y = atan2(-forward.x, -forward.z) + PI
 		add_child(enemy)
 		# No target: they stand where they are.
 		enemy.perception.target = null
 		(enemy.get_node(^"AlertMarker") as Node3D).visible = false
 		enemy.alert_marker = null
-		enemy.global_position = level.to_global_point(Vector2(local.x, local.z))
-		enemy.rotation.y = atan2(-forward.x, -forward.z) + PI
 		enemy.home_position = enemy.global_position
 		_staged.append(enemy)
 
