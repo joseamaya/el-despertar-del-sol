@@ -142,5 +142,31 @@ CTX_PROLOGUE_1,"Cusco, hacia 1438. Uscovilca acampa en Vilcaconga, a siete legua
 CTX_PROLOGUE_2,"El Inca Viracocha deja la ciudad con su hijo Urco, camino de Caquia Xaquixaguana","The Inca Viracocha leaves the city with his son Urco, bound for Caquia Xaquixaguana"
 CTX_PROLOGUE_3,Muchos se van con él. Cusi Yupanqui se queda.,Many go with him. Cusi Yupanqui stays.
 OBJ_PROLOGUE,Reúnete con Vicaquirao al final de la calle,Meet Vicaquirao at the end of the street
-DOOR_PROMPT,E / A: {mission},E / A: {mission}
-NOTICE_TEST_DOOR,"Misión de prueba: se da por cumplida","Test mission: counted as done"
+TALK_PROMPT,E / A: hablar con {name},E / A: talk to {name}
+NAME_APO_MAYTA,Apo Mayta,Apo Mayta
+NAME_CURACA_LLAMAS,Curaca del valle,Curaca of the valley
+NAME_CURACA_PRISONERS,Curaca de la quebrada,Curaca of the ravine
+NAME_CURACA_DISPUTE,Curaca del pueblo,Curaca of the village
+HUB_OBJECTIVE_CURACAS,Habla con los curacas ({count}/{total}),Talk to the curacas ({count}/{total})
+HUB_OBJECTIVE_VICAQUIRAO,Habla con Vicaquirao,Talk to Vicaquirao
+HUB_ACCEPT,Te ayudaré.,I will help you.
+HUB_LATER,Ahora no. Volveré.,Not now. I will come back.
+HUB_ARRIVAL_1,"Los curacas de los alrededores no han huido con el Inca, pero tampoco han venido a luchar.","The curacas around Cusco have not fled with the Inca, but they have not come to fight either."
+HUB_ARRIVAL_2,"Esperan a ver quién gana. Si les demuestras que tienes gente, mandarán a sus hombres.","They are waiting to see who wins. Show them you have people, and they will send their men."
+HUB_ARRIVAL_3,Habla con ellos. Cada uno espera a la entrada de su kancha.,Talk to them. Each one is waiting at the gate of his kancha.
+HUB_APO_REMINDER,"Con dos curacas de tu parte, Vicaquirao sabrá cómo mostrárselo a los demás.","With two curacas on your side, Vicaquirao will know how to show it to the rest."
+HUB_LLAMAS_1,Los chancas se han llevado nuestras llamas de los pastos de arriba.,The Chancas have taken our llamas from the high pastures.
+HUB_LLAMAS_2,"Sin ellas no hay carga ni lana. Si las recuperas, mi ayllu estará contigo.",Without them there is no load and no wool. Bring them back and my ayllu will stand with you.
+HUB_LLAMAS_THANKS,Mis pastores no olvidarán quién les devolvió sus llamas.,My herders will not forget who brought their llamas back.
+HUB_PRISONERS_1,Unos exploradores chancas se han llevado presos a hombres de mi ayllu.,Chanca scouts have taken men of my ayllu prisoner.
+HUB_PRISONERS_2,Los llevan por la quebrada. Tráelos de vuelta y sabré que no luchas solo.,They are taking them down the ravine. Bring them back and I will know you do not fight alone.
+HUB_PRISONERS_THANKS,Mis hombres han vuelto. Cuenta con ellos.,My men are back. Count on them.
+HUB_DISPUTE_1,"Mi pueblo está partido: unos quieren seguir al Inca, otros quedarse.","My village is split: some want to follow the Inca, others to stay."
+HUB_DISPUTE_2,Ven a hablar con ellos. Lo que decidas pesará en lo que yo haga.,Come and speak to them. What you decide will weigh on what I do.
+HUB_DISPUTE_THANKS,Mi pueblo ya ha elegido. Estamos contigo.,My village has chosen. We are with you.
+HUB_VICAQUIRAO_WAITING,Todavía son pocos los que confían en ti. Habla con los curacas.,Few trust you yet. Talk to the curacas.
+HUB_VICAQUIRAO_SHOW,Hay exploradores chancas en la ladera. Que los curacas vean cómo los echamos.,There are Chanca scouts on the slope. Let the curacas watch us drive them off.
+HUB_VICAQUIRAO_NIGHT,"Antes de lo que viene, ve esta noche a la fuente de Susurpuquio.","Before what is coming, go tonight to the spring of Susurpuquio."
+NOTICE_TEST_MISSION,Misión de prueba: «{mission}» se da por cumplida. +{gain} de Apoyo con {ayllu}.,Test mission: “{mission}” counts as done. +{gain} Support with {ayllu}.
+NOTICE_TEST_MISSION_ALL,Misión de prueba: «{mission}» se da por cumplida. +{gain} de Apoyo con cada ayllu que ya te apoya.,Test mission: “{mission}” counts as done. +{gain} Support with every ayllu already on your side.
+NOTICE_TEST_MISSION_PLAIN,Misión de prueba: «{mission}» se da por cumplida.,Test mission: “{mission}” counts as done.

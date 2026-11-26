@@ -54,15 +54,19 @@ func test_prologue_carmenca_hub_and_doors() -> void:
 	assert_str(String(host.current_id())).is_equal("carmenca")
 	await _finish_level(host)
 	assert_str(String(host.current_id())).is_equal("centro")
-	var doors := host.current_level().get_node(^"HubDoors") as HubDoors
-	assert_array(doors.open_doors()).contains_exactly([&"llamas", &"prisioneros", &"disputa"])
-	doors.choose(&"llamas")
+	var talks := host.current_level().get_node(^"HubTalks") as HubTalks
+	assert_array(talks.open_missions()).contains_exactly([&"llamas", &"prisioneros", &"disputa"])
+	talks.accept(&"llamas")
 	await get_tree().process_frame
-	doors.choose(&"disputa")
+	# F9 task 6: the notice says which test mission and which Apoyo.
+	var hud := host.current_level().get_node(^"Hud") as Hud
+	assert_str(hud.message_label.text).contains(tr(&"MISSION_LLAMAS"))
+	assert_str(hud.message_label.text).contains(tr(&"AYLLU_A"))
+	talks.accept(&"disputa")
 	await get_tree().process_frame
 	assert_bool(shell.progress.is_done(&"llamas")).is_true()
 	assert_int(shell.support.level(&"ayllu_a")).is_equal(SupportLedger.Level.SYMPATHIZER)
-	assert_array(doors.open_doors()).contains(&"combate_visible")
+	assert_array(talks.open_missions()).contains(&"combate_visible")
 	# The saved game continues in the hub.
 	shell.back_to_title()
 	assert_bool(shell.continue_game()).is_true()

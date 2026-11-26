@@ -59,6 +59,8 @@ var _objective_panel: PanelContainer
 var _objective: Label
 var _objective_step: SliceStep
 var _objective_left: float = 0.0
+## An objective set from outside the slice (the hub's, F9 task 6). Empty: none.
+var _objective_text: String = ""
 ## Seconds left for the act banner; 0 when no banner is up.
 var _banner_left: float = 0.0
 var _warn_tween: Tween
@@ -81,7 +83,7 @@ func _ready() -> void:
 	if slice != null:
 		slice.act_changed.connect(_show_banner)
 		slice.slice_finished.connect(_show_end)
-		slice.notice_shown.connect(_show_notice)
+		slice.notice_shown.connect(show_notice)
 		slice.step_started.connect(_on_step_started)
 	if summary != null:
 		summary.summary_copied.connect(_show_end.bind(true))
@@ -158,6 +160,13 @@ func _build_objective() -> void:
 	add_child(_objective_panel)
 
 
+## Shows an objective that is not a slice step (the hub's, F9 task 6) for a while, as a
+## new step's would be. Empty hides it.
+func show_objective(text: String) -> void:
+	_objective_text = text
+	_objective_left = OBJECTIVE_TIME if text != "" else 0.0
+
+
 func _on_step_started(step: SliceStep) -> void:
 	_objective_step = step if step.objective != &"" else null
 	_objective_left = OBJECTIVE_TIME
@@ -165,6 +174,10 @@ func _on_step_started(step: SliceStep) -> void:
 
 func _update_objective(delta: float) -> void:
 	_objective_left = maxf(0.0, _objective_left - delta)
+	if _objective_step == null and _objective_text != "":
+		_objective_panel.visible = _objective_left > 0.0
+		_objective.text = _objective_text
+		return
 	var step: SliceStep = _objective_step
 	var fighting: bool = (
 		step != null
@@ -225,7 +238,7 @@ func _hide_message() -> void:
 
 
 func _show_banner(act: SliceStep.Act) -> void:
-	_show_notice(ACT_KEYS[act])
+	show_notice(ACT_KEYS[act])
 
 
 ## Inside the chapter, the end screen announces the mission done and "go on" (F8 task 7).
@@ -234,12 +247,14 @@ func set_chapter_end(enabled: bool) -> void:
 
 
 ## A slice notice (F4 task 6), shown like an act banner. Once the level is over (the
-## Apoyo won, F8 task 6) it is added to the end screen instead of replacing it.
-func _show_notice(key: StringName) -> void:
+## Apoyo won, F8 task 6) it is added to the end screen instead of replacing it. `params`
+## fill in the text (F9 task 6).
+func show_notice(key: StringName, params: Dictionary = {}) -> void:
+	var text: String = tr(key).format(params)
 	if _ended:
-		hint_label.text = "%s\n\n%s" % [tr(key), hint_label.text]
+		hint_label.text = "%s\n\n%s" % [text, hint_label.text]
 		return
-	message_label.text = tr(key)
+	message_label.text = text
 	hint_label.text = ""
 	message_panel.visible = true
 	_banner_left = BANNER_TIME

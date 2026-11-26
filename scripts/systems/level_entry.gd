@@ -31,8 +31,9 @@ signal mission_chosen(mission_id: StringName)
 @export var support_allies: SupportAllies
 ## Optional: its end screen turns into "mission done, go on" (F8 task 7).
 @export var hud: Hud
-## Optional, the hub only: the mission doors (F8 task 8).
-@export var hub_doors: HubDoors
+## Optional, the hub only: the people who give the missions (F8 task 8; F9 task 6 turned
+## the doors into talks).
+@export var hub_talks: HubTalks
 
 var _hosted: bool = false
 var _offerings: Array[StringName] = []
@@ -62,8 +63,8 @@ func prepare(game: Dictionary) -> void:
 		pause_menu.set_support.call_deferred(support)
 	if support_allies != null:
 		support_allies.support = support
-	if hub_doors != null:
-		hub_doors.progress = game.get("progress", null) as ChapterProgress
+	if hub_talks != null:
+		hub_talks.progress = game.get("progress", null) as ChapterProgress
 	_saved_codex = _names(game.get("codex", []) as Array)
 	_saved_offerings = _names(game.get("offerings", []) as Array)
 
@@ -83,8 +84,9 @@ func host() -> void:
 		slice.slice_finished.connect(_on_slice_finished)
 		slice.checkpoint_reached.connect(checkpoint_reached.emit)
 		slice.continue_requested.connect(continue_requested.emit)
-	if hub_doors != null:
-		hub_doors.mission_chosen.connect(mission_chosen.emit)
+	if hub_talks != null:
+		hub_talks.mission_chosen.connect(mission_chosen.emit)
+		hub_talks.start()
 	if hud != null:
 		hud.set_chapter_end(true)
 
@@ -113,9 +115,12 @@ func snapshot() -> Dictionary:
 	}
 
 
-## Shows a banner in the level (the Apoyo going up, F8 task 6).
-func announce(key: StringName) -> void:
-	if slice != null:
+## Shows a banner in the level (the Apoyo going up, F8 task 6). With `params`, the text is
+## filled in with them (F9 task 6: which test mission, which ayllu) and shown by the HUD.
+func announce(key: StringName, params: Dictionary = {}) -> void:
+	if not params.is_empty() and hud != null:
+		hud.show_notice(key, params)
+	elif slice != null:
 		slice.announce(key)
 
 

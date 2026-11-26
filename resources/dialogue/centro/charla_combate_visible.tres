@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="HubTalk" format=3]
+
+[ext_resource type="Script" path="res://scripts/chapter/hub_talk.gd" id="1_talk"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/vicaquirao_combate.tres" id="2_offer"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/vicaquirao_espera.tres" id="3_waiting"]
+
+[resource]
+script = ExtResource("1_talk")
+marker = &"Mentor"
+speaker = &"NAME_VICAQUIRAO"
+mission = &"combate_visible"
+offer = ExtResource("2_offer")
+waiting = ExtResource("3_waiting")
+objective = &"HUB_OBJECTIVE_VICAQUIRAO"
+priority = 1

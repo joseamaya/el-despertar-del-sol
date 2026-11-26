@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" path="res://scenes/levels/carmenca.tscn" id="1_carmenca"]
 [ext_resource type="Resource" path="res://resources/levels/centro_layout.tres" id="2_layout"]
-[ext_resource type="Script" path="res://scripts/chapter/hub_doors.gd" id="3_doors"]
+[ext_resource type="Script" path="res://scripts/chapter/hub_talks.gd" id="3_talks"]
 [ext_resource type="Script" path="res://scripts/world/sector_people.gd" id="4_people"]
 [ext_resource type="Script" path="res://scripts/dialogue/sector_npc.gd" id="5_npc"]
 [ext_resource type="PackedScene" path="res://assets/characters/stock/ual1_standard.glb" id="6_model"]
@@ -10,6 +10,16 @@
 [ext_resource type="Resource" path="res://resources/characters/curaca_llamas.tres" id="8_llamas"]
 [ext_resource type="Resource" path="res://resources/characters/curaca_prisioneros.tres" id="9_prisioneros"]
 [ext_resource type="Resource" path="res://resources/characters/curaca_disputa.tres" id="10_disputa"]
+
+[ext_resource type="Resource" path="res://resources/dialogue/centro/charla_apo_mayta.tres" id="11_talk_apo_mayta"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/charla_llamas.tres" id="12_talk_llamas"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/charla_prisioneros.tres" id="13_talk_prisioneros"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/charla_disputa.tres" id="14_talk_disputa"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/charla_combate_visible.tres" id="15_talk_combate_visible"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/charla_susurpuquio.tres" id="16_talk_susurpuquio"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/pregunta.tres" id="17_question"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/llegada.tres" id="18_arrival"]
+[ext_resource type="Script" path="res://scripts/chapter/hub_talk.gd" id="19_talk"]
 
 [sub_resource type="Resource" id="NoPeople"]
 script = ExtResource("4_people")
@@ -25,14 +35,23 @@ autostart = false
 [node name="Crowd" parent="."]
 people = SubResource("NoPeople")
 
-[node name="HubDoors" type="Node" parent="." node_paths=PackedStringArray("level", "player", "prompt")]
-script = ExtResource("3_doors")
+[node name="HubTalks" type="Node" parent="." node_paths=PackedStringArray("level", "player", "prompt", "dialogue", "choice", "people")]
+script = ExtResource("3_talks")
 level = NodePath("../SectorLevel")
 player = NodePath("../Player")
 prompt = NodePath("../InteractionPrompt")
+dialogue = NodePath("../DialoguePlayer")
+choice = NodePath("../ChoiceBox")
+talks = Array[ExtResource("19_talk")]([ExtResource("11_talk_apo_mayta"), ExtResource("12_talk_llamas"), ExtResource("13_talk_prisioneros"), ExtResource("14_talk_disputa"), ExtResource("15_talk_combate_visible"), ExtResource("16_talk_susurpuquio")])
+question = ExtResource("17_question")
+arrival = ExtResource("18_arrival")
+people = [NodePath("../ApoMayta"), NodePath("../CuracaLlamas"), NodePath("../CuracaPrisioneros"), NodePath("../CuracaDisputa"), NodePath("../Vicaquirao")]
 
-[node name="LevelEntry" parent="." node_paths=PackedStringArray("hub_doors")]
-hub_doors = NodePath("../HubDoors")
+[node name="LevelEntry" parent="." node_paths=PackedStringArray("hub_talks")]
+hub_talks = NodePath("../HubTalks")
+
+[node name="ObjectiveMarker" parent="." node_paths=PackedStringArray("hub")]
+hub = NodePath("../HubTalks")
 
 [node name="Comunero" parent="."]
 visible = false
@@ -72,3 +91,5 @@ face = NodePath("../Player")
 look = ExtResource("10_disputa")
 
 [node name="Model" parent="CuracaDisputa" instance=ExtResource("6_model")]
+
+[connection signal="objective_changed" from="HubTalks" to="Hud" method="show_objective"]

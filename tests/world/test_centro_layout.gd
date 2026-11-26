@@ -1,7 +1,7 @@
 extends GdUnitTestSuite
 ## The hub of the Cusco (F9 task 3, `docs/fases/F9-diseno-centro.md`): the path is free of
 ## houses, nobody stands inside a house, and Cusi can walk from the arrival to every
-## curaca, Apo Mayta, Vicaquirao and every mission door.
+## curaca, Apo Mayta and Vicaquirao.
 
 const LAYOUT: String = "res://resources/levels/centro_layout.tres"
 const SCENE: String = "res://scenes/levels/centro.tscn"
@@ -56,12 +56,11 @@ func test_nobody_stands_inside_a_house() -> void:
 			)
 
 
-func test_three_curacas_and_their_doors() -> void:
-	for mission: String in ["llamas", "prisioneros", "disputa"]:
-		var curaca := StringName("Curaca_" + mission)
-		var door := StringName("Door_" + mission)
+func test_three_curacas_and_apo_mayta() -> void:
+	for curaca: StringName in [
+		&"Curaca_llamas", &"Curaca_prisioneros", &"Curaca_disputa", &"ApoMayta"
+	]:
 		assert_bool(_layout.points.has(curaca)).override_failure_message(curaca).is_true()
-		assert_bool(_layout.points.has(door)).override_failure_message(door).is_true()
 
 
 func test_every_point_can_be_walked_to_from_the_arrival() -> void:
