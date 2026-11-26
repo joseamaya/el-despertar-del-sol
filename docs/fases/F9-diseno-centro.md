@@ -1,6 +1,6 @@
 # F9 · Diseño del centro del Cusco (tarea 2)
 
-**Estado:** propuesto, pendiente de las decisiones del desarrollador (sección 6).
+**Estado:** aprobado por el desarrollador el 2026-11-26: plaza genérica, cada curaca en su kancha y las tres entradas del registro.
 
 **Para qué sirve:** el centro es el sitio al que se vuelve entre misiones (estructura B,
 `docs/capitulo-1.md` §3). Tiene que conseguir tres cosas:
@@ -119,7 +119,7 @@ plaza, es de F10. En F9 el centro tiene siempre la misma gente.
 | **La kancha (recinto de pirca con casas) en 1438** | **Sin registrar** | Interpretación de diseño, sin fuente consultada | Entrada propuesta 2 |
 | **Los curacas esperan en el Cusco** | **Sin registrar** | Licencia del juego | Entrada propuesta 3. Betanzos cuenta que Cusi les envía mensajeros a sus pueblos, a menos de tres leguas (F7) |
 
-**Entradas propuestas para `HISTORICAL_REFERENCES.md`** (pendientes de tu OK):
+**Entradas para `HISTORICAL_REFERENCES.md`,** aprobadas el 2026-11-26 y añadidas al registro:
 
 1. **Centro del Cusco del Capítulo I:** una plaza con calles y tres kanchas. Es **Licencia
    del juego:** no reproduce un trazado real. Revisar con especialista.
