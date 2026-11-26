@@ -54,6 +54,7 @@
 [ext_resource type="Script" path="res://scripts/ui/slice_caption.gd" id="51_caption"]
 [ext_resource type="Script" path="res://scripts/ui/objective_marker.gd" id="52_marker"]
 [ext_resource type="Resource" path="res://resources/tuning/objective_marker.tres" id="53_marker"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/chanca_lancer.tscn" id="55_lancer"]
 
 [node name="Carmenca" type="Node3D" unique_id=1002510060]
 
@@ -167,6 +168,9 @@ player = NodePath("../Player")
 enemy_scene = ExtResource("12_27mym")
 enemies_root = NodePath("../Enemies")
 director = NodePath("../EncounterDirector")
+lancer_scene = ExtResource("55_lancer")
+lancer_spawns = PackedInt32Array(1, 3, 6)
+lancer_waves = PackedInt32Array(1)
 
 [node name="SliceDirector" type="Node" parent="." unique_id=1544120731 node_paths=PackedStringArray("level", "arena", "dialogue", "interaction", "rite", "choice", "drill")]
 script = ExtResource("15_slice")

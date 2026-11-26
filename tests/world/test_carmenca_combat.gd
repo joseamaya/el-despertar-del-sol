@@ -196,3 +196,14 @@ func test_a_zone_that_has_not_seen_the_player_does_not_hunt() -> void:
 	assert_bool(_arena.is_zone_engaged()).is_false()
 	for enemy: EnemyController in enemies:
 		assert_bool(enemy.perception.has_target()).is_false()
+
+
+## F9 task 11: one lancer in each zone among the club warriors, one among the reinforcements.
+func test_every_zone_has_one_lancer() -> void:
+	for zone: int in range(1, _level.layout.encounters.size() + 1):
+		var lancers: int = 0
+		for enemy: EnemyController in _only_zone(zone):
+			if enemy.data.display_name == "Lancero chanca":
+				lancers += 1
+		assert_int(lancers).override_failure_message("zone %d" % zone).is_equal(1)
+	assert_array(Array(_arena.lancer_waves)).contains_exactly([1])

@@ -147,3 +147,17 @@ func test_hud_hides_out_of_combat_and_returns_when_spotted() -> void:
 			break
 	assert_bool(_arena.is_in_combat()).is_true()
 	assert_bool(_hud.is_shown()).is_true()
+
+
+## F9 task 11: keys 1–4 of the arena pick the composition (DebugArenaMix).
+func test_the_mix_picks_lancers_and_clubs() -> void:
+	var mix := _runner.find_child("DebugArenaMix") as DebugArenaMix
+	var expected: Array[String] = ["PPP", "L", "LPP", "LLL"]
+	for i: int in expected.size():
+		assert_bool(mix.handle_key(KEY_1 + i)).is_true()
+		await _frames(3)
+		var kinds: String = ""
+		for enemy: EnemyController in _arena.alive_enemies():
+			kinds += "L" if enemy.data.display_name == "Lancero chanca" else "P"
+		assert_str(kinds).is_equal(expected[i])
+	assert_bool(mix.handle_key(KEY_9)).is_false()
