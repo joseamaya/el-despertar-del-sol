@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/enemies/chanca_warrior.tscn" id="1_warrior"]
+[ext_resource type="Script" path="res://scripts/combat/thrust_pose.gd" id="2_thrust"]
+[ext_resource type="Resource" path="res://resources/tuning/lancer_thrust_pose.tres" id="3_tuning"]
+[ext_resource type="PackedScene" path="res://scenes/props/lanza.tscn" id="4_lanza"]
+
+[node name="ChancaLancer" instance=ExtResource("1_warrior")]
+
+[node name="Handle" parent="Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Mace" index="0"]
+visible = false
+
+[node name="Head" parent="Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Mace" index="1"]
+visible = false
+
+[node name="ThrustPose" type="SkeletonModifier3D" parent="Visual/Model/Armature/GeneralSkeleton" index="3" node_paths=PackedStringArray("combat", "spear", "body")]
+script = ExtResource("2_thrust")
+tuning = ExtResource("3_tuning")
+combat = NodePath("../../../../../Combat")
+spear = NodePath("Lanza")
+body = NodePath("../../../../..")
+
+[node name="Lanza" parent="Visual/Model/Armature/GeneralSkeleton/ThrustPose" instance=ExtResource("4_lanza")]
