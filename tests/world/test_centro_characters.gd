@@ -62,7 +62,7 @@ func test_they_differ_by_more_than_colour() -> void:
 
 
 func test_only_the_inca_nobles_wear_ear_spools() -> void:
-	for file: String in ["apo_mayta", "cusi_yupanqui"]:
+	for file: String in ["apo_mayta", "cusi_yupanqui", "vicaquirao"]:
 		assert_bool(_has_ears(_look(file))).override_failure_message(file).is_true()
 	for file: String in CURACAS:
 		assert_bool(_has_ears(_look(file))).override_failure_message(file).is_false()
