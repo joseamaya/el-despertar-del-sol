@@ -4,8 +4,23 @@
 [ext_resource type="Script" path="res://scripts/combat/thrust_pose.gd" id="2_thrust"]
 [ext_resource type="Resource" path="res://resources/tuning/lancer_thrust_pose.tres" id="3_tuning"]
 [ext_resource type="PackedScene" path="res://scenes/props/lanza.tscn" id="4_lanza"]
+[ext_resource type="Resource" path="res://resources/enemies/lancero_chanca.tres" id="5_data"]
+[ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="6_hitbox"]
+
+[sub_resource type="SphereShape3D" id="TipShape"]
+radius = 0.18
+
+[sub_resource type="StandardMaterial3D" id="GlowMaterial"]
+shading_mode = 0
+albedo_color = Color(0.95, 0.12, 0.08, 1)
+
+[sub_resource type="SphereMesh" id="GlowMesh"]
+material = SubResource("GlowMaterial")
+radius = 0.12
+height = 0.24
 
 [node name="ChancaLancer" instance=ExtResource("1_warrior")]
+data = ExtResource("5_data")
 
 [node name="Handle" parent="Visual/Model/Armature/GeneralSkeleton/RightHandSocket/Mace" index="0"]
 visible = false
@@ -21,3 +36,23 @@ spear = NodePath("Lanza")
 body = NodePath("../../../../..")
 
 [node name="Lanza" parent="Visual/Model/Armature/GeneralSkeleton/ThrustPose" instance=ExtResource("4_lanza")]
+
+[node name="TipHitbox" type="Node3D" parent="Visual/Model/Armature/GeneralSkeleton/ThrustPose/Lanza/Tip"]
+script = ExtResource("6_hitbox")
+shape = SubResource("TipShape")
+faction = 1
+
+[node name="TipGlow" type="MeshInstance3D" parent="Visual/Model/Armature/GeneralSkeleton/ThrustPose/Lanza/Tip"]
+visible = false
+mesh = SubResource("GlowMesh")
+
+[node name="Perception" parent="."]
+data = ExtResource("5_data")
+
+[node name="Combat" parent="." node_paths=PackedStringArray("hitbox", "telegraphs")]
+data = ExtResource("5_data")
+hitbox = NodePath("../Visual/Model/Armature/GeneralSkeleton/ThrustPose/Lanza/Tip/TipHitbox")
+telegraphs = [NodePath("../AttackTelegraph"), NodePath("../Visual/Model/Armature/GeneralSkeleton/ThrustPose/Lanza/Tip/TipGlow")]
+
+[node name="Guard" parent="."]
+data = ExtResource("5_data")

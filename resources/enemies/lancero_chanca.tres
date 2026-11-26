@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/enemy_data.gd" id="1_data"]
+[ext_resource type="Resource" path="res://resources/tuning/chanca_warrior_health.tres" id="2_health"]
+[ext_resource type="Resource" path="res://resources/tuning/chanca_warrior_posture.tres" id="3_posture"]
+[ext_resource type="Script" path="res://scripts/combat/attack_data.gd" id="4_attack"]
+[ext_resource type="Resource" path="res://resources/combat/attacks/enemy/chanca_estocada.tres" id="5_thrust"]
+
+[resource]
+script = ExtResource("1_data")
+display_name = "Lancero chanca"
+health = ExtResource("2_health")
+posture = ExtResource("3_posture")
+engage_distance = 4.5
+attacks = Array[ExtResource("4_attack")]([ExtResource("5_thrust")])
+attack_range = 2.8
+attack_contact_distance = 1.9
