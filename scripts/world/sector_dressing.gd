@@ -165,7 +165,7 @@ static func _clear(layout: SectorLayout, steps: PackedVector3Array, xz: Vector2,
 	for c: Vector3 in layout.corrals:
 		if absf(xz.distance_to(Vector2(c.x, c.y)) - c.z) < 1.5:
 			return false
-	if xz.distance_to(layout.huaca) < CLEAR_HUACA:
+	if xz.distance_to(layout.huaca) < CLEAR_HUACA or layout.near_shrine(xz, CLEAR_HUACA):
 		return false
 	for prop: Vector4 in layout.props:
 		if xz.distance_to(Vector2(prop.x, prop.y)) < 1.5 + size:

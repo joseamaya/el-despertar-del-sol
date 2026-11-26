@@ -31,6 +31,7 @@ static func build(layout: SectorLayout, palette: PaletteTuning) -> Node3D:
 	_build_houses(root, layout, palette)
 	if layout.has_huaca:
 		_build_huaca(root, layout, palette)
+	SectorTown.build(root, layout, palette)
 	SectorDressing.dress(root, layout, palette)
 	SectorVegetation.plant(root, layout, palette)
 	_build_markers(root, layout)
@@ -159,21 +160,22 @@ static func _build_boundary(
 
 
 ## Every house in one mesh (one draw call for the neighbourhood, F4 task 12c), each with
-## its own collider.
+## its own collider and its size (F9 task 4: big houses; shut ones have the door walled up).
 static func _build_houses(root: Node3D, layout: SectorLayout, palette: PaletteTuning) -> void:
 	if layout.houses.is_empty():
 		return
-	var size := Vector3(4.5, 2.2, 3.6)
 	var parts: Array[Array] = []
 	for index: int in layout.houses.size():
 		var h: Vector3 = layout.houses[index]
+		var size: Vector3 = layout.house_size_at(index)
+		var closed: bool = layout.closed_houses.has(index)
 		var house := Node3D.new()
 		house.name = "House%d" % index
 		house.position = Vector3(h.x, layout.height_at(h.x, h.y), h.y)
 		house.rotation.y = deg_to_rad(h.z)
 		root.add_child(house)
 		add_box_collider(house, Vector3(0, size.y * 0.5, 0), size)
-		parts.append([KitBuildings.house(size, 30 + index, palette), house.transform])
+		parts.append([KitBuildings.house(size, 30 + index, palette, closed), house.transform])
 	add_mesh(root, "Houses", KitWalls.merge(parts), palette, Vector3.ZERO)
 
 

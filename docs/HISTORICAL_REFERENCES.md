@@ -58,6 +58,8 @@ Columna vertebral: Juan de Betanzos, *Suma y narración de los incas* (1551).
 | Centro del Cusco del Capítulo I: una plaza con calles de pirca y tres kanchas, una por ayllu | Licencia del juego: no reproduce un trazado real; revisar con especialista | F9, tarea 2 (`F9-diseno-centro.md`) |
 | Kanchas (recintos de pirca con varias casas) en el Cusco de 1438 | Interpretación de diseño, sin fuente consultada para esa fecha; revisar con especialista | F9, tarea 2 |
 | Los curacas, o sus enviados, acuden al Cusco a hablar con Cusi | Licencia del juego que condensa el envío de mensajeros a sus pueblos (Betanzos, cap. VII), para que las misiones se cojan en el centro | F9, tarea 2 |
+| Huaca en la plaza del centro del Cusco: piedra alta con pirca baja y ofrendas, sin rito | Licencia del juego, elegida por el desarrollador frente al ushnu (la plataforma de la plaza del Cusco inca, que podría ser posterior a 1438; no consultado). Forma emparentada con la huaca del slice; revisar con especialista | F9, tarea 4 |
+| Casas cerradas con la puerta tapiada con piedras por quienes huyen | Licencia del juego apoyada en «El Cusco se vacía con la corte» | F9, tarea 4 |
 | Ropa de la familia que huye (anacu, lliclla, chumpi, q'epi) y de los guerreros leales | Interpretación de diseño con prendas documentadas; formas y colores provisionales; revisar con especialista | F4, tarea 12c |
 
 ## Lo que no se cambia (GDD §3.5)

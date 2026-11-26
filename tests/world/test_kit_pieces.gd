@@ -62,6 +62,24 @@ func test_house_follows_the_scale_of_the_guide() -> void:
 		assert_bool(in_door).is_false()
 
 
+## F9 task 4: a shut house has its doorway walled up with stones.
+func test_a_closed_house_has_its_door_walled_up() -> void:
+	var mesh: ArrayMesh = KitBuildings.house(Vector3(4.5, 2.2, 3.6), 5, _p, true)
+	var in_door: int = 0
+	for v: Vector3 in _verts(mesh):
+		if absf(v.x) < 0.3 and v.y > 0.05 and v.y < 1.55 and absf(v.z - 1.6) < 0.2:
+			in_door += 1
+	assert_int(in_door).is_greater(0)
+
+
+## F9 task 4: the square's huaca is taller and narrower than the slice's.
+func test_the_square_huaca_stands_taller_than_the_slice_one() -> void:
+	var standing: AABB = KitBuildings.standing_huaca(16, _p).get_aabb()
+	var slice: AABB = KitBuildings.huaca(16, _p).get_aabb()
+	assert_float(standing.end.y).is_between(3.2, 4.2)
+	assert_float(standing.end.y).is_greater(slice.end.y)
+
+
 func test_corral_leaves_its_opening_downhill() -> void:
 	var segments: Array[Array] = KitWalls.corral_segments(4.0, 40.0)
 	assert_int(segments.size()).is_greater(5)

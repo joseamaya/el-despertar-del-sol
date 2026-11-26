@@ -13,8 +13,9 @@ const ROOF_OVERHANG: float = 0.35
 
 
 ## A one-room house of `size` (x width, y wall height, z depth), origin at the centre of
-## the floor. Walls, roof and door in one mesh.
-static func house(size: Vector3, seed: int, p: PaletteTuning) -> ArrayMesh:
+## the floor. Walls, roof and door in one mesh. `closed`: the door is walled up with
+## stones, as the families who fled left it (F9 task 4).
+static func house(size: Vector3, seed: int, p: PaletteTuning, closed: bool = false) -> ArrayMesh:
 	var parts: Array[Array] = []
 	var hx: float = size.x * 0.5
 	var hz: float = size.z * 0.5
@@ -47,6 +48,8 @@ static func house(size: Vector3, seed: int, p: PaletteTuning) -> ArrayMesh:
 	parts.append([adobe, Transform3D(Basis(), Vector3(0, FOOTING, 0))])
 	parts.append([_gables(size, p), Transform3D.IDENTITY])
 	parts.append([_door_frame(seed, p), Transform3D(Basis(), Vector3(0, 0, hz - WALL * 0.5))])
+	if closed:
+		parts.append([_walled_door(seed, p), Transform3D(Basis(), Vector3(0, 0, hz - WALL * 0.5))])
 	parts.append([roof(size.x, size.z, seed, p), Transform3D(Basis(), Vector3(0, size.y, 0))])
 	return KitWalls.merge(parts)
 
@@ -99,6 +102,30 @@ static func huaca(seed: int, p: PaletteTuning) -> ArrayMesh:
 	var parts: Array[Array] = []
 	parts.append([LowPolyMesh.rock(1.1, 1.35, seed, p.huaca_stone, 0.3), Transform3D.IDENTITY])
 	parts.append([KitWalls.corral(2.6, 0.55, 50.0, seed + 5, p), Transform3D.IDENTITY])
+	parts.append([_offerings(seed, p), Transform3D.IDENTITY])
+	return KitWalls.merge(parts)
+
+
+## The huaca of the hub's square (F9 task 4, licence of the game): a tall, narrow standing
+## stone with a smaller one leaning at its foot, in the same low ring of pirca and with the
+## same offerings as the slice's, so the two read as kin but not as copies.
+static func standing_huaca(seed: int, p: PaletteTuning) -> ArrayMesh:
+	var stone: Color = p.huaca_stone.darkened(0.08)
+	var lean := Basis(Vector3.BACK, deg_to_rad(18.0))
+	var parts: Array[Array] = [
+		[LowPolyMesh.rock(0.6, 3.0, seed, stone, 0.22), Transform3D.IDENTITY],
+		[
+			LowPolyMesh.rock(0.4, 1.6, seed + 1, stone.lightened(0.06), 0.25),
+			Transform3D(lean, Vector3(-0.75, 0, -0.25))
+		],
+		[KitWalls.corral(2.6, 0.55, 50.0, seed + 5, p), Transform3D.IDENTITY],
+		[_offerings(seed, p), Transform3D.IDENTITY],
+	]
+	return KitWalls.merge(parts)
+
+
+## Three small piles of stones and two bowls in front of a huaca (towards +Z).
+static func _offerings(seed: int, p: PaletteTuning) -> ArrayMesh:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed
 	var st := SurfaceTool.new()
@@ -115,8 +142,7 @@ static func huaca(seed: int, p: PaletteTuning) -> ArrayMesh:
 			y += r * 1.1
 	for side: float in [-1.0, 1.0]:
 		_bowl(st, Vector3(side * 0.7, 0, 1.35), p.adobe.darkened(0.3))
-	parts.append([st.commit(), Transform3D.IDENTITY])
-	return KitWalls.merge(parts)
+	return st.commit()
 
 
 ## Loose rock for scatter: size 0 small, 1 medium, 2 large.
@@ -195,6 +221,38 @@ static func _door_frame(seed: int, p: PaletteTuning) -> ArrayMesh:
 		rng,
 		0.02
 	)
+	return st.commit()
+
+
+## Stones filling the doorway (door centred on x = 0, z = 0), a little back from the
+## wall's face: rows of uneven stones, as a doorway walled up in a hurry.
+static func _walled_door(seed: int, p: PaletteTuning) -> ArrayMesh:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed + 11
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var y: float = 0.0
+	var row: int = 0
+	while y < DOOR.y - 0.05:
+		var h: float = minf(rng.randf_range(0.22, 0.32), DOOR.y - y)
+		var x: float = -DOOR.x * 0.5
+		var shift: float = 0.0 if row % 2 == 0 else 0.12
+		var widths: Array[float] = []
+		var left: float = DOOR.x
+		var first: float = rng.randf_range(0.22, 0.34) - shift
+		while left > 0.05:
+			var w: float = minf(first if widths.is_empty() else rng.randf_range(0.26, 0.4), left)
+			widths.append(w)
+			left -= w
+		for w: float in widths:
+			var tint: Color = p.stone_light.lerp(p.stone_dark, rng.randf_range(0.2, 0.8))
+			var centre := Vector3(x + w * 0.5, y + h * 0.5, -0.04)
+			LowPolyMesh.add_box(
+				st, centre, Vector3(w - 0.02, h - 0.02, WALL * 0.8), tint, rng, 0.03
+			)
+			x += w
+		y += h
+		row += 1
 	return st.commit()
 
 

@@ -5,8 +5,6 @@ extends GdUnitTestSuite
 
 const LAYOUT: String = "res://resources/levels/centro_layout.tres"
 const SCENE: String = "res://scenes/levels/centro.tscn"
-## Half of the house's longest side (4.5 m).
-const HOUSE_REACH: float = 2.25
 ## How close the navmesh path has to end to a point to count as reaching it.
 const REACHED: float = 1.0
 
@@ -23,9 +21,16 @@ func _people() -> Dictionary:
 	return at
 
 
+## Half of the longest side of house `index` (F9 task 4: big houses are longer).
+func _reach(index: int) -> float:
+	var size: Vector3 = _layout.house_size_at(index)
+	return maxf(size.x, size.z) * 0.5
+
+
 func test_the_path_is_free_of_houses() -> void:
-	var clear: float = HOUSE_REACH + _layout.path_width * 0.5
-	for h: Vector3 in _layout.houses:
+	for index: int in _layout.houses.size():
+		var h: Vector3 = _layout.houses[index]
+		var clear: float = _reach(index) + _layout.path_width * 0.5
 		var house := Vector2(h.x, h.y)
 		for i: int in _layout.path.size() - 1:
 			var near: Vector2 = Geometry2D.get_closest_point_to_segment(
@@ -42,11 +47,12 @@ func test_nobody_stands_inside_a_house() -> void:
 	var people: Dictionary = _people()
 	for key: StringName in people:
 		var p: Vector2 = people[key]
-		for h: Vector3 in _layout.houses:
+		for index: int in _layout.houses.size():
+			var h: Vector3 = _layout.houses[index]
 			(
 				assert_float(p.distance_to(Vector2(h.x, h.y)))
 				. override_failure_message("%s inside the house at (%.0f, %.0f)" % [key, h.x, h.y])
-				. is_greater(HOUSE_REACH + 0.5)
+				. is_greater(_reach(index) + 0.5)
 			)
 
 
