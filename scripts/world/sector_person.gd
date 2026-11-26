@@ -1,7 +1,8 @@
 class_name SectorPerson
 extends Resource
 ## Someone of Carmenca who has no part in the story (F4 task 12c): they stand, sit or
-## kneel at a point of the layout, or walk a route and leave. No dialogue, no AI.
+## kneel at a point of the layout, or walk a route and leave (or loop it, F9 task 7). No
+## dialogue, no AI.
 
 ## Where they stand (x, z of the layout), unless they walk a route.
 @export var at: Vector2 = Vector2.ZERO
@@ -15,6 +16,10 @@ extends Resource
 ## If set, they walk these points (x, z) from the start of the slice, then go: they
 ## vanish the first time the camera does not see them.
 @export var route: PackedVector2Array = PackedVector2Array()
+## Walk the route round and round instead of leaving at its end (F9 task 7: the hub's
+## people go about their errands), resting `rest` seconds at its last point each time.
+@export var loop: bool = false
+@export_range(0.0, 30.0, 0.5, "suffix:s") var rest: float = 0.0
 ## Seconds before they set off (a family walks in a line).
 @export_range(0.0, 30.0, 0.1, "suffix:s") var delay: float = 0.0
 ## Height above the ground (a seat).

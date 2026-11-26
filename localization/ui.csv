@@ -170,3 +170,10 @@ HUB_VICAQUIRAO_NIGHT,"Antes de lo que viene, ve esta noche a la fuente de Susurp
 NOTICE_TEST_MISSION,Misión de prueba: «{mission}» se da por cumplida. +{gain} de Apoyo con {ayllu}.,Test mission: “{mission}” counts as done. +{gain} Support with {ayllu}.
 NOTICE_TEST_MISSION_ALL,Misión de prueba: «{mission}» se da por cumplida. +{gain} de Apoyo con cada ayllu que ya te apoya.,Test mission: “{mission}” counts as done. +{gain} Support with every ayllu already on your side.
 NOTICE_TEST_MISSION_PLAIN,Misión de prueba: «{mission}» se da por cumplida.,Test mission: “{mission}” counts as done.
+NAME_ANCIANO,Anciano,Old man
+NAME_ANCIANA,Anciana,Old woman
+NAME_GUERRERO,Guerrero,Warrior
+HUB_PEOPLE_ELDER,Mis hijos se fueron con la corte. Yo ya no tengo piernas para ese camino.,My sons left with the court. My legs are too old for that road.
+HUB_PEOPLE_LEFT_BEHIND,Se llevaron lo que podían cargar. Lo demás se quedó aquí.,They took what they could carry. The rest stayed here.
+HUB_PEOPLE_WARRIOR,"Si vuelven los chancas, bajarán por Carmenca.","If the Chancas come back, they will come down through Carmenca."
+HUB_PEOPLE_CURACAS,Los curacas no vendrán hasta ver quién gana.,The curacas will not come until they see who wins.

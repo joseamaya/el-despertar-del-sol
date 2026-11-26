@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" path="res://scenes/levels/carmenca.tscn" id="1_carmenca"]
 [ext_resource type="Resource" path="res://resources/levels/centro_layout.tres" id="2_layout"]
 [ext_resource type="Script" path="res://scripts/chapter/hub_talks.gd" id="3_talks"]
-[ext_resource type="Script" path="res://scripts/world/sector_people.gd" id="4_people"]
+[ext_resource type="Resource" path="res://resources/levels/centro_people.tres" id="4_people"]
 [ext_resource type="Script" path="res://scripts/dialogue/sector_npc.gd" id="5_npc"]
 [ext_resource type="PackedScene" path="res://assets/characters/stock/ual1_standard.glb" id="6_model"]
 [ext_resource type="Resource" path="res://resources/characters/apo_mayta.tres" id="7_apo"]
@@ -21,8 +21,6 @@
 [ext_resource type="Resource" path="res://resources/dialogue/centro/llegada.tres" id="18_arrival"]
 [ext_resource type="Script" path="res://scripts/chapter/hub_talk.gd" id="19_talk"]
 
-[sub_resource type="Resource" id="NoPeople"]
-script = ExtResource("4_people")
 
 [node name="Centro" instance=ExtResource("1_carmenca")]
 
@@ -33,7 +31,7 @@ layout = ExtResource("2_layout")
 autostart = false
 
 [node name="Crowd" parent="."]
-people = SubResource("NoPeople")
+people = ExtResource("4_people")
 
 [node name="HubTalks" type="Node" parent="." node_paths=PackedStringArray("level", "player", "prompt", "dialogue", "choice", "people")]
 script = ExtResource("3_talks")
