@@ -4,8 +4,8 @@ extends SkeletonModifier3D
 ## marked `thrust`, turns the bones of `tuning` over the animated pose. Windup: from rest to
 ## drawn back. Active: out to the thrust in `strike_share` of the window, then held.
 ## Recovery: back to rest. Lives under the Skeleton3D. If `spear` is set, it is placed in
-## the hand every frame, pointing along `body`'s front (-Z), so turning the arms moves the
-## spear forward and back without tilting it.
+## the fist (`grip_offset` from the hand bone) every frame, pointing along `body`'s front
+## (-Z), so turning the arms moves the spear forward and back without tilting it.
 
 @export var tuning: ThrustPoseTuning
 @export var combat: EnemyCombat
@@ -113,7 +113,8 @@ func _place_spear(value: float) -> void:
 	if spear == null or _hand < 0:
 		return
 	var skeleton: Skeleton3D = get_skeleton()
-	var hand: Vector3 = skeleton.global_transform * skeleton.get_bone_global_pose(_hand).origin
+	var grip: Vector3 = skeleton.get_bone_global_pose(_hand) * tuning.grip_offset
+	var hand: Vector3 = skeleton.global_transform * grip
 	var front: Vector3 = -body.global_basis.z
 	front.y = 0.0
 	if front.length_squared() < 0.0001:

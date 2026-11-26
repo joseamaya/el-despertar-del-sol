@@ -101,3 +101,21 @@ func _tip_at(lancer: EnemyController, tip: Node3D, seconds: float) -> Vector3:
 func _frames(count: int) -> void:
 	for i: int in count:
 		await get_tree().process_frame
+
+
+func test_the_spear_sits_in_the_fist_not_at_the_wrist() -> void:
+	var runner: GdUnitSceneRunner = scene_runner(LANCER)
+	var lancer := runner.scene() as EnemyController
+	lancer.director = null
+	lancer.state_machine.process_mode = Node.PROCESS_MODE_DISABLED
+	await _frames(5)
+	var pose: ThrustPose = lancer.find_children("ThrustPose", "ThrustPose", true, false)[0]
+	var skeleton: Skeleton3D = pose.get_skeleton()
+	var hand: Transform3D = (
+		skeleton.global_transform
+		* skeleton.get_bone_global_pose(skeleton.find_bone(pose.tuning.hand_bone))
+	)
+	var fist: Vector3 = hand * pose.tuning.grip_offset
+	assert_float(pose.tuning.grip_offset.length()).is_greater(0.0)
+	assert_float(pose.spear.global_position.distance_to(fist)).is_less(0.02)
+	assert_float(pose.spear.global_position.distance_to(hand.origin)).is_greater(0.05)
