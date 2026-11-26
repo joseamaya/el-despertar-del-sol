@@ -15,6 +15,9 @@ extends Resource
 @export_group("Animación")
 @export var clip: StringName = &"Sword_Attack"
 @export_range(0.1, 3.0, 0.05) var clip_speed: float = 1.0
+## A thrust drawn by ThrustPose over the clip (F9 task 8: the free pack has no spear
+## thrust, `docs/capitulo-1.md` §7.5). The clip then only carries the body.
+@export var thrust: bool = false
 
 @export_group("Fases (segundos del clip)")
 ## End of anticipation: the hitbox turns on here.

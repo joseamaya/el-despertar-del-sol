@@ -71,6 +71,11 @@ func get_current() -> AttackData:
 	return _current
 
 
+## Real seconds since the current attack started (ThrustPose, F9 task 8).
+func get_elapsed() -> float:
+	return _elapsed
+
+
 ## Starts an attack (random one if none given).
 func start(attack: AttackData = null) -> void:
 	_current = attack if attack != null else data.attacks[_rng.randi() % data.attacks.size()]

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ThrustPoseTuning" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/thrust_pose_tuning.gd" id="1_thrust"]
+
+[resource]
+script = ExtResource("1_thrust")
+bones = PackedStringArray("RightUpperArm", "RightLowerArm", "Spine")
+drawn_deg = PackedVector3Array(0, 0, 40, 0, 0, 0, 0, -20, 0)
+thrust_deg = PackedVector3Array(0, 0, -75, 0, 0, 0, 0, 20, 0)
