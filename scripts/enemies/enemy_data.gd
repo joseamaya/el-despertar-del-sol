@@ -52,6 +52,15 @@ extends Resource
 @export_range(0.0, 4.0, 0.1, "suffix:m") var feint_distance: float = 1.0
 @export_range(0.1, 12.0, 0.1, "suffix:m/s") var feint_speed: float = 4.5
 
+@export_group("Distancia (lanza)")
+## The lancer (F9 task 10): closer than this, it backs off while circling and steps back
+## before striking, so it hits from the edge of its reach. 0 = never (the club).
+@export_range(0.0, 6.0, 0.1, "suffix:m") var keep_away_distance: float = 0.0
+## Seconds between two back-offs while circling, so it does not just run away.
+@export_range(0.0, 10.0, 0.1, "suffix:s") var keep_away_cooldown: float = 2.5
+## Longest it steps back before striking anyway (the target keeps following).
+@export_range(0.0, 3.0, 0.05, "suffix:s") var keep_away_max_step: float = 0.6
+
 @export_group("Defensa y reacciones")
 ## Chance of raising the guard after taking a hit (GDD §7.2: occasional block).
 @export_range(0.0, 1.0, 0.01) var block_chance: float = 0.35

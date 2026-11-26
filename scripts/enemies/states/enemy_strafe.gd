@@ -2,16 +2,20 @@ class_name EnemyStrafe
 extends State
 ## Circles the target at engage distance, facing it and switching direction now and then.
 ## Attacks from here when its cooldown is over and the director grants a token; without a
-## token it may feint and keeps circling (GDD §6.6).
+## token it may feint and keeps circling (GDD §6.6). A lancer backs off when the target
+## comes inside its keep-away distance (F9 task 10), at most once per cooldown.
 
 var _side: int = 1
 var _switch_left: float = 0.0
+var _back_off_left: float = 0.0
 var _rng := RandomNumberGenerator.new()
 
 
-func enter(_previous: StringName) -> void:
+func enter(previous: StringName) -> void:
 	_side = 1 if _rng.randf() < 0.5 else -1
 	_switch_left = _next_switch()
+	if previous == &"retreat":
+		_back_off_left = _enemy().data.keep_away_cooldown
 
 
 func exit() -> void:
@@ -31,12 +35,9 @@ func physics_update(delta: float) -> StringName:
 	var target: Vector3 = enemy.perception.last_known_position
 	if enemy.distance_to(target) > enemy.data.engage_distance * 1.6:
 		return &"chase"
-	if enemy.combat != null and enemy.combat.is_ready():
-		if enemy.director == null or enemy.director.request_token(enemy):
-			return &"attack"
-		enemy.combat.set_cooldown(enemy.data.token_retry)
-		if _rng.randf() < enemy.data.feint_chance:
-			return &"feint"
+	var next: StringName = _next_move(enemy, target, delta)
+	if next != &"":
+		return next
 	_switch_left -= delta
 	if _switch_left <= 0.0:
 		_side = -_side
@@ -44,6 +45,25 @@ func physics_update(delta: float) -> StringName:
 	enemy.face(target)
 	enemy.strafe_around(target, enemy.data.engage_distance, _side, enemy.data.strafe_speed)
 	return &""
+
+
+## Whether `target` is inside the enemy's keep-away distance (the lancer; F9 task 10).
+static func too_close(enemy: EnemyController, target: Vector3) -> bool:
+	var keep: float = enemy.data.keep_away_distance
+	return keep > 0.0 and enemy.distance_to(target) < keep
+
+
+## Leaves the circle to back off (a lancer, too close), to attack or to feint; or stays.
+func _next_move(enemy: EnemyController, target: Vector3, delta: float) -> StringName:
+	_back_off_left = maxf(0.0, _back_off_left - delta)
+	if _back_off_left <= 0.0 and too_close(enemy, target):
+		return &"retreat"
+	if enemy.combat == null or not enemy.combat.is_ready():
+		return &""
+	if enemy.director == null or enemy.director.request_token(enemy):
+		return &"attack"
+	enemy.combat.set_cooldown(enemy.data.token_retry)
+	return &"feint" if _rng.randf() < enemy.data.feint_chance else &""
 
 
 func _next_switch() -> float:
