@@ -4,6 +4,12 @@
 [ext_resource type="Resource" path="res://resources/levels/centro_layout.tres" id="2_layout"]
 [ext_resource type="Script" path="res://scripts/chapter/hub_doors.gd" id="3_doors"]
 [ext_resource type="Script" path="res://scripts/world/sector_people.gd" id="4_people"]
+[ext_resource type="Script" path="res://scripts/dialogue/sector_npc.gd" id="5_npc"]
+[ext_resource type="PackedScene" path="res://assets/characters/stock/ual1_standard.glb" id="6_model"]
+[ext_resource type="Resource" path="res://resources/characters/apo_mayta.tres" id="7_apo"]
+[ext_resource type="Resource" path="res://resources/characters/curaca_llamas.tres" id="8_llamas"]
+[ext_resource type="Resource" path="res://resources/characters/curaca_prisioneros.tres" id="9_prisioneros"]
+[ext_resource type="Resource" path="res://resources/characters/curaca_disputa.tres" id="10_disputa"]
 
 [sub_resource type="Resource" id="NoPeople"]
 script = ExtResource("4_people")
@@ -30,3 +36,39 @@ hub_doors = NodePath("../HubDoors")
 
 [node name="Comunero" parent="."]
 visible = false
+
+[node name="ApoMayta" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
+script = ExtResource("5_npc")
+level = NodePath("../SectorLevel")
+marker = &"ApoMayta"
+face = NodePath("../Player")
+look = ExtResource("7_apo")
+
+[node name="Model" parent="ApoMayta" instance=ExtResource("6_model")]
+
+[node name="CuracaLlamas" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
+script = ExtResource("5_npc")
+level = NodePath("../SectorLevel")
+marker = &"Curaca_llamas"
+face = NodePath("../Player")
+look = ExtResource("8_llamas")
+
+[node name="Model" parent="CuracaLlamas" instance=ExtResource("6_model")]
+
+[node name="CuracaPrisioneros" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
+script = ExtResource("5_npc")
+level = NodePath("../SectorLevel")
+marker = &"Curaca_prisioneros"
+face = NodePath("../Player")
+look = ExtResource("9_prisioneros")
+
+[node name="Model" parent="CuracaPrisioneros" instance=ExtResource("6_model")]
+
+[node name="CuracaDisputa" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
+script = ExtResource("5_npc")
+level = NodePath("../SectorLevel")
+marker = &"Curaca_disputa"
+face = NodePath("../Player")
+look = ExtResource("10_disputa")
+
+[node name="Model" parent="CuracaDisputa" instance=ExtResource("6_model")]

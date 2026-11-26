@@ -1,0 +1,102 @@
+[gd_resource type="Resource" script_class="CharacterLook" format=3]
+
+[ext_resource type="Script" path="res://scripts/characters/character_look.gd" id="1_look"]
+[ext_resource type="Script" path="res://scripts/characters/look_part.gd" id="2_part"]
+
+[sub_resource type="Resource" id="Part_0"]
+script = ExtResource("2_part")
+name = "UnkuTop"
+bone = &"Chest"
+shape = 0
+size = Vector3(0.44, 0.46, 0.27)
+offset = Vector3(0, 0.06, 0)
+color = Color(0.18, 0.3, 0.32, 1)
+
+[sub_resource type="Resource" id="Part_1"]
+script = ExtResource("2_part")
+name = "UnkuSkirt"
+bone = &"Hips"
+shape = 0
+size = Vector3(0.42, 0.3, 0.28)
+offset = Vector3(0, -0.1, 0)
+color = Color(0.18, 0.3, 0.32, 1)
+
+[sub_resource type="Resource" id="Part_2"]
+script = ExtResource("2_part")
+name = "Band"
+bone = &"Hips"
+shape = 0
+size = Vector3(0.43, 0.07, 0.29)
+offset = Vector3(0, 0.05, 0)
+color = Color(0.86, 0.66, 0.16, 1)
+
+[sub_resource type="Resource" id="Part_3"]
+script = ExtResource("2_part")
+name = "Tocapu"
+bone = &"Chest"
+shape = 0
+size = Vector3(0.445, 0.08, 0.275)
+offset = Vector3(0, -0.06, 0)
+color = Color(0.12, 0.1, 0.08, 1)
+
+[sub_resource type="Resource" id="Part_4"]
+script = ExtResource("2_part")
+name = "Llauto"
+bone = &"Head"
+shape = 2
+size = Vector3(0.1, 0.12, 0)
+offset = Vector3(0, 0.16, 0)
+color = Color(0.12, 0.08, 0.06, 1)
+
+[sub_resource type="Resource" id="Part_5"]
+script = ExtResource("2_part")
+name = "EarL"
+bone = &"Head"
+shape = 3
+size = Vector3(0.03, 0.015, 0)
+offset = Vector3(0.085, 0.05, 0)
+rotation_deg = Vector3(0, 0, 90)
+color = Color(0.85, 0.66, 0.18, 1)
+
+[sub_resource type="Resource" id="Part_6"]
+script = ExtResource("2_part")
+name = "EarR"
+bone = &"Head"
+shape = 3
+size = Vector3(0.03, 0.015, 0)
+offset = Vector3(-0.085, 0.05, 0)
+rotation_deg = Vector3(0, 0, 90)
+color = Color(0.85, 0.66, 0.18, 1)
+
+[sub_resource type="Resource" id="Part_7"]
+script = ExtResource("2_part")
+name = "MantaBack"
+bone = &"Chest"
+shape = 0
+size = Vector3(0.48, 0.44, 0.05)
+offset = Vector3(0, 0.08, -0.16)
+color = Color(0.55, 0.4, 0.2, 1)
+
+[sub_resource type="Resource" id="Part_8"]
+script = ExtResource("2_part")
+name = "MantaShoulders"
+bone = &"Chest"
+shape = 0
+size = Vector3(0.52, 0.07, 0.32)
+offset = Vector3(0, 0.3, -0.01)
+color = Color(0.55, 0.4, 0.2, 1)
+
+[sub_resource type="Resource" id="Part_9"]
+script = ExtResource("2_part")
+name = "MantaKnot"
+bone = &"Chest"
+shape = 0
+size = Vector3(0.08, 0.08, 0.04)
+offset = Vector3(0, 0.26, 0.15)
+color = Color(0.55, 0.4, 0.2, 1)
+
+[resource]
+script = ExtResource("1_look")
+skin = Color(0.52, 0.35, 0.24, 1)
+joints = Color(0.16, 0.1, 0.08, 1)
+parts = Array[ExtResource("2_part")]([SubResource("Part_0"), SubResource("Part_1"), SubResource("Part_2"), SubResource("Part_3"), SubResource("Part_4"), SubResource("Part_5"), SubResource("Part_6"), SubResource("Part_7"), SubResource("Part_8"), SubResource("Part_9")])
