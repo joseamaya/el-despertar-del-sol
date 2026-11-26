@@ -59,6 +59,12 @@ var _process_ms: PackedFloat64Array = PackedFloat64Array()
 var _physics_ms: PackedFloat64Array = PackedFloat64Array()
 var _draw_calls: PackedFloat64Array = PackedFloat64Array()
 var _primitives: PackedFloat64Array = PackedFloat64Array()
+## When each measured frame happened (seconds since start) and in which stretch.
+var _times: PackedFloat64Array = PackedFloat64Array()
+var _stretch_of: PackedStringArray = PackedStringArray()
+## Render pipelines compiled in each measured frame: a compile is a likely stutter.
+var _pipelines: PackedFloat64Array = PackedFloat64Array()
+var _pipelines_seen: float = 0.0
 var _spawned: int = 0
 var _walk: bool = false
 var _fight_zone: int = 0
@@ -125,12 +131,18 @@ func _process(_delta: float) -> bool:
 	_last_usec = now
 	var elapsed: float = (now - _start_usec) / 1_000_000.0
 	if elapsed <= _warmup:
+		_pipelines_seen = _pipeline_count()
 		return false
 	_frames.append(frame)
 	_process_ms.append(Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0)
 	_physics_ms.append(Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0)
 	_draw_calls.append(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
 	_primitives.append(Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME))
+	_times.append(elapsed)
+	_stretch_of.append(_current_stretch())
+	var compiled: float = _pipeline_count()
+	_pipelines.append(compiled - _pipelines_seen)
+	_pipelines_seen = compiled
 	if _still_measuring(frame, elapsed - _warmup):
 		return false
 	_finish()
@@ -178,10 +190,13 @@ func _finish() -> void:
 		"process_ms_avg": _average(_process_ms),
 		"physics_ms_avg": _average(_physics_ms),
 		"physics_ms_max": _maximum(_physics_ms),
+		"physics_ms_max_at_s": _time_of_max(_physics_ms),
 		"draw_calls_avg": _average(_draw_calls),
 		"draw_calls_max": _maximum(_draw_calls),
 		"primitives_max": _maximum(_primitives),
 		"stretches": _stretch_report(),
+		"worst_frames": _worst_frames(5),
+		"pipelines_compiled": _sum(_pipelines),
 	}
 	if _player_bot != null:
 		var slice: SliceDirector = _player_bot.slice
@@ -254,8 +269,66 @@ func _find_arena(node: Node) -> ArenaController:
 	return null
 
 
+func _current_stretch() -> String:
+	if _player_bot != null:
+		return _player_bot.stretch()
+	return _walker.stretch() if _walker != null else ""
+
+
+## The slowest frames: when (seconds since start), where, and how much was physics.
+func _worst_frames(count: int) -> Array:
+	var order: Array = range(_frames.size())
+	order.sort_custom(func(a: int, b: int) -> bool: return _frames[a] > _frames[b])
+	var out: Array = []
+	for i: int in order.slice(0, count):
+		(
+			out
+			. append(
+				{
+					"at_s": snappedf(_times[i], 0.01),
+					"stretch": _stretch_of[i],
+					"frame_ms": snappedf(_frames[i] * 1000.0, 0.1),
+					"physics_ms": snappedf(_physics_ms[i], 0.1),
+					# The physics monitor reports the step after the frame it slowed down.
+					"next_physics_ms":
+					snappedf(_physics_ms[mini(i + 1, _physics_ms.size() - 1)], 0.1),
+					"process_ms": snappedf(_process_ms[i], 0.1),
+					"pipelines": _pipelines[i],
+				}
+			)
+		)
+	return out
+
+
+## When (seconds since start) the largest value was measured.
+func _time_of_max(values: PackedFloat64Array) -> float:
+	var best: int = 0
+	for i: int in values.size():
+		if values[i] > values[best]:
+			best = i
+	return snappedf(_times[best], 0.01) if best < _times.size() else 0.0
+
+
+## Pipelines compiled so far, of every kind (Godot's rendering monitors).
+static func _pipeline_count() -> float:
+	return (
+		Performance.get_monitor(Performance.PIPELINE_COMPILATIONS_CANVAS)
+		+ Performance.get_monitor(Performance.PIPELINE_COMPILATIONS_MESH)
+		+ Performance.get_monitor(Performance.PIPELINE_COMPILATIONS_SURFACE)
+		+ Performance.get_monitor(Performance.PIPELINE_COMPILATIONS_DRAW)
+		+ Performance.get_monitor(Performance.PIPELINE_COMPILATIONS_SPECIALIZATION)
+	)
+
+
+static func _sum(values: PackedFloat64Array) -> float:
+	var total: float = 0.0
+	for v: float in values:
+		total += v
+	return total
+
+
 func _record_stretch(frame: float) -> void:
-	var name: String = _player_bot.stretch() if _player_bot != null else _walker.stretch()
+	var name: String = _current_stretch()
 	if not _stretches.has(name):
 		_stretches[name] = {"frames": PackedFloat64Array(), "primitives": PackedFloat64Array()}
 	# Packed arrays are values: append to a copy and store it back.
