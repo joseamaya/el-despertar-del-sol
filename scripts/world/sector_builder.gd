@@ -55,6 +55,10 @@ class HeightGrid:
 			var base: float = layout.profile_at(z)
 			var half: float = layout.corridor_half_width(z)
 			for ix: int in width:
+				if not layout.streams.is_empty():
+					# Slower, but the stream beds are cut into the ground (F9).
+					data[iz * width + ix] = layout.height_at(origin.x + ix, z)
+					continue
 				var outside: float = absf(origin.x + ix) - half
 				data[iz * width + ix] = base + layout.side_rise(outside)
 
@@ -169,13 +173,16 @@ static func _build_houses(root: Node3D, layout: SectorLayout, palette: PaletteTu
 		var h: Vector3 = layout.houses[index]
 		var size: Vector3 = layout.house_size_at(index)
 		var closed: bool = layout.closed_houses.has(index)
+		var stone: bool = layout.stone_houses.has(index)
 		var house := Node3D.new()
 		house.name = "House%d" % index
 		house.position = Vector3(h.x, layout.height_at(h.x, h.y), h.y)
 		house.rotation.y = deg_to_rad(h.z)
 		root.add_child(house)
 		add_box_collider(house, Vector3(0, size.y * 0.5, 0), size)
-		parts.append([KitBuildings.house(size, 30 + index, palette, closed), house.transform])
+		parts.append(
+			[KitBuildings.house(size, 30 + index, palette, closed, stone), house.transform]
+		)
 	add_mesh(root, "Houses", KitWalls.merge(parts), palette, Vector3.ZERO)
 
 

@@ -167,6 +167,8 @@ static func _clear(layout: SectorLayout, steps: PackedVector3Array, xz: Vector2,
 			return false
 	if xz.distance_to(layout.huaca) < CLEAR_HUACA or layout.near_shrine(xz, CLEAR_HUACA):
 		return false
+	if layout.distance_to_stream(xz) < layout.stream_width * 0.5 + 1.5:
+		return false
 	for prop: Vector4 in layout.props:
 		if xz.distance_to(Vector2(prop.x, prop.y)) < 1.5 + size:
 			return false

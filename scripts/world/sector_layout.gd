@@ -79,6 +79,9 @@ const STEP_MAX_RUN: float = 1.5
 @export var house_size: Vector3 = Vector3(4.5, 2.2, 3.6)
 @export var big_house_size: Vector3 = Vector3(7.0, 2.6, 4.2)
 @export var big_houses: PackedInt32Array = PackedInt32Array()
+## Houses of stone under ichu instead of adobe (F9: the old house of the Sun, Inticancha,
+## «una pequeña casa de piedra cubierta de paja», Cieza), by index in `houses`.
+@export var stone_houses: PackedInt32Array = PackedInt32Array()
 ## Houses left shut by the families who fled (the door walled up with stones), by index.
 @export var closed_houses: PackedInt32Array = PackedInt32Array()
 ## Stone posts at the sides of an opening in a wall, such as a kancha's gate: (x, z, yaw in
@@ -88,6 +91,12 @@ const STEP_MAX_RUN: float = 1.5
 ## Houses beyond the walkable ground (F9: the city goes on past the hub): (x, z, yaw in
 ## degrees). Drawn only, without collider or shadow; they stand where Cusi cannot go.
 @export var outskirts: PackedVector3Array = PackedVector3Array()
+## Streams that cross the sector (F9: the city between two streams, their banks eaten by
+## the floods, Betanzos cap. XIII): each a line of points (x, z), downstream last. The
+## ground is cut into a shallow bed along them.
+@export var streams: Array[PackedVector2Array] = []
+@export_range(0.5, 6.0, 0.1, "suffix:m") var stream_width: float = 2.4
+@export_range(0.0, 2.0, 0.05, "suffix:m") var stream_depth: float = 0.6
 ## Huacas that only stand there, without the slice's offering (F9 task 4: the one in the
 ## hub's square): (x, z, yaw in degrees; the opening of the ring faces +Z at yaw 0).
 @export var shrines: PackedVector3Array = PackedVector3Array()
@@ -141,11 +150,32 @@ func near_shrine(xz: Vector2, reach: float) -> bool:
 	return false
 
 
-## Ground height at a local point: profile along Z plus the steep sides.
+## Ground height at a local point: profile along Z plus the steep sides, cut down along
+## the streams.
 func height_at(x: float, z: float) -> float:
 	var h: float = profile_at(z)
 	var half: float = corridor_half_width(z)
-	return h + side_rise(absf(x) - half)
+	var ground: float = h + side_rise(absf(x) - half)
+	if streams.is_empty():
+		return ground
+	var to_stream: float = distance_to_stream(Vector2(x, z))
+	var bank: float = stream_width * 0.5 + 1.0
+	if to_stream >= bank:
+		return ground
+	# The bed follows the profile, below it; the bank slopes up to the ground over 1 m.
+	var bed: float = h - stream_depth
+	var t: float = clampf((to_stream - stream_width * 0.5) / 1.0, 0.0, 1.0)
+	return minf(ground, lerpf(bed, maxf(ground, h), t))
+
+
+## Distance from `xz` to the nearest stream's line (INF without streams).
+func distance_to_stream(xz: Vector2) -> float:
+	var best: float = INF
+	for line: PackedVector2Array in streams:
+		for i: int in line.size() - 1:
+			var near: Vector2 = Geometry2D.get_closest_point_to_segment(xz, line[i], line[i + 1])
+			best = minf(best, xz.distance_to(near))
+	return best
 
 
 ## Height of the side above the profile, `outside` metres beyond the corridor edge.

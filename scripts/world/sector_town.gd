@@ -33,6 +33,7 @@ static func build(root: Node3D, layout: SectorLayout, palette: PaletteTuning) ->
 	if not parts.is_empty():
 		SectorBuilder.add_mesh(root, "Town", KitWalls.merge(parts), palette, Vector3.ZERO)
 	_build_outskirts(root, layout, palette)
+	_build_streams(root, layout, palette)
 
 
 ## The houses beyond the walkable ground, in one mesh with no shadow: only seen from afar.
@@ -70,3 +71,44 @@ static func _shrine_colliders(root: Node3D, xf: Transform3D) -> void:
 		var mid: Vector3 = s.origin + s.basis.x * length * 0.5 + Vector3.UP * 0.3
 		var ring := SectorBuilder.add_box_collider(root, mid, Vector3(length, 0.6, 0.5))
 		ring.basis = s.basis
+
+
+## The water of the streams (a ribbon in the bed) and stones along their eaten banks, in one
+## mesh; only where Cusi can see them up close (inside the sector's walkable length).
+static func _build_streams(root: Node3D, layout: SectorLayout, palette: PaletteTuning) -> void:
+	if layout.streams.is_empty():
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 77
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var half: float = layout.stream_width * 0.35
+	for line: PackedVector2Array in layout.streams:
+		for i: int in line.size() - 1:
+			var a: Vector2 = line[i]
+			var b: Vector2 = line[i + 1]
+			var pieces: int = maxi(1, ceili(a.distance_to(b) / 2.0))
+			var side: Vector2 = (b - a).normalized().orthogonal()
+			for k: int in pieces:
+				var p0: Vector2 = a.lerp(b, float(k) / pieces)
+				var p1: Vector2 = a.lerp(b, float(k + 1) / pieces)
+				var q := PackedVector3Array()
+				for c: Vector2 in [
+					p0 - side * half, p1 - side * half, p1 + side * half, p0 + side * half
+				]:
+					q.append(Vector3(c.x, layout.profile_at(c.y) - layout.stream_depth + 0.12, c.y))
+				LowPolyMesh.add_quad(st, q[0], q[1], q[2], q[3], palette.water, Vector3.UP)
+				for s: float in [-1.0, 1.0]:
+					if rng.randf() < 0.3:
+						var at: Vector2 = (
+							p0 + side * s * (layout.stream_width * 0.5 + rng.randf_range(0.0, 0.6))
+						)
+						var r: float = rng.randf_range(0.12, 0.3)
+						var tint: Color = palette.stone_light.lerp(palette.stone_dark, rng.randf())
+						var rock: ArrayMesh = LowPolyMesh.rock(r, 0.7, rng.randi(), tint, 0.3)
+						var y: float = layout.height_at(at.x, at.y) - r * 0.3
+						st.append_from(rock, 0, Transform3D(Basis(), Vector3(at.x, y, at.y)))
+	var node: MeshInstance3D = SectorBuilder.add_mesh(
+		root, "Streams", st.commit(), palette, Vector3.ZERO
+	)
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF

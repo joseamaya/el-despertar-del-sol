@@ -14,8 +14,11 @@ const ROOF_OVERHANG: float = 0.35
 
 ## A one-room house of `size` (x width, y wall height, z depth), origin at the centre of
 ## the floor. Walls, roof and door in one mesh. `closed`: the door is walled up with
-## stones, as the families who fled left it (F9 task 4).
-static func house(size: Vector3, seed: int, p: PaletteTuning, closed: bool = false) -> ArrayMesh:
+## stones, as the families who fled left it (F9 task 4). `stone`: walls of stone up to the
+## roof instead of adobe (F9: the old house of the Sun).
+static func house(
+	size: Vector3, seed: int, p: PaletteTuning, closed: bool = false, stone: bool = false
+) -> ArrayMesh:
 	var parts: Array[Array] = []
 	var hx: float = size.x * 0.5
 	var hz: float = size.z * 0.5
@@ -42,7 +45,7 @@ static func house(size: Vector3, seed: int, p: PaletteTuning, closed: bool = fal
 		Vector3(size.x, size.y - FOOTING, size.z),
 		WALL,
 		Vector2(DOOR.x, DOOR.y - FOOTING),
-		p.adobe,
+		p.stone_light.lerp(p.huaca_stone, 0.5) if stone else p.adobe,
 		seed
 	)
 	parts.append([adobe, Transform3D(Basis(), Vector3(0, FOOTING, 0))])
@@ -106,9 +109,10 @@ static func huaca(seed: int, p: PaletteTuning) -> ArrayMesh:
 	return KitWalls.merge(parts)
 
 
-## The huaca of the hub's square (F9 task 4, licence of the game): a tall, narrow standing
-## stone with a smaller one leaning at its foot, in the same low ring of pirca and with the
-## same offerings as the slice's, so the two read as kin but not as copies.
+## The stone of the hub's square (F9 task 4; since then the war stone, Cieza): a tall,
+## narrow standing stone with a smaller one leaning at its foot, in the same low ring of
+## pirca and with the same offerings as the slice's huaca, so the two read as kin but not
+## as copies. Its form is licence of the game.
 static func standing_huaca(seed: int, p: PaletteTuning) -> ArrayMesh:
 	var stone: Color = p.huaca_stone.darkened(0.08)
 	var lean := Basis(Vector3.BACK, deg_to_rad(18.0))
