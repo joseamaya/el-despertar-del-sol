@@ -55,6 +55,9 @@ Columna vertebral: Juan de Betanzos, *Suma y narración de los incas* (1551).
 | Carmenca a medio vaciar: parte de la gente huye con la corte de Viracocha; se quedan algunos ancianos y unos pocos leales con Cusi y Vicaquirao | Licencia del juego apoyada en la huida del Inca y en que Cusi se queda «con pocos leales» (Betanzos) | F4, tarea 12c y voces del mirador |
 | El Cusco se vacía con la corte: mucha gente sale de la ciudad con Viracocha, con sus fardos | **Según los cronistas:** Betanzos, índice del cap. VI («llevando consigo todos los de la ciudad»). **Licencia del juego:** quién y cuántos | F8, tarea 9 (`F8-canon-check-prologo.md`) |
 | Calle del Cusco del prólogo: casas de pirca y adobe con techo de ichu a ambos lados de una calle recta | Licencia del juego: no reproduce un trazado real, igual que la disposición de Carmenca; revisar con especialista | F8, tarea 8 |
+| Centro del Cusco del Capítulo I: una plaza con calles de pirca y tres kanchas, una por ayllu | Licencia del juego: no reproduce un trazado real; revisar con especialista | F9, tarea 2 (`F9-diseno-centro.md`) |
+| Kanchas (recintos de pirca con varias casas) en el Cusco de 1438 | Interpretación de diseño, sin fuente consultada para esa fecha; revisar con especialista | F9, tarea 2 |
+| Los curacas, o sus enviados, acuden al Cusco a hablar con Cusi | Licencia del juego que condensa el envío de mensajeros a sus pueblos (Betanzos, cap. VII), para que las misiones se cojan en el centro | F9, tarea 2 |
 | Ropa de la familia que huye (anacu, lliclla, chumpi, q'epi) y de los guerreros leales | Interpretación de diseño con prendas documentadas; formas y colores provisionales; revisar con especialista | F4, tarea 12c |
 
 ## Lo que no se cambia (GDD §3.5)
