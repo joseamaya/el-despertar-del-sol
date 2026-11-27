@@ -68,6 +68,9 @@ var _warn_tween: Tween
 ## done and asks to go on, instead of the slice's ending, time and survey summary.
 var _chapter_end: bool = false
 var _ended: bool = false
+## Notices waiting for the one on screen to go (F10 task 3: they no longer replace each
+## other), as [key, params].
+var _notices: Array[Array] = []
 
 
 func _ready() -> void:
@@ -103,6 +106,9 @@ func _process(delta: float) -> void:
 		_banner_left -= delta
 		if _banner_left <= 0.0:
 			_hide_message()
+	elif not _notices.is_empty() and not message_panel.visible and not _ended:
+		var next: Array = _notices.pop_front()
+		show_notice(next[0] as StringName, next[1] as Dictionary)
 
 
 func is_shown() -> bool:
@@ -248,11 +254,15 @@ func set_chapter_end(enabled: bool) -> void:
 
 ## A slice notice (F4 task 6), shown like an act banner. Once the level is over (the
 ## Apoyo won, F8 task 6) it is added to the end screen instead of replacing it. `params`
-## fill in the text (F9 task 6).
+## fill in the text (F9 task 6). One that comes while another is on screen waits its turn
+## (F10 task 3).
 func show_notice(key: StringName, params: Dictionary = {}) -> void:
 	var text: String = tr(key).format(params)
 	if _ended:
 		hint_label.text = "%s\n\n%s" % [text, hint_label.text]
+		return
+	if _banner_left > 0.0:
+		_notices.append([key, params])
 		return
 	message_label.text = text
 	hint_label.text = ""

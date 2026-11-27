@@ -21,34 +21,38 @@ support_flag = &"llamas_freed"
 
 [sub_resource type="Resource" id="Mission_3"]
 script = ExtResource("2_mission")
-id = &"llamas"
-title = &"MISSION_LLAMAS"
-level = &"mision_llamas"
-ayllu = &"ayllu_a"
+id = &"provisiones"
+hub_return = &"Vuelta_valle"
+title = &"MISSION_PROVISIONS"
+level = &"mision_provisiones"
+ayllu = &"ayllu_valle"
 requires = Array[StringName]([&"carmenca"])
 
 [sub_resource type="Resource" id="Mission_4"]
 script = ExtResource("2_mission")
-id = &"prisioneros"
+id = &"presos"
+hub_return = &"Vuelta_quilescachis"
 title = &"MISSION_PRISONERS"
-level = &"mision_prisioneros"
-ayllu = &"ayllu_b"
+level = &"mision_presos"
+ayllu = &"quilescachis"
 requires = Array[StringName]([&"carmenca"])
 
 [sub_resource type="Resource" id="Mission_5"]
 script = ExtResource("2_mission")
 id = &"disputa"
+hub_return = &"Vuelta_camino"
 title = &"MISSION_DISPUTE"
 level = &"mision_disputa"
-ayllu = &"curaca_c"
+ayllu = &"pueblo_camino"
 requires = Array[StringName]([&"carmenca"])
 
 [sub_resource type="Resource" id="Mission_6"]
 script = ExtResource("2_mission")
 id = &"combate_visible"
+hub_return = &"Vuelta_combate"
 title = &"MISSION_SHOW_OF_FORCE"
 level = &"combate_visible"
-requires = Array[StringName]([&"llamas", &"prisioneros", &"disputa"])
+requires = Array[StringName]([&"provisiones", &"presos", &"disputa"])
 requires_count = 2
 support_all_won = true
 

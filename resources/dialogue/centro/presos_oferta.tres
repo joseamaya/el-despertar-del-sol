@@ -5,13 +5,13 @@
 
 [sub_resource type="Resource" id="Line_0"]
 script = ExtResource("2_line")
-speaker = &"NAME_CURACA_LLAMAS"
-text = &"HUB_LLAMAS_1"
+speaker = &"NAME_CURACA_QUILESCACHIS"
+text = &"HUB_PRISONERS_1"
 
 [sub_resource type="Resource" id="Line_1"]
 script = ExtResource("2_line")
-speaker = &"NAME_CURACA_LLAMAS"
-text = &"HUB_LLAMAS_2"
+speaker = &"NAME_CURACA_QUILESCACHIS"
+text = &"HUB_PRISONERS_2"
 
 [resource]
 script = ExtResource("1_script")

@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("1_talk")
-marker = &"Curaca_disputa"
-speaker = &"NAME_CURACA_DISPUTE"
+marker = &"Curaca_camino"
+speaker = &"NAME_CURACA_ROAD"
 mission = &"disputa"
 offer = ExtResource("2_offer")
 thanks = ExtResource("3_thanks")

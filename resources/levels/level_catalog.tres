@@ -7,6 +7,10 @@ script = ExtResource("1_catalog")
 levels = Dictionary[StringName, String]({
 &"carmenca": "res://scenes/levels/carmenca.tscn",
 &"prologo": "res://scenes/levels/prologo.tscn",
-&"centro": "res://scenes/levels/centro.tscn"
+&"centro": "res://scenes/levels/centro.tscn",
+&"mision_provisiones": "res://scenes/levels/mision_esbozo.tscn",
+&"mision_presos": "res://scenes/levels/mision_esbozo.tscn",
+&"mision_disputa": "res://scenes/levels/mision_esbozo.tscn",
+&"combate_visible": "res://scenes/levels/mision_esbozo.tscn"
 })
 first_level = &"prologo"

@@ -27,7 +27,7 @@ func test_can_be_played_to_the_end() -> void:
 
 func test_show_of_force_needs_two_of_three() -> void:
 	var p := ChapterProgress.new(load(CHAPTER) as ChapterData)
-	for id: StringName in [&"prologo", &"carmenca", &"llamas"]:
+	for id: StringName in [&"prologo", &"carmenca", &"provisiones"]:
 		p.complete(id)
 	assert_int(p.state(&"combate_visible")).is_equal(ChapterProgress.MissionState.LOCKED)
 	p.complete(&"disputa")

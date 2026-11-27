@@ -17,6 +17,9 @@ extends Resource
 @export_range(0, 10, 1) var requires_count: int = 0
 ## Level flag that marks it done when the level ends. Empty: ending the level is enough.
 @export var complete_flag: StringName = &""
+## Hub marker where Cusi comes back after it, done or left (F10 task 3: next to whoever
+## gave it). Empty: the hub's start.
+@export var hub_return: StringName = &""
 
 @export_group("Apoyo")
 ## Points of Apoyo it gives its ayllu when done (F8 task 6).

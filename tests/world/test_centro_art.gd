@@ -41,7 +41,7 @@ func test_variants_point_at_real_houses() -> void:
 
 
 func test_every_kancha_has_a_big_house() -> void:
-	for curaca: StringName in [&"Curaca_llamas", &"Curaca_prisioneros", &"Curaca_disputa"]:
+	for curaca: StringName in [&"Curaca_valle", &"Curaca_quilescachis", &"Curaca_camino"]:
 		var c: Vector2 = _layout.points[curaca]
 		var found: bool = false
 		for i: int in _layout.big_houses:
@@ -104,7 +104,7 @@ func test_walls_keep_off_houses_and_people() -> void:
 
 
 func test_each_curaca_waits_at_a_gate() -> void:
-	for curaca: StringName in [&"Curaca_llamas", &"Curaca_prisioneros", &"Curaca_disputa"]:
+	for curaca: StringName in [&"Curaca_valle", &"Curaca_quilescachis", &"Curaca_camino"]:
 		var c: Vector2 = _layout.points[curaca]
 		var posts: int = 0
 		for g: Vector3 in _layout.gate_posts:

@@ -111,6 +111,19 @@ func accept(mission_id: StringName) -> bool:
 	return true
 
 
+## The marker of whoever talks nearest to `at` (F10 task 3: coming back from a mission,
+## Cusi turns to the curaca who gave it). Empty if nobody talks.
+func nearest_marker(at: Vector3) -> StringName:
+	var best: StringName = &""
+	var best_distance: float = INF
+	for marker: StringName in _markers():
+		var distance: float = level.marker_position(marker).distance_to(at)
+		if distance < best_distance:
+			best = marker
+			best_distance = distance
+	return best
+
+
 ## What fits someone's mission now: the first talk at `marker` with an open mission, else
 ## one still locked, else one done (several talks can share a marker: Vicaquirao).
 func talk_at(marker: StringName) -> HubTalk:

@@ -20,6 +20,8 @@ signal checkpoint_reached(marker: StringName)
 signal continue_requested
 ## The hub: the player chose a mission's door (F8 task 8).
 signal mission_chosen(mission_id: StringName)
+## A mission: the player chose to leave it for the hub (F10 task 3).
+signal hub_requested
 
 @export var level: SectorLevel
 @export var pause_menu: PauseMenu
@@ -82,6 +84,7 @@ func host() -> void:
 		pause_menu.set_hosted(true)
 		pause_menu.restart_requested.connect(restart_requested.emit)
 		pause_menu.title_requested.connect(title_requested.emit)
+		pause_menu.hub_requested.connect(hub_requested.emit)
 	if slice != null:
 		slice.hosted = true
 		slice.restart_requested.connect(restart_requested.emit)
@@ -99,12 +102,28 @@ func is_hosted() -> bool:
 	return _hosted
 
 
-## Puts the player at the layout marker `entry`, facing downhill. Empty: the level's own
-## start.
+## Puts the player at the layout marker `entry`, facing downhill; in the hub, facing
+## whoever talks nearest (F10 task 3: back from a mission, the curaca who gave it). Empty:
+## the level's own start.
 func enter(entry: StringName) -> void:
 	if entry == &"" or level == null:
 		return
-	level.place_player_at(entry, Vector3(0.0, 0.0, 1.0))
+	var facing := Vector3(0.0, 0.0, 1.0)
+	var face: StringName = (
+		hub_talks.nearest_marker(level.marker_position(entry)) if hub_talks != null else &""
+	)
+	if face != &"":
+		var to: Vector3 = level.marker_position(face) - level.marker_position(entry)
+		var local: Vector3 = level.sector.global_basis.inverse() * Vector3(to.x, 0.0, to.z)
+		if local.length() > 0.1:
+			facing = local.normalized()
+	level.place_player_at(entry, facing)
+
+
+## In a mission played from the hub, the pause menu offers going back to it (F10 task 3).
+func offer_hub_return() -> void:
+	if pause_menu != null:
+		pause_menu.set_hub_return(true)
 
 
 ## Where the level is, for the saved game: {step, flags, checkpoint}. Empty before the
