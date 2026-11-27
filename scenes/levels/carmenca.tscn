@@ -373,6 +373,7 @@ camera = NodePath("../CameraRig/SpringArm3D/Camera3D")
 
 [node name="LevelEntry" type="Node" parent="." node_paths=PackedStringArray("level", "pause_menu", "slice", "codex", "rite", "support_allies", "hud")]
 script = ExtResource("60_entry")
+skip_opening_in_chapter = true
 level = NodePath("../SectorLevel")
 pause_menu = NodePath("../PauseMenu")
 slice = NodePath("../SliceDirector")

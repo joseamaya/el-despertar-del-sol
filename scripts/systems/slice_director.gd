@@ -45,6 +45,9 @@ var hosted: bool = false
 ## A saved game to continue (F8 task 5; set by LevelEntry before the slice begins):
 ## {step, flags, checkpoint}. Empty: from the start.
 var resume: Dictionary = {}
+## Inside the chapter (F9, decision 3 of the backlog; set by LevelEntry): the slice starts
+## past its opening shots, because the prologue already opened the story.
+var skip_opening: bool = false
 
 var flow: SliceFlow
 ## Seconds of play since the slice began, frozen at its end; pauses do not count
@@ -156,6 +159,8 @@ func _begin() -> void:
 			_checkpoint = marker
 			arena.player_spawn = level.marker_node(marker)
 			level.place_player_at(marker, Vector3(0.0, 0.0, 1.0))
+	elif skip_opening:
+		flow.skip_with(SKIP_INTRO)
 	_start(flow.current())
 
 
