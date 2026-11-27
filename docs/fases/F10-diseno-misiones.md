@@ -1,6 +1,6 @@
 # F10 · Diseño de las misiones de Apoyo (tarea 2)
 
-**Estado:** propuesta para que decida el desarrollador (sección 7).
+**Estado:** aprobado por el desarrollador el 2026-11-27, con todas las recomendaciones: los nombres de la sección 6, las dos opciones de la misión C, el punto de control de la misión B y las cuatro entradas del registro, ya añadidas.
 
 **Para qué sirve:** fijar, antes de construir, qué es cada misión. Para cada una:
 - la zona;
@@ -241,7 +241,7 @@ ayllus `ayllu_a`, `ayllu_b` y `curaca_c` toman sus nombres. No hay partidas que 
 | Los que se fueron vuelven y Cusi los recibe sin reproche | **Sin registrar** | Según los cronistas | Betanzos, cap. IX. Entrada propuesta 4 |
 | Maíz, chuño y charqui como provisiones | Sin registrar | Maíz y «carne seca» documentados (Betanzos, cap. VI); el chuño es andino pero no aparece en lo leído | Entrada propuesta 1 |
 
-**Entradas propuestas para `HISTORICAL_REFERENCES.md`,** que se añaden solo si las apruebas:
+**Entradas para `HISTORICAL_REFERENCES.md`,** aprobadas el 2026-11-27 y añadidas al registro:
 
 1. **Misión A:** los exploradores chancas saquean los depósitos de un ayllu del valle.
    Depósitos de familia, no collcas del Estado. **Licencia del juego** apoyada en Cieza,
