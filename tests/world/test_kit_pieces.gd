@@ -72,6 +72,19 @@ func test_a_closed_house_has_its_door_walled_up() -> void:
 	assert_int(in_door).is_greater(0)
 
 
+## F10 task 1: the far house keeps the size and roof of the full one with a small part of
+## its triangles, and its faces point out.
+func test_the_far_house_matches_the_house_with_few_triangles() -> void:
+	var size := Vector3(4.5, 2.2, 3.6)
+	var far: ArrayMesh = KitBuildings.far_house(size, 5, _p)
+	var full: ArrayMesh = KitBuildings.house(size, 5, _p)
+	assert_float(far.get_aabb().size.x).is_equal_approx(full.get_aabb().size.x, 0.4)
+	assert_float(far.get_aabb().end.y).is_equal_approx(full.get_aabb().end.y, 0.3)
+	assert_int(_verts(far).size() / 3).is_less(100)
+	assert_int(_verts(far).size()).is_less(_verts(full).size() / 10)
+	_assert_front_faces_match_normals(far)
+
+
 ## F9 task 4: the square's huaca is taller and narrower than the slice's.
 func test_the_square_huaca_stands_taller_than_the_slice_one() -> void:
 	var standing: AABB = KitBuildings.standing_huaca(16, _p).get_aabb()

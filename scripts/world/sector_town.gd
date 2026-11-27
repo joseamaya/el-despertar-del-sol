@@ -36,7 +36,8 @@ static func build(root: Node3D, layout: SectorLayout, palette: PaletteTuning) ->
 	_build_streams(root, layout, palette)
 
 
-## The houses beyond the walkable ground, in one mesh with no shadow: only seen from afar.
+## The houses beyond the walkable ground, in one mesh with no shadow: only seen from afar,
+## so they are the kit's far house (F10 task 1), not the full one.
 static func _build_outskirts(root: Node3D, layout: SectorLayout, palette: PaletteTuning) -> void:
 	if layout.outskirts.is_empty():
 		return
@@ -44,7 +45,7 @@ static func _build_outskirts(root: Node3D, layout: SectorLayout, palette: Palett
 	var i: int = 0
 	for house: Vector3 in layout.outskirts:
 		parts.append(
-			[KitBuildings.house(layout.house_size, 500 + i, palette), _place(layout, house)]
+			[KitBuildings.far_house(layout.house_size, 500 + i, palette), _place(layout, house)]
 		)
 		i += 1
 	var node: MeshInstance3D = SectorBuilder.add_mesh(

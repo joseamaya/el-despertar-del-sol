@@ -158,3 +158,7 @@ func test_the_outskirts_cast_no_shadow() -> void:
 	var outskirts := level.find_child("Outskirts", true, false) as MeshInstance3D
 	assert_object(outskirts).is_not_null()
 	assert_int(outskirts.cast_shadow).is_equal(GeometryInstance3D.SHADOW_CASTING_SETTING_OFF)
+	# F10 task 1: they are far houses, so the city beyond costs little (fewer than 100
+	# triangles a house).
+	var triangles: int = (outskirts.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]).size() / 3
+	assert_int(triangles).is_less(_layout.outskirts.size() * 100)

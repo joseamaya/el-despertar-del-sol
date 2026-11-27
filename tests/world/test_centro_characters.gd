@@ -92,5 +92,7 @@ func test_they_stand_at_their_markers_dressed() -> void:
 		)
 		assert_bool(npc.visible).is_true()
 		var model := npc.find_child("Model", false, false) as Node3D
-		var outfit: Array[Node] = model.find_children("Outfit_*", "BoneAttachment3D", true, false)
+		var outfit: Array[Node] = model.find_children(
+			CharacterOutfit.PIECES, "MeshInstance3D", true, false
+		)
 		assert_int(outfit.size()).override_failure_message(String(node)).is_greater(0)

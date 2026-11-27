@@ -57,6 +57,57 @@ static func house(
 	return KitWalls.merge(parts)
 
 
+## The same house seen from afar (F10 task 1): solid blocks for the footing and the walls,
+## a dark doorway, the gables and a single layer of thatch with its ridge. About 70
+## triangles instead of more than a thousand; it is only for houses Cusi cannot walk to.
+static func far_house(size: Vector3, seed: int, p: PaletteTuning) -> ArrayMesh:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var stone: Color = p.stone_light.lerp(p.stone_dark, rng.randf_range(0.2, 0.6))
+	LowPolyMesh.add_box(
+		st, Vector3(0, FOOTING * 0.5, 0), Vector3(size.x, FOOTING, size.z), stone, rng, 0.04
+	)
+	var wall_h: float = size.y - FOOTING
+	LowPolyMesh.add_box(
+		st,
+		Vector3(0, FOOTING + wall_h * 0.5, 0),
+		Vector3(size.x, wall_h, size.z),
+		p.adobe,
+		rng,
+		0.0
+	)
+	LowPolyMesh.add_box(
+		st,
+		Vector3(0, DOOR.y * 0.5, size.z * 0.5),
+		Vector3(DOOR.x, DOOR.y, 0.06),
+		p.stone_dark.darkened(0.5),
+		rng,
+		0.0
+	)
+	var parts: Array[Array] = [
+		[st.commit(), Transform3D.IDENTITY], [_gables(size, p), Transform3D.IDENTITY]
+	]
+	var tint: Color = p.ichu.lerp(p.ichu.darkened(0.25), rng.randf_range(0.0, 0.6))
+	var thatch: ArrayMesh = LowPolyMesh.gable_roof(
+		size.z, size.x + 0.1, ROOF_RISE, ROOF_OVERHANG, tint
+	)
+	parts.append([thatch, Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3(0, size.y, 0))])
+	var ridge := SurfaceTool.new()
+	ridge.begin(Mesh.PRIMITIVE_TRIANGLES)
+	LowPolyMesh.add_box(
+		ridge,
+		Vector3(0, size.y + ROOF_RISE + 0.12, 0),
+		Vector3(size.x + ROOF_OVERHANG * 2.0 + 0.3, 0.3, 0.34),
+		p.ichu.darkened(0.35),
+		rng,
+		0.0
+	)
+	parts.append([ridge.commit(), Transform3D.IDENTITY])
+	return KitWalls.merge(parts)
+
+
 ## Layered ichu roof over a `width` (x) × `depth` (z) footprint, ridge along X, eaves at
 ## y = 0. Three stacked layers of thatch and a tied ridge bundle.
 static func roof(width: float, depth: float, seed: int, p: PaletteTuning) -> ArrayMesh:
