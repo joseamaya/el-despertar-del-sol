@@ -34,6 +34,9 @@ signal mission_chosen(mission_id: StringName)
 ## Optional, the hub only: the people who give the missions (F8 task 8; F9 task 6 turned
 ## the doors into talks).
 @export var hub_talks: HubTalks
+## Inside the chapter this level starts past its opening shots (F9: Carmenca, once the
+## prologue has opened the story). Off for the prologue itself.
+@export var skip_opening_in_chapter: bool = false
 
 var _hosted: bool = false
 var _offerings: Array[StringName] = []
@@ -59,6 +62,7 @@ func prepare(game: Dictionary) -> void:
 	var support := game.get("support", null) as SupportLedger
 	if slice != null:
 		slice.resume = (game.get("state", {}) as Dictionary).duplicate()
+		slice.skip_opening = skip_opening_in_chapter
 	if pause_menu != null and support != null:
 		pause_menu.set_support.call_deferred(support)
 	if support_allies != null:
