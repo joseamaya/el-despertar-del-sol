@@ -1,7 +1,9 @@
 # Rendimiento · sitio en el centro (F10, tarea 1)
 
-**Fecha:** 2026-11-27 · **Equipo:** este equipo, **fuera de pantalla** (`xvfb-run`, llvmpipe):
-las primitivas y los draw calls valen; los FPS, no · **Renderer:** Mobile · **3D:** 83 %.
+**Fecha:** 2026-11-27 · **Renderer:** Mobile · **3D:** 83 %.
+
+- **Primitivas y draw calls:** medidos fuera de pantalla (`xvfb-run`, llvmpipe).
+- **FPS:** medidos en la GPU de referencia (al final).
 
 ## Qué cambió
 
@@ -41,8 +43,24 @@ Sonda: 360° desde la salida de Cusi, máximo del giro. Benchmark: 25 s andando 
 - **No se nota** en las capturas (`docs/img/f10/sitio-*.jpg`, arriba o a la izquierda
   antes, abajo o a la derecha después).
 
-## No medido
+## FPS en la GPU de referencia
 
-- **FPS en la GPU de referencia:** hace falta abrir ventana.
-- **Carmenca:** no se pasó el benchmark. Le afectan los mismos cambios (LOD y ropa) y sus
-  pruebas pasan.
+Medido con ventana el mismo día (Intel RPL-S integrada), con `tools/scene_benchmark.gd`, igual
+que en el cierre de F9 (`2026-11-cierre-f9.md`).
+
+**La máquina no estaba en reposo:** había Chrome, pytest y node en marcha, con una carga
+media de 10–18 en las dos primeras pasadas del centro, y de 2,5 en las dos últimas. Por eso
+solo cuentan las pasadas con poca carga.
+
+| Escena | Cierre de F9 | Ahora |
+| --- | --- | --- |
+| Centro, andando y girando | 92,7 · 92,3 FPS; p99 13,5 ms | **116,7 · 114,3 FPS**; p99 11,3–12,2 ms (con carga 10–18: 69,8 y 91,1) |
+| Centro, recorriendo el camino | 99,2 FPS | **111,9 FPS** (con carga) |
+| Prólogo | 157,0 · 158,8 FPS | **189,1 FPS** (con carga) |
+| Carmenca, partida completa | 122,6 FPS · 1,12 M · 201 draw calls | **123,8 FPS · 0,97 M · 172 draw calls** |
+
+- **El centro gana un 25 %** (de 92 a 115 FPS) y no tiene ningún frame de más de 16,7 ms.
+- **El frame de 3 s de la construcción** no salió en las dos últimas pasadas (el peor, 25 ms).
+  Puede ser la caché de shaders ya caliente; no se da por resuelto. La carga dentro del
+  capítulo se mide en la tarea 3.
+- **Carmenca** baja de 1,12 M a 0,97 M primitivas, con los mismos FPS.
