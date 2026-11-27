@@ -100,7 +100,7 @@ func test_with_the_llamas_freed_two_come_and_each_draws_one_away() -> void:
 			HitRules.Faction.PLAYER
 		)
 		assert_int((ally.get_node(^"LockOnTarget") as Area3D).collision_layer).is_equal(0)
-		var outfit: Node = ally.find_child(CharacterOutfit.PREFIX + "Chest", true, false)
+		var outfit: Node = ally.find_child(CharacterOutfit.PIECES, true, false)
 		assert_object(outfit).override_failure_message("comunero outfit").is_not_null()
 	# They go after their chancas.
 	var gap: float = allies[0].distance_to(_allies.allies()[0].perception.target.global_position)
