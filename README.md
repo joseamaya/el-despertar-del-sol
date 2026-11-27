@@ -3,7 +3,7 @@
 Action-RPG histórico en tercera persona ambientado en el Cusco de c. 1438.
 Diseño completo en [`docs/GDD.md`](docs/GDD.md). Reglas de trabajo en [`AGENTS.md`](AGENTS.md).
 
-**Estado:** Fase 9 · El centro y el lancero. Fases 0–8 cerradas: el vertical slice está jugable y publicado (`0.2-slice`, en prueba con jugadores en paralelo), y el Capítulo I tiene su base: menú, partida guardada, prólogo, Carmenca y centro del Cusco en bruto (`docs/capitulo-1.md`).
+**Estado:** Fase 10 · Las misiones de Apoyo. Fases 0–9 cerradas: el vertical slice está jugable y publicado (`0.2-slice`, en prueba con jugadores en paralelo), y el Capítulo I tiene menú, partida guardada, prólogo, Carmenca con lanceros y patrullas, y un centro del Cusco de 1438 donde se habla con los curacas (`docs/capitulo-1.md`).
 
 ## Requisitos
 

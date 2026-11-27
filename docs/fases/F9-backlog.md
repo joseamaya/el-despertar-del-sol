@@ -57,8 +57,8 @@
 | 11 | **Tuning del lancero** con `combat-tuning`, en la arena y en Carmenca: lancero solo, mezclado con porras y en grupo de 3. Lo pruebas y lo ajustamos | Hecha: el desarrollador lo probó el 2026-11-26 y la pelea contra lanceros «va bien». Sin más ajustes que los de la tarea 11 (la lanza en el puño y el deslizamiento al estocar) |
 | 12 | **Exploradores que patrullan:** el enemigo recorre una ruta hasta detectar a Cusi y, si lo pierde, vuelve a ella. En `.tres`. Pruebas | Hecha: rutas en `SectorLayout.patrols` (por índice de aparición). En Carmenca, un explorador de porra por escaramuza hace su ronda; los lanceros esperan en su puesto. Si pierde a Cusi, vuelve al punto más cercano de su ronda. Pruebas en `test_carmenca_patrols.gd` |
 | 13 | **Prueba del desarrollador:** recorrer el centro y pelear contra lanceros en la build exportada | Hecha el 2026-11-26: el centro «se recorre bien» y «se reconoce andino»; la pelea con los lanceros «va bien». Pidió más ciudad y edificios de la época (filas 4b y 4c). Sin medición de FPS registrada en el equipo de referencia |
-| 14 | **Prueba de la `0.2-slice` en paralelo** (`0016`): la encuesta 0.2 y la difusión. Se revisa la cláusula al cerrar | Sin empezar · **tú** |
-| 15 | **Cierre de F9** con `phase-gate` | Pendiente |
+| 14 | **Prueba de la `0.2-slice` en paralelo** (`0016`): la encuesta 0.2 y la difusión. Se revisa la cláusula al cerrar | Pasa a F10: el desarrollador cerró F9 sin ella el 2026-11-26 |
+| 15 | **Cierre de F9** con `phase-gate` | Hecha: `F9-centro-y-lancero.md` |
 
 ## Orden propuesto
 
