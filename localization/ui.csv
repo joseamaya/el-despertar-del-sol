@@ -177,3 +177,18 @@ HUB_PEOPLE_WARRIOR,"Si vuelven los chancas, bajarán por Carmenca.","If the Chan
 HUB_PEOPLE_CURACAS,Los curacas no vendrán hasta ver quién gana.,The curacas will not come until they see who wins.
 MISSION_SKETCH_CAPTION,Misión provisional: su nivel aún no está hecho,Provisional mission: its level is not built yet
 OBJ_MISSION_SKETCH,Llega al final del camino para darla por cumplida,Reach the end of the road to complete it
+OBJ_PROV_AYLLU,Sigue el camino hasta las casas del ayllu,Follow the path to the houses of the ayllu
+DLG_PROV_ARRIVE_1,"¡Señor! Llegaron al alba, rompieron los depósitos y cargaron todo lo que pudieron.","My lord! They came at dawn, broke into the stores and loaded all they could."
+DLG_PROV_ARRIVE_2,"Dos siguen ahí, revolviendo lo que dejaron. Los demás suben los fardos hacia el paso.","Two are still there, going through what they left. The others are carrying the bundles up to the pass."
+DLG_PROV_ARRIVE_3,Quedaos junto a las casas. Os traeré lo que es vuestro.,Stay by the houses. I will bring back what is yours.
+OBJ_PROV_STORES,Echa a los chancas de los depósitos ({count}),Drive the Chancas out of the stores ({count})
+OBJ_PROV_TERRACES,Sube por las terrazas; un chanca vigila el camino ({count}),Climb the terraces; a Chanca is watching the path ({count})
+OBJ_PROV_PORTERS,"Alcanza a los porteadores, junto al humo del paso ({count})","Catch up with the porters, by the smoke at the pass ({count})"
+OBJ_PROV_BUNDLES,Recoge los fardos que dejaron los porteadores,Pick up the bundles the porters left
+PROMPT_BUNDLE_MAIZE,E / A: recoger el maíz,E / A: pick up the maize
+PROMPT_BUNDLE_CHUNO,E / A: recoger el chuño,E / A: pick up the chuño
+PROMPT_BUNDLE_CHARQUI,E / A: recoger el charqui,E / A: pick up the charqui
+OBJ_PROV_RETURN,Lleva los fardos al ayllu,Take the bundles back to the ayllu
+DLG_PROV_END_1,"Maíz, chuño, charqui… Creíamos que no volveríamos a verlo.","Maize, chuño, charqui… We thought we would never see it again."
+DLG_PROV_END_2,Los chancas creen que en el Cusco ya no queda quien nos defienda. Tú les has dicho otra cosa.,The Chancas think there is no one left in Cusco to defend us. You have told them otherwise.
+DLG_PROV_END_3,Vuelve con nuestro curaca. Sabrá lo que has hecho.,Go back to our curaca. He will know what you have done.

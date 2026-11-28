@@ -82,6 +82,8 @@ func _draw_marker() -> void:
 func _draw_edge(place: Vector3, color: Color) -> void:
 	var size: Vector2 = _canvas.size
 	var margin: float = tuning.size * 2.5
+	if size.x <= margin * 2.0 or size.y <= margin * 2.0:
+		return  # No room to draw (a window without size, as in headless tests).
 	var above: Vector3 = place + Vector3.UP * tuning.lift
 	var behind: bool = camera.is_position_behind(above)
 	var at: Vector2 = camera.unproject_position(above)
