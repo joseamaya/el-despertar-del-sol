@@ -31,6 +31,7 @@ shape = SubResource("Body")
 [node name="NavAgent" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.6
 target_desired_distance = 0.6
+path_height_offset = 0.5
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("3_health")

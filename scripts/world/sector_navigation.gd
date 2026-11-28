@@ -30,8 +30,9 @@ static func bake(sector: Node3D, layout: SectorLayout) -> NavigationRegion3D:
 	region.name = "Navigation"
 	region.navigation_mesh = mesh
 	sector.add_child(region)
-	# The baking filter is in world space; the sector is rotated to face the real slope.
-	mesh.filter_baking_aabb = sector.global_transform * corridor_bounds(layout)
+	# The baking filter is in the region's own frame, the sector's (F10 task 6a: given in
+	# world space, the rotated sector lost the last ~20 m of each end of its corridor).
+	mesh.filter_baking_aabb = corridor_bounds(layout)
 	var started: int = Time.get_ticks_msec()
 	region.bake_navigation_mesh(false)
 	region.set_meta(&"bake_ms", Time.get_ticks_msec() - started)

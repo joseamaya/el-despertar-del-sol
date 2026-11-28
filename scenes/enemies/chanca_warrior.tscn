@@ -218,6 +218,7 @@ animation_tree = NodePath("../AnimationTree")
 [node name="NavAgent" type="NavigationAgent3D" parent="." unique_id=1732170438]
 path_desired_distance = 0.5
 target_desired_distance = 0.4
+path_height_offset = 0.5
 height = 1.8
 radius = 0.4
 
