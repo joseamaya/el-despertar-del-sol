@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EscortTuning" format=3]
+
+[ext_resource type="Script" path="res://scripts/allies/escort_tuning.gd" id="1_tuning"]
+[ext_resource type="Resource" path="res://resources/tuning/prisoner_health.tres" id="2_health"]
+[ext_resource type="Resource" path="res://resources/characters/comunero.tres" id="3_look"]
+
+[resource]
+script = ExtResource("1_tuning")
+health = ExtResource("2_health")
+look = ExtResource("3_look")

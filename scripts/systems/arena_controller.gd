@@ -279,14 +279,25 @@ func _on_enemy_died() -> void:
 		encounter_won.emit()
 
 
+## Loses the fight for another reason than Cusi falling (F10 task 5: a prisoner he
+## escorts fell): the same retry, without his fall.
+func lose() -> void:
+	_defeat(false)
+
+
 func _on_player_died() -> void:
+	_defeat(true)
+
+
+func _defeat(fell: bool) -> void:
 	if state != EncounterState.FIGHTING:
 		return
 	state = EncounterState.DEFEATED
 	_set_player_controls(false)
 	player.begin_action(Vector3.ZERO, false)
-	var animator := player.get_node("Animator") as CharacterAnimator
-	animator.play_and_hold(death_clip, 1.0)
+	if fell:
+		var animator := player.get_node("Animator") as CharacterAnimator
+		animator.play_and_hold(death_clip, 1.0)
 	for enemy: EnemyController in alive_enemies():
 		enemy.perception.target = null
 	await get_tree().create_timer(defeat_delay, false).timeout

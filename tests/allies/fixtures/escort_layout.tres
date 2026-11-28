@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="SectorLayout" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/sector_layout.gd" id="1_layout"]
+
+[resource]
+script = ExtResource("1_layout")
+has_huaca = false
+has_llamas = false
+size = Vector2(60, 130)
+profile = PackedVector2Array(-65, 0, 65, 0)
+corridor = PackedVector2Array(-65, 20, 65, 20)
+side_max_rise = 4.0
+path = PackedVector2Array(0, 55, 0, -50)
+path_width = 3.0
+start = Vector2(0, 50)
+ending = Vector2(0, -50)
+cusco_view = Vector2(30, 620)
+points = Dictionary[StringName, Vector2]({
+&"Preso_1": Vector2(-3, -40),
+&"Preso_2": Vector2(3, -40),
+&"Medio": Vector2(0, 0),
+&"Fin": Vector2(0, 45)
+})
+checkpoints = PackedVector2Array(0, -36)
+encounters = PackedVector3Array(0, 10, 8)
+encounter_enemies = PackedInt32Array(2)
+rock_count = 0
+ichu_side_density = 0.0
+ichu_corridor_density = 0.0
+shrub_density = 0.0

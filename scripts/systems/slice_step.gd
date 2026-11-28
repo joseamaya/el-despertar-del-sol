@@ -2,18 +2,19 @@ class_name SliceStep
 extends Resource
 ## One step of the vertical slice (F4 task 2, GDD §14.1): reach a place, clear an
 ## encounter zone, wait a moment, hold a conversation (task 3), or do something at a
-## marker and play a huaca rite there (task 4), or choose (task 6). Steps run one after
+## marker and play a huaca rite there (task 4), or choose (task 6), or lead the people Cusi
+## freed to a marker (ESCORT, F10 task 5). Steps run one after
 ## another; a step can depend on a flag set by an earlier one. See SliceFlow.
 
 enum Act { OPENING, EXPLORATION, SUPPORT, COMBAT, ENDING }
-enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE, DRILL }
+enum Kind { REACH, ENCOUNTER, WAIT, DIALOGUE, INTERACT, RITE, CHOICE, DRILL, ESCORT }
 ## DRILL: what Vicaquirao asks the player to do (F4 task 12a; LOCK, F6 task 3: lock onto
 ## him). New values go last: the slice stores them as numbers.
 enum Drill { BLOCK, PARRY, EVADE, HIT, LOCK }
 
 @export var act: Act = Act.OPENING
 @export var kind: Kind = Kind.REACH
-## REACH, INTERACT, RITE: the layout marker (Huaca, Family, Ending…).
+## REACH, INTERACT, RITE, ESCORT: the layout marker (Huaca, Family, Ending…).
 @export var marker: StringName = &""
 ## REACH, INTERACT: how close counts as there, on the ground plane.
 @export_range(0.5, 30.0, 0.5, "suffix:m") var radius: float = 4.0

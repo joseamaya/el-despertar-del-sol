@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/levels/carmenca.tscn" id="1_carmenca"]
+[ext_resource type="Resource" path="res://tests/allies/fixtures/escort_layout.tres" id="2_layout"]
+[ext_resource type="Resource" path="res://tests/allies/fixtures/escort_slice.tres" id="3_slice"]
+[ext_resource type="Resource" path="res://resources/levels/esbozo_people.tres" id="4_people"]
+[ext_resource type="Script" path="res://scripts/allies/escort_party.gd" id="5_party"]
+[ext_resource type="Resource" path="res://resources/tuning/escort.tres" id="6_tuning"]
+[ext_resource type="PackedScene" path="res://scenes/allies/prisoner.tscn" id="7_prisoner"]
+
+[node name="EscortLevel" instance=ExtResource("1_carmenca")]
+
+[node name="SectorLevel" parent="."]
+layout = ExtResource("2_layout")
+
+[node name="SliceDirector" parent="." node_paths=PackedStringArray("escort")]
+sequence = ExtResource("3_slice")
+escort = NodePath("../EscortParty")
+
+[node name="Crowd" parent="."]
+people = ExtResource("4_people")
+
+[node name="Vicaquirao" parent="."]
+visible = false
+
+[node name="Comunero" parent="."]
+visible = false
+
+[node name="EscortParty" type="Node3D" parent="." node_paths=PackedStringArray("level", "arena", "slice", "interaction")]
+script = ExtResource("5_party")
+tuning = ExtResource("6_tuning")
+prisoner_scene = ExtResource("7_prisoner")
+level = NodePath("../SectorLevel")
+arena = NodePath("../ArenaController")
+slice = NodePath("../SliceDirector")
+interaction = NodePath("../InteractionPoint")
+markers = Array[StringName]([&"Preso_1", &"Preso_2"])

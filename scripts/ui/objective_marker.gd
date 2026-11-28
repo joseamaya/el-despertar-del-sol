@@ -62,7 +62,7 @@ func target_position() -> Variant:
 	if step == null or player.is_held():
 		return null
 	match step.kind:
-		SliceStep.Kind.REACH, SliceStep.Kind.INTERACT, SliceStep.Kind.RITE:
+		SliceStep.Kind.REACH, SliceStep.Kind.INTERACT, SliceStep.Kind.RITE, SliceStep.Kind.ESCORT:
 			return level.marker_position(step.marker)
 		SliceStep.Kind.ENCOUNTER:
 			if arena != null and (arena.is_zone_engaged() or arena.is_in_combat()):
