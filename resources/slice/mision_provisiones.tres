@@ -1,0 +1,90 @@
+[gd_resource type="Resource" script_class="SliceSequence" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/slice_sequence.gd" id="1_seq"]
+[ext_resource type="Script" path="res://scripts/systems/slice_step.gd" id="2_step"]
+[ext_resource type="Resource" path="res://resources/dialogue/provisiones/llegada.tres" id="3_arrive"]
+[ext_resource type="Resource" path="res://resources/dialogue/provisiones/vuelta.tres" id="4_back"]
+
+[sub_resource type="Resource" id="Step_Arrive"]
+script = ExtResource("2_step")
+act = 1
+kind = 0
+marker = &"Ayllu"
+radius = 6.0
+objective = &"OBJ_PROV_AYLLU"
+checkpoint = &"Start"
+
+[sub_resource type="Resource" id="Step_Tell"]
+script = ExtResource("2_step")
+act = 1
+kind = 3
+dialogue = ExtResource("3_arrive")
+
+[sub_resource type="Resource" id="Step_Stores"]
+script = ExtResource("2_step")
+act = 3
+kind = 1
+zone = 1
+objective = &"OBJ_PROV_STORES"
+checkpoint = &"Checkpoint1"
+
+[sub_resource type="Resource" id="Step_Patrol"]
+script = ExtResource("2_step")
+act = 3
+kind = 1
+zone = 2
+objective = &"OBJ_PROV_TERRACES"
+checkpoint = &"Checkpoint2"
+
+[sub_resource type="Resource" id="Step_Porters"]
+script = ExtResource("2_step")
+act = 3
+kind = 1
+zone = 3
+objective = &"OBJ_PROV_PORTERS"
+checkpoint = &"Checkpoint3"
+
+[sub_resource type="Resource" id="Step_Maize"]
+script = ExtResource("2_step")
+act = 1
+kind = 4
+marker = &"Fardo_maiz"
+radius = 2.0
+prompt = &"PROMPT_BUNDLE_MAIZE"
+objective = &"OBJ_PROV_BUNDLES"
+
+[sub_resource type="Resource" id="Step_Chuno"]
+script = ExtResource("2_step")
+act = 1
+kind = 4
+marker = &"Fardo_chuno"
+radius = 2.0
+prompt = &"PROMPT_BUNDLE_CHUNO"
+objective = &"OBJ_PROV_BUNDLES"
+
+[sub_resource type="Resource" id="Step_Charqui"]
+script = ExtResource("2_step")
+act = 1
+kind = 4
+marker = &"Fardo_charqui"
+radius = 2.0
+prompt = &"PROMPT_BUNDLE_CHARQUI"
+objective = &"OBJ_PROV_BUNDLES"
+
+[sub_resource type="Resource" id="Step_Return"]
+script = ExtResource("2_step")
+act = 4
+kind = 0
+marker = &"Mujer"
+radius = 5.0
+objective = &"OBJ_PROV_RETURN"
+
+[sub_resource type="Resource" id="Step_Thanks"]
+script = ExtResource("2_step")
+act = 4
+kind = 3
+dialogue = ExtResource("4_back")
+
+[resource]
+script = ExtResource("1_seq")
+steps = Array[ExtResource("2_step")]([SubResource("Step_Arrive"), SubResource("Step_Tell"), SubResource("Step_Stores"), SubResource("Step_Patrol"), SubResource("Step_Porters"), SubResource("Step_Maize"), SubResource("Step_Chuno"), SubResource("Step_Charqui"), SubResource("Step_Return"), SubResource("Step_Thanks")])

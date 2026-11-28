@@ -2,13 +2,22 @@
 
 [ext_resource type="PackedScene" path="res://scenes/levels/carmenca.tscn" id="1_carmenca"]
 [ext_resource type="Resource" path="res://resources/levels/provisiones_layout.tres" id="2_layout"]
-[ext_resource type="Resource" path="res://resources/slice/mision_esbozo.tres" id="3_slice"]
+[ext_resource type="Resource" path="res://resources/slice/mision_provisiones.tres" id="3_slice"]
 [ext_resource type="Resource" path="res://resources/levels/esbozo_people.tres" id="4_people"]
+[ext_resource type="Script" path="res://scripts/dialogue/sector_npc.gd" id="5_npc"]
+[ext_resource type="PackedScene" path="res://assets/characters/stock/ual1_standard.glb" id="6_model"]
+[ext_resource type="Resource" path="res://resources/characters/refugee_woman.tres" id="7_woman"]
+[ext_resource type="Resource" path="res://resources/characters/elder.tres" id="8_elder"]
+[ext_resource type="Script" path="res://scripts/interaction/pickup_props.gd" id="9_pickups"]
 
 [node name="MisionProvisiones" instance=ExtResource("1_carmenca")]
 
 [node name="SectorLevel" parent="."]
 layout = ExtResource("2_layout")
+
+[node name="ArenaController" parent="."]
+lancer_spawns = PackedInt32Array(4)
+lancer_waves = PackedInt32Array()
 
 [node name="SliceDirector" parent="."]
 sequence = ExtResource("3_slice")
@@ -24,3 +33,28 @@ visible = false
 
 [node name="LevelEntry" parent="."]
 skip_opening_in_chapter = false
+
+[node name="Mujer" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
+script = ExtResource("5_npc")
+level = NodePath("../SectorLevel")
+marker = &"Mujer"
+face = NodePath("../Player")
+look = ExtResource("7_woman")
+
+[node name="Model" parent="Mujer" instance=ExtResource("6_model")]
+
+[node name="Anciano" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
+script = ExtResource("5_npc")
+level = NodePath("../SectorLevel")
+marker = &"Anciano"
+face = NodePath("../Player")
+idle_clip = &"Idle"
+look = ExtResource("8_elder")
+
+[node name="Model" parent="Anciano" instance=ExtResource("6_model")]
+
+[node name="Fardos" type="Node3D" parent="." node_paths=PackedStringArray("level", "interaction")]
+script = ExtResource("9_pickups")
+level = NodePath("../SectorLevel")
+interaction = NodePath("../InteractionPoint")
+markers = Array[StringName]([&"Fardo_maiz", &"Fardo_chuno", &"Fardo_charqui"])

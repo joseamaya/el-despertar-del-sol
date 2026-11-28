@@ -68,10 +68,13 @@ func test_the_path_turns_off_the_stairs() -> void:
 func test_every_point_can_be_walked_to_from_the_arrival() -> void:
 	var runner: GdUnitSceneRunner = scene_runner(SCENE)
 	var level := runner.find_child("SectorLevel") as SectorLevel
-	# The navmesh is baked in _ready; the map takes a few physics frames to sync.
-	for i: int in 10:
-		await get_tree().physics_frame
+	# The navmesh is baked in _ready; the map takes a few physics frames to sync, more
+	# when the machine is busy (a fixed wait failed once in the full suite).
 	var map: RID = level.get_world_3d().navigation_map
+	for i: int in 120:
+		await get_tree().physics_frame
+		if i >= 10 and NavigationServer3D.map_get_iteration_id(map) > 0:
+			break
 	var from: Vector3 = level.to_global_point(_layout.start)
 	var goals: Dictionary = _layout.points.duplicate()
 	goals[&"Ending"] = _layout.ending
@@ -79,6 +82,8 @@ func test_every_point_can_be_walked_to_from_the_arrival() -> void:
 		var goal: Vector3 = level.to_global_point(goals[key] as Vector2)
 		var path: PackedVector3Array = NavigationServer3D.map_get_path(map, from, goal, true)
 		assert_int(path.size()).override_failure_message(String(key)).is_greater(1)
+		if path.size() < 2:
+			continue
 		var end: Vector3 = path[path.size() - 1]
 		(
 			assert_float(Vector2(end.x - goal.x, end.z - goal.z).length())

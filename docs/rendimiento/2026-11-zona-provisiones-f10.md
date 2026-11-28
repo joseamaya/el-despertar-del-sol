@@ -1,4 +1,4 @@
-# Rendimiento · la zona de la misión A (F10, tarea 4a)
+# Rendimiento · la misión A, zona y misión (F10, tarea 4)
 
 **Fecha:** 2026-11-28 · **Equipo:** la GPU de referencia (Intel RPL-S, Vulkan) ·
 **Renderer:** Mobile · **3D:** 83 %.
@@ -13,8 +13,7 @@ kit de Carmenca. Mide 160 × 220 m:
 
 Datos en `resources/levels/provisiones_layout.tres`; escena
 `scenes/levels/mision_provisiones.tscn`, que hereda de Carmenca. El catálogo ya manda aquí
-la misión. **Aún no hay misión:** se juega con la secuencia provisional (rótulo y llegar
-al final del camino). Los enemigos, la mujer, el anciano y los fardos llegan en la 4b.
+la misión. La misión llegó en la 4b (abajo).
 
 ## Capturas
 
@@ -64,3 +63,49 @@ casi 0,5 M para seis enemigos, la mujer y el anciano. Cada personaje de cerca ro
 - **Andarla a mano.** Solo la ha recorrido el benchmark.
 - **Mirando hacia el valle se ve el fondo de Carmenca,** con el humo del Cusco a lo lejos.
   Lo dejo así: el ayllu está cerca del Cusco. Si no te convence, se cambia el fondo.
+
+## 4b · La misión
+
+**Qué se añade:**
+- **La secuencia** (`resources/slice/mision_provisiones.tres`), los pasos del diseño:
+  1. Llegada a las casas del ayllu.
+  2. La mujer cuenta qué pasó.
+  3. Dos porras en los depósitos.
+  4. Un explorador de porra que hace su ronda por una terraza.
+  5. Los porteadores: un lancero y dos porras, junto al fogón del paso.
+  6. Recoger los tres fardos, uno tras otro: maíz, chuño y charqui.
+  7. Vuelta a las casas, donde hablan la mujer y el anciano.
+
+  Cada combate tiene su punto de control: al caer, Cusi vuelve al de ese combate.
+- **La mujer y el anciano,** con los aspectos que ya había (`refugee_woman`, `elder`).
+- **`PickupProps`** (`scripts/interaction/pickup_props.gd`): pone un fardo del kit en
+  cada marcador y lo quita al recogerlo. Es lo único nuevo en el código.
+- **Los textos** (`localization/ui.csv`, claves `*_PROV_*` y `PROMPT_BUNDLE_*`) y los dos
+  diálogos (`resources/dialogue/provisiones/`). `canon-check`: el saqueo y las provisiones
+  están en la fila de la misión A del registro. No hay afirmaciones nuevas.
+
+**La patrulla es un combate.** El árbitro solo crea enemigos al empezar una zona, así que
+el explorador de las terrazas es la zona 2, con un solo guerrero que hace la ronda. Hay
+que derrotarlo para seguir; no se le puede esquivar.
+
+| | |
+| --- | --- |
+| ![La mujer en las casas](../img/f10/provisiones-mujer.jpg) La mujer, junto a las casas | ![Los fardos](../img/f10/provisiones-fardos.jpg) Los fardos en el campamento |
+
+**Medido en la GPU de referencia:** el bot juega la misión entera (`--playthrough`), dos
+pasadas.
+
+| | Pasada 1 | Pasada 2 |
+| --- | --- | --- |
+| FPS medios | 130,2 | 131,4 |
+| 1 % más lento | 87 FPS | 91 FPS |
+| Frames de más de 16,7 ms | 1 (24 ms) | 1 (22 ms) |
+| Primitivas máx. | 0,83 M | 0,81 M |
+| Draw calls máx. | 166 | 163 |
+| Tiempo de juego del bot | 148 s | 149 s |
+
+El frame lento es el del comienzo del primer combate, al dibujar a los chancas por primera
+vez. El bot juega más rápido que una persona: el diseño cuenta con 10–15 minutos.
+
+**Sin verificar en la 4b:** jugarla a mano, la sensación de los tres combates y si la
+mujer y el anciano se ven bien al hablar.
