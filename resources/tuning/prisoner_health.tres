@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="HealthTuning" format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/health_tuning.gd" id="1_health"]
+
+[resource]
+script = ExtResource("1_health")
+max_health = 300.0

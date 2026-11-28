@@ -38,6 +38,8 @@ const LOCKED_PROMPT: StringName = &"PROMPT_ENEMIES_NEAR"
 @export var choice: ChoiceBox
 ## DRILL steps (F4 task 12a). Needed only if the sequence has any.
 @export var drill: TrainingDrill
+## ESCORT steps (F10 task 5). Needed only if the sequence has any.
+@export var escort: EscortParty
 ## Off for tools that drive the zones themselves (benchmark, captures).
 @export var autostart: bool = true
 ## Inside the game shell (F8 task 3; set by LevelEntry): retry asks the shell.
@@ -72,6 +74,8 @@ func _ready() -> void:
 		choice.chosen.connect(_on_chosen)
 	if drill != null:
 		drill.drill_done.connect(_on_kind_done.bind(SliceStep.Kind.DRILL))
+	if escort != null:
+		escort.arrived.connect(_on_kind_done.bind(SliceStep.Kind.ESCORT))
 	# After the level and the arena have set up the sector and the first respawn.
 	if autostart:
 		_begin.call_deferred()
@@ -218,6 +222,9 @@ func _start(step: SliceStep) -> void:
 		SliceStep.Kind.DRILL:
 			# TrainingDrill starts it from step_started and says when it is done.
 			assert(drill != null, "SliceDirector: a DRILL step needs the training.")
+		SliceStep.Kind.ESCORT:
+			# EscortParty says when everyone is at the marker.
+			assert(escort != null, "SliceDirector: an ESCORT step needs the party.")
 
 
 ## What comes after a skirmish (the huaca, the llamas) says it must wait meanwhile.

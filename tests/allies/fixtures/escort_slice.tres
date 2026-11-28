@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="SliceSequence" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/slice_sequence.gd" id="1_seq"]
+[ext_resource type="Script" path="res://scripts/systems/slice_step.gd" id="2_step"]
+
+[sub_resource type="Resource" id="Step_Free1"]
+script = ExtResource("2_step")
+act = 1
+kind = 4
+marker = &"Preso_1"
+radius = 2.0
+checkpoint = &"Checkpoint1"
+
+[sub_resource type="Resource" id="Step_Free2"]
+script = ExtResource("2_step")
+act = 1
+kind = 4
+marker = &"Preso_2"
+radius = 2.0
+
+[sub_resource type="Resource" id="Step_Lead1"]
+script = ExtResource("2_step")
+act = 1
+kind = 8
+marker = &"Medio"
+radius = 6.0
+
+[sub_resource type="Resource" id="Step_Fight"]
+script = ExtResource("2_step")
+act = 3
+kind = 1
+zone = 1
+
+[sub_resource type="Resource" id="Step_Lead2"]
+script = ExtResource("2_step")
+act = 1
+kind = 8
+marker = &"Fin"
+radius = 6.0
+
+[resource]
+script = ExtResource("1_seq")
+steps = Array[ExtResource("2_step")]([SubResource("Step_Free1"), SubResource("Step_Free2"), SubResource("Step_Lead1"), SubResource("Step_Fight"), SubResource("Step_Lead2")])
