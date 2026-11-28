@@ -166,7 +166,12 @@ func _still_measuring(frame: float, measured: float) -> bool:
 		_record_stretch(frame)
 		var walk_limit: float = _timeout if _timeout > 0.0 else WALK_TIMEOUT
 		if measured > walk_limit:
-			push_error("SCENE_BENCHMARK walk did not finish in %d s" % walk_limit)
+			push_error(
+				(
+					"SCENE_BENCHMARK walk did not finish in %d s (%.0f %% of the path, in %s)"
+					% [walk_limit, _walker.progress() * 100.0, _walker.stretch()]
+				)
+			)
 			quit(1)
 			return true
 		return not _walker.is_done()

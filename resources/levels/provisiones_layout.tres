@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="SectorLayout" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/sector_layout.gd" id="1_layout"]
+
+[resource]
+script = ExtResource("1_layout")
+size = Vector2(160, 220)
+has_huaca = false
+has_llamas = false
+side_max_rise = 8.0
+side_far_grade = 0.15
+side_cell = 8.0
+profile = PackedVector2Array(110, -2, 100, 0, 46, 0.8, 40, 0.8, 39, 2.4, 32, 2.4, 31, 4, 24, 4, 23, 5.6, 16, 5.6, 15, 7.2, 8, 7.2, 7, 8.8, 0, 8.8, -1, 10.4, -8, 10.4, -9, 12, -16, 12, -40, 18, -58, 22, -86, 23, -98, 26, -104, 29, -110, 34)
+corridor = PackedVector2Array(110, 58, 46, 52, 0, 44, -40, 32, -60, 24, -86, 18, -110, 10)
+path = PackedVector2Array(6, 104, 4, 88, 0, 72, 0, 52, 3, 46, 3, 37.5, -3, 35.5, -3, 29.5, 3, 27.5, 3, 21.5, -3, 19.5, -3, 13.5, 3, 11.5, 3, 5.5, -3, 3.5, -3, -2.5, 3, -4.5, 3, -10.5, 0, -22, -4, -40, 0, -60, 2, -86, 0, -98)
+boundary_walls = PackedVector4Array(-40, 107.5, 40, 107.5)
+boundary_height = 0.75
+start = Vector2(6, 104)
+mentor = Vector2(9, 103)
+ending = Vector2(0, -98)
+cusco_view = Vector2(30, 620)
+points = Dictionary[StringName, Vector2]({
+&"Ayllu": Vector2(-3, 84),
+&"Depositos": Vector2(-10, 60),
+&"Rastro": Vector2(0, -22),
+&"Porteadores": Vector2(1, -72)
+})
+houses = PackedVector3Array(-12, 92, 90, 12, 88, -90, -13, 77, 90, 13, 73, -90, -24, 86, 0, 23, 96, 180, -17, 64, 90, -17, 56, 90)
+stone_houses = PackedInt32Array(6, 7)
+props = PackedVector4Array(-10.5, 61, 0, 2, -9, 57.5, 40, 1, -12, 56.5, 0, 3, -8, 63.5, 90, 1, -6.5, 59, 150, 2, 9, 81, 0, 0, 8.6, 84.5, 0, 4, -8.5, 95, 0, 0, -9.5, 98, 30, 3, -0.5, -79, 20, 3, 4.5, -70, 0, 4, 1, -75, 0, 0)
+hearth_smoke_height = 2.5
+corrals = PackedVector3Array(21, 62, 4, 25, 50, 3.2)
+crags = PackedVector3Array(-9, -104, 9, 8, -106, 10, -7, -92, 5, 8, -94, 5.5)
+channel = PackedVector2Array(-36, 4.2, -18, 4.4, -8, 4.2)
+rock_count = 110
