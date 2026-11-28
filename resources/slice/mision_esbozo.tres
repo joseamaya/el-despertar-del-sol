@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="SliceSequence" format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/slice_sequence.gd" id="1_seq"]
+[ext_resource type="Script" path="res://scripts/systems/slice_step.gd" id="2_step"]
+
+[sub_resource type="Resource" id="Step_Caption"]
+script = ExtResource("2_step")
+act = 1
+kind = 2
+seconds = 3.0
+caption = &"MISSION_SKETCH_CAPTION"
+checkpoint = &"Start"
+
+[sub_resource type="Resource" id="Step_Reach"]
+script = ExtResource("2_step")
+act = 1
+kind = 0
+marker = &"Ending"
+radius = 5.0
+objective = &"OBJ_MISSION_SKETCH"
+
+[resource]
+script = ExtResource("1_seq")
+steps = Array[ExtResource("2_step")]([SubResource("Step_Caption"), SubResource("Step_Reach")])

@@ -58,7 +58,7 @@ func test_nobody_stands_inside_a_house() -> void:
 
 func test_three_curacas_and_apo_mayta() -> void:
 	for curaca: StringName in [
-		&"Curaca_llamas", &"Curaca_prisioneros", &"Curaca_disputa", &"ApoMayta"
+		&"Curaca_valle", &"Curaca_quilescachis", &"Curaca_camino", &"ApoMayta"
 	]:
 		assert_bool(_layout.points.has(curaca)).override_failure_message(curaca).is_true()
 

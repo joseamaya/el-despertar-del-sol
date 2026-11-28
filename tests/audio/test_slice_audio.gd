@@ -122,3 +122,16 @@ func test_every_audio_file_is_registered() -> void:
 			if name.ends_with(".ogg") or name.ends_with(".wav"):
 				var folder: String = dir.trim_prefix("res://")
 				assert_bool(sources.contains(folder)).override_failure_message(folder).is_true()
+
+
+## F10 task 3: a silent act while no music plays has nothing to fade, so it starts no tween
+## (an empty one is an engine error; the mission sketch goes straight to such an act).
+func test_a_silent_act_without_music_starts_no_fade() -> void:
+	await _skip_opening()
+	Engine.time_scale = 4.0
+	await _frames(int(_audio.tuning.music_fade_out * 60.0 / 4.0) + 20)
+	assert_bool(_audio.is_music_on()).is_false()
+	var before: int = get_tree().get_processed_tweens().size()
+	var slice := _runner.find_child("SliceDirector") as SliceDirector
+	slice.act_changed.emit(SliceStep.Act.COMBAT)
+	assert_int(get_tree().get_processed_tweens().size()).is_equal(before)

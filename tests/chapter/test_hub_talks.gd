@@ -65,7 +65,7 @@ func _finish(mission: StringName) -> void:
 
 
 func test_the_curacas_offer_their_missions_and_there_are_no_doors() -> void:
-	assert_array(_talks.open_missions()).contains_exactly([&"llamas", &"prisioneros", &"disputa"])
+	assert_array(_talks.open_missions()).contains_exactly([&"provisiones", &"presos", &"disputa"])
 	for key: StringName in _level.layout.points:
 		(
 			assert_bool(String(key).begins_with("Door_"))
@@ -75,36 +75,36 @@ func test_the_curacas_offer_their_missions_and_there_are_no_doors() -> void:
 
 
 func test_near_a_curaca_the_prompt_names_him() -> void:
-	_player.global_position = _level.marker_position(&"Curaca_llamas") + Vector3(1.5, 0.1, 0)
+	_player.global_position = _level.marker_position(&"Curaca_valle") + Vector3(1.5, 0.1, 0)
 	await _runner.simulate_frames(3)
 	assert_object(_talks.nearest_talk()).is_not_null()
 	var prompt := _runner.find_child("InteractionPrompt") as InteractionPrompt
-	assert_str(prompt.shown_text()).contains(tr(&"NAME_CURACA_LLAMAS"))
+	assert_str(prompt.shown_text()).contains(tr(&"NAME_CURACA_VALLEY"))
 
 
 func test_accepting_asks_to_play_the_mission() -> void:
-	assert_str(String(await _talk(&"Curaca_llamas"))).is_equal("llamas")
-	assert_array(_chosen).contains_exactly([&"llamas"])
+	assert_str(String(await _talk(&"Curaca_valle"))).is_equal("provisiones")
+	assert_array(_chosen).contains_exactly([&"provisiones"])
 	assert_bool(_player.is_held()).is_false()
 
 
 func test_later_takes_nothing() -> void:
-	assert_str(String(await _talk(&"Curaca_disputa", 1))).is_equal("")
+	assert_str(String(await _talk(&"Curaca_camino", 1))).is_equal("")
 	assert_array(_chosen).is_empty()
 	assert_array(_talks.open_missions()).contains(&"disputa")
 
 
 func test_a_done_mission_gets_thanks_not_an_offer() -> void:
-	_finish(&"prisioneros")
-	assert_object(_talks.talk_at(&"Curaca_prisioneros").thanks).is_not_null()
-	assert_str(String(await _talk(&"Curaca_prisioneros"))).is_equal("")
+	_finish(&"presos")
+	assert_object(_talks.talk_at(&"Curaca_quilescachis").thanks).is_not_null()
+	assert_str(String(await _talk(&"Curaca_quilescachis"))).is_equal("")
 	assert_array(_chosen).is_empty()
 
 
 func test_vicaquirao_waits_for_two_curacas() -> void:
 	assert_str(String(await _talk(&"Mentor"))).is_equal("")
 	assert_array(_chosen).is_empty()
-	_finish(&"llamas")
+	_finish(&"provisiones")
 	_finish(&"disputa")
 	assert_str(String(await _talk(&"Mentor"))).is_equal("combate_visible")
 
@@ -113,12 +113,12 @@ func test_the_objective_counts_the_curacas_then_sends_to_vicaquirao() -> void:
 	var curacas: String = tr(&"HUB_OBJECTIVE_CURACAS")
 	assert_str(_talks.objective_text()).is_equal(curacas.format({"count": 0, "total": 3}))
 	# It leads to the nearest curaca still to see.
-	_player.global_position = _level.marker_position(&"Curaca_prisioneros") + Vector3.UP * 0.1
-	assert_str(String(_talks.objective_talk().marker)).is_equal("Curaca_prisioneros")
-	_finish(&"prisioneros")
+	_player.global_position = _level.marker_position(&"Curaca_quilescachis") + Vector3.UP * 0.1
+	assert_str(String(_talks.objective_talk().marker)).is_equal("Curaca_quilescachis")
+	_finish(&"presos")
 	assert_str(_talks.objective_text()).is_equal(curacas.format({"count": 1, "total": 3}))
-	assert_str(String(_talks.objective_talk().marker)).is_not_equal("Curaca_prisioneros")
-	_finish(&"llamas")
+	assert_str(String(_talks.objective_talk().marker)).is_not_equal("Curaca_quilescachis")
+	_finish(&"provisiones")
 	assert_str(_talks.objective_text()).is_equal(tr(&"HUB_OBJECTIVE_VICAQUIRAO"))
 	var mentor: Vector3 = _level.marker_position(&"Mentor")
 	assert_vector(_talks.objective_position() as Vector3).is_equal(mentor)
@@ -126,9 +126,9 @@ func test_the_objective_counts_the_curacas_then_sends_to_vicaquirao() -> void:
 
 func test_the_marker_leads_to_the_objective() -> void:
 	var marker := _runner.find_child("ObjectiveMarker") as ObjectiveMarker
-	_player.global_position = _level.marker_position(&"Curaca_disputa") + Vector3(4, 0.1, 0)
+	_player.global_position = _level.marker_position(&"Curaca_camino") + Vector3(4, 0.1, 0)
 	assert_vector(marker.target_position() as Vector3).is_equal(
-		_level.marker_position(&"Curaca_disputa")
+		_level.marker_position(&"Curaca_camino")
 	)
 
 
@@ -149,9 +149,9 @@ func test_apo_mayta_speaks_on_the_first_visit_only() -> void:
 
 
 func test_the_curaca_turns_to_cusi() -> void:
-	var npc := _runner.scene().get_node(^"CuracaLlamas") as SectorNpc
+	var npc := _runner.scene().get_node(^"CuracaValle") as SectorNpc
 	_player.global_position = npc.global_position + Vector3(2, 0.1, 0)
-	await _talk(&"Curaca_llamas", 1)
+	await _talk(&"Curaca_valle", 1)
 	var front := Vector3(sin(npc.global_rotation.y), 0, cos(npc.global_rotation.y))
 	assert_float(front.dot(Vector3.RIGHT)).is_greater(0.95)
 
@@ -171,3 +171,19 @@ func test_the_hud_shows_the_objective() -> void:
 	var hud := _runner.find_child("Hud") as Hud
 	assert_bool(hud.is_showing_objective()).is_true()
 	assert_str(hud.objective_text()).is_equal(_talks.objective_text())
+
+
+## F10 task 3: accepting loads the mission and the hub leaves the tree before the objective
+## is updated (deferred). The update then does nothing, without reading positions.
+func test_accepting_lets_the_hub_go_before_the_objective_updates() -> void:
+	var hub: Node = _runner.scene()
+	var parent: Node = hub.get_parent()
+	var changed: Array[String] = []
+	_talks.objective_changed.connect(func(text: String) -> void: changed.append(text))
+	_talks.mission_chosen.connect(func(_id: StringName) -> void: parent.remove_child(hub))
+	assert_bool(_talks.accept(&"provisiones")).is_true()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	assert_bool(hub.is_inside_tree()).is_false()
+	assert_array(changed).is_empty()
+	parent.add_child(hub)

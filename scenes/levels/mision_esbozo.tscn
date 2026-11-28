@@ -1,0 +1,26 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/levels/carmenca.tscn" id="1_carmenca"]
+[ext_resource type="Resource" path="res://resources/levels/prologo_layout.tres" id="2_layout"]
+[ext_resource type="Resource" path="res://resources/slice/mision_esbozo.tres" id="3_slice"]
+[ext_resource type="Resource" path="res://resources/levels/esbozo_people.tres" id="4_people"]
+
+[node name="MisionEsbozo" instance=ExtResource("1_carmenca")]
+
+[node name="SectorLevel" parent="."]
+layout = ExtResource("2_layout")
+
+[node name="SliceDirector" parent="."]
+sequence = ExtResource("3_slice")
+
+[node name="Crowd" parent="."]
+people = ExtResource("4_people")
+
+[node name="Vicaquirao" parent="."]
+visible = false
+
+[node name="Comunero" parent="."]
+visible = false
+
+[node name="LevelEntry" parent="."]
+skip_opening_in_chapter = false

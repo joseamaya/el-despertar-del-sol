@@ -18,6 +18,8 @@ signal checkpoint_reached(id: StringName, marker: StringName)
 signal continue_requested(id: StringName)
 ## The hub: the player chose a mission's door (F8 task 8).
 signal mission_chosen(mission_id: StringName)
+## A mission: the player chose to leave it for the hub (F10 task 3).
+signal hub_requested(id: StringName)
 
 @export var catalog: LevelCatalog
 @export var loading: LoadingScreen
@@ -137,6 +139,7 @@ func _swap_in(scene: PackedScene) -> void:
 		entry.mission_chosen.connect(mission_chosen.emit, CONNECT_DEFERRED)
 		entry.restart_requested.connect(restart, CONNECT_DEFERRED)
 		entry.title_requested.connect(title_requested.emit, CONNECT_DEFERRED)
+		entry.hub_requested.connect(_on_hub_requested, CONNECT_DEFERRED)
 		entry.level_finished.connect(_on_level_finished)
 		if _current_entry != &"":
 			# After the level has placed the player at its own start (deferred too).
@@ -145,6 +148,10 @@ func _swap_in(scene: PackedScene) -> void:
 	if loading != null:
 		loading.hide_loading()
 	level_loaded.emit(_current_id)
+
+
+func _on_hub_requested() -> void:
+	hub_requested.emit(_current_id)
 
 
 func _find_entry(level: Node) -> LevelEntry:

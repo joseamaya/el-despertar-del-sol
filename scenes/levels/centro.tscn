@@ -7,13 +7,13 @@
 [ext_resource type="Script" path="res://scripts/dialogue/sector_npc.gd" id="5_npc"]
 [ext_resource type="PackedScene" path="res://assets/characters/stock/ual1_standard.glb" id="6_model"]
 [ext_resource type="Resource" path="res://resources/characters/apo_mayta.tres" id="7_apo"]
-[ext_resource type="Resource" path="res://resources/characters/curaca_llamas.tres" id="8_llamas"]
-[ext_resource type="Resource" path="res://resources/characters/curaca_prisioneros.tres" id="9_prisioneros"]
-[ext_resource type="Resource" path="res://resources/characters/curaca_disputa.tres" id="10_disputa"]
+[ext_resource type="Resource" path="res://resources/characters/curaca_valle.tres" id="8_llamas"]
+[ext_resource type="Resource" path="res://resources/characters/curaca_quilescachis.tres" id="9_prisioneros"]
+[ext_resource type="Resource" path="res://resources/characters/curaca_camino.tres" id="10_disputa"]
 
 [ext_resource type="Resource" path="res://resources/dialogue/centro/charla_apo_mayta.tres" id="11_talk_apo_mayta"]
-[ext_resource type="Resource" path="res://resources/dialogue/centro/charla_llamas.tres" id="12_talk_llamas"]
-[ext_resource type="Resource" path="res://resources/dialogue/centro/charla_prisioneros.tres" id="13_talk_prisioneros"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/charla_provisiones.tres" id="12_talk_llamas"]
+[ext_resource type="Resource" path="res://resources/dialogue/centro/charla_presos.tres" id="13_talk_prisioneros"]
 [ext_resource type="Resource" path="res://resources/dialogue/centro/charla_disputa.tres" id="14_talk_disputa"]
 [ext_resource type="Resource" path="res://resources/dialogue/centro/charla_combate_visible.tres" id="15_talk_combate_visible"]
 [ext_resource type="Resource" path="res://resources/dialogue/centro/charla_susurpuquio.tres" id="16_talk_susurpuquio"]
@@ -43,7 +43,7 @@ choice = NodePath("../ChoiceBox")
 talks = Array[ExtResource("19_talk")]([ExtResource("11_talk_apo_mayta"), ExtResource("12_talk_llamas"), ExtResource("13_talk_prisioneros"), ExtResource("14_talk_disputa"), ExtResource("15_talk_combate_visible"), ExtResource("16_talk_susurpuquio")])
 question = ExtResource("17_question")
 arrival = ExtResource("18_arrival")
-people = [NodePath("../ApoMayta"), NodePath("../CuracaLlamas"), NodePath("../CuracaPrisioneros"), NodePath("../CuracaDisputa"), NodePath("../Vicaquirao")]
+people = [NodePath("../ApoMayta"), NodePath("../CuracaValle"), NodePath("../CuracaQuilescachis"), NodePath("../CuracaCamino"), NodePath("../Vicaquirao")]
 
 [node name="LevelEntry" parent="." node_paths=PackedStringArray("hub_talks")]
 hub_talks = NodePath("../HubTalks")
@@ -63,31 +63,31 @@ look = ExtResource("7_apo")
 
 [node name="Model" parent="ApoMayta" instance=ExtResource("6_model")]
 
-[node name="CuracaLlamas" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
+[node name="CuracaValle" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
 script = ExtResource("5_npc")
 level = NodePath("../SectorLevel")
-marker = &"Curaca_llamas"
+marker = &"Curaca_valle"
 face = NodePath("../Player")
 look = ExtResource("8_llamas")
 
-[node name="Model" parent="CuracaLlamas" instance=ExtResource("6_model")]
+[node name="Model" parent="CuracaValle" instance=ExtResource("6_model")]
 
-[node name="CuracaPrisioneros" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
+[node name="CuracaQuilescachis" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
 script = ExtResource("5_npc")
 level = NodePath("../SectorLevel")
-marker = &"Curaca_prisioneros"
+marker = &"Curaca_quilescachis"
 face = NodePath("../Player")
 look = ExtResource("9_prisioneros")
 
-[node name="Model" parent="CuracaPrisioneros" instance=ExtResource("6_model")]
+[node name="Model" parent="CuracaQuilescachis" instance=ExtResource("6_model")]
 
-[node name="CuracaDisputa" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
+[node name="CuracaCamino" type="Node3D" parent="." node_paths=PackedStringArray("level", "face")]
 script = ExtResource("5_npc")
 level = NodePath("../SectorLevel")
-marker = &"Curaca_disputa"
+marker = &"Curaca_camino"
 face = NodePath("../Player")
 look = ExtResource("10_disputa")
 
-[node name="Model" parent="CuracaDisputa" instance=ExtResource("6_model")]
+[node name="Model" parent="CuracaCamino" instance=ExtResource("6_model")]
 
 [connection signal="objective_changed" from="HubTalks" to="Hud" method="show_objective"]

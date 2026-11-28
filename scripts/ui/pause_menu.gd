@@ -11,6 +11,8 @@ extends CanvasLayer
 signal restart_requested
 ## Hosted only: the player chose "back to the title".
 signal title_requested
+## In a mission: the player chose to leave it and go back to the hub (F10 task 3).
+signal hub_requested
 
 const ACTION_PAUSE: StringName = &"pause"
 const ACTION_BACK: StringName = &"ui_cancel"
@@ -91,6 +93,11 @@ func is_open() -> bool:
 	return _open
 
 
+## In a mission played from the hub: "back to the hub" shows (F10 task 3).
+func set_hub_return(enabled: bool) -> void:
+	(_main.get_node(^"ToHub") as Button).visible = enabled
+
+
 ## Inside the game shell: "back to the title" shows, and restarting asks the shell.
 func set_hosted(hosted: bool) -> void:
 	_hosted = hosted
@@ -129,6 +136,7 @@ func _connect() -> void:
 	(_main.get_node(^"Settings") as Button).pressed.connect(show_options)
 	(_main.get_node(^"Restart") as Button).pressed.connect(_restart)
 	(_main.get_node(^"ToTitle") as Button).pressed.connect(_to_title)
+	(_main.get_node(^"ToHub") as Button).pressed.connect(_to_hub)
 	(_main.get_node(^"Quit") as Button).pressed.connect(_quit)
 	_options.back_pressed.connect(show_main)
 
@@ -151,6 +159,11 @@ func _restart() -> void:
 func _to_title() -> void:
 	close()
 	title_requested.emit()
+
+
+func _to_hub() -> void:
+	close()
+	hub_requested.emit()
 
 
 func _quit() -> void:

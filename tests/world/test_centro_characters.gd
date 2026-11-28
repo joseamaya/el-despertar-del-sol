@@ -4,12 +4,12 @@ extends GdUnitTestSuite
 ## (GDD §10.5), and only the Inca nobles wear ear spools.
 
 const SCENE: String = "res://scenes/levels/centro.tscn"
-const CURACAS: Array[String] = ["curaca_llamas", "curaca_prisioneros", "curaca_disputa"]
+const CURACAS: Array[String] = ["curaca_valle", "curaca_quilescachis", "curaca_camino"]
 const NODES: Dictionary[StringName, StringName] = {
 	&"ApoMayta": &"ApoMayta",
-	&"CuracaLlamas": &"Curaca_llamas",
-	&"CuracaPrisioneros": &"Curaca_prisioneros",
-	&"CuracaDisputa": &"Curaca_disputa",
+	&"CuracaValle": &"Curaca_valle",
+	&"CuracaQuilescachis": &"Curaca_quilescachis",
+	&"CuracaCamino": &"Curaca_camino",
 	&"Vicaquirao": &"Mentor",
 }
 

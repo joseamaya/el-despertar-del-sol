@@ -10,18 +10,18 @@ title = &"AYLLU_CARMENCA"
 
 [sub_resource type="Resource" id="Ayllu_2"]
 script = ExtResource("2_ayllu")
-id = &"ayllu_a"
-title = &"AYLLU_A"
+id = &"ayllu_valle"
+title = &"AYLLU_VALLE"
 
 [sub_resource type="Resource" id="Ayllu_3"]
 script = ExtResource("2_ayllu")
-id = &"ayllu_b"
-title = &"AYLLU_B"
+id = &"quilescachis"
+title = &"AYLLU_QUILESCACHIS"
 
 [sub_resource type="Resource" id="Ayllu_4"]
 script = ExtResource("2_ayllu")
-id = &"curaca_c"
-title = &"CURACA_C"
+id = &"pueblo_camino"
+title = &"AYLLU_CAMINO"
 
 [resource]
 script = ExtResource("1_tuning")

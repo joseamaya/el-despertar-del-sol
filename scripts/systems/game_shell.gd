@@ -4,7 +4,8 @@ extends Node
 ## title menu, starts a new game in the chapter's first mission or continues the saved
 ## one, keeps the chapter's progress and Apoyo, and saves when a new game starts, at every
 ## checkpoint and when a level ends. Comes back to the title when a level asks; the saved
-## game stays at the last checkpoint.
+## game stays at the last checkpoint. From the hub, a mission is played in its level and
+## brings Cusi back next to the curaca who gave it, done or abandoned (F10 task 3).
 
 @export var host: LevelHost
 @export var title: TitleMenu
@@ -18,6 +19,10 @@ var support: SupportLedger
 var saves: SaveGame
 
 var _save_on_load: bool = false
+## Where Cusi comes back into the hub (a layout marker; empty: the hub's start).
+var _hub_entry: StringName = &""
+## Apoyo notices raised away from the hub, shown again on arriving there, as [key, params].
+var _hub_notices: Array[Array] = []
 ## Codex entries and offerings of the game, as of the last save (F8 tasks 5 and 8).
 var _codex: Array = []
 var _offerings: Array = []
@@ -35,6 +40,7 @@ func _ready() -> void:
 	host.level_finished.connect(_on_level_finished)
 	host.continue_requested.connect(_on_continue_requested)
 	host.mission_chosen.connect(_on_mission_chosen)
+	host.hub_requested.connect(_on_hub_requested)
 	title.set_can_continue(saves != null and saves.has_save())
 	title.show_menu()
 
@@ -99,7 +105,7 @@ func play_next() -> bool:
 func go_on() -> bool:
 	if _hub_open():
 		_save_on_load = true
-		return host.load_level(chapter.hub_level, &"", _carry())
+		return host.load_level(chapter.hub_level, _hub_entry, _carry())
 	if play_next():
 		return true
 	back_to_title()
@@ -133,10 +139,20 @@ func save_now() -> void:
 		title.set_can_continue(true)
 
 
-func _on_level_loaded(_id: StringName) -> void:
+func _on_level_loaded(id: StringName) -> void:
 	if _save_on_load:
 		_save_on_load = false
 		save_now()
+	var entry: LevelEntry = host.current_entry()
+	if entry == null or progress == null:
+		return
+	if id == chapter.hub_level:
+		_hub_entry = &""
+		for notice: Array in _hub_notices:
+			entry.announce(notice[0] as StringName, notice[1] as Dictionary)
+		_hub_notices.clear()
+	elif progress.active() != &"" and _hub_open():
+		entry.offer_hub_return()
 
 
 func _on_checkpoint_reached(_id: StringName, _marker: StringName) -> void:
@@ -148,6 +164,7 @@ func _on_level_finished(level_id: StringName, flags: Array[StringName]) -> void:
 		return
 	var done: StringName = progress.finish_level(level_id, flags)
 	if done != &"":
+		_hub_entry = chapter.mission(done).hub_return
 		support.apply_mission(chapter.mission(done), flags)
 	save_now()
 
@@ -182,51 +199,45 @@ func _hub_open() -> bool:
 	return chapter.hub_after == &"" or progress.is_done(chapter.hub_after)
 
 
-## A mission accepted in the hub (F9 task 6: by talking): plays the mission's level, or,
-## while it is not built, passes it as done (a test mission) and gives its Apoyo.
+## A mission accepted in the hub (F9 task 6: by talking): plays the mission's level.
+## Every mission has one since F10 task 3, if only the sketch level.
 func _on_mission_chosen(mission_id: StringName) -> void:
 	var mission: MissionData = chapter.mission(mission_id)
 	if mission == null:
 		return
-	if host.catalog.has_level(mission.level):
-		if host.load_level(mission.level, &"", _carry()):
-			progress.start(mission_id)
+	if not host.catalog.has_level(mission.level):
+		push_warning("GameShell: no level for %s." % mission_id)
 		return
-	if progress.complete(mission_id):
-		support.apply_mission(mission, [])
-		var entry: LevelEntry = host.current_entry()
-		if entry != null:
-			entry.announce(test_mission_notice(mission), test_mission_params(mission))
-		save_now()
+	if host.load_level(mission.level, &"", _carry()):
+		progress.start(mission_id)
 
 
-## What the notice of a test mission says (F9 task 6): that it counts as done and which
-## Apoyo it gives.
-func test_mission_notice(mission: MissionData) -> StringName:
-	if mission.support_gain <= 0:
-		return &"NOTICE_TEST_MISSION_PLAIN"
-	if mission.support_all_won:
-		return &"NOTICE_TEST_MISSION_ALL"
-	return &"NOTICE_TEST_MISSION" if mission.ayllu != &"" else &"NOTICE_TEST_MISSION_PLAIN"
-
-
-func test_mission_params(mission: MissionData) -> Dictionary:
-	var ayllu: AylluData = chapter.support.ayllu(mission.ayllu) if chapter.support != null else null
-	return {
-		"mission": tr(mission.title),
-		"gain": mission.support_gain,
-		"ayllu": tr(ayllu.title) if ayllu != null else "",
-	}
-
-
-func _on_support_raised(_ayllu: StringName, level: SupportLedger.Level) -> void:
-	var entry: LevelEntry = host.current_entry()
-	if entry == null:
+## The player left a mission from the pause menu (F10 task 3): it stays undone and can be
+## taken again; Cusi comes back next to whoever gave it.
+func _on_hub_requested(_id: StringName) -> void:
+	var mission: MissionData = chapter.mission(progress.active()) if progress != null else null
+	if mission == null:
 		return
+	progress.abandon()
+	_hub_entry = mission.hub_return
+	_hub_notices.clear()
+	go_on()
+
+
+## Says which ayllu moved up (F10 task 3). Raised in a mission, it is said again on
+## arriving at the hub, where nothing else is on screen.
+func _on_support_raised(ayllu_id: StringName, level: SupportLedger.Level) -> void:
 	var tuning: SupportTuning = chapter.support
-	entry.announce(
+	var key: StringName = (
 		tuning.ally_notice if level == SupportLedger.Level.ALLY else tuning.sympathizer_notice
 	)
+	var ayllu: AylluData = tuning.ayllu(ayllu_id)
+	var params: Dictionary = {"ayllu": tr(ayllu.title) if ayllu != null else String(ayllu_id)}
+	var entry: LevelEntry = host.current_entry()
+	if entry != null:
+		entry.announce(key, params)
+	if host.current_id() != chapter.hub_level:
+		_hub_notices.append([key, params])
 
 
 static func _strings(names: Array[StringName]) -> Array:

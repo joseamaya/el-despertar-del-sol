@@ -139,10 +139,14 @@ func test_the_end_screen_goes_on() -> void:
 	slice.slice_finished.emit()
 	var hud := level.get_node(^"Hud") as Hud
 	assert_str(hud.message_label.text).is_equal(tr(&"MISSION_DONE"))
-	assert_str(hud.hint_label.text).contains(tr(&"NOTICE_SUPPORT_SYMPATHIZER"))
+	var notice: String = tr(&"NOTICE_SUPPORT_SYMPATHIZER").format({"ayllu": tr(&"AYLLU_CARMENCA")})
+	assert_str(hud.hint_label.text).contains(notice)
 	assert_str(hud.hint_label.text).contains(tr(&"MISSION_GO_ON"))
 	slice.continue_requested.emit()
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await _wait_loaded(host)
 	assert_str(String(host.current_id())).is_equal("centro")
+	# F10 task 3: the hub says it again, with nothing else on screen.
+	var hub_hud := host.current_level().get_node(^"Hud") as Hud
+	assert_str(hub_hud.message_label.text).is_equal(notice)

@@ -5,8 +5,8 @@
 
 [sub_resource type="Resource" id="Line_0"]
 script = ExtResource("2_line")
-speaker = &"NAME_CURACA_LLAMAS"
-text = &"HUB_LLAMAS_THANKS"
+speaker = &"NAME_CURACA_QUILESCACHIS"
+text = &"HUB_PRISONERS_THANKS"
 
 [resource]
 script = ExtResource("1_script")

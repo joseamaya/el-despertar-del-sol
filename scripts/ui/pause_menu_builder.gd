@@ -3,7 +3,7 @@ extends RefCounted
 ## Builds the pause menu's controls (F4 task 8): a dimmed screen, the main list and the
 ## settings page (SettingsPage, F8 task 2). PauseMenu wires them; every text goes through
 ## tr(). "ToTitle" and the Apoyo show only when the level runs inside the game shell (F8
-## tasks 2 and 6).
+## tasks 2 and 6); "ToHub" only in a mission played from the hub (F10 task 3).
 
 const TITLE := Color(0.95, 0.75, 0.35)
 const DIM := Color(0.7, 0.65, 0.58)
@@ -12,6 +12,7 @@ const BUTTONS: Dictionary = {
 	"Resume": &"PAUSE_RESUME",
 	"Settings": &"PAUSE_SETTINGS",
 	"Restart": &"PAUSE_RESTART",
+	"ToHub": &"PAUSE_TO_HUB",
 	"ToTitle": &"PAUSE_TO_TITLE",
 	"Quit": &"PAUSE_QUIT",
 }
@@ -47,5 +48,6 @@ static func _main() -> VBoxContainer:
 		button.name = node_name
 		main.add_child(button)
 	(main.get_node(^"ToTitle") as Button).visible = false
+	(main.get_node(^"ToHub") as Button).visible = false
 	main.add_child(MenuParts.version_label(DIM))
 	return main
