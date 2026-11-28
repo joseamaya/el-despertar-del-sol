@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="SectorLayout" format=3]
+
+[ext_resource type="Script" path="res://scripts/world/sector_layout.gd" id="1_layout"]
+
+[resource]
+script = ExtResource("1_layout")
+size = Vector2(80, 270)
+has_huaca = false
+has_llamas = false
+side_max_rise = 22.0
+side_far_grade = 0.2
+side_cell = 6.0
+profile = PackedVector2Array(140, -4, 130, 0, 80, 3, 30, 6, -20, 10, -45, 13, -55, 15, -62, 15, -75, 11, -118, 11, -128, 16, -140, 26)
+corridor = PackedVector2Array(140, 16, 80, 14, -40, 12, -60, 14, -80, 20, -120, 20, -140, 12)
+path = PackedVector2Array(2, 128, 3, 100, 1, 70, 3, 40, 2, 10, 4, -20, 3, -45, 2, -58, 0, -75, 0, -95, -2, -112)
+boundary_walls = PackedVector4Array(-25, 133, 25, 133)
+boundary_height = 0.75
+start = Vector2(2, 128)
+mentor = Vector2(5, 126)
+ending = Vector2(-2, -112)
+cusco_view = Vector2(30, 620)
+points = Dictionary[StringName, Vector2]({
+&"Boca": Vector2(2, 120),
+&"Emboscada": Vector2(2, 20),
+&"Mirador": Vector2(2, -58),
+&"Campamento": Vector2(0, -100),
+&"Preso_1": Vector2(-5, -108),
+&"Preso_2": Vector2(-1, -111),
+&"Preso_3": Vector2(4, -108)
+})
+streams = Array[PackedVector2Array]([PackedVector2Array(-7, -45, -8, -10, -6, 30, -8, 70, -7, 100, -6, 135)])
+props = PackedVector4Array(2, -103, 0, 0, 5, -100, 40, 2, 6.5, -102, 0, 2, -3, -99, 60, 3, -4.5, -102, 0, 4, 7, -97, 0, 1, 3, -114, 0, 4)
+hearth_smoke_height = 2.5
+crags = PackedVector3Array(-12, 40, 6, 11, -10, 6, 12, 90, 5, 9, -54, 5, -9, -62, 6, -6, -128, 8, 7, -130, 9)
+rock_count = 200
