@@ -209,7 +209,10 @@ func is_busy() -> bool:
 	return _busy
 
 
+## Also called deferred after `accept`, when the hub may already be gone (F10 task 3).
 func _update_objective() -> void:
+	if not is_inside_tree():
+		return
 	var text: String = objective_text()
 	if text != _objective:
 		_objective = text

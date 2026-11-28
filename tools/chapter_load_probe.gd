@@ -65,9 +65,12 @@ func _start() -> void:
 	_shell.new_game()
 
 
+## The swap itself (instancing and building the level) runs in one frame behind the
+## loading screen and is in the load time; the frames after start counting from here.
 func _on_loaded(_id: StringName) -> void:
 	_frames = 0
 	_worst = 0.0
+	_last = Time.get_ticks_usec()
 
 
 func _next() -> void:

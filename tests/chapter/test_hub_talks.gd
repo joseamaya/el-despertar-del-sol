@@ -171,3 +171,19 @@ func test_the_hud_shows_the_objective() -> void:
 	var hud := _runner.find_child("Hud") as Hud
 	assert_bool(hud.is_showing_objective()).is_true()
 	assert_str(hud.objective_text()).is_equal(_talks.objective_text())
+
+
+## F10 task 3: accepting loads the mission and the hub leaves the tree before the objective
+## is updated (deferred). The update then does nothing, without reading positions.
+func test_accepting_lets_the_hub_go_before_the_objective_updates() -> void:
+	var hub: Node = _runner.scene()
+	var parent: Node = hub.get_parent()
+	var changed: Array[String] = []
+	_talks.objective_changed.connect(func(text: String) -> void: changed.append(text))
+	_talks.mission_chosen.connect(func(_id: StringName) -> void: parent.remove_child(hub))
+	assert_bool(_talks.accept(&"provisiones")).is_true()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	assert_bool(hub.is_inside_tree()).is_false()
+	assert_array(changed).is_empty()
+	parent.add_child(hub)

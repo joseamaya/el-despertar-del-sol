@@ -85,15 +85,18 @@ func _on_reinforcements_called(_zone: int) -> void:
 func _on_act_changed(act: SliceStep.Act) -> void:
 	if tuning.music == null:
 		return
+	var wanted: bool = act in tuning.music_acts
+	if not wanted and not _music.playing:
+		return  # Nothing to fade (an empty tween is an error).
 	if _music_tween != null:
 		_music_tween.kill()
 	_music_tween = create_tween()
-	if act in tuning.music_acts:
+	if wanted:
 		if not _music.playing:
 			_music.volume_db = SILENT_DB
 			_music.play()
 		_music_tween.tween_property(_music, ^"volume_db", tuning.music_db, tuning.music_fade_in)
-	elif _music.playing:
+	else:
 		_music_tween.tween_property(_music, ^"volume_db", SILENT_DB, tuning.music_fade_out)
 		_music_tween.tween_callback(_music.stop)
 
