@@ -8,7 +8,7 @@ levels = Dictionary[StringName, String]({
 &"carmenca": "res://scenes/levels/carmenca.tscn",
 &"prologo": "res://scenes/levels/prologo.tscn",
 &"centro": "res://scenes/levels/centro.tscn",
-&"mision_provisiones": "res://scenes/levels/mision_esbozo.tscn",
+&"mision_provisiones": "res://scenes/levels/mision_provisiones.tscn",
 &"mision_presos": "res://scenes/levels/mision_esbozo.tscn",
 &"mision_disputa": "res://scenes/levels/mision_esbozo.tscn",
 &"combate_visible": "res://scenes/levels/mision_esbozo.tscn"

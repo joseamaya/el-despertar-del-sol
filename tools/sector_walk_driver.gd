@@ -74,12 +74,24 @@ func stretch() -> String:
 	var best: String = ""
 	var best_d: float = INF
 	var at: Vector3 = level.player.global_position
-	for marker: StringName in STRETCHES.keys():
+	var stretches: Dictionary = _stretches()
+	for marker: StringName in stretches.keys():
 		var d: float = level.marker_position(marker).distance_to(at)
 		if d < best_d:
 			best_d = d
-			best = STRETCHES[marker]
+			best = stretches[marker]
 	return best
+
+
+## Carmenca's stretches; a level with named points (F10 task 4: the missions) is cut by
+## them instead, from its start.
+func _stretches() -> Dictionary:
+	if level.layout.points.is_empty():
+		return STRETCHES
+	var out: Dictionary = {&"Start": "llegada"}
+	for point: StringName in level.layout.points:
+		out[point] = String(point).to_lower()
+	return out
 
 
 func _clear_enemies() -> void:

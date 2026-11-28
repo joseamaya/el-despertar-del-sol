@@ -10,8 +10,8 @@ var _level: SectorLevel
 var _arena: ArenaController
 
 
-func _load(driver: Node) -> void:
-	_scene = (load(SCENE) as PackedScene).instantiate()
+func _load(driver: Node, scene: String = SCENE) -> void:
+	_scene = (load(scene) as PackedScene).instantiate()
 	_level = _scene.find_child("SectorLevel", true, false) as SectorLevel
 	_arena = _scene.find_child("ArenaController", true, false) as ArenaController
 	(_scene.find_child("CameraRig", true, false) as CameraController).capture_mouse = false
@@ -86,3 +86,14 @@ func test_fight_zone_keeps_only_that_zones_warriors() -> void:
 		if not enemy.is_queued_for_deletion():
 			alive += 1
 	assert_int(alive).is_equal(_level.layout.encounter_enemies[2])
+
+
+## F10 task 4: a level with named points (mission A) is cut by them, from its start.
+func test_a_level_with_points_names_stretches_by_them() -> void:
+	var walker := SectorWalkDriver.new()
+	_load(walker, "res://scenes/levels/mision_provisiones.tscn")
+	await _frames(5)
+	assert_str(walker.stretch()).is_equal("llegada")
+	_level.player.respawn(_level.marker_position(&"Porteadores") + Vector3.UP * 0.1, 0.0)
+	await _frames(2)
+	assert_str(walker.stretch()).is_equal("porteadores")
